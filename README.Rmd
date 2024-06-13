@@ -49,7 +49,7 @@ You can get data from locally from a csv or SQLite file, or remotely from the se
 
 #### Local csv file
 
-The function atl_get_data_csv() is a convenient wrapper to load a csv file as a data frame. By default it loads the csv file provided as example data with tools4watlas. 
+The function atl_get_data_csv() is a convenient wrapper to load a csv file as a data frame. By default it loads the csv file provided as example data with tools4watlas.
 
 ```{r, eval=FALSE}
 data<-atl_get_data_csv()
