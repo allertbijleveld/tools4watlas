@@ -455,7 +455,7 @@ ldf_smoothed <- lapply(
                 
 #> Third, filter list for minimum number of localizations per bird 
     min_locs <- 2                   # specify minimum 
-    n <- lapply(ldf_smoothed, nrow) # count localizations per bird 
+    ldf_n <- lapply(ldf_smoothed, nrow) # count localizations per bird 
     ldf_n[lengths(ldf_n) == 0] <- 0 # replace NULL counts for 0
     n <- unlist(ldf_n)              # create vector of counts
     ldf <- ldf_smoothed[n>=min_locs]# filter number of localizations
