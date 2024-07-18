@@ -15,7 +15,7 @@ Wadden Sea](https://doi.org/10.1186/s40317-022-00307-w).
 You can also visit <https://www.nioz.nl/watlas> where you can follow the
 tracked birds in realtime.
 
-The package *tools4watlas* builts on the package
+The package *tools4watlas* builds on the package
 [*atlastools*](https://github.com/pratikunterwegs/atlastools). A
 pipeline with coding examples for cleaning high-throughput tracking data
 with *atlastools* is covered in this article in the Journal of Animal
@@ -440,7 +440,7 @@ ldf_clean <- lapply(
                 atl_filter_covariates,
                 filters = c(
                         "VARX < VARmax", 
-                        "VARY < VARmax",
+                        "VARY < VARmax"
                             )
                 )
                         
@@ -455,7 +455,7 @@ ldf_smoothed <- lapply(
                 
 #> Third, filter list for minimum number of localizations per bird 
     min_locs <- 2                   # specify minimum 
-    n <- lapply(ldf_smoothed, nrow) # count localizations per bird 
+    ldf_n <- lapply(ldf_smoothed, nrow) # count localizations per bird 
     ldf_n[lengths(ldf_n) == 0] <- 0 # replace NULL counts for 0
     n <- unlist(ldf_n)              # create vector of counts
     ldf <- ldf_smoothed[n>=min_locs]# filter number of localizations
