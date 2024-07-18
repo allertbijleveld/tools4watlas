@@ -391,7 +391,7 @@ ldf_clean <- lapply(
 				atl_filter_covariates,
 				filters = c(
 						"VARX < VARmax", 
-						"VARY < VARmax",
+						"VARY < VARmax"
 							)
 				)
 						
