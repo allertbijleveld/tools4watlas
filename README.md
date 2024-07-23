@@ -15,7 +15,7 @@ Wadden Sea](https://doi.org/10.1186/s40317-022-00307-w).
 You can also visit <https://www.nioz.nl/watlas> where you can follow the
 tracked birds in realtime.
 
-The package *tools4watlas* builts on the package
+The package *tools4watlas* builds on the package
 [*atlastools*](https://github.com/pratikunterwegs/atlastools). A
 pipeline with coding examples for cleaning high-throughput tracking data
 with *atlastools* is covered in this article in the Journal of Animal
@@ -441,7 +441,7 @@ ldf_clean <- lapply(
                 atl_filter_covariates,
                 filters = c(
                         "VARX < VARmax", 
-                        "VARY < VARmax",
+                        "VARY < VARmax"
                             )
                 )
                         
