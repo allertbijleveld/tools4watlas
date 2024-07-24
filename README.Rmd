@@ -462,7 +462,7 @@ First, get the plotting colours for invidiuals or species.
 		spec<-as.data.frame(unique(species))
 		names(spec)<-"species"
 		#> create colours for the different species 
-		spec$COL<-brewer.pal(nrow(spec), "Accent") 
+		spec$COL<-brewer.pal(nrow(spec), "Accent")[1:nrow(spec)]
 		COL<-spec$COL[match(species, spec$species)]
 	}
 ```
