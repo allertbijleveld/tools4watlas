@@ -18,6 +18,7 @@ Imports:
 	sp,
 	OpenStreetMap,
 	RMySQL,
+	RSQLite,
 	dplyr,
 	glue,
     data.table,
