@@ -104,10 +104,9 @@ representing:
 *tag* = 4 digit tag number (character), i.e. last 4 digits of the column
 ‘TAG’  
 *TIME* = UNIX time (seconds)  
-*time* = Timestamp in POSIXct (UTC) \
-*X* = X-coordinates in meters (utm
+*time* = Timestamp in POSIXct (UTC) *X* = X-ccordinates in meters (utm
 31 N)  
-*Y* = Y-coordinates in meters (utm 31 N)  
+*Y* = Y-ccordinates in meters (utm 31 N)  
 *NBS* = Number of Base Stations used in calculating coordinates  
 *VARX* = Variance in estimating X-coordinates  
 *VARY* = Variance in estimating Y-coordinates  
@@ -514,7 +513,7 @@ First, get the plotting colours for invidiuals or species.
         spec<-as.data.frame(unique(species))
         names(spec)<-"species"
         #> create colours for the different species 
-        spec$COL<-brewer.pal(nrow(spec), "Accent") 
+        spec$COL<-brewer.pal(nrow(spec), "Accent")[1:nrow(spec)]
         COL<-spec$COL[match(species, spec$species)]
     }
 ```
