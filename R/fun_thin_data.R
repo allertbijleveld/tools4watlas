@@ -112,6 +112,11 @@ atl_thin_data <- function(data,
       ]
     }
 
+    # recalulate time to match time_agg
+    if ("time" %in% colnames(data)) {
+    data[, time := as.POSIXct(time_agg, origin = "1970-01-01", tz = "UTC")]
+  }
+
     # remove error columns
     data <- data[, setdiff(
       colnames(data),
