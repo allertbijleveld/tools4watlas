@@ -90,6 +90,12 @@ atl_thin_data <- function(data,
 
   # handle method option
   if (method == "aggregate") {
+
+    # Drop the 'time' column if it exists, will be recalulated later
+    if ("time" %in% colnames(thinned_data)) {
+      data[, time := NULL]  # Drop the 'time' column
+    }
+
     if (all(c("VARX", "VARY") %in% colnames(data))) {
       # aggregate over tracking interval
       # the variance of an average is the sum of variances / sample size square
@@ -111,11 +117,8 @@ atl_thin_data <- function(data,
       by = c("time_agg", id_columns)
       ]
     }
-
     # recalulate time to match time_agg
-    if ("time" %in% colnames(data)) {
     data[, time := as.POSIXct(time_agg, origin = "1970-01-01", tz = "UTC")]
-  }
 
     # remove error columns
     data <- data[, setdiff(
