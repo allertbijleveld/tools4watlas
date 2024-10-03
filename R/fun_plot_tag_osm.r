@@ -25,7 +25,7 @@ atl_plot_tag_osm<-function(data, tag=NULL, mapID=map, color_by="time", fullname=
 			msg = "Data is provided as a data.frame. First use atl_make_spatial() to transform to a spatial object with the osm() coordinate reference system."
 		)
 	
-		print("Make sure that data has the osm() coordinate reference system.")
+		# print("Make sure that data has the osm() coordinate reference system.")
 		
 	
 	if(is.null(tag)){tag<-data$tag[1]}else{
