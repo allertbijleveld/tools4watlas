@@ -190,7 +190,7 @@ atl_res_patch_speed <- function(data,
       }
     }))]
     
-    ## create patch values
+    ## Create patch values
     data[, `:=`(dist_in_patch, as.double(lapply(patchdata, function(df) {
       sum(atl_simple_dist(data = df), na.rm = TRUE)
     })))]
@@ -207,7 +207,7 @@ atl_res_patch_speed <- function(data,
     data <- data.table::merge.data.table(data, temp_data, by = c("tag", "patch"))
     assertthat::assert_that(!is.null(data), msg = "make_patch: patch has no data")
     
-    # add polygons with buffer around localizations per resience patch		
+    # add polygons with buffer around localizations per residency patch		
     data[, `:=`(polygons, lapply(patchdata, function(df) {
       p1 <- sf::st_as_sf(df, coords = c("X", "Y"))
       p2 <- sf::st_buffer(p1, dist = lim_spat_indep)
