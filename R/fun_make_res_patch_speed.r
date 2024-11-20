@@ -41,18 +41,27 @@
 #' summary variables.
 #' @import data.table
 #' @examples
-#' \dontrun{
-#' patches <- atl_res_patch(
-#'   data = data,
-#'   max_speed=3,
-#'   lim_spat_indep = 75,
-#'   lim_time_indep = 180,
-#'   min_fixes = 3,
-#'   min_duration = 120,
-#'   summary_variables = c("waterlevel", "speed_in", "speed_out", "time2low"),
-#'   summary_functions = c("mean", "median", "sd", "min", "max", "first", "last"))
-#' )
-#' }
+#' require(data.table)
+#' require(ggplot2)
+#' 
+#' # Load data
+#' d = atl_get_data_csv()
+#' 
+#' # Calculate residency patches
+#' rp = atl_res_patch_speed(d, max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180, min_fixes = 3, min_duration = 120,
+#'                          summary_functions = c("mean", "median", "sd", "min", "max", "first", "last"))
+#'
+#' # Extract data from all residency patches
+#' dr = rp[, rbindlist(lapply(patchdata, function(x) cbind(x))), by = patch]
+#' 
+#' # Merge with data
+#' d = merge(d, dr[, .(TAG, posID, patch)], by = c("TAG", "posID"), all.x = TRUE)
+#' 
+#' # Plot data
+#' ggplot(d) +
+#'   geom_path(aes(X, Y), alpha = 0.1) +
+#'   geom_point(aes(X, Y, color = as.character(patch)), show.legend = FALSE) +
+#'   theme_bw()
 #' @export			
 atl_res_patch_speed <- function(data, 
                                 max_speed = 3, 
@@ -133,7 +142,9 @@ atl_res_patch_speed <- function(data,
     patch_summary[, `:=`(time_diff_end_start, 
                          c(Inf, as.numeric(time_start[2:length(time_start)] - time_end[seq_len(length(time_end) - 1)])))]
     patch_summary[, `:=`(spat_diff_end_start, 
-                         c(atl_patch_dist(data = patch_summary, x1 = "X_end", x2 = "X_start", y1 = "Y_end", y2 = "Y_start")))]
+                         c(atl_patch_dist(data = patch_summary, 
+                                          x1 = "X_end", x2 = "X_start", 
+                                          y1 = "Y_end", y2 = "Y_start")))]
     patch_summary[1, "spat_diff_end_start"] <- Inf
     patch_summary[, `:=`(speed_between_patches_end_start =
                            patch_summary$spat_diff_end_start / patch_summary$time_diff_end_start)]
@@ -149,7 +160,8 @@ atl_res_patch_speed <- function(data,
     
     ## create  residence patches on new criteria
     ### newpatch without speed filter & with spatial distance on end-strt
-    patch_summary[, `:=`(newpatch, cumsum( (spat_diff > lim_spat_indep | time_diff_end_start > lim_time_indep) & (spat_diff_end_start > lim_spat_indep) ))]  		
+    patch_summary[, `:=`(newpatch, cumsum( (spat_diff > lim_spat_indep | time_diff_end_start > lim_time_indep) & 
+                                             (spat_diff_end_start > lim_spat_indep) ))]  		
     
     # Merge new patches with initial proto-patches
     patch_summary <- patch_summary[, list(patch, newpatch)]
