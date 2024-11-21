@@ -3,7 +3,7 @@ title: "Loading and processing data from one tag"
 author: "Allert Bijleveld"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Loading and processing data from one tag}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
