@@ -58,7 +58,8 @@ Alternatively, this selection can also be based on the tags_watlas_all.xlsx file
   # provide the correct path and file name, and sheet of the excel file. 
 library(readxl)
 
-alltags <- readxl::read_excel("C:\\path\\tags_watlas_all.xlsx", sheet = "tags_watlas_all") |> 
+alltags <- readxl::read_excel("C:\\path\\tags_watlas_all.xlsx", 
+                              sheet = "tags_watlas_all") |> 
   data.table()
 
 # Subset tag ID's using data.table 
@@ -85,13 +86,15 @@ First, the path and file name of the local SQLite database need to be provided. 
 SQLiteDB = paste0("path", "SQLite_db_name", ".sqlite")
 MyDBconnection <- RSQLite::dbConnect(RSQLite::SQLite(),SQLiteDB)
 
-data <- lapply(tags, 
-               atl_get_data, 
-               tracking_time_start = from, 
-               tracking_time_end = to, 
-               timezone = "CET", 
-               SQLiteDB = mydb, 
-               use_connection = MyDBconnection) 
+ldf_raw <- lapply(
+  tags, 
+  atl_get_data, 
+  tracking_time_start = from, 
+  tracking_time_end = to, 
+  timezone = "CET", 
+  SQLiteDB = mydb, 
+  use_connection = MyDBconnection
+) 
 ```
 
 #### Remote SQL-database
@@ -99,39 +102,43 @@ data <- lapply(tags,
 It is also possible to connect directly to a remote host.
 
 ```{r, eval=FALSE}
-data <- lapply(tags, 
-               atl_get_data,
-               tracking_time_start = from,
-               tracking_time_end = to,
-               timezone = "CET",
-               host= "host", 
-               database = "db",
-               username = "username",
-               password = "password")  			  
+ldf_raw  <- lapply(
+  tags, 
+  atl_get_data,
+  tracking_time_start = from,
+  tracking_time_end = to,
+  timezone = "CET",
+  host= "host", 
+  database = "db",
+  username = "username",
+  password = "password"
+)  			  
 ```
 
 ## Data explanation
 
 The resulting loaded WATLAS data will look like this: 
 
-```{r}
-head(data) |> knitr::kable()
+```{r, layout="l-body-outset"}
+head(data) |> knitr::kable(digits = 2)
 ```
 
 
 Loading the WATLAS data will provide a data frame with different columns representing:  
 
-*PosID*	=	Unique number for localizations \
-*TAG* 	=	11 digit WATLAS tag ID \
-*tag*	  =	4 digit tag number (character), i.e. last 4 digits of the column 'TAG' \
-*TIME*	=	UNIX time (seconds) \
-*time*	= 	Timestamp in POSIXct (UTC)
-*X*		  =	X-ccordinates in meters (utm 31 N) \
-*Y*		  =	Y-ccordinates in meters (utm 31 N) \
-*NBS*	  =	Number of Base Stations used in calculating coordinates \
-*VARX*	=	Variance in estimating X-coordinates \
-*VARY*	=	Variance in estimating Y-coordinates \
-*COVXY*	=	Co-variance between X- and Y-coordinates \
+| Column  | Description |
+| ----    | --------------------- |
+|*PosID*  |	Unique number for localizations  |
+|*TAG*    |	11 digit WATLAS tag ID  |
+|*tag*	  |	4 digit tag number (character), i.e. last 4 digits of the column 'TAG'  |
+|*TIME*	  |	UNIX time (seconds)  |
+|*time*	  | Timestamp in POSIXct (UTC)  |
+|*X*      |	X-ccordinates in meters (utm 31 N)  |
+|*Y*		  |	Y-ccordinates in meters (utm 31 N)  |
+|*NBS*	  |	Number of Base Stations used in calculating coordinates  |
+|*VARX*	  |	Variance in estimating X-coordinates  |
+|*VARY*	  |	Variance in estimating Y-coordinates  |
+|*COVXY*	|	Co-variance between X- and Y-coordinates  |
 
 ## Spatiotemporal filtering 
 
@@ -140,24 +147,28 @@ After getting the data, a potential first step is applying basic filtering to se
 Here, is an example of removing hypothesized erroneous localizations from a rectangular area specified with the range in x and y coordinates, but a spatial polygon could also be used (see *?atl_filter_bounds*). 
 
 ```{r, eval=FALSE}
-data <- atl_filter_bounds(
-	data = data,
-	x_range = c(639470, 639471),
-	y_range = c(5887143, 5887144),
-	sf_polygon = NULL,
-	remove_inside = TRUE
+# @ALLERT make run on lists? This does not seem to work
+ldf_filtered <- lapply(
+  ldf_raw,
+  atl_filter_bounds,
+  x_range = c(639470, 639471),
+  y_range = c(5887143, 5887144),
+  sf_polygon = NULL,
+  remove_inside = TRUE
 )
 ```
 
 For filtering data, the general *atl_filter_covariates* function can also be used. For example, filtering on a range of coordinates and a time period:  
 
 ```{r, eval=FALSE}
-data <- atl_filter_covariates(
-	data = data,
-	filters = c(
-	"between(time, '2022-09-02 01:25:00', '2022-09-03 13:47:00')",
-	"between(X, 649686, 651938)") 
-)				
+ldf_filtered <- lapply(
+  ldf_raw, 
+	atl_filter_covariates,
+  filters = c(
+    "between(time, '2022-09-02 01:25:00', '2022-09-03 13:47:00')",
+	  "between(X, 649686, 651938)"
+    ) 
+  )
 ```
 
 ## Basic processing 
@@ -165,11 +176,13 @@ data <- atl_filter_covariates(
 With the data of interest, some basic variables can be calculated, for instance, calculating speeds and turning angles from consecutive localizations. Speed can then later be used for filtering potentially erroneous localizations.
 
 ```{r, eval=FALSE}					
-#> calculate speed between consecutive localizations  		
+# @ALLERT make run on lists? This does not seem to work
+
+# Calculate speed between consecutive localizations  		
 data$speed_in <- atl_get_speed(data = data, time = "TIME", type = "in") 
 data$speed_out <- atl_get_speed(data = data, time = "TIME", type = "out") 
 
-#> calculate angle between consecutive localizations  		
+#  Calculate angle between consecutive localizations  		
 data$angle <- atl_turning_angle(data = data, time = "TIME") 
 ```
 
@@ -181,15 +194,27 @@ The next step is to remove localization errors, for instance, by applying basic 
 VARmax	<- 5000	# variance in meters squared
 speed_max <- 35 # meters per second
 
-data <- atl_filter_covariates(
-	data = data,
+# ldf_clean <- lapply(
+#   ldf_raw, 
+# 	atl_filter_covariates,
+# 	filters = c(
+# 	  "VARX < VARmax", 
+# 		"VARY < VARmax",
+# 		"speed_in < speed_max",
+# 		"speed_out < speed_max"
+# 		)
+#   )
+
+VARmax	<- 5000	# Variance limit in meters squared
+
+ldf_clean <- lapply(
+  ldf_raw, 
+	atl_filter_covariates,
 	filters = c(
-		"VARX < VARmax", 
-		"VARY < VARmax",
-		"speed_in < speed_max",
-		"speed_out < speed_max"
-	  )
-)
+	  "VARX < VARmax", 
+		"VARY < VARmax"
+		)
+  )
 ```
 
 ## Smoothing  
@@ -197,15 +222,21 @@ data <- atl_filter_covariates(
 To further reduce error in the localization data, a basic smoother such as a median filter can be applied.  
 
 ```{r, eval=FALSE}
-med_filter <- 5	# window for smoothing localizations
-data <- atl_median_smooth(data = data, time = "TIME", moving_window = med_filter)
+med_filter <- 5	# number of localizations within window for smoothing
+
+ldf_smoothed <- lapply(
+  ldf_clean,
+  atl_median_smooth,
+  time = "TIME", 
+  moving_window = med_filter
+)
 ```
 
 After smoothing the data, the speeds and angles need to be recalculated.
 
 ```{r, eval=FALSE}					
-data$speed_in <- atl_get_speed(data=data, time="TIME", type = "in") 
-data$speed_out <- atl_get_speed(data=data, time="TIME", type = "out") 
+data$speed_in <- atl_get_speed(data = data, time = "TIME", type = "in") 
+data$speed_out <- atl_get_speed(data = data, time = "TIME", type = "out") 
 
 #> Note that the distance between smooted localization can be zero, and 
 #> therefore, the angle cannot be calculated and a warning and NaNs are returned 	
