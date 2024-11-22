@@ -32,7 +32,8 @@ Imports:
     stringr
 Suggests:
     knitr,
-    rmarkdown
+    rmarkdown,
+    ggplot2
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
