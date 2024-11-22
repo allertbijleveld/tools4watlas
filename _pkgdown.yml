@@ -2,4 +2,5 @@ url: https://krietsch.github.io/tools4watlas/
 template:
   bootstrap: 5
   bootswatch: flatly
-
+  bslib:
+    primary: "#303c54"
