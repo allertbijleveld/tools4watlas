@@ -4,3 +4,57 @@ template:
   bootswatch: flatly
   bslib:
     primary: "#303c54"
+reference:
+  - title: "Load and check data"
+    desc: "Functions to load data from CSV, SQLlite or remote SQL database"
+    contents:
+     - atl_get_data
+     - atl_get_data_csv
+     - atl_check_data
+  - title: "Filter data"
+    desc: "Fuctions to filter the data"
+    contents:
+     - atl_filter_bounds
+     - atl_within_polygon
+     - atl_filter_covariates
+  - title: "Track characteristics"
+    desc: "Functions to calculate speed and turning angle"
+    contents:
+     - atl_simple_dist
+     - atl_get_speed
+     - atl_turning_angle
+     - atl_within_polygon    
+  - title: "Smooth or thin track"
+    desc: "Functions to calculate speed and turning angle"
+    contents:
+     - atl_median_smooth
+     - atl_thin_data
+  - title: "Residency patch functions"
+    desc: "Functions to calculate residency patches"
+    contents:
+     - atl_plot_rpatches
+     - atl_res_patch_speed
+     - atl_patch_dist
+     - atl_patch_summary
+  - title: "Plotting functions"
+    desc: "Functions to plot the data"
+    contents:
+     - atl_get_spatial_bounds
+     - atlas_make_boundingbox_for_osm
+     - atlas_make_spatialdataframe
+     - atl_plot_tag
+     - atl_plot_tag_osm
+     - plot_map_osm
+     - atl_plot_rpatches
+     - atl_plot_add_track
+  - title: "Other functions"
+    desc: ""
+    contents:
+     - atl_add_tidaldata
+     - atl_full_tag_id
+     - atl_t_col
+  - title: "Map data"
+    desc: "Map data provided with the package"
+    contents:
+     - mudflats
+     - land

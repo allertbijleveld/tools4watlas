@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 
 The goal of `tools4watlas` is to provide tools for getting, processing and plotting WATLAS tracking data. More information on the WATLAS tracking system can be found in this article published in *Animal Biotelemetry*: [WATLAS: high-throughput and real-time tracking of many small birds in the Dutch Wadden Sea](https://doi.org/10.1186/s40317-022-00307-w). 
 
-Visit <https://www.nioz.nl/watlas> to follow the tracked birds in real time.
+Visit <https://www.nioz.nl/watlas> to follow tracked birds in real time.
 
 The package `tools4watlas` builds on the package [`atlastools`](https://github.com/pratikunterwegs/atlastools). A pipeline with coding examples for cleaning high-throughput tracking data with `atlastools` is presented in this article in the *Journal of Animal Ecology*: [A Guide to Pre-processing High-throughput Animal Tracking Data](https://doi.org/10.1111/1365-2656.13610).
 
@@ -59,7 +59,7 @@ install_github("allertbijleveld/tools4watlas")
 
 ### **Example**
 
-```{r}
+```{r, fig.cap = "Example track"}
 
 library(tools4watlas)
 library(ggplot2)
@@ -80,7 +80,7 @@ ggplot(data) +
 
 ### **Work in progress**
 
-More examples of workflows aimed at processing, plotting and adding environmental data to WATLAS tracking data are being prepared. If you have a request, please contact Allert Bijleveld. 
+More examples of workflows aimed at processing, plotting and adding environmental data to WATLAS tracking data are being prepared. If you have a request, please contact [Allert Bijleveld](mailto:allert.bijleveld@nioz.nl). 
 
 We are working on the following vignettes at the moment:
 

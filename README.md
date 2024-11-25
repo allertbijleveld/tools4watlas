@@ -19,8 +19,7 @@ Biotelemetry*: [WATLAS: high-throughput and real-time tracking of many
 small birds in the Dutch Wadden
 Sea](https://doi.org/10.1186/s40317-022-00307-w).
 
-Visit <https://www.nioz.nl/watlas> to follow the tracked birds in real
-time.
+Visit <https://www.nioz.nl/watlas> to follow tracked birds in real time.
 
 The package `tools4watlas` builds on the package
 [`atlastools`](https://github.com/pratikunterwegs/atlastools). A
@@ -83,13 +82,21 @@ ggplot(data) +
    theme_bw()
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+<div class="figure">
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" alt="Example track" width="100%" />
+<p class="caption">
+Example track
+</p>
+
+</div>
 
 ### **Work in progress**
 
 More examples of workflows aimed at processing, plotting and adding
 environmental data to WATLAS tracking data are being prepared. If you
-have a request, please contact Allert Bijleveld.
+have a request, please contact [Allert
+Bijleveld](mailto:allert.bijleveld@nioz.nl).
 
 We are working on the following vignettes at the moment:
 
