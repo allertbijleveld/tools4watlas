@@ -23,6 +23,7 @@ After installing the package, load the *tools4watlas* library.
 
 ```{r}
 library(tools4watlas)
+library(data.table)
 ```
 
 ## Getting data
@@ -34,7 +35,11 @@ You can get data from locally from a csv or SQLite file, or remote SQL database 
 The function atl_get_data_csv() is a convenient wrapper to load a csv file as a data frame. By default it loads the csv file provided as example data with tools4watlas.
 
 ```{r}
-data <- atl_get_data_csv()
+data <- atl_get_data_csv() |> 
+  data.table()
+
+# Split data by ID
+data_split <- split(data, by = "TAG")
 ```
 
 ### SQL database
@@ -86,7 +91,7 @@ First, the path and file name of the local SQLite database need to be provided. 
 SQLiteDB = paste0("path", "SQLite_db_name", ".sqlite")
 MyDBconnection <- RSQLite::dbConnect(RSQLite::SQLite(),SQLiteDB)
 
-ldf_raw <- lapply(
+data_split <- lapply(
   tags, 
   atl_get_data, 
   tracking_time_start = from, 
@@ -102,7 +107,7 @@ ldf_raw <- lapply(
 It is also possible to connect directly to a remote host.
 
 ```{r, eval=FALSE}
-ldf_raw  <- lapply(
+data_split  <- lapply(
   tags, 
   atl_get_data,
   tracking_time_start = from,
@@ -173,17 +178,31 @@ ldf_filtered <- lapply(
 
 ## Basic processing 
 
+Transform the lists in data.tables.
+
+```{r, eval=FALSE}	
+lapply(data_split, setDT) |> 
+  invisible()
+```
+
+
 With the data of interest, some basic variables can be calculated, for instance, calculating speeds and turning angles from consecutive localizations. Speed can then later be used for filtering potentially erroneous localizations.
 
 ```{r, eval=FALSE}					
-# @ALLERT make run on lists? This does not seem to work
+# calculate SD
+lapply(data_split, function(dt) {
+  dt[, SD := sqrt(VARX + VARY + (2 * COVXY))]
+}) |> 
+  invisible()
 
-# Calculate speed between consecutive localizations  		
-data$speed_in <- atl_get_speed(data = data, time = "TIME", type = "in") 
-data$speed_out <- atl_get_speed(data = data, time = "TIME", type = "out") 
-
-#  Calculate angle between consecutive localizations  		
-data$angle <- atl_turning_angle(data = data, time = "TIME") 
+# calculate speed
+lapply(data_split, function(dt) {
+  dt[, `:=`(
+    speed_in = atl_get_speed(dt, time = "TIME", type = "in"),
+    speed_out = atl_get_speed(dt, time = "TIME", type = "out")
+  )]
+}) |> 
+  invisible()
 ```
 
 ## Filtering 
@@ -194,27 +213,17 @@ The next step is to remove localization errors, for instance, by applying basic 
 VARmax	<- 5000	# variance in meters squared
 speed_max <- 35 # meters per second
 
-# ldf_clean <- lapply(
-#   ldf_raw, 
-# 	atl_filter_covariates,
-# 	filters = c(
-# 	  "VARX < VARmax", 
-# 		"VARY < VARmax",
-# 		"speed_in < speed_max",
-# 		"speed_out < speed_max"
-# 		)
-#   )
-
-VARmax	<- 5000	# Variance limit in meters squared
-
-ldf_clean <- lapply(
-  ldf_raw, 
-	atl_filter_covariates,
-	filters = c(
-	  "VARX < VARmax", 
-		"VARY < VARmax"
-		)
+data_split <- lapply(data_split, function(dt) {
+  dt <- atl_filter_covariates(
+    data = dt,
+    filters = c(
+	  "VARX < VARmax",
+		"VARY < VARmax",
+		"speed_in < speed_max",
+		"speed_out < speed_max"
+    )
   )
+})
 ```
 
 ## Smoothing  
@@ -224,23 +233,32 @@ To further reduce error in the localization data, a basic smoother such as a med
 ```{r, eval=FALSE}
 med_filter <- 5	# number of localizations within window for smoothing
 
-ldf_smoothed <- lapply(
-  ldf_clean,
-  atl_median_smooth,
-  time = "TIME", 
-  moving_window = med_filter
-)
+# since the function modifies in place, we shall make a copy
+data_smooth <- copy(data_split)
+
+# make lists data.tables
+lapply(data_smooth, setDT) |>
+  invisible()
+
+lapply(
+  X = data_smooth,
+  FUN = atl_median_smooth,
+  time = "TIME", moving_window = med_filter
+) |> 
+  invisible()
 ```
 
 After smoothing the data, the speeds and angles need to be recalculated.
 
 ```{r, eval=FALSE}					
-data$speed_in <- atl_get_speed(data = data, time = "TIME", type = "in") 
-data$speed_out <- atl_get_speed(data = data, time = "TIME", type = "out") 
-
-#> Note that the distance between smooted localization can be zero, and 
-#> therefore, the angle cannot be calculated and a warning and NaNs are returned 	
-data$angle <- atl_turning_angle(data = data, time = "TIME") 
+lapply(data_smooth, function(dt) {
+  dt[, `:=`(
+    speed_in = atl_get_speed(dt, time = "TIME", type = "in"),
+    speed_out = atl_get_speed(dt, time = "TIME", type = "out")
+  )]
+  dt[, angle := atl_turning_angle(dt, time = "TIME")]
+}) |> 
+  invisible() 
 ```
 
 ## Adding tidal data 
@@ -248,24 +266,22 @@ data$angle <- atl_turning_angle(data = data, time = "TIME")
 After following the above basic steps, the data will be ready for adding environmental data, such as waterlevels.
 
 ```{r, eval=FALSE}
-#> load the tidal data using the library data.table
-tides_filename <- system.file("extdata", "example_tide_data_UTC.csv", 
-                              package="tools4watlas")
-tide_data_highres_filename <- system.file("extdata", 
-                                          "example_tide_data_highres_UTC.csv", 
-                                          package = "tools4watlas")
-tides <- data.table::fread(tides_filename)
-tide_data_highres <- data.table::fread(tide_data_highres_filename)
 
-#> add the tidal data to the tracking data. Note that we use an offset 
-#> of 30 min becasue of the delay in water flow between the tidal gauge 
-#> and the location of the example tracking data (the islet of Griend)
+data = rbindlist(data_smooth, fill = TRUE)
 
-data <- atl_add_tidaldata(data = data, 
-                          tide_data = tides, 
-                          tide_data_highres = tide_data_highres, 
-                          waterdata_resolution = "10 minute", 
-                          Offset = 30)
+# add water level data
+tides <- system.file(
+  "extdata", "example_tide_data_UTC.csv", package = "tools4watlas")
+tide_data_highres <- system.file(
+  "extdata", "example_tide_data_highres_UTC.csv", package = "tools4watlas"
+  )
+data = as.data.frame(data)
+data = atl_add_tidaldata(
+  data = d,
+  tide_data = tides, 
+  tide_data_highres = tide_data_highres, 
+  waterdata_resolution = "10 minute",
+  Offset = 30)
 ```
 
 
@@ -274,10 +290,17 @@ data <- atl_add_tidaldata(data = data,
 For specific analyses, the cleaned data can be selected. To select localizations when mudlfats are available for foraging, we can for example select a low tide period from -2.5 hours to +2.5 hours around low tide [(Bijleveld et al. 2016)](https://royalsocietypublishing.org/doi/10.1098/rspb.2015.1557): 
 
 ```{r, eval=FALSE}
-#> select the low tide periode for a particular tide as specified by tideID	
-data <- atl_filter_covariates(
-	data = data,
-	filters = c(
-	"tideID == 2022472",
-	"between(time2lowtide, -2.5 * 60, 2.5 * 60)")
-)
+# Split data by ID
+data_split <- split(data, by = "TAG")
+
+# Select the low tide period for a particular tide as specified by tideID	
+data_split <- lapply(data_split, function(dt) {
+  dt <- atl_filter_covariates(
+    data = dt,
+    filters = c(
+  	"tideID == 2022472",
+  	"between(time2lowtide, -2.5 * 60, 2.5 * 60)"
+    )
+  )
+})
+```
