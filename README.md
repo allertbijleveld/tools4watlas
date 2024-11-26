@@ -38,8 +38,11 @@ Basic workflows and on how to use `tools4watlas` can be found on the
 - [`Basic workflows`](https://krietsch.github.io/tools4watlas/articles/basic_work_flows.html) -
   Allert’s basic WATLAS data workflow
 
-- [`Load and process data`](https://krietsch.github.io/tools4watlas/articles/load_and_process_data.html) -
-  Example script on how to load and process WATLAS data.
+- [`Load and check data`](https://krietsch.github.io/tools4watlas/articles/load_and_check_data.html) -
+  Example script on how to load and check WATLAS data.
+
+- [`Process data`](https://krietsch.github.io/tools4watlas/articles/process_data.html) -
+  Example script on how to process WATLAS data.
 
 - TODO: Add enviromental data
 
