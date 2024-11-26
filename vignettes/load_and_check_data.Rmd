@@ -1,0 +1,191 @@
+---
+title: "Loading and checking data"
+author: "Allert Bijleveld & Johannes Krietsch"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Loading and checking data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+#### Good to know
+
+`tools4watlas` is based on `data.table` to be fast and efficient. A key feature of `data.table` is modification in place, where data is changed without making a copy. To prevent this (whenever it is not desired) use the function `copy()` to make a true copy of the data set. 
+
+Most `tools4watlas` function run on collections of lists `split()` by individual (tag ID) to keep the data separated and allow for easy parallel computing (if necessary). 
+
+```{r}
+library(tools4watlas)
+library(data.table)
+```
+
+## Getting data
+
+WATLAS data can either be directly loaded from a local csv file or be extracted from a SQL database. The database can be either a local SQLlite database or a rem remote SQL database server. 
+
+### Local csv file
+
+The function `atl_get_data_csv()` is a convenient wrapper to load a csv file as a data frame. By default it loads the csv file provided as example data with `tools4watlas`. To use further WATLAS functions, we split the data by tag ID. 
+
+```{r}
+data <- atl_get_data_csv() |> data.table()
+
+# Split data by ID
+data_split <- split(data, by = "TAG")
+```
+
+### SQL databases
+
+First select the desired tags and time period.
+
+```{r}
+# Tags for which data should be extracted form the database
+tags <- c(2707, 2708)
+tags <- atl_full_tag_id(tags) # Change to long tag format (as in database)
+
+# Time period for which data should be extracted form the database
+from <- "2023-01-01 12:00:00"
+to   <- "2024-01-01 12:00:00"
+```
+
+Alternatively, this selection can also be based on the `tags_watlas_all.xlsx` file (including metadata of all tags) and the time period can be specified as last days (only useful when accessing remote SQL database)
+
+```{r, eval=FALSE}
+# Load Excel file 
+  # provide the correct path and file name, and sheet of the excel file. 
+library(readxl)
+
+alltags <- readxl::read_excel("C:\\path\\tags_watlas_all.xlsx", 
+                              sheet = "tags_watlas_all") |> 
+  data.table()
+
+# Subset tag ID's using data.table 
+# (For example red knots, dunlin and sanderling tagged in 2023)
+tags <- alltags[season == 2023 & 
+                 species %in% c("red knot", "dunlin", "sanderling")]$tagID
+
+# Change to long tag format
+tags <- atl_full_tag_id(tags) # Change to long tag format (as in database)
+
+# Select N last days to get data from
+days <- 3
+from <- Sys.time() - 86400 * days |> as.character()
+to   <- Sys.time() + 3600 |> as.character()
+```
+
+
+#### Local SQLite file
+
+First, the path and file name of the local SQLite database need to be provided. Then, with the established connection, the database can be queried for the selected tags and period. Here we will load the tagging data in a list where each entry is a dataframe with data of one tag.
+
+
+```{r, eval=FALSE}
+SQLiteDB = paste0("path", "SQLite_db_name", ".sqlite")
+MyDBconnection <- RSQLite::dbConnect(RSQLite::SQLite(),SQLiteDB)
+
+data_split <- lapply(
+  tags, 
+  atl_get_data, 
+  tracking_time_start = from, 
+  tracking_time_end = to, 
+  timezone = "CET", 
+  SQLiteDB = mydb, 
+  use_connection = MyDBconnection
+) 
+```
+
+#### Remote SQL-database
+
+It is also possible to connect directly to a remote host.
+
+```{r, eval=FALSE}
+data_split  <- lapply(
+  tags, 
+  atl_get_data,
+  tracking_time_start = from,
+  tracking_time_end = to,
+  timezone = "CET",
+  host= "host", 
+  database = "db",
+  username = "username",
+  password = "password"
+)  			  
+```
+
+## Data explanation
+
+The resulting loaded WATLAS data will look like this: 
+
+```{r, layout="l-body-outset"}
+head(data) |> knitr::kable(digits = 2)
+```
+
+
+Loading the WATLAS data will provide a data frame with different columns representing:  
+
+| Column  | Description |
+| ----    | --------------------- |
+|*PosID*  |	Unique number for localizations  |
+|*TAG*    |	11 digit WATLAS tag ID  |
+|*tag*	  |	4 digit tag number (character), i.e. last 4 digits of the column 'TAG'  |
+|*TIME*	  |	UNIX time (seconds)  |
+|*time*	  | Timestamp in POSIXct (UTC)  |
+|*X*      |	X-ccordinates in meters (UTM 31 N)  |
+|*Y*		  |	Y-ccordinates in meters (UTM 31 N)  |
+|*NBS*	  |	Number of Base Stations used in calculating coordinates  |
+|*VARX*	  |	Variance in estimating X-coordinates  |
+|*VARY*	  |	Variance in estimating Y-coordinates  |
+|*COVXY*	|	Co-variance between X- and Y-coordinates  |
+
+## Check data
+
+Here we simply check for how many individuals we have data and how many positions by tag and date we have. 
+
+```{r, fig.cap = "Number of positions per day by tag", fig.width = 7, fig.height = 4}
+
+# Bind data into one data.table
+data <- rbindlist(data_split, fill = TRUE) |> data.table()
+
+# N individuals with tagging data
+data[, .N, tag] |> nrow()
+
+# N positions, first and last data by tag ID
+data[, .(N_positions = .N,
+         fist_data = min(time),
+         last_data = max(time)), tag]
+
+# add data
+data[, date := as.Date(time)] |> invisible()
+
+# N positions by species and day
+data_subset = data[, .N, by = .(tag, date)]
+
+# Plot data
+library(ggplot2)
+library(viridis)
+library(scales)
+
+ggplot(data_subset, aes(x = date, y = tag, fill = N)) +
+  geom_tile() +
+  scale_fill_viridis(discrete = FALSE, trans = "log10", 
+                     name = "N positions",
+                     breaks = trans_breaks("log10", function(x) 10^x), 
+                     labels = trans_format("log10", math_format(10^.x)), 
+                     direction = -1) + 
+  labs(x = "Date", y = "Tag") +
+  theme_classic() 
+
+```
+
+
+
+
+
