@@ -45,12 +45,15 @@
 #' require(ggplot2)
 #' 
 #' # Load data
-#' d = atl_get_data_csv()
+#' d = atl_get_data_csv() |> data.table()
+#' setnames(d, c("X", "Y"), c("x", "y"))
 #' 
 #' # Calculate residency patches
-#' rp = atl_res_patch_speed(d, max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180, min_fixes = 3, min_duration = 120,
-#'                          summary_functions = c("mean", "median", "sd", "min", "max", "first", "last"))
-#'
+#' rp = atl_res_patch_speed(
+#'   d, max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180, min_fixes = 3, 
+#'   min_duration = 120,
+#'   summary_functions = c("mean", "median", "sd", "min", "max", "first", "last"))
+#' 
 #' # Extract data from all residency patches
 #' dr = rp[, rbindlist(lapply(patchdata, function(x) cbind(x))), by = patch]
 #' 
@@ -59,8 +62,8 @@
 #' 
 #' # Plot data
 #' ggplot(d) +
-#'   geom_path(aes(X, Y), alpha = 0.1) +
-#'   geom_point(aes(X, Y, color = as.character(patch)), show.legend = FALSE) +
+#'   geom_path(aes(x, y), alpha = 0.1) +
+#'   geom_point(aes(x, y, color = as.character(patch)), show.legend = FALSE) +
 #'   theme_bw()
 #' @export			
 atl_res_patch_speed <- function(data, 
@@ -87,7 +90,7 @@ atl_res_patch_speed <- function(data,
   lim_time_indep <- lim_time_indep * 60  # Convert to seconds
   
   # Check data structure
-  required_columns <- c("X", "Y", "time")
+  required_columns <- c("x", "y", "time")
   atl_check_data(data, names_expected = required_columns)
   
   # Convert data to data.table if not already
@@ -102,7 +105,7 @@ atl_res_patch_speed <- function(data,
   
   tryCatch(expr = {
     # Calculate spatial and time differences
-    data[, `:=`(spat_diff = atl_simple_dist(data = data, X = "X", Y = "Y"),
+    data[, `:=`(spat_diff = atl_simple_dist(data = data, x = "x", y = "y"),
                 time_diff = c(Inf, as.numeric(diff(time))))]
     data[1, c("spat_diff")] <- Inf
     data[, `:=`(speed = spat_diff/time_diff)]
@@ -125,7 +128,7 @@ atl_res_patch_speed <- function(data,
         list(median = as.double(stats::median(d)), 
              start = as.double(data.table::first(d)), 
              end = as.double(data.table::last(d)))
-      }), recursive = FALSE), .SDcols = c("X", "Y", "time")]
+      }), recursive = FALSE), .SDcols = c("x", "y", "time")]
       setnames(dt2, stringr::str_replace(colnames(dt2), "\\.", "_"))
       return(dt2)
     }))]
@@ -143,8 +146,8 @@ atl_res_patch_speed <- function(data,
                          c(Inf, as.numeric(time_start[2:length(time_start)] - time_end[seq_len(length(time_end) - 1)])))]
     patch_summary[, `:=`(spat_diff_end_start, 
                          c(atl_patch_dist(data = patch_summary, 
-                                          x1 = "X_end", x2 = "X_start", 
-                                          y1 = "Y_end", y2 = "Y_start")))]
+                                          x1 = "x_end", x2 = "x_start", 
+                                          y1 = "y_end", y2 = "y_start")))]
     patch_summary[1, "spat_diff_end_start"] <- Inf
     patch_summary[, `:=`(speed_between_patches_end_start =
                            patch_summary$spat_diff_end_start / patch_summary$time_diff_end_start)]
@@ -152,8 +155,8 @@ atl_res_patch_speed <- function(data,
     
     ## calculate distance between patches based on MEDIAN locations 
     patch_summary[, `:=`(spat_diff, c(atl_patch_dist(data = patch_summary, 
-                                                     x1 = "X_median", x2 = "X_median", 
-                                                     y1 = "Y_median", y2 = "Y_median")))]
+                                                     x1 = "x_median", x2 = "x_median", 
+                                                     y1 = "y_median", y2 = "y_median")))]
     patch_summary[1, "spat_diff"] <- Inf
     patch_summary[, `:=`(speed_between_patches_medianxy = patch_summary$spat_diff / patch_summary$time_diff_end_start)]
     patch_summary[1, "speed_between_patches_medianxy"] <- Inf			
@@ -177,7 +180,7 @@ atl_res_patch_speed <- function(data,
       dt2 <- dt[, unlist(lapply(.SD, function(d) {
         list(mean = as.double(mean(d)), median = as.double(stats::median(d)), 
              start = as.double(data.table::first(d)), end = as.double(data.table::last(d)))
-      }), recursive = FALSE), .SDcols = c("X", "Y", "time")]
+      }), recursive = FALSE), .SDcols = c("x", "y", "time")]
       setnames(dt2, stringr::str_replace(colnames(dt2), "\\.", "_"))
       if (length(summary_variables) > 0) {
         dt3 <- data.table::dcast(dt, 1 ~ 1, fun.aggregate = eval(lapply(summary_functions, as.symbol)), 
@@ -197,19 +200,19 @@ atl_res_patch_speed <- function(data,
     temp_data <- data[, unlist(patch_summary, recursive = FALSE), by = list(tag, patch)]
     data[, `:=`(patch_summary, NULL)]
     data[, `:=`(dist_bw_patch, atl_patch_dist(data = temp_data, 
-                                              x1 = "X_end", x2 = "X_start", 
-                                              y1 = "Y_end", y2 = "Y_start"))]
+                                              x1 = "x_end", x2 = "x_start", 
+                                              y1 = "y_end", y2 = "y_start"))]
     
     temp_data[, `:=`(time_bw_patch, 
                      c(NA, as.numeric(time_start[2:length(time_start)] - time_end[seq_len(length(time_end) - 1)])))]
-    temp_data[, `:=`(disp_in_patch, sqrt((X_end - X_start)^2 + (Y_end - Y_start)^2))]
+    temp_data[, `:=`(disp_in_patch, sqrt((x_end - x_start)^2 + (y_end - y_start)^2))]
     temp_data[, `:=`(duration, (time_end - time_start))]
     data <- data.table::merge.data.table(data, temp_data, by = c("tag", "patch"))
     assertthat::assert_that(!is.null(data), msg = "make_patch: patch has no data")
     
     # add polygons with buffer around localizations per residency patch		
     data[, `:=`(polygons, lapply(patchdata, function(df) {
-      p1 <- sf::st_as_sf(df, coords = c("X", "Y"))
+      p1 <- sf::st_as_sf(df, coords = c("x", "y"))
       p2 <- sf::st_buffer(p1, dist = lim_spat_indep)
       p2 <- sf::st_union(p2)
       return(p2)	## output polygons

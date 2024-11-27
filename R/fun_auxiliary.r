@@ -3,7 +3,7 @@
 #' Adds residence pattch data in UTM 31N as points or polygons to a plot. 
 #' 
 #' @author Allert Bijleveld
-#' @param d Either sfc_Polygon or a dataframe with the tracking data 
+#' @param data Either sfc_Polygon or a dataframe with the tracking data 
 #' @param Pch Corresponding graphical argument passed on to the base plot function 
 #' @param Cex Corresponding graphical argument passed on to the base plot function 
 #' @param Lwd Corresponding graphical argument passed on to the base plot function 
@@ -101,6 +101,8 @@ atlas_make_boundingbox_for_osm<-function(bbox, buffer=1000, from_crs=sp::CRS("+i
 #'
 #' @author Allert Bijleveld
 #' @param map The map loaded with \code{OpenStreetMap::openmap()}.
+#' @param ppi The pixels per inch, which is used to calculate the dimensions of 
+#' the plotting region from \code{mapID}. Deafults to 96.  
 #' @return Returns an OSM background plot for adding tracks. 
 #' @export	
 plot_map_osm<-function(map, ppi=96){

@@ -15,6 +15,8 @@ atl_plot_rpatches(
 )
 }
 \arguments{
+\item{data}{Either sfc_Polygon or a dataframe with the tracking data}
+
 \item{Pch}{Corresponding graphical argument passed on to the base plot function}
 
 \item{Cex}{Corresponding graphical argument passed on to the base plot function}
@@ -26,8 +28,6 @@ atl_plot_rpatches(
 \item{Bg}{Corresponding graphical argument passed on to the base plot function}
 
 \item{Lines}{Corresponding graphical argument passed on to the base plot function}
-
-\item{d}{Either sfc_Polygon or a dataframe with the tracking data}
 }
 \value{
 Nothing but an addition to the current plotting device.

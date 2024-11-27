@@ -4,21 +4,21 @@
 \alias{atl_median_smooth}
 \title{Apply a median smooth to coordinates.}
 \usage{
-atl_median_smooth(data, X = "X", Y = "Y", time = "TIME", moving_window = 3)
+atl_median_smooth(data, x = "x", y = "y", time = "time", moving_window = 5)
 }
 \arguments{
 \item{data}{A dataframe object returned by \code{atl_get_data}, which should contain the original columns (particularly X,Y and TIME).}
 
-\item{X}{The X coordinate.}
+\item{x}{The X coordinate.}
 
-\item{Y}{The Y coordinate.}
+\item{y}{The Y coordinate.}
 
 \item{time}{The timestamp, ideally as an integer.}
 
 \item{moving_window}{The size of the moving window for the median smooth. Must be an odd number.}
 }
 \value{
-A datatable class object (extends data.frame), including X,Y as smoothed coordinates and the X_raw and Y_raw, which are the raw coordinates.
+A datatable class object (extends data.frame), including X,Y as smoothed coordinates and the x_raw and y_raw, which are the raw coordinates.
 }
 \description{
 Applies a median smooth defined by a rolling window to the X and Y
@@ -28,7 +28,8 @@ coordinates of the data.
 \dontrun{
 atl_median_smooth(
   data = track_data,
-  time = "TIME",
+  x = "x", y = "y",
+  time = "time",
   moving_window = 5
 )
 }

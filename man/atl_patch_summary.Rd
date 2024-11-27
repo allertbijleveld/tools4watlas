@@ -11,9 +11,11 @@ atl_patch_summary(patch_data, which_data = "summary", buffer_radius = 10)
 underlying each patch. Since data.frames don't support nested columns,
 will actually be a data.table or similar extension.}
 
-\item{which_data}{Which data to return. May be the raw data underlying the patch (\code{which_data = "points"}),
-or a spatial features (\code{sf-MULTIPOLYGON}) object with patch covariates (\code{which_data = "spatial"}),
-or a data.table of the patch covariates without the geometry column (\code{which_data = "summary"}).}
+\item{which_data}{Which data to return. May be the raw data underlying the
+patch (\code{which_data = "points"}),
+or a spatial features (\code{sf-MULTIPOLYGON}) object with patch covariates
+(\code{which_data = "spatial"}), or a data.table of the patch covariates
+without the geometry column (\code{which_data = "summary"}).}
 
 \item{buffer_radius}{Spatial buffer radius (in metres) around points when
 requesting sf based polygons.}

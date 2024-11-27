@@ -18,21 +18,32 @@ atl_plot_tag_osm(
 )
 }
 \arguments{
-\item{data}{A dataframe with the tracking data. Can include multiple tags, but one tag is selected for plotting.}
+\item{data}{A dataframe with the tracking data. Can include multiple tags,
+but one tag is selected for plotting.}
 
-\item{tag}{The four-digit tag number as character to plot. Defaults to plotting the first tag in \code{data}.}
+\item{tag}{The four-digit tag number as character to plot. Defaults to
+plotting the first tag in \code{data}.}
 
-\item{mapID}{An map-object generated with the function \code{OpenStreetMap::openmap()}.}
+\item{mapID}{An map-object generated with the function
+\code{OpenStreetMap::openmap()}.}
 
-\item{color_by}{Either \code{"time"}, \code{"SD"}, or \code{"NBS"}, which are respectively used to colour the localization with the relative time (hours), variance in the localizations as the maximum of VARX and VARY, or the Number of Base Stations (NBS) used to calculate the localization. Defaults to "time".}
+\item{color_by}{Either \code{"time"}, \code{"SD"}, or \code{"NBS"}, which
+are respectively used to colour the localization with the relative
+time (hours), variance in the localizations as the maximum of VARX
+and VARY, or the Number of Base Stations (NBS) used to calculate the
+localization. Defaults to "time".}
 
-\item{fullname}{If specified the plot will be saved in this path with this name (include extension). Defaults to NULL and plotting in a graphics window.}
+\item{fullname}{If specified the plot will be saved in this path with this
+name (include extension). Defaults to NULL and plotting in a graphics window.}
 
-\item{ppi}{The pixels per inch, which is used to calculate the dimensions of the plotting region from \code{mapID}. Deafults to 96.}
+\item{ppi}{The pixels per inch, which is used to calculate the dimensions of
+the plotting region from \code{mapID}. Deafults to 96.}
 
-\item{towers}{A dataframe with coordinates of receiver stations (named \code{X} and \code{Y}).}
+\item{towers}{A dataframe with coordinates of receiver stations
+(named \code{X} and \code{Y}).}
 
-\item{Legend}{Passed to the \code{legend} function and sets the location of the legend in the plot.}
+\item{Legend}{Passed to the \code{legend} function and sets the location of
+the legend in the plot.}
 
 \item{Scalebar}{Length of scalebar in km.}
 

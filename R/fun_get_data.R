@@ -37,8 +37,8 @@
 #' tag		  =	4 digit tag number (character) \cr
 #' time		  =	UNIX time (seconds) \cr
 #' datetime = Timestamp in POSIXct (UTC) \cr
-#' x		    =	x-ccordinates in meters (utm 31 N) \cr
-#' y		    =	y-ccordinates in meters (utm 31 N) \cr
+#' x		    =	x-ccordinates in meters (UTM 31 N) \cr
+#' y		    =	y-ccordinates in meters (UTM 31 N) \cr
 #' nbs		  =	Number of Base Stations used in calculating coordinates \cr
 #' varx		  =	Variance in estimating x-coordinates \cr
 #' vary		  =	Variance in estimating y-coordinates \cr

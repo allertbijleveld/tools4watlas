@@ -12,7 +12,8 @@ atl_thin_data(
 )
 }
 \arguments{
-\item{data}{Tracking data to aggregate. Must have columns \code{X} and \code{Y}, and a numeric column named \code{TIME}.}
+\item{data}{Tracking data to aggregate. Must have columns \code{X} and
+\code{Y}, and a numeric column named \code{TIME}.}
 
 \item{interval}{The interval in seconds over which to aggregate.}
 
@@ -32,13 +33,13 @@ Uniformly reduce data volumes with either aggregation or resampling
 seconds using the \code{interval} argument.
 Both options make two important assumptions:
 (1) that timestamps are named \verb{TIME', and (2) all columns except the identity columns can be averaged in \code{R}. While the }subsample' option returns a thinned dataset with all columns from
-the input data, the \verb{aggregate' option drops the column \code{COVXY}, since this cannot be propagated to the averaged position. Both options handle the column }TIME' differently: while \verb{subsample' returns the actual timestamp (in UNIX TIME) of each sample, }aggregate' returns the
+the input data, the \verb{aggregate' option drops the column \code{covxy}, since this cannot be propagated to the averaged position. Both options handle the column }TIME' differently: while \verb{subsample' returns the actual timestamp (in UNIX TIME) of each sample, }aggregate' returns the
 mean timestamp (also in UNIX TIME).
 In both cases, an extra column, \code{time_agg}, is added which has a uniform
 difference between each element corresponding to the user-defined thinning
 interval.
-The `aggregate' option only recognises errors named \code{VARX} and
-\code{VARY}.
+The `aggregate' option only recognises errors named \code{varx} and
+\code{vary}.
 If all of these columns are not present together the function assumes there
 is no measure of error, and drops those columns.
 If there is actually no measure of error, the function simply returns the

@@ -6,10 +6,10 @@
 \usage{
 atl_patch_dist(
   data,
-  x1 = "X_end",
-  x2 = "X_start",
-  y1 = "Y_end",
-  y2 = "Y_start"
+  x1 = "x_end",
+  x2 = "x_start",
+  y1 = "y_end",
+  y2 = "y_start"
 )
 }
 \arguments{
@@ -19,16 +19,16 @@ This must contain two pairs of coordinates, the start and end X and Y
 coordinates of a feature.}
 
 \item{x1}{The first X coordinate or longitude; for inter-patch distances,
-this is the last coordinate (X_end) of a patch \eqn{i}.}
+this is the last coordinate (x_end) of a patch \eqn{i}.}
 
 \item{x2}{The second X coordinate; for inter-patch distances, this is the
-first coordinate (X_start) of a subsequent patch \eqn{i + 1}.}
+first coordinate (x_start) of a subsequent patch \eqn{i + 1}.}
 
 \item{y1}{The first Y coordinate or latitude; for inter-patch distances,
-this is the last coordinate (Y_end) of a patch \eqn{i}.}
+this is the last coordinate (y_end) of a patch \eqn{i}.}
 
 \item{y2}{The second Y coordinate; for inter-patch distances, this is the
-first coordinate (Y_start) of a subsequent patch \eqn{i + 1}.}
+first coordinate (y_start) of a subsequent patch \eqn{i + 1}.}
 }
 \value{
 A numeric vector of the length of the number of patches, or rows in
@@ -48,8 +48,8 @@ This function is used internally by other functions, and rarely on its own.
 \dontrun{
 atl_patch_dist(
   data = data,
-  x1 = "X_end", x2 = "X_start",
-  y1 = "Y_end", y2 = "Y_start"
+  x1 = "x_end", x2 = "x_start",
+  y1 = "y_end", y2 = "y_start"
 )
 }
 

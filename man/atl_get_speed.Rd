@@ -2,15 +2,17 @@
 % Please edit documentation in R/fun_get_speed.R
 \name{atl_get_speed}
 \alias{atl_get_speed}
-\title{Calculate instantaenous speed.}
+\title{Calculate instantaneous speed.}
 \usage{
-atl_get_speed(data, X = "X", Y = "Y", time = "TIME", type = c("in"))
+atl_get_speed(data, x = "x", y = "y", time = "time", type = c("in"))
 }
 \arguments{
-\item{data}{A dataframe or similar ordered by time, which must have the columns
-specified by \code{X}, \code{Y}, and \code{TIME}.}
+\item{data}{A dataframe or similar which must have the columns
+specified by \code{x}, \code{y}, and \code{time}.}
 
-\item{Y}{The Y coordinate.}
+\item{x}{The x coordinate.}
+
+\item{y}{The y coordinate.}
 
 \item{time}{The timestamp in seconds since the UNIX epoch.}
 
@@ -31,8 +33,8 @@ splittng a dataframe with multiple individuals into a list of dataframes.
 \examples{
 \dontrun{
 data$speed_in <- atl_get_speed(data,
-  X = "X", Y = "Y",
-  time = "TIME", type = c("in")
+  x = "x", y = "y",
+  time = "time", type = c("in")
 )
 }
 }

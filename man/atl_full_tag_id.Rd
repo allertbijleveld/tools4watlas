@@ -2,26 +2,30 @@
 % Please edit documentation in R/fun_full_tag_id.R
 \name{atl_full_tag_id}
 \alias{atl_full_tag_id}
-\title{Create full tag name}
+\title{Create full tag ID or tag ID with specific length}
 \usage{
-atl_full_tag_id(tag, short = FALSE)
+atl_full_tag_id(tag, short = FALSE, n = 4)
 }
 \arguments{
-\item{tag}{tag ID, either numeric or character}
+\item{tag}{Tag number (either numeric or character). Maximally provide 6
+digits, but less work.}
 
 \item{short}{TRUE or FALSE for short or long tag ID}
+
+\item{n}{if short = TRUE, how many digits should the short tag ID have?}
 }
 \value{
 Full or short tag ID as character
 }
 \description{
-Create full tag name
+Create full tag ID or tag ID with specific length
 }
 \examples{
-
 tag = 123
-
 atl_full_tag_id(tag)
 atl_full_tag_id(tag, short = TRUE)
 
+}
+\author{
+Johannes Krietsch
 }

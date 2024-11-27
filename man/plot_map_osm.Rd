@@ -8,6 +8,9 @@ plot_map_osm(map, ppi = 96)
 }
 \arguments{
 \item{map}{The map loaded with \code{OpenStreetMap::openmap()}.}
+
+\item{ppi}{The pixels per inch, which is used to calculate the dimensions of
+the plotting region from \code{mapID}. Deafults to 96.}
 }
 \value{
 Returns an OSM background plot for adding tracks.

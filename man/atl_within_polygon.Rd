@@ -4,14 +4,14 @@
 \alias{atl_within_polygon}
 \title{Detect position intersections with a polygon.}
 \usage{
-atl_within_polygon(data, X = "X", Y = "Y", polygon)
+atl_within_polygon(data, x = "x", y = "y", polygon)
 }
 \arguments{
 \item{data}{A dataframe or similar containg at least X and Y coordinates.}
 
-\item{X}{The name of the X coordinate, assumed by default to be "X".}
+\item{x}{The name of the X coordinate, assumed by default to be "x".}
 
-\item{Y}{The Y coordinate as above, default "Y".}
+\item{y}{The Y coordinate as above, default "y".}
 
 \item{polygon}{An \code{sfc_*POLYGON} object which must have a defined CRS.
 The polygon CRS is assumed to be appropriate for the positions as well, and
@@ -23,7 +23,4 @@ Row numbers of positions which are inside the polygon.
 \description{
 Detects which positions intersect a \code{sfc_*POLYGON}. Tested
 only for single polygon objects.
-}
-\author{
-Pratik Gupte
 }

@@ -4,15 +4,15 @@
 \alias{atl_turning_angle}
 \title{Get the turning angle between points.}
 \usage{
-atl_turning_angle(data, X = "X", Y = "Y", time = "TIME")
+atl_turning_angle(data, x = "x", y = "y", time = "time")
 }
 \arguments{
-\item{data}{A dataframe or similar ordered by time, which must have the columns
-specified by \code{X}, \code{Y}, and \code{TIME}.}
+\item{data}{A dataframe or similar which must have the columns
+specified by \code{x}, \code{y}, and \code{time}.}
 
-\item{X}{The X coordinate.}
+\item{x}{The x coordinate.}
 
-\item{Y}{The Y coordinate.}
+\item{y}{The y coordinate.}
 
 \item{time}{The timestamp in seconds since the UNIX epoch.}
 }
@@ -30,7 +30,7 @@ splittng a dataframe with multiple individuals into a list of dataframes.
 \examples{
 \dontrun{
 data$angle <- atl_turning_angle(data,
-  X = "X", Y = "Y", time = "TIME"
+  x = "x", y = "y", time = "time"
 )
 }
 }

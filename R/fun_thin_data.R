@@ -7,7 +7,7 @@
 #' (1) that timestamps are named `TIME', and
 #' (2) all columns except the identity columns can be averaged in \code{R}.
 #' While the `subsample' option returns a thinned dataset with all columns from
-#' the input data, the `aggregate' option drops the column \code{COVXY}, since
+#' the input data, the `aggregate' option drops the column \code{covxy}, since
 #' this cannot be propagated to the averaged position.
 #' Both options handle the column `TIME' differently: while `subsample' returns
 #' the actual timestamp (in UNIX TIME) of each sample, `aggregate' returns the
@@ -15,8 +15,8 @@
 #' In both cases, an extra column, \code{time_agg}, is added which has a uniform
 #'  difference between each element corresponding to the user-defined thinning
 #' interval.
-#' The `aggregate' option only recognises errors named \code{VARX} and
-#' \code{VARY}.
+#' The `aggregate' option only recognises errors named \code{varx} and
+#' \code{vary}.
 #' If all of these columns are not present together the function assumes there
 #' is no measure of error, and drops those columns.
 #' If there is actually no measure of error, the function simply returns the
@@ -25,7 +25,8 @@
 #' character vector to the \code{id_columns} argument.
 #'
 #' @author Pratik Gupte & Allert Bijleveld
-#' @param data Tracking data to aggregate. Must have columns \code{X} and \code{Y}, and a numeric column named \code{TIME}.
+#' @param data Tracking data to aggregate. Must have columns \code{X} and 
+#' \code{Y}, and a numeric column named \code{TIME}.
 #' @param interval The interval in seconds over which to aggregate.
 #' @param id_columns Column names for grouping columns.
 #' @param method Should the data be thinned by subsampling or aggregation.
@@ -48,12 +49,12 @@
 #'
 atl_thin_data <- function(data,
                           interval = 60,
-						  id_columns = NULL,
+						              id_columns = NULL,
                           method = c(
                             "subsample",
                             "aggregate"
                           )) {
-  TIME <- VARX <- VARY <- COVXY <- NULL
+  TIME <- varx <- vary <- covxy <- NULL
   X <- Y <- time_agg <- NULL
 
   # check input type
@@ -77,25 +78,25 @@ atl_thin_data <- function(data,
 
   # include asserts checking for required columns
   atl_check_data(data,
-    names_expected = c("X", "Y", "TIME", id_columns)
+    names_expected = c("x", "y", "time", id_columns)
   )
 
   # check aggregation interval is greater than min time difference
-  assertthat::assert_that(interval > min(diff(data$TIME)),
+  assertthat::assert_that(interval > min(diff(data$time)),
     msg = "thin_data: thinning interval less than tracking interval!"
   )
 
   # round interval and reassign, this modifies by reference!
-  data[, time_agg := floor(as.numeric(TIME) / interval) * interval]
+  data[, time_agg := floor(as.numeric(time) / interval) * interval]
 
   # handle method option
   if (method == "aggregate") {
-    if (all(c("VARX", "VARY") %in% colnames(data))) {
+    if (all(c("varx", "vary") %in% colnames(data))) {
       # aggregate over tracking interval
       # the variance of an average is the sum of variances / sample size square
       data <- data[, c(lapply(.SD, mean, na.rm = TRUE),
-        VARX_agg = sum(VARX, na.rm = TRUE) / (length(VARX)^2),
-        VARY_agg = sum(VARY, na.rm = TRUE) / (length(VARY)^2)
+        varx_agg = sum(varx, na.rm = TRUE) / (length(varx)^2),
+        vary_agg = sum(vary, na.rm = TRUE) / (length(vary)^2)
 
         # variance of an average is sum of variances sum(SD ^ 2)
         # divided by sample size squared length(SD) ^ 2
@@ -115,15 +116,15 @@ atl_thin_data <- function(data,
     # remove error columns
     data <- data[, setdiff(
       colnames(data),
-      c("VARX", "VARY", "COVXY")
+      c("varx", "vary", "covxy")
     ),
     with = FALSE
     ]
 
     # reset names to propagated error
     data.table::setnames(data,
-      old = c("VARX_agg", "VARY_agg"),
-      new = c("VARX", "VARY"),
+      old = c("varx_agg", "vary_agg"),
+      new = c("varx", "vary"),
       skip_absent = TRUE
     )
   } else if (method == "subsample") {
