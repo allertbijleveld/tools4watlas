@@ -35,7 +35,7 @@ atl_get_speed <- function(data,
   atl_check_data(data, names_expected = c(x, y, time))
   
   # check whether the data is ordered on time 
-  if(min(diff(data[, time])) < 0)
+  if(min(diff(data[[time]])) < 0)
     warning("data was not ordered by time, but is now")
 
   # set order in time

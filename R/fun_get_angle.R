@@ -33,7 +33,7 @@ atl_turning_angle <- function(data,
   )
 
   # check whether the data is ordered on time 
-  if(min(diff(data[, time])) < 0) 
+  if(min(diff(data[[time]])) < 0) 
     warning("data was not ordered by time, but us now")
 
 	# set order in time

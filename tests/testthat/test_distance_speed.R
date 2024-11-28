@@ -1,7 +1,7 @@
 testthat::test_that("simple distance and speed works", {
 
   # make test positions
-  test_df <- data.table::data.table(#########test
+  test_df <- data.table::data.table(
     a = 1,
     y = 1:100,
     time = 1:100
