@@ -21,7 +21,6 @@ Imports:
     data.table,
     dplyr,
     glue,
-    grDevices,
     magrittr,
     OpenStreetMap,
     RMySQL,
@@ -29,6 +28,10 @@ Imports:
     sf,
     sp,
     stats,
+    DBI,
+    lubridate,
+    purrr,
+    raster,
     stringr
 Suggests:
     knitr,

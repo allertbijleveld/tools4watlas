@@ -24,6 +24,8 @@
 #' @param Scalebar Length of scalebar in km.  
 #' @param cex_legend The size of the text in the legend. 
 #' @return Returns nothing but a plot. 
+#' @importFrom grDevices colorRampPalette dev.new dev.off png rgb
+#' @importFrom graphics axis box legend lines mtext par points
 #' @export	
 atl_plot_tag <- function(data,
                          tag = NULL,
@@ -115,37 +117,39 @@ atl_plot_tag <- function(data,
 			sp::plot(mudflats,add = TRUE, 
 			         col = COLmud, border = COLmud)
 			sp::plot(land, add = TRUE, 
-			         col = c(COL_LAND[1], NA, NA)[as.numeric(as.factor(land@data$SOORT))])
+			         col = c(COL_LAND[1], NA, NA)[as.numeric(
+			           as.factor(land@data$SOORT))])
 			# add title 
 			mtext(paste("tag ", tag ," \nfrom ", min(data$time)," UTC\nto ", 
 			            max(data$time), " UTC", sep = ""), 
 			      line = 0.5, cex = 1, col = "black")
 			# add towers
 			if(!is.null(towers)){points(towers$X,towers$Y,pch=23, cex=2,col=2,bg=1)}
-		# plot tracking data from raw coordinates in data frame or from spatial object
+		# plot tracking data from raw coordinates in data frame or 
+			# from spatial object
 			if(is.data.frame(data)){
-				lines(x=data$X, y=data$Y, lwd=0.5, col = "black")
-				points(data$X, data$Y, pch=3, cex=0.5, col = COLID)
+				lines(x = data$X, y = data$Y, lwd = 0.5, col = "black")
+				points(data$X, data$Y, pch = 3, cex = 0.5, col = COLID)
 				}else{
 				# plot spatial sp object
-				lines(x=sp::coordinates(data)[,1], y=sp::coordinates(data)[,2], 
-				      lwd=0.5, col = "black")
+				lines(x = sp::coordinates(data)[,1], y = sp::coordinates(data)[,2], 
+				      lwd = 0.5, col = "black")
 				points(sp::coordinates(data)[,1], sp::coordinates(data)[,2], 
-				       pch=3, cex=0.5, col = COLID)
+				       pch = 3, cex = 0.5, col = COLID)
 				}	
 		## add scalear
-			fr=0.02	# custum position of scalebar (in fraction of plot width) 
-			ydiff<-diff(par('usr')[3:4])
-			xdiff<-diff(par('usr')[1:2])
-			xy_scale<-c(par('usr')[1]+xdiff*fr, par('usr')[3] + ydiff*fr)
-			raster::scalebar(Scalebar*1000, xy_scale,type='line', divs=4, lwd=3, 
-			                 col="black", label=paste0(Scalebar," km"))
+			fr = 0.02	# custum position of scalebar (in fraction of plot width) 
+			ydiff <- diff(par('usr')[3:4])
+			xdiff <- diff(par('usr')[1:2])
+			xy_scale <- c(par('usr')[1] + xdiff * fr, par('usr')[3] + ydiff * fr)
+			raster::scalebar(Scalebar * 1000, xy_scale,type = 'line', divs = 4, 
+			                 lwd = 3, col = "black", label = paste0(Scalebar," km"))
 		## add legend 
-			legend_cuts<-pretty(color_by_values, n=5)
-			legend_cuts_col<-colramp[seq(1,n, length=length(legend_cuts))]
-			legend(Legend, legend=legend_cuts, col =legend_cuts_col, pch=15, 
-			       bty="n", text.col = "black", title=color_by_title, 
-			       inset=c(0.01, 0.02), y.intersp = 0.8, cex=cex_legend)
+			legend_cuts <- pretty(color_by_values, n = 5)
+			legend_cuts_col <- colramp[seq(1, n, length = length(legend_cuts))]
+			legend(Legend, legend = legend_cuts, col = legend_cuts_col, pch = 15, 
+			       bty = "n", text.col = "black", title = color_by_title, 
+			       inset = c(0.01, 0.02), y.intersp = 0.8, cex = cex_legend)
 		
 		## add box for prettyness
 			box(col = 1)

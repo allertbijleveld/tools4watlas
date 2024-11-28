@@ -54,8 +54,9 @@ atl_thin_data <- function(data,
                             "subsample",
                             "aggregate"
                           )) {
+  # global variables
   TIME <- varx <- vary <- covxy <- NULL
-  X <- Y <- time_agg <- NULL
+  X <- Y <- time <- time_agg <- NULL
 
   # check input type
   assertthat::assert_that("data.frame" %in% class(data),

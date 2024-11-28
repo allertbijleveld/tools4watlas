@@ -31,6 +31,7 @@ atl_plot_rpatches <- function(data, Pch=21, Cex=0.25, Lwd=1, Col=1, Bg=NULL, Lin
 #' @param percent The percentage of transparancy to apply .
 #' @param name The name argument as passed on to rgb. 
 #' @return The transparant color will be returned.
+#' @importFrom grDevices col2rgb
 #' @export
 atl_t_col <- function(color, percent = 50, name = NULL) {
 	rgb.val <- col2rgb(color)
