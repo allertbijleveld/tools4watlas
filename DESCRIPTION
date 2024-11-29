@@ -39,6 +39,8 @@ Suggests:
     ggplot2,
     scales,
     viridis,
+    readxl,
+    plyr,
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
