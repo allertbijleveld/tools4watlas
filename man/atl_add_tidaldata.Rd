@@ -9,7 +9,7 @@ atl_add_tidaldata(
   tide_data,
   tide_data_highres,
   waterdata_resolution = "10 minute",
-  Offset = 0
+  offset = 0
 )
 }
 \arguments{
@@ -27,7 +27,7 @@ output from the function \code{fread} of the package \code{data.table}.}
 data. This is used for matching the high resolution tidal data to the
 tracking data. Defaults to 10 minutes but can be set differently.}
 
-\item{Offset}{The offset in minutes between the location of the tidal gauge
+\item{offset}{The offset in minutes between the location of the tidal gauge
 and the tracking area. This value will be added to the timing of the
 waterdata.}
 }
@@ -42,5 +42,5 @@ Adds a unique tide identifier, waterlevel, time from high tide and time to
 low tide for tracking data (both in minutes).
 }
 \author{
-Pratik Gupte & Allert Bijleveld
+Pratik Gupte & Allert Bijleveld & Johannes Krietsch
 }
