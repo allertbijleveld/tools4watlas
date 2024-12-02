@@ -101,7 +101,7 @@ atl_add_tidaldata <- function(data,
     by.x = "temp_time", by.y = "dateTime")
   
   # set order back
-  data.table::setorder(data, row_id) # order data on time
+  data.table::setorder(temp_data, row_id) # order data on time
   
   # clean data 
   temp_data[, c("temp_time", "row_id") := NULL]

@@ -1,6 +1,6 @@
 ---
 title: "Processing data"
-author: "Allert Bijleveld & Johannes Krietsch"
+author: "Johannes Krietsch"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Processing data}
@@ -10,115 +10,106 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+  collapse = TRUE
 )
 ```
 
-# Basic workflow 
+This vignette shows a simple workflow to process WATLAS data and add tidal data. After loading the data, we calculate the standard deviation and speed, filter our data based on the variance of the estimated coordinates and speed and then calculate the speed and turning angles. Lastly, we merge our data with local water level data.   
 
-The basic workflow using *tools4watlas* for high-throughput WATLAS tracking-data is getting data, basic filtering, processing, cleaning, adding environmental data and selecting data.
+## Loading the data
 
-After installing the package, load the *tools4watlas* library. 
+This procedure is described in detail in the vignette [`Load and check data`](https://krietsch.github.io/tools4watlas/articles/load_and_check_data.html). 
 
-```{r}
+```{r class.source = 'fold-hide'}
 library(tools4watlas)
 library(data.table)
-```
 
-## Getting data
-
-You can get data from locally from a csv or SQLite file, or remote SQL database server.  
-
-### Local csv file
-
-The function atl_get_data_csv() is a convenient wrapper to load a csv file as a data frame. By default it loads the csv file provided as example data with tools4watlas.
-
-```{r}
-data <- atl_get_data_csv() |> 
+# Load meta data
+all_tags_path <- system.file("extdata", "tags_watlas_subset.xlsx", 
+                            package = "tools4watlas")
+all_tags = readxl::read_excel(all_tags_path, sheet = "tags_watlas_all") |>
   data.table()
 
-# Split data by ID
-data_split <- split(data, by = "TAG")
+# Subset desired tags using data.table 
+tags <- all_tags[season == 2023]$tag
+
+# Time period for which data should be extracted form the database (in CET)
+from <- "2023-10-01 12:00:00"
+to   <- "2023-10-02 12:00:00"
+
+# Database connection
+sqlite_db <- system.file("extdata", "watlas_example.SQLite",
+                        package = "tools4watlas")
+con <- RSQLite::dbConnect(RSQLite::SQLite(), sqlite_db)
+
+# Load data from database
+data_split <- lapply(
+  tags, 
+  atl_get_data, 
+  tracking_time_start = from, 
+  tracking_time_end = to, 
+  timezone = "CET",
+  use_connection = con
+) 
+
+# Close connection
+RSQLite::dbDisconnect(con)
 ```
 
+## Calculate sd and speed
 
-## Spatiotemporal filtering 
+With the data of interest, some basic variables can be calculated, for instance, calculating speeds and turning angles from consecutive localizations. Speed can then be used for filtering potentially erroneous localizations.
 
-After getting the data, a potential first step is applying basic filtering to select certain areas of interest, or remove areas with erroneous localizations. 
+```{r echo=T, results='hide'}						
+# Transform the lists to data.tables
+lapply(data_split, setDT) 
 
-Here, is an example of removing hypothesized erroneous localizations from a rectangular area specified with the range in x and y coordinates, but a spatial polygon could also be used (see *?atl_filter_bounds*). 
-
-```{r, eval=FALSE}
-# @ALLERT make run on lists? This does not seem to work
-ldf_filtered <- lapply(
-  ldf_raw,
-  atl_filter_bounds,
-  x_range = c(639470, 639471),
-  y_range = c(5887143, 5887144),
-  sf_polygon = NULL,
-  remove_inside = TRUE
-)
-```
-
-For filtering data, the general *atl_filter_covariates* function can also be used. For example, filtering on a range of coordinates and a time period:  
-
-```{r, eval=FALSE}
-ldf_filtered <- lapply(
-  ldf_raw, 
-	atl_filter_covariates,
-  filters = c(
-    "between(time, '2022-09-02 01:25:00', '2022-09-03 13:47:00')",
-	  "between(X, 649686, 651938)"
-    ) 
-  )
-```
-
-## Basic processing 
-
-Transform the lists in data.tables.
-
-```{r, eval=FALSE}	
-lapply(data_split, setDT) |> 
-  invisible()
-```
-
-
-With the data of interest, some basic variables can be calculated, for instance, calculating speeds and turning angles from consecutive localizations. Speed can then later be used for filtering potentially erroneous localizations.
-
-```{r, eval=FALSE}					
-# calculate SD
+# Calculate SD
 lapply(data_split, function(dt) {
-  dt[, SD := sqrt(VARX + VARY + (2 * COVXY))]
-}) |> 
-  invisible()
+  dt[, sd := sqrt(varx + vary + (2 * covxy))]
+}) 
 
-# calculate speed
+# Calculate speed
 lapply(data_split, function(dt) {
   dt[, `:=`(
-    speed_in = atl_get_speed(dt, time = "TIME", type = "in"),
-    speed_out = atl_get_speed(dt, time = "TIME", type = "out")
+    speed_in = atl_get_speed(dt, type = "in"),
+    speed_out = atl_get_speed(dt, type = "out")
   )]
-}) |> 
-  invisible()
+}) 
+```
+Look at the distribution of the data:
+
+```{r, out.width="50%", fig.cap = "Distribution of flight speeds"}	
+library(ggplot2)
+
+# unlist to data.table
+data <- rbindlist(data_split, fill = TRUE)
+
+# plot speed (subset relevant range)
+ggplot(data = data[!is.na(speed_in) & speed_in > 5 & speed_in < 100]) +
+  geom_histogram(aes(x = speed_in), bins = 50) +
+  labs(x = "Speed in (m/s)") +
+  theme_bw()
+
 ```
 
-## Filtering 
+## Filter by the variance of coordinates and speed
 
-The next step is to remove localization errors, for instance, by applying basic filtering on the variances in estimating x- and y-coordinates and speed.  
+The next step is to remove localization errors, for instance, by applying basic filtering on the variances in estimating x- and y-coordinates and speed. From the above plot we see some unrealistic speeds, we therefore exclude all data with speeds faster than 35 m/s.   
 
-```{r, eval=FALSE}
-VARmax	<- 5000	# variance in meters squared
-speed_max <- 35 # meters per second
+```{r}
+# Filter by speed and variance
+var_max	<- 5000	# variance in meters squared
+speed_max <- 35 # m/s (126 km/h)
 
 data_split <- lapply(data_split, function(dt) {
   dt <- atl_filter_covariates(
     data = dt,
     filters = c(
-	  "VARX < VARmax",
-		"VARY < VARmax",
-		"speed_in < speed_max",
-		"speed_out < speed_max"
+	  "varx < var_max",
+		"vary < var_max",
+		"speed_in < speed_max | is.na(speed_in)",
+		"speed_out < speed_max | is.na(speed_out)"
     )
   )
 })
@@ -128,77 +119,91 @@ data_split <- lapply(data_split, function(dt) {
 
 To further reduce error in the localization data, a basic smoother such as a median filter can be applied.  
 
-```{r, eval=FALSE}
+```{r echo=T, results='hide'}		
+# Smooth the data
 med_filter <- 5	# number of localizations within window for smoothing
 
 # since the function modifies in place, we shall make a copy
 data_smooth <- copy(data_split)
 
-# make lists data.tables
-lapply(data_smooth, setDT) |>
-  invisible()
+lapply(
+  X = data_smooth,
+  FUN = atl_median_smooth,
+  moving_window = med_filter
+)
+```
+Peek at the data to see what happend:
+
+```{r echo=T, results='hide'}		
+# Smooth the data
+med_filter <- 5	# number of localizations within window for smoothing
+
+# since the function modifies in place, we shall make a copy
+data_smooth <- copy(data_split)
 
 lapply(
   X = data_smooth,
   FUN = atl_median_smooth,
-  time = "TIME", moving_window = med_filter
-) |> 
-  invisible()
+  moving_window = med_filter
+)
 ```
 
-After smoothing the data, the speeds and angles need to be recalculated.
+After smoothing the data, the speeds need to be recalculated. We now also calculate turning angles. 
+Note: the distance between smoothed positions can be 0 and therefore will produce NAs and a warning
 
-```{r, eval=FALSE}					
-lapply(data_smooth, function(dt) {
-  dt[, `:=`(
-    speed_in = atl_get_speed(dt, time = "TIME", type = "in"),
-    speed_out = atl_get_speed(dt, time = "TIME", type = "out")
-  )]
-  dt[, angle := atl_turning_angle(dt, time = "TIME")]
-}) |> 
-  invisible() 
+```{r, out.width="100%", dpi=300, fig.cap = "Smoothed track (black) on top of raw track (red)"}	
+# select data from first list
+d1_raw <- data_split[[1]]
+d1_smooth <- data_smooth[[1]]
+
+# subset first day
+from <- min(d1_raw[, datetime]) + 6 * 3600
+to <- min(d1_raw[, datetime]) + 7 * 3600
+
+d1_raw <- d1_raw[datetime %between% c(from, to)]   
+d1_smooth <- d1_smooth[datetime %between% c(from, to)]
+
+# Plot 
+ggplot() +
+  geom_path(data = d1_raw, aes(x, y), color = "firebrick3", linewidth = 0.8) +
+  geom_path(data = d1_smooth, aes(x, y), color = "black", linewidth = 0.8) +
+  coord_sf(crs = 32631) + 
+  labs(x = "", y = "") +
+  theme_void()
+
 ```
 
 ## Adding tidal data 
 
-After following the above basic steps, the data will be ready for adding environmental data, such as waterlevels.
+After following the above basic steps, the data will be ready for adding environmental data, such as water levels.
 
-```{r, eval=FALSE}
-
+```{r}
+# unlist to data.table
 data = rbindlist(data_smooth, fill = TRUE)
+setorder(data, tag, time)
 
-# add water level data
-tides <- system.file(
-  "extdata", "example_tide_data_UTC.csv", package = "tools4watlas")
-tide_data_highres <- system.file(
-  "extdata", "example_tide_data_highres_UTC.csv", package = "tools4watlas"
-  )
-data = as.data.frame(data)
-data = atl_add_tidaldata(
-  data = d,
+# path to tide data
+tides_path <- system.file(
+  "extdata", "example_2023_tide_data_UTC.csv",
+  package = "tools4watlas")
+tide_data_highres_path <- system.file(
+  "extdata", "example_2023_tide_data_highres_UTC.csv", 
+  package = "tools4watlas")
+
+# load tide data
+tides <- data.table::fread(tides_path)
+tide_data_highres <- data.table::fread(tide_data_highres_path)
+
+# add tide data to movement data
+data <- atl_add_tidaldata(
+  data = data,
   tide_data = tides, 
   tide_data_highres = tide_data_highres, 
   waterdata_resolution = "10 minute",
-  Offset = 30)
+  offset = 30)
+
+# # Show first 5 rows (subset of columns to show additional ones)
+head(data[, .(posID, tag, datetime, tideID, tidaltime, time2lowtide, waterlevel)]) |>
+  knitr::kable(digits = 2)
 ```
 
-
-## Data selection  
-
-For specific analyses, the cleaned data can be selected. To select localizations when mudlfats are available for foraging, we can for example select a low tide period from -2.5 hours to +2.5 hours around low tide [(Bijleveld et al. 2016)](https://royalsocietypublishing.org/doi/10.1098/rspb.2015.1557): 
-
-```{r, eval=FALSE}
-# Split data by ID
-data_split <- split(data, by = "TAG")
-
-# Select the low tide period for a particular tide as specified by tideID	
-data_split <- lapply(data_split, function(dt) {
-  dt <- atl_filter_covariates(
-    data = dt,
-    filters = c(
-  	"tideID == 2022472",
-  	"between(time2lowtide, -2.5 * 60, 2.5 * 60)"
-    )
-  )
-})
-```
