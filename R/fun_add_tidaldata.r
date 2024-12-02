@@ -30,8 +30,9 @@ atl_add_tidaldata <- function(data,
                               offset = 0) {
   
   # global variables
-  x <- y <- x_raw <- y_raw <- NULL
+  x <- y <- x_raw <- y_raw <- row_id <- low_time <- . <- complete.cases <- NULL
   tideID <- time <- tide_number <- tidaltime <- high_start_time <- NULL
+  dateTime <- temp_time <- waterlevel <- datetime <- time2lowtide <- NULL
   
   # check data format 
   assertthat::assert_that(
