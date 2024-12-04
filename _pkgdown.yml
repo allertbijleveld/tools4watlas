@@ -52,6 +52,7 @@ reference:
     contents:
      - atl_add_tidaldata
      - atl_full_tag_id
+     - atl_as_sf
      - atl_t_col
   - title: "Map data"
     desc: "Map data provided with the package"
