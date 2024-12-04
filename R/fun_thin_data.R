@@ -72,7 +72,7 @@ atl_thin_data <- function(data,
                           'aggregate'"
   )
 
-  # id input is not a data.table set it so
+  # if input is not a data.table set it so
   if (!data.table::is.data.table(data)) {
     setDT(data)
   }
