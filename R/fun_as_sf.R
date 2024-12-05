@@ -43,9 +43,7 @@ atl_as_sf <- function(data,
                       y = "y", 
                       projection = sf::st_crs(32631), 
                       additional_cols = NULL) {
-  # global variables
-  ..cols_to_keep <- NULL
-  
+
   # Convert to data.table if not already
   if (!is.data.table(data)) {
     data <- data.table::setDT(data)
@@ -75,9 +73,13 @@ atl_as_sf <- function(data,
     cols_to_keep <- c(x_col, y_col)
   }
   
-  # Exclude rows where x or y are NA and convert to sf object
+  # Exclude rows where x or y are NA
+  data_subset <- data[!is.na(get(x_col)) & !is.na(get(y_col)), 
+                      cols_to_keep, with = FALSE]
+  
+  # Convert to sf object
   d_sf <- sf::st_as_sf(
-    data[!is.na(get(x_col)) & !is.na(get(y_col)), ..cols_to_keep],
+    data_subset,
     coords = c(x_col, y_col),
     crs = projection
   )

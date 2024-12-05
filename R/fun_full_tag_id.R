@@ -1,4 +1,4 @@
-#' Create full tag ID or tag ID with specific length
+#' Create full tag ID or tag ID with specific length.
 #'
 #' @author Johannes Krietsch
 #' @param tag Tag number (either numeric or character). Maximally provide 6
