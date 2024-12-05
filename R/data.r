@@ -15,3 +15,31 @@
 #' 
 #' @source <https://www.rijkswaterstaat.nl>
 "mudflats"
+
+#' OSM data land around Griend
+#' 
+#' @format sf object used for background layer in the function atl_create_bm()
+#' 
+#' @source <https://www.openstreetmap.org>
+"land_sf"
+
+#' OSM data mudflats around Griend
+#' 
+#' @format sf object used for background layer in the function atl_create_bm()
+#' 
+#' @source <https://www.openstreetmap.org>
+"mudflats_sf"
+
+#' OSM data lakes around Griend
+#' 
+#' @format sf object used for background layer in the function atl_create_bm()
+#' 
+#' @source <https://www.openstreetmap.org>
+"lakes_sf"
+
+#' OSM data rivers around Griend
+#' 
+#' @format sf object used for background layer in the function atl_create_bm()
+#' 
+#' @source <https://www.openstreetmap.org>
+"rivers_sf"
