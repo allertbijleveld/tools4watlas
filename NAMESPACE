@@ -3,6 +3,7 @@
 export("%>%")
 export(atl_add_tidaldata)
 export(atl_as_sf)
+export(atl_bbox)
 export(atl_filter_bounds)
 export(atl_filter_covariates)
 export(atl_full_tag_id)

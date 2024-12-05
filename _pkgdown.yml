@@ -39,6 +39,7 @@ reference:
   - title: "Plotting functions"
     desc: "Functions to plot the data"
     contents:
+     - atl_bbox
      - atl_get_spatial_bounds
      - atlas_make_boundingbox_for_osm
      - atlas_make_spatialdataframe
