@@ -10,7 +10,10 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE
+  out.width = "100%",
+  fig.width = 8.89, fig.height = 5,
+  dpi = 300,
+  message = FALSE
 )
 ```
 
@@ -175,7 +178,6 @@ library(ggplot2)
 library(scales)
 library(viridis)
 
-
 ggplot(data_subset, aes(x = date, y = tag, fill = N)) +
   geom_tile() +
   scale_fill_viridis(
@@ -190,13 +192,14 @@ ggplot(data_subset, aes(x = date, y = tag, fill = N)) +
 #### Plot by tag
 
 ```{r, fig.cap = "Overview plot by tag", fig.width = 7, fig.height = 4}
+
+# Create basemap
+bm = atl_create_bm(data)
+
 # Plot data
-ggplot(data) +
-  geom_path(aes(x, y, color = tag), alpha = 0.1) +
-  geom_point(aes(x, y, color = tag), size = 0.5) +
-  coord_sf(crs = 32631) + 
-  labs(x = "", y = "") +
-  theme_bw()
+bm +
+  geom_path(data = data, aes(x, y, color = tag), alpha = 0.1) +
+  geom_point(data = data, aes(x, y, color = tag), size = 0.5) 
 ```
 
 #### Heatmap of all positions
@@ -211,15 +214,12 @@ data_heatmap[, c("x_round", "y_round") := list(
 data_heatmap <- data_heatmap[, .N, by = c("x_round", "y_round")]
 
 # Plot heatmap
-ggplot(data_heatmap) +
-  geom_tile(aes(x_round, y_round, fill = N), linewidth = 0.1, show.legend = T) +
+bm + 
+  geom_tile(data = data_heatmap, aes(x_round, y_round, fill = N), linewidth = 0.1, show.legend = T) +
   scale_fill_viridis(
     option = "A", discrete = FALSE, trans = "log10", name = "N positions",
     breaks = trans_breaks("log10", function(x) 10^x), 
     labels = trans_format("log10", math_format(10^.x)), 
-    direction = -1) + 
-  coord_sf(crs = 32631) +
-  labs(x = "", y = "") +
-  theme_bw()
+    direction = -1)
 ```
 

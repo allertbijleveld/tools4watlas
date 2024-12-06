@@ -6,10 +6,8 @@ output: github_document
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+  dpi = 300,
+  fig.path = "man/figures/README-"
 )
 ```
 
@@ -32,26 +30,19 @@ The package `tools4watlas` builds on the package [`atlastools`](https://github.c
 
 Basic workflows and on how to use `tools4watlas` can be found on the [package website](https://krietsch.github.io/tools4watlas/).
 
-**`Vignettes`**:
+**Vignettes**:
 
-   - [`Basic workflows`](https://krietsch.github.io/tools4watlas/articles/basic_work_flows.html) -
-  Allert's basic WATLAS data workflow
-  
    - [`Load and check data`](https://krietsch.github.io/tools4watlas/articles/load_and_check_data.html) - 
-  Example script on how to load and check WATLAS data. 
+  How to load and check data. 
    
    - [`Process data`](https://krietsch.github.io/tools4watlas/articles/process_data.html) - 
-  Example script on how to process WATLAS data. 
+  How to process data (calculate speed & angles, filter, smooth and add tidal data)
   
-   - TODO: Add enviromental data
-   
-   - TODO: WATLAS data summary
-
-   - TODO: Plotting WATLAS data
-
-   - TODO: Animate movement data
-   
-   - TODO: Residency patch analysis
+   - [`Plot data`](https://krietsch.github.io/tools4watlas/articles/plot_data.html) - 
+  How to plot data. 
+  
+   - [`Basic workflows`](https://krietsch.github.io/tools4watlas/articles/basic_work_flows.html) -
+  Allert's basic WATLAS data workflow from `tools4watlas 1.0`. 
 
 ### **Installation**
 
@@ -64,23 +55,23 @@ install_github("allertbijleveld/tools4watlas")
 
 ### **Example**
 
-```{r, fig.cap = "Example track"}
+```{r, fig.cap = "Example tracks", out.width = "100%"}
 
 library(tools4watlas)
 library(ggplot2)
 
-# Load data from csv file
-data = atl_get_data_csv()
+# Load example data
+data <- data_example
 
-# Plot the tracking data with a simple background 
-# atl_plot_tag(data = data, tag = NULL, fullname = NULL, buffer = 1, 
-#              color_by = "time")
+# Create base map
+bm = atl_create_bm(data, buffer = 800)
 
-ggplot(data) +
-   geom_path(aes(X, Y), alpha = 0.1) +
-   geom_point(aes(X, Y), size = 0.5) +
-   theme_bw()
-
+# Plot points and tracks
+bm +
+  geom_path(data = data, aes(x, y, colour = tag), alpha = 0.1, 
+            show.legend = FALSE) +
+  geom_point(data = data, aes(x, y, colour = tag), size = 0.5, 
+             show.legend = FALSE)
 ```
 
 ### **Work in progress**
@@ -89,9 +80,6 @@ More examples of workflows aimed at processing, plotting and adding environmenta
 
 We are working on the following vignettes at the moment:
 
-- Add enviromental data
-- WATLAS data summary
-- Plotting WATLAS data
 - Animate movement data
 - Residency patch analysis
 

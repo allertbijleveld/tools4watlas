@@ -43,3 +43,10 @@
 #' 
 #' @source <https://www.openstreetmap.org>
 "rivers_sf"
+
+#' Data from two red knots and one redshank
+#' 
+#' @format data.table of watlas data with tide data added
+#' 
+#' @source watlas data example
+"data_example"

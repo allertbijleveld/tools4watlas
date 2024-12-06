@@ -44,6 +44,8 @@ Suggests:
     viridis,
     readxl,
     plyr,
+    RColorBrewer,
+    mapview,
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr

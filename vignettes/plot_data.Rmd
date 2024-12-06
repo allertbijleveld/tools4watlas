@@ -1,0 +1,143 @@
+---
+title: "Plotting data"
+author: "Johannes Krietsch"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Plotting data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  out.width = "100%",
+  fig.width = 8.89, fig.height = 5,
+  dpi = 300,
+  message = FALSE
+)
+```
+
+This vignette shows different ways on how to plot WATLAS data.
+
+## Using `ggplot2` and a basemap layer
+
+We can create simple base maps of the study area by using the function `atl_create_bm()`. This function uses a data.table with x- and y-coordinates to check the required bounding box (which can be extended with a buffer in meters) and spatial features (polygons) of land, lakes, mudflats and rivers. Without adding costmized data, it will default to the data provided in the package. By changing `asp` the desired aspect ratio can be chosen (default is "16:9"). If no data are provided the function creates a map around Griend with a specified buffer. 
+
+#### Load packages and data
+
+```{r}
+library(tools4watlas)
+library(data.table)
+library(ggplot2)
+library(viridis)
+library(RColorBrewer)
+
+# Load example data
+data <- data_example
+```
+
+#### Map with points and tracks
+
+```{r, fig.cap = "Points and tracks on basemap"}
+
+# Create base map
+bm = atl_create_bm(data, buffer = 800)
+
+# Plot points and tracks
+bm +
+  geom_path(data = data, aes(x, y, colour = tag), alpha = 0.1, 
+            show.legend = FALSE) +
+  geom_point(data = data, aes(x, y, colour = tag), size = 0.5, 
+             show.legend = FALSE) +
+  scale_color_brewer(palette = "Dark2") # for up to 8 categories
+  # scale_color_viridis_d(option = "H") # for N categories 
+
+```
+
+#### Heatmap of all positions
+
+```{r, fig.cap = "Heatmap of all positions"}
+library(scales)
+
+# Round data to 200 m grid cells
+data_heatmap <- copy(data)
+data_heatmap[, c("x_round", "y_round") := list(
+  plyr::round_any(x, 200),
+  plyr::round_any(y, 200)
+)]
+data_heatmap <- data_heatmap[, .N, by = c("x_round", "y_round")]
+
+# Plot heatmap
+bm + 
+  geom_tile(data = data_heatmap, aes(x_round, y_round, fill = N), linewidth = 0.1, show.legend = T) +
+  scale_fill_viridis(
+    option = "A", discrete = FALSE, trans = "log10", name = "N positions",
+    breaks = trans_breaks("log10", function(x) 10^x), 
+    labels = trans_format("log10", math_format(10^.x)), 
+    direction = -1)
+```
+
+#### Interactive leaflet map with `mapview`
+
+This is useful when manually checking specific data. Check for more details the [mapview website](https://r-spatial.github.io/mapview/index.html). Nopte that one can change the base map by clicking in the layer symbol, to for example a satellite image. 
+
+```{r, fig.height = 2, fig.cap = "Interactive map with mapview()"}
+library(mapview)
+library(dplyr)
+library(sf)
+
+# make data spatial
+d_sf <- atl_as_sf(data, additional_cols = c("tag", "datetime"))
+
+# add track
+d_sf_lines <- d_sf %>% 
+  group_by(tag) %>%
+  summarise(do_union = FALSE) %>%
+  st_cast("LINESTRING")
+
+# Plot interactive map
+mapview(d_sf_lines, zcol = "tag", legend = FALSE) + mapview(d_sf, zcol = "tag")
+```
+
+
+#### Static map with `OpenStreetMap` 
+
+
+
+```{r, fig.cap = "Static map with satellite image"}
+library(OpenStreetMap)
+library(sf)
+
+# make data spatial and transform projection to WGS 84 (used in osm)
+d_sf <- atl_as_sf(data, additional_cols = c("tag", "datetime"))
+d_sf <- st_transform(d_sf, crs = st_crs(4326)) 
+
+# get bounding box
+bbox <- atl_bbox(d_sf, asp = "16:9", buffer = 500)
+
+# extract openstreetmap 
+# other 'type' options are "osm", "maptoolkit-topo", "bing", "stamen-toner",
+# "stamen-watercolor", "esri", "esri-topo", "nps", "apple-iphoto", "skobbler";
+osm_map <- openmap(c(bbox["ymax"], bbox["xmin"]),
+                   c(bbox["ymin"], bbox["xmax"]),
+                   type = "bing", mergeTiles = TRUE) 
+
+bm <- autoplot.OpenStreetMap(osm_map)
+
+# transform points to Mercator and add transformed coordinates to data
+d_sf <- st_transform(d_sf, crs = st_crs(3857)) 
+osm_coords <- st_coordinates(d_sf)
+data[, `:=`(x_osm = osm_coords[, 1], y_osm = osm_coords[, 2])]
+
+# plot
+bm +
+  geom_path(data = data, aes(x_osm, y_osm, colour = tag), alpha = 0.1, 
+            show.legend = FALSE) +
+  geom_point(data = data, aes(x_osm, y_osm, colour = tag), size = 0.5, 
+             show.legend = FALSE) +
+  scale_color_brewer(palette = "Dark2") +
+  labs(x = "Longitude", y = "Latitude") +
+ coord_sf(crs = 3857)
+```
+
+

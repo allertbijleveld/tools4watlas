@@ -10,7 +10,9 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE
+  out.width = "100%",
+  fig.width = 8.89, fig.height = 5,
+  dpi = 300
 )
 ```
 
@@ -79,7 +81,7 @@ lapply(data_split, function(dt) {
 ```
 Look at the distribution of the data:
 
-```{r, out.width="50%", fig.cap = "Distribution of flight speeds"}	
+```{r, fig.cap = "Distribution of flight speeds"}	
 library(ggplot2)
 
 # unlist to data.table
@@ -151,26 +153,27 @@ lapply(
 After smoothing the data, the speeds need to be recalculated. We now also calculate turning angles. 
 Note: the distance between smoothed positions can be 0 and therefore will produce NAs and a warning
 
-```{r, out.width="100%", dpi=300, fig.cap = "Smoothed track (black) on top of raw track (red)"}	
+```{r, fig.cap = "Smoothed track (black) on top of raw track (red)"}	
 # select data from first list
 d1_raw <- data_split[[1]]
 d1_smooth <- data_smooth[[1]]
 
 # subset first day
-from <- min(d1_raw[, datetime]) + 6 * 3600
-to <- min(d1_raw[, datetime]) + 7 * 3600
+from <- min(d1_raw[, datetime]) + 5 * 3600
+to <- min(d1_raw[, datetime]) + 24 * 3600
 
 d1_raw <- d1_raw[datetime %between% c(from, to)]   
 d1_smooth <- d1_smooth[datetime %between% c(from, to)]
 
-# Plot 
-ggplot() +
-  geom_path(data = d1_raw, aes(x, y), color = "firebrick3", linewidth = 0.8) +
-  geom_path(data = d1_smooth, aes(x, y), color = "black", linewidth = 0.8) +
-  coord_sf(crs = 32631) + 
-  labs(x = "", y = "") +
-  theme_void()
+# Create basemap
+bm = atl_create_bm(d1_smooth)
 
+# Plot 
+bm +
+  geom_path(data = d1_raw, aes(x, y), color = "firebrick3", linewidth = 0.5) +
+  geom_path(data = d1_smooth, aes(x, y), color = "black", linewidth = 0.5) +
+  geom_point(data = d1_raw, aes(x, y), color = "firebrick3", size = 1.2) +
+  geom_point(data = d1_smooth, aes(x, y), color = "black", size = 1)
 ```
 
 ## Adding tidal data 
@@ -202,8 +205,34 @@ data <- atl_add_tidaldata(
   waterdata_resolution = "10 minute",
   offset = 30)
 
-# # Show first 5 rows (subset of columns to show additional ones)
+# Show first 5 rows (subset of columns to show additional ones)
 head(data[, .(posID, tag, datetime, tideID, tidaltime, time2lowtide, waterlevel)]) |>
   knitr::kable(digits = 2)
 ```
 
+## Data selection  
+
+For specific analyses, the cleaned data can be selected. To select localizations when mudlfats are available for foraging, we can for example select a low tide period from -2.5 hours to +2.5 hours around low tide [(Bijleveld et al. 2016)](https://royalsocietypublishing.org/doi/10.1098/rspb.2015.1557): 
+
+```{r}
+# check tide ID
+data[, tideID] |> unique()
+
+# Select the low tide period for a particular tide as specified by tideID	
+data_subset <- atl_filter_covariates(
+	data = data,
+	filters = c(
+	"tideID == 2023530",
+	"between(time2lowtide, -2.5 * 60, 2.5 * 60)")
+)
+```
+
+Save as example data for `tools4watlas`.
+	
+```{r, eval=FALSE}
+# reassign so data is data
+data_example <- data_subset
+save(data_example, file = "./data/watlas_data_example.rda")
+```	
+	
+			

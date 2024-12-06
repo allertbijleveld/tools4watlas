@@ -36,26 +36,20 @@ Data](https://doi.org/10.1111/1365-2656.13610).
 Basic workflows and on how to use `tools4watlas` can be found on the
 [package website](https://krietsch.github.io/tools4watlas/).
 
-**`Vignettes`**:
-
-- [`Basic workflows`](https://krietsch.github.io/tools4watlas/articles/basic_work_flows.html) -
-  Allert’s basic WATLAS data workflow
+**Vignettes**:
 
 - [`Load and check data`](https://krietsch.github.io/tools4watlas/articles/load_and_check_data.html) -
-  Example script on how to load and check WATLAS data.
+  How to load and check data.
 
 - [`Process data`](https://krietsch.github.io/tools4watlas/articles/process_data.html) -
-  Example script on how to process WATLAS data.
+  How to process data (calculate speed & angles, filter, smooth and add
+  tidal data)
 
-- TODO: Add enviromental data
+- [`Plot data`](https://krietsch.github.io/tools4watlas/articles/plot_data.html) -
+  How to plot data.
 
-- TODO: WATLAS data summary
-
-- TODO: Plotting WATLAS data
-
-- TODO: Animate movement data
-
-- TODO: Residency patch analysis
+- [`Basic workflows`](https://krietsch.github.io/tools4watlas/articles/basic_work_flows.html) -
+  Allert’s basic WATLAS data workflow from `tools4watlas 1.0`.
 
 ### **Installation**
 
@@ -70,29 +64,28 @@ install_github("allertbijleveld/tools4watlas")
 ### **Example**
 
 ``` r
-
 library(tools4watlas)
 library(ggplot2)
 
-# Load data from csv file
-data = atl_get_data_csv()
-#> Reading file: C:/Users/jkrietsch/AppData/Local/R/win-library/4.4/tools4watlas/extdata/redknot_2707_WATLAS_exampledata.csv
+# Load example data
+data <- data_example
 
-# Plot the tracking data with a simple background 
-# atl_plot_tag(data = data, tag = NULL, fullname = NULL, buffer = 1, 
-#              color_by = "time")
+# Create base map
+bm = atl_create_bm(data, buffer = 800)
 
-ggplot(data) +
-   geom_path(aes(X, Y), alpha = 0.1) +
-   geom_point(aes(X, Y), size = 0.5) +
-   theme_bw()
+# Plot points and tracks
+bm +
+  geom_path(data = data, aes(x, y, colour = tag), alpha = 0.1, 
+            show.legend = FALSE) +
+  geom_point(data = data, aes(x, y, colour = tag), size = 0.5, 
+             show.legend = FALSE)
 ```
 
 <div class="figure">
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" alt="Example track" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" alt="Example tracks" width="100%" />
 <p class="caption">
-Example track
+Example tracks
 </p>
 
 </div>
@@ -106,9 +99,6 @@ Bijleveld](mailto:allert.bijleveld@nioz.nl).
 
 We are working on the following vignettes at the moment:
 
-- Add enviromental data
-- WATLAS data summary
-- Plotting WATLAS data
 - Animate movement data
 - Residency patch analysis
 

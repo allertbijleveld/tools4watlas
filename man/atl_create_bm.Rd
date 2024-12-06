@@ -8,7 +8,7 @@ atl_create_bm(
   data = NULL,
   x = "x",
   y = "y",
-  buffer = 1000,
+  buffer = 100,
   asp = "16:9",
   land_data = tools4watlas::land_sf,
   lakes_data = tools4watlas::lakes_sf,

@@ -46,7 +46,7 @@
 atl_create_bm <- function(data = NULL,
                           x = "x", 
                           y = "y", 
-                          buffer = 1000, 
+                          buffer = 100, 
                           asp = "16:9",
                           land_data = tools4watlas::land_sf,
                           lakes_data = tools4watlas::lakes_sf,
@@ -62,12 +62,12 @@ atl_create_bm <- function(data = NULL,
   
   if (is.null(data) || nrow(data) == 0) {
     # If no data make map around Griend
-    data <- data.table(x = 5.2525, y = 53.2523) 
+    data <- data.table::data.table(x = 5.2525, y = 53.2523) 
     projection <- sf::st_crs(4326)
   }
   
   # Convert to data.table if not already
-  if (!is.data.table(data)) {
+  if (!data.table::is.data.table(data)) {
     data.table::setDT(data)
   }
   
@@ -98,14 +98,19 @@ atl_create_bm <- function(data = NULL,
     coord_sf(xlim = c(bbox["xmin"], bbox["xmax"]), 
              ylim = c(bbox["ymin"], bbox["ymax"]), expand = FALSE) +
     # Clean up layout
-    theme(panel.grid.major = element_line(colour = "transparent"),
-          panel.grid.minor = element_line(colour = "transparent"),
-          panel.background = element_rect(fill = '#D7E7FF'),
-          plot.background = element_rect(fill = "transparent", colour = NA),
-          panel.border = element_rect(fill = NA, colour = "black"),
-          axis.text.x = element_blank(), axis.text.y = element_blank(),
-          axis.ticks.x = element_blank(), axis.ticks.y = element_blank(),
-          axis.title = element_blank(), plot.margin = unit(rep(0, 4), "lines"))
+    theme(
+      panel.grid.major = element_line(colour = "transparent"),
+      panel.grid.minor = element_line(colour = "transparent"),
+      panel.background = element_rect(fill = '#D7E7FF'),
+      plot.background = element_rect(fill = "transparent", colour = NA),
+      panel.border = element_rect(fill = NA, colour = "grey20"),
+      axis.text.x = element_blank(), 
+      axis.text.y = element_blank(),
+      axis.ticks.x = element_blank(), 
+      axis.ticks.y = element_blank(),
+      axis.title = element_blank(), 
+      plot.margin = unit(c(0, 0, -0.2, -0.2), "lines"),
+    )
   
   return(bm)
 }
