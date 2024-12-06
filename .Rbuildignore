@@ -11,3 +11,4 @@
 ^codemeta\.json$
 ^\.github$
 ^README\.Rmd$
+^dummy_path.db$

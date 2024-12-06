@@ -10,10 +10,24 @@ testthat::test_that("atl_bbox handles simple geometry", {
 })
 
 # Test buffer functionality (expanding the bounding box)
-testthat::test_that("atl_bbox applies buffer correctly", {
+testthat::test_that("atl_bbox applies buffer correctly short format", {
   geom <- sf::st_as_sfc("POLYGON((0 0, 1 0, 1 2, 0 2, 0 0))")
   bbox_no_buffer <- tools4watlas::atl_bbox(geom, asp = "16:9", buffer = 0)
-  bbox_with_buffer <- atl_bbox(geom, asp = "16:9", buffer = 0.5)
+  bbox_with_buffer <- tools4watlas::atl_bbox(geom, asp = "16:9", buffer = 0.5)
+  
+  # Ensure the bounding box with buffer is larger than the one without buffer
+  testthat::expect_true(bbox_with_buffer["xmax"] > bbox_no_buffer["xmax"])
+  testthat::expect_true(bbox_with_buffer["ymax"] > bbox_no_buffer["ymax"])
+  testthat::expect_true(bbox_with_buffer["xmin"] < bbox_no_buffer["xmin"])
+  testthat::expect_true(bbox_with_buffer["ymin"] < bbox_no_buffer["ymin"])
+})
+
+
+# Test buffer functionality (expanding the bounding box)
+testthat::test_that("atl_bbox applies buffer correctly long format", {
+  geom <- sf::st_as_sfc("POLYGON((0 0, 5 0, 1 2, 0 2, 0 0))")
+  bbox_no_buffer <- tools4watlas::atl_bbox(geom, asp = "1:1", buffer = 0)
+  bbox_with_buffer <- tools4watlas::atl_bbox(geom, asp = "1:1", buffer = 0.5)
   
   # Ensure the bounding box with buffer is larger than the one without buffer
   testthat::expect_true(bbox_with_buffer["xmax"] > bbox_no_buffer["xmax"])
@@ -26,8 +40,8 @@ testthat::test_that("atl_bbox applies buffer correctly", {
 testthat::test_that("atl_bbox throws an error for invalid aspect ratio format", {
   geom <- sf::st_as_sfc("POLYGON((0 0, 1 0, 1 2, 0 2, 0 0))")
   
-  testthat::expect_error(atl_bbox(geom, asp = "16-9"), 
+  testthat::expect_error(tools4watlas::atl_bbox(geom, asp = "16-9"), 
                           "Aspect ratio must be in the format 'width:height'.")
-  testthat::expect_error(atl_bbox(geom, asp = "16:9:1"), 
+  testthat::expect_error(tools4watlas::atl_bbox(geom, asp = "16:9:1"), 
                           "Aspect ratio must be in the format 'width:height'.")
 })

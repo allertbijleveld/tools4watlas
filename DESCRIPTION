@@ -46,6 +46,7 @@ Suggests:
     plyr,
     RColorBrewer,
     mapview,
+    mockery,
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
