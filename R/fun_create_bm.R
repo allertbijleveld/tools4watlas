@@ -72,7 +72,7 @@ atl_create_bm <- function(data = NULL,
   }
   
   # Exclude rows where x or y are NA and convert to sf object
-  d_sf <- atl_as_sf(data, x, y, projection = projection)
+  d_sf <- atl_as_sf(data, tag = NULL, x, y, projection = projection)
   
   # Change projection if data were not UTM31
   d_sf <- sf::st_transform(d_sf, crs = sf::st_crs(32631)) 

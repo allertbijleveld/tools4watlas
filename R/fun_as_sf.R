@@ -2,11 +2,14 @@
 #'
 #' This function converts a data.frame or data.table to a simple feature (sf) 
 #' object, allowing flexible specification of the x and y coordinate columns. 
-#' Additional attributes can also be retained in the resulting sf object.
+#' Additional attributes can also be retained in the resulting sf object. There 
+#' are three options = c("points", "lines", "table"). 
 #'
 #' @author Johannes Krietsch
 #' @param data A `data.table` or an object convertible to a `data.table`. 
 #'  The input data containing the coordinates and optional attributes.
+#' @param tag A character string representing the  name of the column containing
+#'  the tag ID.
 #' @param x A character string representing the name of the column containing
 #'  x-coordinates. Defaults to "x".
 #' @param y A character string representing the name of the column containing
@@ -17,45 +20,68 @@
 #' @param additional_cols A character vector specifying additional column names
 #'  to include in the resulting sf object. Defaults to `NULL` (no additional
 #'  columns included).
+#' @param option A character string with "points" (default) for returning sf points, 
+#' "lines" to return sf lines and "table" to return a table with a sf 
+#' coordinates column. 
 #' @return An `sf` object containing the specified coordinates as geometry and
 #'  any included attributes.
 #' @import data.table
 #' @examples
 #' library(data.table)
 #' 
-#' # Example usage when column names are "x" and "y"
-#' data <- data.table(x = c(1, 2, NA, 4), 
-#'                    y = c(5, 6, 7, 8), 
-#'                    value = c(9, 10, 11, 12), 
-#'                    category = c("A", "B", "C", "D"))
+#' # Example data
+#' data <- data.table(
+#'   tag = c("A", "A", "B", "B"),
+#'   x = c(10, 20, 30, 40),
+#'   y = c(50, 60, 70, 80),
+#'   value = c(100, 200, 300, 400)
+#' )
 #' 
-#' # Add the "value" and "category" columns to the sf object
-#' d_sf <- atl_as_sf(data, additional_cols = c("value", "category"))
-#' print(d_sf)
+#' # Convert to sf points with custom CRS and retain the "value" column
+#' sf_points <- atl_as_sf(data, x = "x", y = "y", tag = "tag", 
+#'                        projection = sf::st_crs(4326), 
+#'                        additional_cols = "value")
+#' plot(sf_points)
 #' 
-#' # Example usage when column names are "lon" and "lat"
-#' data2 <- data.table(lon = c(10, 20, 30, NA), lat = c(40, 50, 60, 70))
-#' d_sf2 <- atl_as_sf(data2, "lon", "lat")
-#' print(d_sf2)
+#' # Convert to sf lines
+#' sf_lines <- atl_as_sf(data, x = "x", y = "y", tag = "tag", option = "lines")
+#' plot(sf_lines)  
+#' 
+#' # Convert to a data.table with coordinates column
+#' sf_table <- atl_as_sf(data, x = "x", y = "y", tag = "tag", option = "table")
+#' print(sf_table)
 #' @export
 atl_as_sf <- function(data, 
+                      tag = "tag",
                       x = "x", 
                       y = "y", 
                       projection = sf::st_crs(32631), 
-                      additional_cols = NULL) {
-
+                      additional_cols = NULL,
+                      option = "points") {
+  
   # Convert to data.table if not already
   if (!is.data.table(data)) {
     data <- data.table::setDT(data)
   }
   
+  # Add so function also works without tag ID
+  if (is.null(tag)) {
+    tag <- "tag_dummy"
+    data[, tag_dummy := "dummy"]
+  }
+  
   # Ensure x and y are character strings
   x_col <- as.character(substitute(x))
   y_col <- as.character(substitute(y))
+  tag_col <- as.character(substitute(tag))
+  tag_col_group <- rlang::ensym(tag)
   
   # Check if columns exist in the data
   if (!(x_col %in% names(data)) || !(y_col %in% names(data))) {
     stop("Specified x or y columns do not exist in the data.")
+  }
+  if (!(tag_col %in% names(data)) & is.null(tag)) {
+    stop("Specified tag column do not exist in the data.")
   }
   
   # Include additional columns if specified
@@ -67,10 +93,10 @@ atl_as_sf <- function(data,
                  paste(missing_cols, collapse = ", ")))
     }
     # Select x, y, and additional columns
-    cols_to_keep <- c(x_col, y_col, additional_cols)
+    cols_to_keep <- unique(c(tag_col, x_col, y_col, additional_cols))
   } else {
     # Default to only x and y columns
-    cols_to_keep <- c(x_col, y_col)
+    cols_to_keep <- c(tag_col, x_col, y_col)
   }
   
   # Exclude rows where x or y are NA
@@ -84,5 +110,26 @@ atl_as_sf <- function(data,
     crs = projection
   )
   
-  return(d_sf)
+  # Switch for different return options
+  return_data <- switch(
+    option,
+    points = {
+      # Return sf with points
+      d_sf
+    },
+    lines = {
+      # Return sf with lines
+      d_sf_lines <- d_sf %>% 
+        dplyr::group_by(!!tag_col_group) %>% 
+        dplyr::summarise(do_union = FALSE) %>%
+        sf::st_cast("LINESTRING")
+    },
+    table = {
+      # Return data.table with coordinates as column
+      d_sf_dt <- data.table::data.table(d_sf)
+    },
+    stop("Invalid option")
+  )
+  
+  return(return_data)
 }

@@ -17,13 +17,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette shows different ways on how to plot WATLAS data.
-
-## Using `ggplot2` and a basemap layer
-
-We can create simple base maps of the study area by using the function `atl_create_bm()`. This function uses a data.table with x- and y-coordinates to check the required bounding box (which can be extended with a buffer in meters) and spatial features (polygons) of land, lakes, mudflats and rivers. Without adding costmized data, it will default to the data provided in the package. By changing `asp` the desired aspect ratio can be chosen (default is "16:9"). If no data are provided the function creates a map around Griend with a specified buffer. 
-
 #### Load packages and data
+
+This vignette shows different ways on how to plot WATLAS data. Each chunk of code only requires this chunk with loading the data to be run before and is otherwise independent. 
 
 ```{r}
 library(tools4watlas)
@@ -35,6 +31,10 @@ library(RColorBrewer)
 # Load example data
 data <- data_example
 ```
+
+## Using `ggplot2` and a basemap layer
+
+We can create simple base maps of the study area by using the function `atl_create_bm()`. This function uses a data.table with x- and y-coordinates to check the required bounding box (which can be extended with a buffer in meters) and spatial features (polygons) of land, lakes, mudflats and rivers. Without adding costmized data, it will default to the data provided in the package. By changing `asp` the desired aspect ratio can be chosen (default is "16:9"). If no data are provided the function creates a map around Griend with a specified buffer. 
 
 #### Map with points and tracks
 
@@ -77,32 +77,26 @@ bm +
     direction = -1)
 ```
 
-#### Interactive leaflet map with `mapview`
+## Interactive leaflet map with `mapview`
 
 This is useful when manually checking specific data. Check for more details the [mapview website](https://r-spatial.github.io/mapview/index.html). Nopte that one can change the base map by clicking in the layer symbol, to for example a satellite image. 
 
 ```{r, fig.height = 2, fig.cap = "Interactive map with mapview()"}
 library(mapview)
-library(dplyr)
 library(sf)
 
 # make data spatial
-d_sf <- atl_as_sf(data, additional_cols = c("tag", "datetime"))
+d_sf <- atl_as_sf(data, additional_cols = c("datetime"))
 
 # add track
-d_sf_lines <- d_sf %>% 
-  group_by(tag) %>%
-  summarise(do_union = FALSE) %>%
-  st_cast("LINESTRING")
+d_sf_lines <-  atl_as_sf(data, additional_cols = c("datetime"), 
+                         option = "lines")
 
 # Plot interactive map
 mapview(d_sf_lines, zcol = "tag", legend = FALSE) + mapview(d_sf, zcol = "tag")
 ```
 
-
-#### Static map with `OpenStreetMap` 
-
-
+## Static map with `OpenStreetMap` 
 
 ```{r, fig.cap = "Static map with satellite image"}
 library(OpenStreetMap)
@@ -139,5 +133,67 @@ bm +
   labs(x = "Longitude", y = "Latitude") +
  coord_sf(crs = 3857)
 ```
+
+## Base R map 
+
+#### Plot with simple base map
+
+The plotting region can be extended by specifiying buffer (in meters), and the scale of the scalebar (in kilometers) can be adjusted. To inspect the localizations, color_by can be specified to colour the localizations by time since first localization in plot (“time”), standard deviation of the x- and y-coordinate (“sd”), or the number of base stations used for calculating the localization (“nbs”). By specifiying the full path and file name (with extension) in fullname, it is possible to save the plot as a .png. If necesarry, the legend can also be located elsewhere on the plot with Legend.
+
+```{r, fig.cap = "Base R map"}
+# Load example data
+data <- data_example |> as.data.frame()
+
+# transform to sp
+d_sp <- atl_make_spatialdataframe(data)
+
+# Plot the tracking data with a simple background 
+atl_plot_tag(data = d_sp, tag = NULL, fullname = NULL, buffer = 1, 
+             color_by = "time")
+# Note: function opens device and therefore the plot is not shown in markdown
+```
+
+#### Plot with `OpenStreetMap` 
+
+With the function `atl_plot_tag_osm()` it is possible to plot the track on a satellite image with the library OpenStreetMap. The region of the the satellite image can be extended by specifying a buffer (in meters) in the function atlas_make_boundingbox_for_osm. The other options are similar to atl_plot_tag (see earlier).
+
+```{r, fig.cap = "Base R map with satellite image"}
+# Obtain the extent of tracking data for retrieving the satellite imagery
+bbox_utm <- atl_get_spatial_bounds(data)
+
+# Transform the bounding box to the osm coordinate reference system
+bbox_osm <- atl_make_boundingbox_for_osm(bbox_utm, buffer = 300, 
+                                         from_crs = sp::CRS("+init=epsg:32631"))
+
+# Download the map from OpenStreetMap using the bounding box
+map <- OpenStreetMap::openmap(bbox_osm[1,], bbox_osm[2,], type = 'bing')
+
+# Transform to sp
+d_sp <- atl_make_spatialdataframe(data)
+
+# Transform tracking data to the osm() coordinate reference system
+data_spatial_osm <- sp::spTransform(d_sp, 
+                                    OpenStreetMap::osm()) # to osm()
+
+# Plot the tracking data on the satellite image
+atl_plot_tag_osm(data = data_spatial_osm, tag = NULL, mapID = map, 
+                 color_by = "time", fullname = NULL, Scalebar = 3)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

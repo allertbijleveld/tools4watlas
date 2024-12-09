@@ -36,7 +36,8 @@ Imports:
     raster,
     stringr,
     ggplot2,
-    ggspatial
+    ggspatial,
+    rlang
 Suggests:
     knitr,
     rmarkdown,
