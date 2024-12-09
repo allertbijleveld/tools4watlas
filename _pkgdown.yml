@@ -42,8 +42,8 @@ reference:
      - atl_bbox
      - atl_create_bm
      - atl_get_spatial_bounds
-     - atlas_make_boundingbox_for_osm
-     - atlas_make_spatialdataframe
+     - atl_make_boundingbox_for_osm
+     - atl_make_spatialdataframe
      - atl_plot_tag
      - atl_plot_tag_osm
      - plot_map_osm
