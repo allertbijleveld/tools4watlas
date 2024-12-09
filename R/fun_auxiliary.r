@@ -48,11 +48,21 @@ atl_t_col <- function(color, percent = 50, name = NULL) {
 #' @param crs The coordinate reference system (specified with \code{CRS()}) of the X,Y coordinates. The deafult is UTM 31N: \code{CRS("+init=epsg:32631")}.
 #' @return The output as a Spatialpointsdataframe.
 #' @export
-atlas_make_spatialdataframe<-function(data, crs=sp::CRS("+init=epsg:32631")){
-	assertthat::assert_that("data.frame"%in%class(data), msg = "Data is not a data.frame. Is it a data.table? Or already a SpatialPointsDataFrame?")
-	sp::SpatialPointsDataFrame(coords = data[,c("X","Y")], data = data, proj4string = crs)
-	}
-
+atl_make_spatialdataframe <- function(
+    data, 
+    crs = sp::CRS("+init=epsg:32631")
+) {
+  assertthat::assert_that(
+    "data.frame" %in% class(data),
+    msg = "Data is not a data.frame. Is it a data.table? Or already a 
+           SpatialPointsDataFrame?"
+  )
+  sp::SpatialPointsDataFrame(
+    coords = data[, c("x", "y")], 
+    data = data, 
+    proj4string = crs
+  )
+}
 
 #' Get spatial bounds for dataframe X,Y coordinates.
 #'
@@ -62,8 +72,14 @@ atlas_make_spatialdataframe<-function(data, crs=sp::CRS("+init=epsg:32631")){
 #' @param data A dataframe with the tracking data. 
 #' @return Provides a matrix with the range in X and Y coordinates.
 #' @export
-atl_get_spatial_bounds<-function(data){
-		matrix(cbind(range(data$X),range(data$Y)), nrow=2, byrow=FALSE, dimnames = list(c("min", "max"), c("X", "Y")))}		
+atl_get_spatial_bounds <- function(data) {
+  matrix(
+    cbind(range(data$x), range(data$y)), 
+    nrow = 2, 
+    byrow = FALSE, 
+    dimnames = list(c("min", "max"), c("x", "y"))
+  )
+}
 
 #' Create bounding box in LatLong for downloading a map from OpenStreetMap.
 #'
@@ -75,26 +91,41 @@ atl_get_spatial_bounds<-function(data){
 #' @param from_crs The CRS() of the bbox. 
 #' @return Provides a data.frame that can be used with \code{openmap()} where the first row provides the upperleft corner and the second row the lowerright corner of the extent, and the first column refers to the Y-coordinates and the second column to the X-coordinates.
 #' @export
-atlas_make_boundingbox_for_osm<-function(bbox, buffer=1000, from_crs=sp::CRS("+init=epsg:32631")){
-		if(class(bbox)[1]=="matrix"){
-					bbox<-as.data.frame(bbox)
-					#make spatial 
-					bbox<-sp::SpatialPointsDataFrame(coords = bbox[,c("X","Y")], data = bbox, proj4string = from_crs)
-					}
-		## check for LatLong
-			if("+proj=longlat" %in% unlist(strsplit(sp::proj4string(bbox), " "))){
-				bbox<-sp::spTransform(bbox, sp::CRS("+init=epsg:32631"))
-				}
-		## check whether utm in m 
-			assertthat::assert_that("+units=m" %in% unlist(strsplit(sp::proj4string(bbox), " ")), msg ="make sure from_crs is either UTM or LL")
-		## add buffer 
-			bbox<-bbox@bbox + matrix(c(-buffer,buffer,-buffer,buffer), nrow=2, byrow=TRUE)
-			bbox<-as.data.frame(t(bbox))
-			bbox<-sp::SpatialPointsDataFrame(coords = bbox[,c("X","Y")], data = bbox, proj4string = sp::CRS("+init=epsg:32631"))
-			bbox <- t(sp::spTransform(bbox, sp::CRS("+init=epsg:4326"))@bbox)
-		# get right shape output for use with OSM map	
-			matrix(c(bbox[2,2], bbox[1,2],bbox[1,1], bbox[2,1]), nrow=2, byrow=FALSE)
-		}
+atl_make_boundingbox_for_osm <- function(bbox, 
+                                         buffer = 1000, 
+                                         from_crs = sp::CRS("+init=epsg:32631")) {
+  if (class(bbox)[1] == "matrix") {
+    bbox <- as.data.frame(bbox)
+    # Make spatial
+    bbox <- sp::SpatialPointsDataFrame(
+      coords = bbox[, c("x", "y")], data = bbox, proj4string = from_crs
+    )
+  }
+  
+  # Check for LatLong
+  if ("+proj=longlat" %in% unlist(strsplit(sp::proj4string(bbox), " "))) {
+    bbox <- sp::spTransform(bbox, sp::CRS("+init=epsg:32631"))
+  }
+  
+  # Check whether UTM in meters
+  assertthat::assert_that(
+    "+units=m" %in% unlist(strsplit(sp::proj4string(bbox), " ")),
+    msg = "Make sure from_crs is either UTM or LL"
+  )
+  
+  # Add buffer
+  bbox <- bbox@bbox + matrix(c(-buffer, buffer, -buffer, buffer), nrow = 2, 
+                             byrow = TRUE)
+  bbox <- as.data.frame(t(bbox))
+  bbox <- sp::SpatialPointsDataFrame(
+    coords = bbox[, c("x", "y")], data = bbox, proj4string = sp::CRS("+init=epsg:32631")
+  )
+  bbox <- t(sp::spTransform(bbox, sp::CRS("+init=epsg:4326"))@bbox)
+  
+  # Get the right shape output for use with OSM map
+  matrix(c(bbox[2, 2], bbox[1, 2], bbox[1, 1], bbox[2, 1]), nrow = 2, byrow = FALSE)
+}
+
 	
 #' Plot a map downloaded with OpenStreetMap.
 #'
@@ -106,16 +137,16 @@ atlas_make_boundingbox_for_osm<-function(bbox, buffer=1000, from_crs=sp::CRS("+i
 #' the plotting region from \code{mapID}. Deafults to 96.  
 #' @return Returns an OSM background plot for adding tracks. 
 #' @export	
-plot_map_osm<-function(map, ppi=96){
+plot_map_osm <- function(map, ppi = 96){
 	## map=osm map; ppi=pixels per inch resolution for plot
 	## get size of plot
 		px_width  <- map$tiles[[1]]$yres[1]
 		px_height <- map$tiles[[1]]$xres[1]
 	## initiate plotting window 
 		#win.graph(width=px_width/ppi, height=px_height/ppi)
-		dev.new(width=px_width/ppi, height=px_height/ppi)
-		par(bg="black")
-		par(xpd=TRUE)		
+		dev.new(width = px_width / ppi, height = px_height / ppi)
+		par(bg = "black")
+		par(xpd = TRUE)		
 	## make plot
 		plot(map)
 	}
@@ -125,7 +156,7 @@ plot_map_osm<-function(map, ppi=96){
 #' A function that is used for plotting multiple individuals on a map from a list of spatial data. 
 #'
 #' @author Allert Bijleveld
-#' @param d The spatial data frame.
+#' @param data The spatial data frame.
 #' @param Pch The type of point to plot a localization
 #' @param Cex The size of the point to plot a localization
 #' @param Lwd The width of the line to connect localizations
@@ -133,7 +164,11 @@ plot_map_osm<-function(map, ppi=96){
 #' @param Type The type of graph to make. For instance, "b" is both points and lines and "o" is simlar but places points on top of line (no gaps)
 #' @param endpoint Whether to plot the last localization of an individual in magenta
 #' @export	
-atl_plot_add_track = function(d, Pch=19, Cex=0.25, Lwd=1, col, Type="o",endpoint=FALSE) {
-	points(d, col=col, pch=Pch, cex=Cex, lwd=Lwd, type=Type)
-	if(endpoint){points(d[nrow(d),], col="magenta", pch=Pch, cex=Cex*2)}
-	}		
+atl_plot_add_track <- function(data, Pch = 19, Cex = 0.25, Lwd = 1, col, 
+                               Type = "o", endpoint = FALSE) {
+  points(data, col = col, pch = Pch, cex = Cex, lwd = Lwd, type = Type)
+  
+  if (endpoint) {
+    points(d[nrow(data), ], col = "magenta", pch = Pch, cex = Cex * 2)
+  }
+}	

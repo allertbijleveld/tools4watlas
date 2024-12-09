@@ -5,7 +5,7 @@
 \title{Add tracks to plot from list.}
 \usage{
 atl_plot_add_track(
-  d,
+  data,
   Pch = 19,
   Cex = 0.25,
   Lwd = 1,
@@ -15,7 +15,7 @@ atl_plot_add_track(
 )
 }
 \arguments{
-\item{d}{The spatial data frame.}
+\item{data}{The spatial data frame.}
 
 \item{Pch}{The type of point to plot a localization}
 
