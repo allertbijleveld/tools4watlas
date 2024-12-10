@@ -122,47 +122,49 @@ atl_thin_data <- function(data,
       # variance of an average is sum of variances sum(SD ^ 2)
       # divided by sample size squared length(SD) ^ 2
       # the standard deviation is the square root of the variance
-      data <- data[, c(lapply(.SD, mean, na.rm = TRUE),
-                       varx_agg = sum(varx, na.rm = TRUE) / (length(varx)^2),
-                       vary_agg = sum(vary, na.rm = TRUE) / (length(vary)^2),
-                       n_aggregated = length(x)),
-                   by = c("time_agg", id_columns)]
+      data_s <- data[, c(lapply(.SD, mean, na.rm = TRUE),
+                         varx_agg = sum(varx, na.rm = TRUE) / (length(varx)^2),
+                         vary_agg = sum(vary, na.rm = TRUE) / (length(vary)^2),
+                         n_aggregated = length(x)),
+                     by = c("time_agg", id_columns)]
     } else {
       # Simple aggregation
-      data <- data[, c(lapply(.SD, mean, na.rm = TRUE),
-                       n_aggregated = length(x)),
-                   by = c("time_agg", id_columns)]
+      data_s <- data[, c(lapply(.SD, mean, na.rm = TRUE),
+                         n_aggregated = length(x)),
+                     by = c("time_agg", id_columns)]
     }
     
     # Recalculate datetime and clean up columns
-    data[, datetime := as.POSIXct(time_agg, origin = "1970-01-01", tz = "UTC")]
-    data <- data[, setdiff(colnames(data), c("varx", "vary", "covxy", "time")),
-                 with = FALSE]
+    data_s[, datetime := as.POSIXct(time_agg, 
+                                    origin = "1970-01-01", tz = "UTC")]
+    data_s <- data_s[, setdiff(colnames(data_s), c("varx", "vary", 
+                                                   "covxy", "time")),
+                   with = FALSE]
     
     # Rename columns
-    data.table::setnames(data,
+    data.table::setnames(data_s,
                          old = c("varx_agg", "vary_agg", "time_agg"),
                          new = c("varx", "vary", "time"),
                          skip_absent = TRUE
     )
   } else if (method == "subsample") {
     # Subsample the first observation per rounded interval
-    data <- data[, c(lapply(.SD, data.table::first),
+    data_s <- data[, c(lapply(.SD, data.table::first),
                      n_subsampled = length(x)),
                  by = c("time_agg", id_columns)]
-    data[, time_agg := NULL]
+    data_s[, time_agg := NULL]
   }
   
   # Restore original column order
-  setcolorder(data, intersect(col_order, names(data)))
+  setcolorder(data_s, intersect(col_order, names(data_s)))
   
   # Validate time differences match the interval
   if (is.null(id_columns)) {
-    lag <- diff(data$time)
+    lag <- diff(data_s$time)
   } else {
-    data[, time_diff := c(NA, diff(time)), by = c(id_columns)]
-    lag <- data[!is.na(time_diff)]$time_diff
-    data[, time_diff := NULL]
+    data_s[, time_diff := c(NA, diff(time)), by = c(id_columns)]
+    lag <- data_s[!is.na(time_diff)]$time_diff
+    data_s[, time_diff := NULL]
   }
 
   assertthat::assert_that(
@@ -172,9 +174,12 @@ atl_thin_data <- function(data,
   
   # Final validation
   assertthat::assert_that(
-    "data.frame" %in% class(data),
+    "data.frame" %in% class(data_s),
     msg = "thin_data: thinned data is not a data.frame object!"
   )
   
-  return(data)
+  # clean original data
+  data[, time_agg := NULL]
+  
+  return(data_s)
 }
