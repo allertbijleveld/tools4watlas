@@ -58,6 +58,8 @@ atl_as_sf <- function(data,
                       projection = sf::st_crs(32631), 
                       additional_cols = NULL,
                       option = "points") {
+  # Global variables to suppress notes in data.table
+  tag_dummy <- NULL
   
   # Convert to data.table if not already
   if (!is.data.table(data)) {

@@ -12,8 +12,8 @@ atl_thin_data(
 )
 }
 \arguments{
-\item{data}{Tracking data to aggregate. Must have columns \code{X} and
-\code{Y}, and a numeric column named \code{TIME}.}
+\item{data}{Tracking data to aggregate. Must have columns \code{x} and
+\code{y}, and a numeric column named \code{time}, as well as \code{datetime}.}
 
 \item{interval}{The interval in seconds over which to aggregate.}
 
@@ -25,20 +25,25 @@ is taken. If aggregation (\code{method = "aggregate"}), the group positions'
 mean is taken.}
 }
 \value{
-A dataframe aggregated taking the mean over the interval.
+A data.table with aggregated or subsampled data.
 }
 \description{
 Uniformly reduce data volumes with either aggregation or resampling
 (specified by the \code{method} argument) over an interval specified in
 seconds using the \code{interval} argument.
 Both options make two important assumptions:
-(1) that timestamps are named \verb{TIME', and (2) all columns except the identity columns can be averaged in \code{R}. While the }subsample' option returns a thinned dataset with all columns from
-the input data, the \verb{aggregate' option drops the column \code{covxy}, since this cannot be propagated to the averaged position. Both options handle the column }TIME' differently: while \verb{subsample' returns the actual timestamp (in UNIX TIME) of each sample, }aggregate' returns the
-mean timestamp (also in UNIX TIME).
+(1) that timestamps are named 'time' and 'datetime', and
+(2) all columns except the identity columns can be averaged in \code{R}.
+While the 'subsample' option returns a thinned dataset with all columns from
+the input data, the 'aggregate' option drops the column \code{covxy}, since
+this cannot be propagated to the averaged position.
+Both options handle the column 'time' differently: while 'subsample' returns
+the actual timestamp (in UNIX time) of each sample, 'aggregate' returns the
+mean timestamp (also in UNIX time).
 In both cases, an extra column, \code{time_agg}, is added which has a uniform
 difference between each element corresponding to the user-defined thinning
 interval.
-The `aggregate' option only recognises errors named \code{varx} and
+The 'aggregate' option only recognises errors named \code{varx} and
 \code{vary}.
 If all of these columns are not present together the function assumes there
 is no measure of error, and drops those columns.
@@ -48,15 +53,37 @@ Grouping variables' names (such as animal identity) may be passed as a
 character vector to the \code{id_columns} argument.
 }
 \examples{
-\dontrun{
-thinned_data <- atl_thin_data(data,
+library(data.table)
+
+data <- data.table(
+  tag = as.character(rep(1:2, each = 10)),
+  time = rep(seq(1696218721, 1696218721 + 92, by = 10), 2),
+  x = rnorm(20, 10, 1),
+  y = rnorm(20, 15, 1)
+)
+
+data[, datetime := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
+
+# Thin the data by aggregation with a 60-second interval
+thinned_aggregated <- atl_thin_data(
+  data = data,
   interval = 60,
-  id_columns = c("animal_id"),
+  id_columns = "tag",
   method = "aggregate"
 )
-}
 
+# Thin the data by subsampling with a 60-second interval
+thinned_subsampled <- atl_thin_data(
+  data = data,
+  interval = 60,
+  id_columns = "tag",
+  method = "subsample"
+)
+
+# View results
+print(thinned_aggregated)
+print(thinned_subsampled)
 }
 \author{
-Pratik Gupte & Allert Bijleveld
+Pratik Gupte & Allert Bijleveld & Johannes Krietsch
 }

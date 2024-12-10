@@ -1,159 +1,144 @@
-# testthat::test_that("aggregating cleaned data", {
-#   interval <- 60
-#   # make test_data
-#   test_data <- data.table::data.table(
-#     `location-lat` = as.double(seq(1000)), # mimic movebank naming
-#     y = as.double(seq(1000)),
-#     time = as.numeric(seq(1000)),
-#     ts = as.POSIXct(seq(1000),
-#       origin = "1970-01-01"
-#     ),
-#     id = as.factor("abc"),
-#     VARX = runif(1000) + 300,
-#     VARY = runif(1000) + 300,
-#     COVXY = runif(1000) + 200
-#   )
-# 
-#   # make SD
-#   test_data[, SD := sqrt(VARX + VARY + 2 * COVXY)]
-# 
-#   # run function --- expect warning
-#   # expect a warning for the missing 'x' column name
-#   testthat::expect_warning(
-#     test_output <- atl_thin_data(test_data,
-#       id_columns = "id",
-#       interval = 60,
-#       method = "aggregate"
-#     )
-#   )
-# 
-#   # do tests
-#   # test that the vector class is data.table and data.frame
-#   testthat::expect_s3_class(
-#     object = test_output,
-#     class = c("data.table", "data.frame")
-#   )
-# 
-#   # check that some rows are removed or that none are added
-#   testthat::expect_gte(nrow(test_data), nrow(test_output))
-# 
-#   # check that the count is made
-#   tools4watlas:::atl_check_data(test_output,
-#     names_expected = c("count", "SD", "VARX")
-#   )
-# 
-#   # check there is no SD column
-#   testthat::expect_error(
-#     tools4watlas:::atl_check_data(test_output, names_expected = c("COVXY"))
-#   )
-# })
-# 
-# # test data without COVX and COVY
-# testthat::test_that("aggregating cleaned data", {
-#   interval <- 60
-#   # make test_data
-#   test_data <- data.table::data.table(
-#     x = as.double(1:1e3),
-#     y = as.double(1:1e3),
-#     time = as.numeric(1:1e3),
-#     ts = as.POSIXct(1:1e3,
-#       origin = "1970-01-01"
-#     ),
-#     id = as.factor("abc")
-#   )
-# 
-#   # run function
-#   test_output <- atl_thin_data(test_data,
-#     id_columns = "id",
-#     interval = 60,
-#     method = "aggregate"
-#   )
-# 
-#   # do tests
-#   # test that the vector class is data.table and data.frame
-#   testthat::expect_s3_class(
-#     object = test_output,
-#     class = c("data.table", "data.frame")
-#   )
-# 
-#   # check that some rows are removed or that none are added
-#   testthat::expect_gte(nrow(test_data), nrow(test_output))
-# 
-#   # check that the count is made
-#   tools4watlas:::atl_check_data(test_output, names_expected = "count")
-# 
-#   # check there is no SD column
-#   testthat::expect_error(
-#     tools4watlas:::atl_check_data(test_output, names_expected = c("VARX", "SD"))
-#   )
-# })
-# 
-# # test for resampling
-# testthat::test_that("subsampling cleaned data", {
-#   interval <- 60
-#   # make test_data
-#   test_data <- data.table::data.table(
-#     x = as.double(1:1e3),
-#     y = as.double(1:1e3),
-#     time = as.numeric(1:1e3),
-#     ts = as.POSIXct(1:1e3,
-#       origin = "1970-01-01"
-#     ),
-#     id = as.factor("abc"),
-#     VARX = runif(1000) + 300,
-#     VARY = runif(1000) + 300,
-#     COVXY = runif(1000) + 200
-#   )
-# 
-#   # make SD
-#   test_data[, SD := sqrt(VARX + VARY + 2 * COVXY)]
-# 
-#   # run function
-#   test_output <- tools4watlas::atl_thin_data(test_data,
-#     interval = 60,
-#     id_columns = "id",
-#     method = "subsample"
-#   )
-# 
-#   # do tests
-#   # test that the vector class is data.table and data.frame
-#   testthat::expect_s3_class(
-#     object = test_output,
-#     class = c("data.table", "data.frame")
-#   )
-# 
-#   # check that some rows are removed or that none are added
-#   testthat::expect_gte(nrow(test_data), nrow(test_output))
-# 
-#   # check that the count is made
-#   tools4watlas:::atl_check_data(test_output, names_expected = "count")
-# 
-#   # check there is no SD column
-#   testthat::expect_silent(
-#     tools4watlas:::atl_check_data(test_output, names_expected = c("COVXY", "SD"))
-#   )
-# })
-# 
-# # test for other option
-# testthat::test_that("other options fail", {
-#   interval <- 60
-#   # make test_data
-#   test_data <- data.table::data.table(
-#     x = as.double(1:1e3),
-#     y = as.double(1:1e3),
-#     time = as.numeric(1:1e3),
-#     ts = as.POSIXct(1:1e3,
-#       origin = "1970-01-01"
-#     ),
-#     id = as.factor("abc"),
-#     VARX = runif(1000) + 300,
-#     VARY = runif(1000) + 300,
-#     COVXY = runif(1000) + 200
-#   )
-#   # run function
-#   testthat::expect_error(tools4watlas::atl_thin_data(test_data,
-#     interval = 60,
-#     id_columns = "id",
-#     method = "another_option"
-#   ))
-# })
+testthat::test_that("atl_thin_data handles subsampling correctly", {
+  # Create test data
+  data <- data.table::data.table(
+    animal_id = rep(1:2, each = 10),
+    time = rep(seq(1696218720, 1696218720 + 90, by = 10), 2),
+    x = stats::rnorm(20, 10, 1),
+    y = stats::rnorm(20, 15, 1)
+  )
+  data[, datetime := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
+  
+  # Subsampling
+  thinned <- atl_thin_data(data, interval = 60, id_columns = "animal_id", 
+                           method = "subsample")
+  
+  # Check structure
+  testthat::expect_true(data.table::is.data.table(thinned))
+  testthat::expect_true(
+    all(c("animal_id", "x", "y", "time", "datetime") %in% names(thinned))
+  )
+  
+  # Check thinning interval
+  time_diffs <- thinned[, diff(time), by = animal_id]$V1
+  testthat::expect_true(all(time_diffs >= 60, na.rm = TRUE))
+})
+
+testthat::test_that("atl_thin_data handles aggregation correctly", {
+  data <- data.table::data.table(
+    animal_id = rep(1:2, each = 10),
+    time = rep(seq(1696218720, 1696218720 + 90, by = 10), 2),
+    x = stats::rnorm(20, 10, 1),
+    y = stats::rnorm(20, 15, 1)
+  )
+  data[, datetime := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
+  
+  thinned <- atl_thin_data(data, interval = 60, id_columns = "animal_id", 
+                           method = "aggregate")
+  
+  testthat::expect_true(data.table::is.data.table(thinned))
+  testthat::expect_true(
+    all(c("animal_id", "x", "y", "time", "datetime") %in% names(thinned))
+  )
+  
+  testthat::expect_equal(nrow(thinned), 4)
+  testthat::expect_true(
+    all(thinned[, diff(time), by = animal_id]$V1 >= 60, na.rm = TRUE)
+  )
+})
+
+testthat::test_that("atl_thin_data throws error for invalid method", {
+  data <- data.table::data.table(
+    animal_id = rep(1:2, each = 10),
+    time = rep(seq(1696218720, 1696218720 + 90, by = 10), 2),
+    x = stats::rnorm(20, 10, 1),
+    y = stats::rnorm(20, 15, 1)
+  )
+  data[, datetime := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
+  
+  testthat::expect_error(
+    atl_thin_data(data, interval = 60, id_columns = "animal_id", 
+                  method = "invalid"),
+    "method must be 'subsample' or 'aggregate'"
+  )
+})
+
+testthat::test_that("atl_thin_data throws error for invalid data input", {
+  testthat::expect_error(
+    atl_thin_data(list(), interval = 60, id_columns = "animal_id", 
+                  method = "subsample"),
+    "input is not a data.frame object"
+  )
+})
+
+testthat::test_that("atl_thin_data handles missing id_columns gracefully", {
+  data <- data.table::data.table(
+    time = seq(1696218720, 1696218720 + 90, by = 10),
+    x = stats::rnorm(10, 10, 1),
+    y = stats::rnorm(10, 15, 1)
+  )
+  data[, datetime := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
+  
+  thinned <- atl_thin_data(data, interval = 60, id_columns = NULL, 
+                           method = "subsample")
+  
+  testthat::expect_true(data.table::is.data.table(thinned))
+  testthat::expect_true(all(c("x", "y", "time", "datetime") %in% names(thinned)))
+})
+
+testthat::test_that(
+  "atl_thin_data throws error for interval smaller than tracking interval", {
+    data <- data.table::data.table(
+      animal_id = rep(1:2, each = 10),
+      time = rep(seq(1696218720, 1696218720 + 90, by = 10), 2),
+      x = stats::rnorm(20, 10, 1),
+      y = stats::rnorm(20, 15, 1)
+    )
+    data[, datetime := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
+    
+    testthat::expect_error(
+      atl_thin_data(data, interval = 5, id_columns = "animal_id", 
+                    method = "aggregate"),
+      "thinning interval is less than the tracking interval"
+    )
+  })
+
+testthat::test_that(
+  "atl_thin_data handles missing error columns during aggregation", {
+    data <- data.table::data.table(
+      animal_id = rep(1:2, each = 10),
+      time = rep(seq(1696218720, 1696218720 + 90, by = 10), 2),
+      x = stats::rnorm(20, 10, 1),
+      y = stats::rnorm(20, 15, 1)
+    )
+    data[, datetime := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
+    
+    thinned <- atl_thin_data(data, interval = 60, id_columns = "animal_id", 
+                             method = "aggregate")
+    
+    testthat::expect_true(data.table::is.data.table(thinned))
+    testthat::expect_true(all(!c("varx", "vary") %in% names(thinned)))
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

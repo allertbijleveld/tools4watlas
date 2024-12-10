@@ -4,18 +4,18 @@
 #' (specified by the \code{method} argument) over an interval specified in
 #' seconds using the \code{interval} argument.
 #' Both options make two important assumptions:
-#' (1) that timestamps are named `TIME', and
+#' (1) that timestamps are named 'time' and 'datetime', and
 #' (2) all columns except the identity columns can be averaged in \code{R}.
-#' While the `subsample' option returns a thinned dataset with all columns from
-#' the input data, the `aggregate' option drops the column \code{covxy}, since
+#' While the 'subsample' option returns a thinned dataset with all columns from
+#' the input data, the 'aggregate' option drops the column \code{covxy}, since
 #' this cannot be propagated to the averaged position.
-#' Both options handle the column `TIME' differently: while `subsample' returns
-#' the actual timestamp (in UNIX TIME) of each sample, `aggregate' returns the
-#' mean timestamp (also in UNIX TIME).
+#' Both options handle the column 'time' differently: while 'subsample' returns
+#' the actual timestamp (in UNIX time) of each sample, 'aggregate' returns the
+#' mean timestamp (also in UNIX time).
 #' In both cases, an extra column, \code{time_agg}, is added which has a uniform
 #'  difference between each element corresponding to the user-defined thinning
 #' interval.
-#' The `aggregate' option only recognises errors named \code{varx} and
+#' The 'aggregate' option only recognises errors named \code{varx} and
 #' \code{vary}.
 #' If all of these columns are not present together the function assumes there
 #' is no measure of error, and drops those columns.
@@ -24,9 +24,9 @@
 #' Grouping variables' names (such as animal identity) may be passed as a
 #' character vector to the \code{id_columns} argument.
 #'
-#' @author Pratik Gupte & Allert Bijleveld
-#' @param data Tracking data to aggregate. Must have columns \code{X} and 
-#' \code{Y}, and a numeric column named \code{TIME}.
+#' @author Pratik Gupte & Allert Bijleveld & Johannes Krietsch
+#' @param data Tracking data to aggregate. Must have columns \code{x} and 
+#' \code{y}, and a numeric column named \code{time}, as well as \code{datetime}.
 #' @param interval The interval in seconds over which to aggregate.
 #' @param id_columns Column names for grouping columns.
 #' @param method Should the data be thinned by subsampling or aggregation.
@@ -34,119 +34,147 @@
 #' is taken. If aggregation (\code{method = "aggregate"}), the group positions'
 #' mean is taken.
 #'
-#' @return A dataframe aggregated taking the mean over the interval.
+#' @return A data.table with aggregated or subsampled data.
 #'
 #' @examples
-#' \dontrun{
-#' thinned_data <- atl_thin_data(data,
+#' library(data.table)
+#' 
+# Create sample tracking data
+#' data <- data.table(
+#'   tag = as.character(rep(1:2, each = 10)),
+#'   time = rep(seq(1696218721, 1696218721 + 92, by = 10), 2),
+#'   x = rnorm(20, 10, 1),
+#'   y = rnorm(20, 15, 1)
+#' )
+#' 
+#' data[, datetime := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
+#' 
+#' # Thin the data by aggregation with a 60-second interval
+#' thinned_aggregated <- atl_thin_data(
+#'   data = data,
 #'   interval = 60,
-#'   id_columns = c("animal_id"),
+#'   id_columns = "tag",
 #'   method = "aggregate"
 #' )
-#' }
-#'
+#' 
+#' # Thin the data by subsampling with a 60-second interval
+#' thinned_subsampled <- atl_thin_data(
+#'   data = data,
+#'   interval = 60,
+#'   id_columns = "tag",
+#'   method = "subsample"
+#' )
+#' 
+#' # View results
+#' print(thinned_aggregated)
+#' print(thinned_subsampled)
 #' @export
-#'
 atl_thin_data <- function(data,
                           interval = 60,
-						              id_columns = NULL,
-                          method = c(
-                            "subsample",
-                            "aggregate"
-                          )) {
-  # global variables
-  TIME <- varx <- vary <- covxy <- NULL
-  X <- Y <- time <- time_agg <- NULL
-
-  # check input type
-  assertthat::assert_that("data.frame" %in% class(data),
-    msg = "thin_data: input not a dataframe object!"
+                          id_columns = NULL,
+                          method = c("subsample", "aggregate")) {
+  # Global variables to suppress notes in data.table
+  varx <- vary <- covxy <- x <- y <- NULL
+  time <- time_agg <- time_diff <- datetime <- NULL
+  
+  # Input validation
+  assertthat::assert_that(
+    "data.frame" %in% class(data),
+    msg = "thin_data: input is not a data.frame object!"
   )
-
-  # check that type is a character and within scope
-  assertthat::assert_that(method %in% c(
-    "subsample",
-    "aggregate"
-  ),
-  msg = "thin_data: type must be 'subsample' or \\
-                          'aggregate'"
+  assertthat::assert_that(
+    method %in% c("subsample", "aggregate"),
+    msg = "thin_data: method must be 'subsample' or 'aggregate'!"
   )
-
-  # if input is not a data.table set it so
+  
+  # Convert to data.table if not already
   if (!data.table::is.data.table(data)) {
-    setDT(data)
+    data <- data.table::setDT(data)
   }
-
-  # include asserts checking for required columns
-  atl_check_data(data,
-    names_expected = c("x", "y", "time", id_columns)
+  
+  # Check for required columns
+  atl_check_data(data, names_expected = c("x", "y", "time", id_columns))
+  
+  # Check that the interval is greater than the minimum time difference
+  if (is.null(id_columns)) {
+    lag <- diff(data$time)
+  } else {
+    data[, time_diff := c(NA, diff(time)), by = c(id_columns)]
+    lag <- data[!is.na(time_diff)]$time_diff
+    data[, time_diff := NULL]
+  }
+  
+  assertthat::assert_that(
+    interval > min(lag),
+    msg = "thin_data: thinning interval is less than the tracking interval!"
   )
-
-  # check aggregation interval is greater than min time difference
-  assertthat::assert_that(interval > min(diff(data$time)),
-    msg = "thin_data: thinning interval less than tracking interval!"
-  )
-
-  # round interval and reassign, this modifies by reference!
+  
+  # Preserve original column order
+  col_order <- copy(colnames(data))
+  
+  # Round time to the nearest interval
   data[, time_agg := floor(as.numeric(time) / interval) * interval]
-
-  # handle method option
+  
+  # Handle method: aggregate or subsample
   if (method == "aggregate") {
     if (all(c("varx", "vary") %in% colnames(data))) {
-      # aggregate over tracking interval
-      # the variance of an average is the sum of variances / sample size square
+      # Aggregate with variance propagation
+      # variance of an average is sum of variances sum(SD ^ 2)
+      # divided by sample size squared length(SD) ^ 2
+      # the standard deviation is the square root of the variance
       data <- data[, c(lapply(.SD, mean, na.rm = TRUE),
-        varx_agg = sum(varx, na.rm = TRUE) / (length(varx)^2),
-        vary_agg = sum(vary, na.rm = TRUE) / (length(vary)^2)
-
-        # variance of an average is sum of variances sum(SD ^ 2)
-        # divided by sample size squared length(SD) ^ 2
-        # the standard deviation is the square root of the variance
-      ),
-      by = c("time_agg", id_columns)
-      ]
+                       varx_agg = sum(varx, na.rm = TRUE) / (length(varx)^2),
+                       vary_agg = sum(vary, na.rm = TRUE) / (length(vary)^2),
+                       n_aggregated = length(x)),
+                   by = c("time_agg", id_columns)]
     } else {
-      # aggregate over tracking interval
+      # Simple aggregation
       data <- data[, c(lapply(.SD, mean, na.rm = TRUE),
-        count = length(X)
-      ),
-      by = c("time_agg", id_columns)
-      ]
+                       n_aggregated = length(x)),
+                   by = c("time_agg", id_columns)]
     }
-
-    # remove error columns
-    data <- data[, setdiff(
-      colnames(data),
-      c("varx", "vary", "covxy")
-    ),
-    with = FALSE
-    ]
-
-    # reset names to propagated error
+    
+    # Recalculate datetime and clean up columns
+    data[, datetime := as.POSIXct(time_agg, origin = "1970-01-01", tz = "UTC")]
+    data <- data[, setdiff(colnames(data), c("varx", "vary", "covxy", "time")),
+                 with = FALSE]
+    
+    # Rename columns
     data.table::setnames(data,
-      old = c("varx_agg", "vary_agg"),
-      new = c("varx", "vary"),
-      skip_absent = TRUE
+                         old = c("varx_agg", "vary_agg", "time_agg"),
+                         new = c("varx", "vary", "time"),
+                         skip_absent = TRUE
     )
   } else if (method == "subsample") {
-    # subsample the first observation per rounded interval
+    # Subsample the first observation per rounded interval
     data <- data[, c(lapply(.SD, data.table::first),
-      count = length(X)
-    ),
-    by = c("time_agg", id_columns)
-    ]
+                     n_subsampled = length(x)),
+                 by = c("time_agg", id_columns)]
+    data[, time_agg := NULL]
+  }
+  
+  # Restore original column order
+  setcolorder(data, intersect(col_order, names(data)))
+  
+  # Validate time differences match the interval
+  if (is.null(id_columns)) {
+    lag <- diff(data$time)
+  } else {
+    data[, time_diff := c(NA, diff(time)), by = c(id_columns)]
+    lag <- data[!is.na(time_diff)]$time_diff
+    data[, time_diff := NULL]
   }
 
-  # assert copy time is of interval
-  lag <- diff(data$time_agg)
-  assertthat::assert_that(min(lag) >= interval,
-    msg = "thin_data: diff time < interval asked!"
+  assertthat::assert_that(
+    min(lag) >= interval,
+    msg = "thin_data: time differences are less than the specified interval!"
   )
-
-  # check for class and whether there are rows
-  assertthat::assert_that("data.frame" %in% class(data),
-    msg = "thin_data: thinned data is not a dataframe object!"
+  
+  # Final validation
+  assertthat::assert_that(
+    "data.frame" %in% class(data),
+    msg = "thin_data: thinned data is not a data.frame object!"
   )
-
-  return(as.data.frame(data))
+  
+  return(data)
 }
