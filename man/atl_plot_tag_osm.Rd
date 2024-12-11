@@ -12,8 +12,8 @@ atl_plot_tag_osm(
   fullname = NULL,
   ppi = 96,
   towers = NULL,
-  Legend = "topleft",
-  Scalebar = 5,
+  legend = "topleft",
+  scalebar = 5,
   cex_legend = 1
 )
 }
@@ -42,10 +42,10 @@ the plotting region from \code{mapID}. Deafults to 96.}
 \item{towers}{A dataframe with coordinates of receiver stations
 (named \code{X} and \code{Y}).}
 
-\item{Legend}{Passed to the \code{legend} function and sets the location of
+\item{legend}{Passed to the \code{legend} function and sets the location of
 the legend in the plot.}
 
-\item{Scalebar}{Length of scalebar in km.}
+\item{scalebar}{Length of scalebar in km.}
 
 \item{cex_legend}{The size of the text in the legend.}
 }
@@ -54,6 +54,32 @@ Returns nothing but a plot.
 }
 \description{
 A function that plots the localization data of one individual.
+}
+\examples{
+library(tools4watlas)
+library(OpenStreetMap)
+library(sf)
+
+# Load example data
+data <- data_example[tag == data_example[1, tag]]
+
+# make data spatial and transform projection to WGS 84 (used in osm)
+d_sf <- atl_as_sf(data, additional_cols = names(data))
+d_sf <- st_transform(d_sf, crs = st_crs(4326)) 
+
+# get bounding box
+bbox <- atl_bbox(d_sf, buffer = 500)
+
+# extract openstreetmap 
+# other 'type' options are "osm", "maptoolkit-topo", "bing", "stamen-toner",
+# "stamen-watercolor", "esri", "esri-topo", "nps", "apple-iphoto", "skobbler";
+osm_map <- openmap(c(bbox["ymax"], bbox["xmin"]),
+                   c(bbox["ymin"], bbox["xmax"]),
+                   type = "bing", mergeTiles = TRUE) 
+
+# Plot the tracking data on the satellite image
+atl_plot_tag_osm(data = d_sf, tag = NULL, mapID = osm_map, 
+                 color_by = "time", fullname = NULL, scalebar = 3)
 }
 \author{
 Allert Bijleveld

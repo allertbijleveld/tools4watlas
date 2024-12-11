@@ -41,11 +41,11 @@ localization. Defaults to "time".}
 \item{towers}{A dataframe with coordinates of receiver stations
 (named \code{X} and \code{Y}).}
 
-\item{h}{?}
+\item{h}{height of the plot (when saving)}
 
-\item{w}{?}
+\item{w}{width of the plot (when saving)}
 
-\item{buffer}{?}
+\item{buffer}{Buffer around bounding box in meters}
 
 \item{legend}{Passed to the \code{legend} function and sets the location
 of the legend in the plot.}
@@ -89,5 +89,5 @@ atl_plot_tag(data = data, tag = NULL, fullname = NULL, buffer = 1,
              color_by = "time")
 }
 \author{
-Allert Bijleveld
+Allert Bijleveld & Johannes Krietsch
 }

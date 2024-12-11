@@ -16,9 +16,9 @@
 #' localization. Defaults to "time". 
 #' @param towers A dataframe with coordinates of receiver stations 
 #' (named \code{X} and \code{Y}).
-#' @param h ?
-#' @param w ?
-#' @param buffer ?
+#' @param h height of the plot (when saving)
+#' @param w width of the plot (when saving) 
+#' @param buffer Buffer around bounding box in meters
 #' @param legend Passed to the \code{legend} function and sets the location 
 #' of the legend in the plot.
 #' @param scalebar Length of scalebar in km.  
@@ -95,7 +95,7 @@ atl_plot_tag <- function(data,
   }
   
   # Generate color ramp
-  rbPal <- colorRampPalette(c("white", "yellow", "orange", "red", "dark red"))
+  rbPal <- colorRampPalette(c("white", "yellow", "orange", "red", "darkred"))
   n <- 100
   cuts <- cut(color_by_values, breaks = n)
   colramp <- rbPal(n)
@@ -149,20 +149,6 @@ atl_plot_tag <- function(data,
   }
   
   # Plot tracking data
-  if(is.data.frame(data) | data.table::is.data.table(data)) {
-    lines(x = data$x, y = data$y, lwd = 0.5, col = "black")
-    points(data$y, data$y, pch = 3, cex = 0.5, col = COLID)
-  }else{
-    # plot spatial sf object
-    plot(sf::st_geometry(data), add = TRUE)
-    plot(sf::st_geometry(data))
-    
-    lines(x = sp::coordinates(data)[,1], y = sp::coordinates(data)[,2], 
-          lwd = 0.5, col = "black")
-    points(sp::coordinates(data)[,1], sp::coordinates(data)[,2], 
-           pch = 3, cex = 0.5, col = COLID)
-  }	
-  
   lines(data$x, data$y, lwd = 0.5, col = "black")
   points(data$x, data$y, pch = 3, cex = 0.5, col = COLID)
   
