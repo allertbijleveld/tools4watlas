@@ -83,6 +83,11 @@ We are working on the following vignettes at the moment:
 - Animate movement data
 - Residency patch analysis
 
+Other to do's:
+
+- Background map data of the whole Wadden Sea
+- Choose nice example data
+
 ### **Acknowledgments**
 
 Many people and organisations are involved in hosting the WATLAS equipment, without whom WATLAS would not be possible. We therefore thank Hoogheemraadschap Hollands Noorderkwartier, Koninklijke Nederlandse Redding Maatschappij, Staatsbosbeheer, Marine Eco Analytics, Koninklijke Luchtmacht, Het Posthuys (Vlieland), Natuurmonumenten, Wetterskip Fryslan, Afsluitdijk Wadden Center, Vermilion, Rijkswaterstaat, Carl Zuhorn, Lenze Hofstee and Lydia de Loos. We thank Natuurmonumenten for access to Griend and using their facilities. Also, we thank Hein de Vries, Klaas-Jan Daalder, Hendrik-Jan Lokhorst, Bram Fey, Wim-Jan Boon from the RV Navicula and RV Stern, as well as the many other NIOZ staff and volunteers that facilitated this work. We would particularly like to thank Anita Koolhaas, Hinke and Cornelis Dekinga for their help with building the receiver stations. We thank Jeras de Jonge, Martin Laan, Sander Asjes, and Aris van der Vis for their technical help, and Benjamin Gnep for persistently replacing broken LNA’s. Thanks to Marten Tacoma for visualizing the tracking data in real time on www.nioz.nl/watlas and Ingrid de Raad for help posting WATLAS-related news. We also thank the Minerva Foundation and the Minerva Center for Movement Ecology for supporting the development and maintenance of all ATLAS systems, and for Yotam Orchan and Yoav Bartan for their most valuable technical assistance.

@@ -13,9 +13,13 @@ atl_plot_tag(
   h = 7,
   w = 7 * (16/9),
   buffer = 1,
-  Legend = "topleft",
-  Scalebar = 5,
-  cex_legend = 1
+  legend = "topleft",
+  scalebar = 5,
+  cex_legend = 1,
+  land_data = tools4watlas::land_sf,
+  mudflats_data = tools4watlas::mudflats_sf,
+  lakes_data = tools4watlas::lakes_sf,
+  rivers_data = tools4watlas::rivers_sf
 )
 }
 \arguments{
@@ -43,18 +47,46 @@ localization. Defaults to "time".}
 
 \item{buffer}{?}
 
-\item{Legend}{Passed to the \code{legend} function and sets the location
+\item{legend}{Passed to the \code{legend} function and sets the location
 of the legend in the plot.}
 
-\item{Scalebar}{Length of scalebar in km.}
+\item{scalebar}{Length of scalebar in km.}
 
 \item{cex_legend}{The size of the text in the legend.}
+
+\item{land_data}{An \code{sf} object for land polygons. Defaults to \code{land_sf}.}
+
+\item{mudflats_data}{An \code{sf} object for mudflat polygons. Defaults to
+\code{mudflats_sf}.}
+
+\item{lakes_data}{An \code{sf} object for lake polygons. Defaults to \code{lakes_sf}.}
+
+\item{rivers_data}{An \code{sf} object for river polygons. Defaults to \code{rivers_sf}.}
 }
 \value{
 Returns nothing but a plot.
 }
 \description{
 A function that plots the localization data of one individual.
+}
+\examples{
+library(tools4watlas)
+
+# Load example data
+data <- data_example
+
+# Transform to sf
+d_sf <- atl_as_sf(data, additional_cols = names(data))
+
+# Plot the tracking data with a simple background
+atl_plot_tag(data = d_sf, tag = NULL, fullname = NULL, buffer = 1,
+             color_by = "time")
+
+atl_plot_tag(data = d_sf, tag = NULL, fullname = NULL, buffer = 1,
+             color_by = "sd")
+
+atl_plot_tag(data = data, tag = NULL, fullname = NULL, buffer = 1,
+             color_by = "time")
 }
 \author{
 Allert Bijleveld

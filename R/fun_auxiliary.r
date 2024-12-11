@@ -1,3 +1,51 @@
+#' Make a colour transparant.
+#'
+#' A functionm that will make the provided colour transparant.
+#'
+#' @author Allert Bijleveld & Johannes Krietsch
+#' @param color The color to make transparant.
+#' @param percent The percentage of transparancy to apply .
+#' @param name The name argument as passed on to rgb. 
+#' @return The transparant color will be returned.
+#' @importFrom grDevices col2rgb
+#' @examples
+#' # Example with 50% transparency
+#' color_with_alpha <- atl_t_col("blue", percent = 50)
+#' print(color_with_alpha)
+#' 
+#' plot(1, 1, col = color_with_alpha, pch = 16, cex = 20,
+#'      xlab = "X", ylab = "Y", main = "Point with Transparent Color")
+#' 
+#' # Example with 30% transparency
+#' color_with_alpha <- atl_t_col("red", percent = 90)
+#' print(color_with_alpha)
+#' 
+#' plot(1, 1, col = color_with_alpha, pch = 16, cex = 20,
+#'      xlab = "X", ylab = "Y", main = "Point with Transparent Color")
+#' @export
+atl_t_col <- function(color, percent = 50, name = NULL) {
+  # Validate color input
+  if (!is.character(color) || length(color) != 1) {
+    stop("The 'color' parameter should be a single character string.")
+  }
+  
+  # Convert the color to RGB
+  rgb.val <- col2rgb(color)
+  
+  # Validate percent input
+  if (!is.numeric(percent) || percent < 0 || percent > 100) {
+    stop("The 'percent' parameter should be a numeric value between 0 and 100.")
+  }
+  
+  # Calculate the alpha transparency
+  alpha_val <- (100 - percent) * 255 / 100
+  
+  # Return the color with adjusted transparency (alpha)
+  rgb(rgb.val[1, ], rgb.val[2, ], rgb.val[3, ], 
+      maxColorValue = 255, alpha = alpha_val, 
+      names = name)
+}
+
 #' Add residence patches to a plot.
 #'
 #' Adds residence pattch data in UTM 31N as points or polygons to a plot. 
@@ -20,24 +68,6 @@ atl_plot_rpatches <- function(data, Pch=21, Cex=0.25, Lwd=1, Col=1, Bg=NULL, Lin
 		if(Lines){lines(data$X, data$Y, col=Col)}
 		}
 	}
-
-
-#' Make a colour transparant.
-#'
-#' A functionm that will make the provided colour transparant.
-#'
-#' @author Allert Bijleveld
-#' @param color The color to make transparant.
-#' @param percent The percentage of transparancy to apply .
-#' @param name The name argument as passed on to rgb. 
-#' @return The transparant color will be returned.
-#' @importFrom grDevices col2rgb
-#' @export
-atl_t_col <- function(color, percent = 50, name = NULL) {
-	rgb.val <- col2rgb(color)
-	rgb(rgb.val[1,], rgb.val[2,], rgb.val[3,],max = 255,alpha = (100-percent)*255/100, names = name)
-	}
-
 
 #'  Make X,Y data spatial.
 #'
@@ -169,6 +199,6 @@ atl_plot_add_track <- function(data, Pch = 19, Cex = 0.25, Lwd = 1, col,
   points(data, col = col, pch = Pch, cex = Cex, lwd = Lwd, type = Type)
   
   if (endpoint) {
-    points(d[nrow(data), ], col = "magenta", pch = Pch, cex = Cex * 2)
+    points(data[nrow(data), ], col = "magenta", pch = Pch, cex = Cex * 2)
   }
 }	

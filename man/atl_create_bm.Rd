@@ -11,8 +11,8 @@ atl_create_bm(
   buffer = 100,
   asp = "16:9",
   land_data = tools4watlas::land_sf,
-  lakes_data = tools4watlas::lakes_sf,
   mudflats_data = tools4watlas::mudflats_sf,
+  lakes_data = tools4watlas::lakes_sf,
   rivers_data = tools4watlas::rivers_sf,
   sc_dist,
   sc_location = "br",
@@ -41,10 +41,10 @@ format. Default is \code{"16:9"}.}
 
 \item{land_data}{An \code{sf} object for land polygons. Defaults to \code{land_sf}.}
 
-\item{lakes_data}{An \code{sf} object for lake polygons. Defaults to \code{lakes_sf}.}
-
 \item{mudflats_data}{An \code{sf} object for mudflat polygons. Defaults to
 \code{mudflats_sf}.}
+
+\item{lakes_data}{An \code{sf} object for lake polygons. Defaults to \code{lakes_sf}.}
 
 \item{rivers_data}{An \code{sf} object for river polygons. Defaults to \code{rivers_sf}.}
 

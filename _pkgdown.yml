@@ -9,7 +9,6 @@ reference:
     desc: "Functions to load data from CSV, SQLlite or remote SQL database"
     contents:
      - atl_get_data
-     - atl_get_data_csv
      - atl_check_data
   - title: "Filter data"
     desc: "Fuctions to filter the data"
@@ -41,9 +40,7 @@ reference:
     contents:
      - atl_bbox
      - atl_create_bm
-     - atl_get_spatial_bounds
      - atl_make_boundingbox_for_osm
-     - atl_make_spatialdataframe
      - atl_plot_tag
      - atl_plot_tag_osm
      - plot_map_osm
@@ -66,3 +63,9 @@ reference:
      - mudflats_sf
      - lakes_sf
      - rivers_sf
+  - title: "Deprecated"
+    desc: "Functions that are replaced in WATLAS 2.0"
+    contents:
+     - atl_get_spatial_bounds
+     - atl_make_spatialdataframe
+     - atl_get_data_csv

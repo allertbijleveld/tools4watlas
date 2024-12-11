@@ -19,6 +19,21 @@ The transparant color will be returned.
 \description{
 A functionm that will make the provided colour transparant.
 }
+\examples{
+# Example with 50\% transparency
+color_with_alpha <- atl_t_col("blue", percent = 50)
+print(color_with_alpha)
+
+plot(1, 1, col = color_with_alpha, pch = 16, cex = 20,
+     xlab = "X", ylab = "Y", main = "Point with Transparent Color")
+
+# Example with 30\% transparency
+color_with_alpha <- atl_t_col("red", percent = 90)
+print(color_with_alpha)
+
+plot(1, 1, col = color_with_alpha, pch = 16, cex = 20,
+     xlab = "X", ylab = "Y", main = "Point with Transparent Color")
+}
 \author{
-Allert Bijleveld
+Allert Bijleveld & Johannes Krietsch
 }

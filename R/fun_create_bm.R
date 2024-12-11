@@ -15,9 +15,9 @@
 #' @param asp A character string specifying the aspect ratio in `"width:height"`
 #'   format. Default is `"16:9"`.
 #' @param land_data An `sf` object for land polygons. Defaults to `land_sf`.
-#' @param lakes_data An `sf` object for lake polygons. Defaults to `lakes_sf`.
 #' @param mudflats_data An `sf` object for mudflat polygons. Defaults to 
 #'   `mudflats_sf`.
+#' @param lakes_data An `sf` object for lake polygons. Defaults to `lakes_sf`.
 #' @param rivers_data An `sf` object for river polygons. Defaults to `rivers_sf`.
 #' @param sc_dist Scale bar distance. Optional; calculated automatically if 
 #'   omitted.
@@ -49,8 +49,8 @@ atl_create_bm <- function(data = NULL,
                           buffer = 100, 
                           asp = "16:9",
                           land_data = tools4watlas::land_sf,
-                          lakes_data = tools4watlas::lakes_sf,
                           mudflats_data = tools4watlas::mudflats_sf,
+                          lakes_data = tools4watlas::lakes_sf,
                           rivers_data = tools4watlas::rivers_sf,
                           sc_dist,
                           sc_location = "br", 

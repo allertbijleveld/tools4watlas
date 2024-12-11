@@ -102,6 +102,11 @@ We are working on the following vignettes at the moment:
 - Animate movement data
 - Residency patch analysis
 
+Other to do’s:
+
+- Background map data of the whole Wadden Sea
+- Choose nice example data
+
 ### **Acknowledgments**
 
 Many people and organisations are involved in hosting the WATLAS

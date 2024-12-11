@@ -142,14 +142,15 @@ The plotting region can be extended by specifiying buffer (in meters), and the s
 
 ```{r, fig.cap = "Base R map"}
 # Load example data
-data <- data_example |> as.data.frame()
+data <- data_example
 
-# transform to sp
-d_sp <- atl_make_spatialdataframe(data)
+# Transform to sf
+d_sf <- atl_as_sf(data, additional_cols = names(data))
 
-# Plot the tracking data with a simple background 
-atl_plot_tag(data = d_sp, tag = NULL, fullname = NULL, buffer = 1, 
+# Plot the tracking data with a simple background
+atl_plot_tag(data = d_sf, tag = NULL, fullname = NULL, buffer = 1,
              color_by = "time")
+
 # Note: function opens device and therefore the plot is not shown in markdown
 ```
 
