@@ -37,7 +37,8 @@ Imports:
     stringr,
     ggplot2,
     ggspatial,
-    rlang
+    rlang,
+    terra
 Suggests:
     knitr,
     rmarkdown,

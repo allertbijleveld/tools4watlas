@@ -23,11 +23,11 @@
 #' and waterlevel with reference to NAP (cm).
 #' @import data.table
 #' @export
-atl_add_tidaldata <- function(data,
-                              tide_data,
-                              tide_data_highres,
-                              waterdata_resolution = "10 minute",
-                              offset = 0) {
+atl_add_tidal_data <- function(data,
+                               tide_data,
+                               tide_data_highres,
+                               waterdata_resolution = "10 minute",
+                               offset = 0) {
   # global variables
   row_id <- low_time <- . <- NULL
   tideID <- time <- tidaltime <- high_start_time <- NULL

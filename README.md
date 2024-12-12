@@ -48,7 +48,7 @@ Basic workflows and on how to use `tools4watlas` can be found on the
 - [`Plot data`](https://krietsch.github.io/tools4watlas/articles/plot_data.html) -
   How to plot data.
 
-- [`Basic workflows`](https://krietsch.github.io/tools4watlas/articles/basic_work_flows.html) -
+- [`Basic workflows`](https://krietsch.github.io/tools4watlas/articles/basic_workflows.html) -
   Allert’s basic WATLAS data workflow from `tools4watlas 1.0`.
 
 ### **Installation**
@@ -108,6 +108,7 @@ Other to do’s:
 
 - Background map data of the whole Wadden Sea
 - Choose nice example data
+- add examples, vignette & tests for atl_add_raster_data()
 
 ### **Acknowledgments**
 

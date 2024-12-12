@@ -88,7 +88,7 @@ Other to do's:
 
 - Background map data of the whole Wadden Sea
 - Choose nice example data
-- add function to combine WATLAS data with SpatRaster data
+- add examples, vignette & tests for atl_add_raster_data()
 
 ### **Acknowledgments**
 

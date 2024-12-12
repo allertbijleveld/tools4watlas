@@ -1,7 +1,7 @@
 library(testthat)
 library(data.table)
 
-test_that("atl_add_tidaldata adds tidal information correctly", {
+test_that("atl_add_tidal_data adds tidal information correctly", {
   # Mock tracking data
   tracking_data <- data.frame(
     time = as.POSIXct(c(
@@ -40,7 +40,7 @@ test_that("atl_add_tidaldata adds tidal information correctly", {
   )
 
   # Run the function
-  result <- tools4watlas::atl_add_tidaldata(
+  result <- tools4watlas::atl_add_tidal_data(
     data = tracking_data,
     tide_data = tide_data,
     tide_data_highres = tide_data_highres,
@@ -69,7 +69,7 @@ test_that("atl_add_tidaldata adds tidal information correctly", {
   ) # First 3 water levels match
 })
 
-test_that("atl_add_tidaldata handles empty input gracefully", {
+test_that("atl_add_tidal_data handles empty input gracefully", {
   # Empty tracking data
   tracking_data <- data.frame(
     time = as.POSIXct(character(0)),
@@ -92,7 +92,7 @@ test_that("atl_add_tidaldata handles empty input gracefully", {
   )
 
   # Run the function
-  expect_error(tools4watlas::atl_add_tidaldata(
+  expect_error(tools4watlas::atl_add_tidal_data(
     data = tracking_data,
     tide_data = tide_data,
     tide_data_highres = tide_data_highres,
@@ -101,10 +101,10 @@ test_that("atl_add_tidaldata handles empty input gracefully", {
   ), "Input doesn't have any rows")
 })
 
-test_that("atl_add_tidaldata errors on incorrect inputs", {
+test_that("atl_add_tidal_data errors on incorrect inputs", {
   # Incorrect data type for `data`
   expect_error(
-    tools4watlas::atl_add_tidaldata(
+    tools4watlas::atl_add_tidal_data(
       data = list(),
       tide_data = data.table(),
       tide_data_highres = data.table(),
@@ -121,7 +121,7 @@ test_that("atl_add_tidaldata errors on incorrect inputs", {
     y = c(200)
   )
   expect_error(
-    tools4watlas::atl_add_tidaldata(
+    tools4watlas::atl_add_tidal_data(
       data = tracking_data,
       tide_data = data.table(),
       tide_data_highres = data.table(),

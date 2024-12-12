@@ -201,7 +201,7 @@ tides <- data.table::fread(tides_path)
 tide_data_highres <- data.table::fread(tide_data_highres_path)
 
 # add tide data to movement data
-data <- atl_add_tidaldata(
+data <- atl_add_tidal_data(
   data = data,
   tide_data = tides,
   tide_data_highres = tide_data_highres,
