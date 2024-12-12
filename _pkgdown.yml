@@ -6,23 +6,23 @@ template:
     primary: "#303c54"
 reference:
   - title: "Load and check data"
-    desc: "Functions to load data from CSV, SQLlite or remote SQL database"
+    desc: "Functions to load data from SQLlite or remote SQL database"
     contents:
      - atl_get_data
      - atl_check_data
+     - atl_full_tag_id
   - title: "Filter data"
-    desc: "Fuctions to filter the data"
+    desc: "Fuctions to filter data"
     contents:
+     - atl_filter_covariates
      - atl_filter_bounds
      - atl_within_polygon
-     - atl_filter_covariates
   - title: "Track characteristics"
     desc: "Functions to calculate speed and turning angle"
     contents:
      - atl_simple_dist
      - atl_get_speed
      - atl_turning_angle
-     - atl_within_polygon    
   - title: "Smooth or thin track"
     desc: "Functions to calculate speed and turning angle"
     contents:
@@ -35,24 +35,25 @@ reference:
      - atl_res_patch_speed
      - atl_patch_dist
      - atl_patch_summary
+  - title: "Spatial functions"
+    desc: "Transform data to sf object and get a bounding box"
+    contents:
+     - atl_as_sf
+     - atl_bbox
   - title: "Plotting functions"
     desc: "Functions to plot the data"
     contents:
-     - atl_bbox
      - atl_create_bm
-     - atl_make_boundingbox_for_osm
      - atl_plot_tag
      - atl_plot_tag_osm
      - atl_plot_map_osm
      - atl_plot_rpatches
      - atl_plot_add_track
-  - title: "Other functions"
-    desc: ""
+     - atl_t_col
+  - title: "Add enviromental data"
+    desc: "Functions to add tidal data and other SpatRaster data"
     contents:
      - atl_add_tidaldata
-     - atl_full_tag_id
-     - atl_as_sf
-     - atl_t_col
   - title: "Data"
     desc: "Example and map data provided with the package"
     contents:
@@ -67,5 +68,6 @@ reference:
     desc: "Functions that are replaced in WATLAS 2.0"
     contents:
      - atl_get_spatial_bounds
+     - atl_make_boundingbox_for_osm
      - atl_make_spatialdataframe
      - atl_get_data_csv
