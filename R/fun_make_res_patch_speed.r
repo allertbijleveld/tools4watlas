@@ -1,4 +1,4 @@
-#' Construct residence patches from position data.
+#' Construct residence patches from position data
 #'
 #' A cleaned movement track of one individual at a time can be classified into
 #'  residence patches using the

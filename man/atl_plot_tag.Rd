@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_plot_tag.R
 \name{atl_plot_tag}
 \alias{atl_plot_tag}
-\title{Plot track for one individual on a simple background.}
+\title{Plot track for one individual on a simple background}
 \usage{
 atl_plot_tag(
   data,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_get_data_csv.R
 \name{atl_get_data_csv}
 \alias{atl_get_data_csv}
-\title{Get data from a local csv file.}
+\title{Get data from a local csv file}
 \usage{
 atl_get_data_csv(
   fpath = system.file("extdata", "redknot_2707_WATLAS_exampledata.csv", package =

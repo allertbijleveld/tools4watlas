@@ -1,4 +1,4 @@
-#' Plot track for one individual on a OpenStreetMap satellite map.
+#' Plot track for one individual on a OpenStreetMap satellite map
 #'
 #' A function that plots the localization data of one individual.
 #'

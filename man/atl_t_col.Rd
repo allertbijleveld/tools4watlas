@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_auxiliary.R
 \name{atl_t_col}
 \alias{atl_t_col}
-\title{Make a colour transparant.}
+\title{Make a colour transparant}
 \usage{
 atl_t_col(color, percent = 50, name = NULL)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_filter_by_bounds.R
 \name{atl_filter_bounds}
 \alias{atl_filter_bounds}
-\title{Filter positions by an area.}
+\title{Filter positions by an area}
 \usage{
 atl_filter_bounds(
   data,

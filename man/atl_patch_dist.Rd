@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_distance_bw_patch.R
 \name{atl_patch_dist}
 \alias{atl_patch_dist}
-\title{Get the distance between patches.}
+\title{Get the distance between patches}
 \usage{
 atl_patch_dist(
   data,

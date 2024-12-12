@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_add_tidal_data.R
 \name{atl_add_tidal_data}
 \alias{atl_add_tidal_data}
-\title{Add tidal data to tracking data.}
+\title{Add tidal data to tracking data}
 \usage{
 atl_add_tidal_data(
   data,

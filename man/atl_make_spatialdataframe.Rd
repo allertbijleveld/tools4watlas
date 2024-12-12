@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_auxiliary.R
 \name{atl_make_spatialdataframe}
 \alias{atl_make_spatialdataframe}
-\title{Make X,Y data spatial.}
+\title{Make X,Y data spatial}
 \usage{
 atl_make_spatialdataframe(data, crs = sp::CRS("+init=epsg:32631"))
 }

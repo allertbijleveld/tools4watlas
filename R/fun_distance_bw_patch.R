@@ -1,4 +1,4 @@
-#' Get the distance between patches.
+#' Get the distance between patches
 #'
 #' Gets the linear distance between the first point of patch \code{i} and
 #' the last point of the previous patch patch \code{i - 1}.

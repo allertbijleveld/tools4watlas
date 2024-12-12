@@ -1,4 +1,4 @@
-#' Add raster data to tracking data.
+#' Add raster data to tracking data
 #'
 #' This function extracts raster data (for example bathymetry data) at specified
 #' coordinates and adds it as a column to the input data.table.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_simple_distance.R
 \name{atl_simple_dist}
 \alias{atl_simple_dist}
-\title{Calculate distances between successive localizations.}
+\title{Calculate distances between successive localizations}
 \usage{
 atl_simple_dist(data, x = "x", y = "y", lag = 1)
 }

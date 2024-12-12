@@ -1,4 +1,4 @@
-#' Filter positions by an area.
+#' Filter positions by an area
 #'
 #' Filters out positions lying inside or outside an area.
 #' The area can be defined in two ways, either by its X and Y coordinate

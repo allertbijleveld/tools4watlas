@@ -1,4 +1,4 @@
-#' Get data from a local csv file.
+#' Get data from a local csv file
 #'
 #' Adjusted version of \code{read.csv()} to conveniently load WATLAS data from
 #' a csv file. To read large csv files efficiently, the functions uses the

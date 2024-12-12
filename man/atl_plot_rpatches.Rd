@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_auxiliary.R
 \name{atl_plot_rpatches}
 \alias{atl_plot_rpatches}
-\title{Add residence patches to a plot.}
+\title{Add residence patches to a plot}
 \usage{
 atl_plot_rpatches(
   data,

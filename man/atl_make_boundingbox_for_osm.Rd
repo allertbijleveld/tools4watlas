@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_auxiliary.R
 \name{atl_make_boundingbox_for_osm}
 \alias{atl_make_boundingbox_for_osm}
-\title{Create bounding box in LatLong for downloading a map from OpenStreetMap.}
+\title{Create bounding box in LatLong for downloading a map from OpenStreetMap}
 \usage{
 atl_make_boundingbox_for_osm(
   bbox,

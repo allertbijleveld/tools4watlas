@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_get_angle.R
 \name{atl_turning_angle}
 \alias{atl_turning_angle}
-\title{Get the turning angle between points.}
+\title{Get the turning angle between points}
 \usage{
 atl_turning_angle(data, x = "x", y = "y", time = "time")
 }

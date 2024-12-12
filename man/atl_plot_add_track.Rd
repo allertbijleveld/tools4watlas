@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_auxiliary.R
 \name{atl_plot_add_track}
 \alias{atl_plot_add_track}
-\title{Add tracks to plot from list.}
+\title{Add tracks to plot from list}
 \usage{
 atl_plot_add_track(
   data,

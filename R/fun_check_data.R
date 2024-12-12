@@ -1,4 +1,4 @@
-#' Check data has required columns.
+#' Check data has required columns
 #'
 #' An internal function that checks that the data.table has the required
 #' columns.

@@ -1,4 +1,4 @@
-#' Get the turning angle between points.
+#' Get the turning angle between points
 #'
 #' Gets the relative heading between two track segments (three localizations)
 #' using the law of cosines.

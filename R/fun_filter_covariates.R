@@ -1,4 +1,4 @@
-#' Filter data by position covariates.
+#' Filter data by position covariates
 #'
 #' The atlastools function \code{atl_filter_covariates} allows convenient
 #' filtering of a dataset by any number of logical filters.

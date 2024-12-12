@@ -1,4 +1,4 @@
-#' Make a colour transparant.
+#' Make a colour transparant
 #'
 #' A functionm that will make the provided colour transparant.
 #'
@@ -51,7 +51,7 @@ atl_t_col <- function(color, percent = 50, name = NULL) {
   )
 }
 
-#' Add residence patches to a plot.
+#' Add residence patches to a plot
 #'
 #' Adds residence pattch data in UTM 31N as points or polygons to a plot.
 #'
@@ -88,7 +88,7 @@ atl_plot_rpatches <- function(data,
   }
 }
 
-#'  Make X,Y data spatial.
+#' Make X,Y data spatial
 #'
 #' A function that will use the library sp to convert to spatialdataframe.
 #'
@@ -112,7 +112,7 @@ atl_make_spatialdataframe <- function(data,
   )
 }
 
-#' Get spatial bounds for dataframe X,Y coordinates.
+#' Get spatial bounds for dataframe X,Y coordinates
 #'
 #' Obtains the extent of the (localization) data within a dataframe that
 #' contains coordinates X and Y.
@@ -130,7 +130,7 @@ atl_get_spatial_bounds <- function(data) {
   )
 }
 
-#' Create bounding box in LatLong for downloading a map from OpenStreetMap.
+#' Create bounding box in LatLong for downloading a map from OpenStreetMap
 #'
 #' Transforms a bounding box obtained with \code{atl_get_spatial_bounds} to a
 #' bounding box in LongLat necesarry for plotting with
@@ -190,7 +190,7 @@ atl_make_boundingbox_for_osm <- function(bbox,
 }
 
 
-#' Plot a map downloaded with OpenStreetMap.
+#' Plot a map downloaded with OpenStreetMap
 #'
 #' A function that is used in e.g. plotting multiple individuals.
 #'
@@ -215,7 +215,7 @@ atl_plot_map_osm <- function(map,
   plot(map)
 }
 
-#' Add tracks to plot from list.
+#' Add tracks to plot from list
 #'
 #' A function that is used for plotting multiple individuals on a map from a
 #' list of spatial data.

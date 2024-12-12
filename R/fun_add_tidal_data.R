@@ -1,4 +1,4 @@
-#' Add tidal data to tracking data.
+#' Add tidal data to tracking data
 #'
 #' Adds a unique tide identifier, waterlevel, time from high tide and time to
 #' low tide for tracking data (both in minutes).

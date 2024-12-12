@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_auxiliary.R
 \name{atl_plot_map_osm}
 \alias{atl_plot_map_osm}
-\title{Plot a map downloaded with OpenStreetMap.}
+\title{Plot a map downloaded with OpenStreetMap}
 \usage{
 atl_plot_map_osm(map, ppi = 96)
 }

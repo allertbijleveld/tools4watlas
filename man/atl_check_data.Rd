@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_check_data.R
 \name{atl_check_data}
 \alias{atl_check_data}
-\title{Check data has required columns.}
+\title{Check data has required columns}
 \usage{
 atl_check_data(data, names_expected = c("x", "y", "time"))
 }

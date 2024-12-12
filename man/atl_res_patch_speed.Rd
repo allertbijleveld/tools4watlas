@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_make_res_patch_speed.R
 \name{atl_res_patch_speed}
 \alias{atl_res_patch_speed}
-\title{Construct residence patches from position data.}
+\title{Construct residence patches from position data}
 \usage{
 atl_res_patch_speed(
   data,

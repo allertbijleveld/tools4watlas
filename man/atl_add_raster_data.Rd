@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_add_raster_data.R
 \name{atl_add_raster_data}
 \alias{atl_add_raster_data}
-\title{Add raster data to tracking data.}
+\title{Add raster data to tracking data}
 \usage{
 atl_add_raster_data(
   data = NULL,

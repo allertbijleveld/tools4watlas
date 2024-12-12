@@ -1,4 +1,4 @@
-#' Calculate distances between successive localizations.
+#' Calculate distances between successive localizations
 #'
 #' Gets the euclidean distance between consecutive localization in a coordinate
 #' reference system in metres, i.e., UTM systems.

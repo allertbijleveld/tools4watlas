@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_plot_tag_osm.R
 \name{atl_plot_tag_osm}
 \alias{atl_plot_tag_osm}
-\title{Plot track for one individual on a OpenStreetMap satellite map.}
+\title{Plot track for one individual on a OpenStreetMap satellite map}
 \usage{
 atl_plot_tag_osm(
   data,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_filter_covariates.R
 \name{atl_filter_covariates}
 \alias{atl_filter_covariates}
-\title{Filter data by position covariates.}
+\title{Filter data by position covariates}
 \usage{
 atl_filter_covariates(data, filters = c())
 }

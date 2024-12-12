@@ -1,4 +1,4 @@
-#' Detect position intersections with a polygon.
+#' Detect position intersections with a polygon
 #'
 #' @description Detects which positions intersect a \code{sfc_*POLYGON}. Tested
 #' only for single polygon objects.

@@ -1,4 +1,4 @@
-#' Plot track for one individual on a simple background.
+#' Plot track for one individual on a simple background
 #'
 #' A function that plots the localization data of one individual.
 #'

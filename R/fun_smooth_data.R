@@ -1,4 +1,4 @@
-#' Apply a median smooth to coordinates.
+#' Apply a median smooth to coordinates
 #'
 #' Applies a median smooth defined by a rolling window to the X and Y
 #' coordinates of the data.

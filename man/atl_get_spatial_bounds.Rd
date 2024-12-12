@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_auxiliary.R
 \name{atl_get_spatial_bounds}
 \alias{atl_get_spatial_bounds}
-\title{Get spatial bounds for dataframe X,Y coordinates.}
+\title{Get spatial bounds for dataframe X,Y coordinates}
 \usage{
 atl_get_spatial_bounds(data)
 }

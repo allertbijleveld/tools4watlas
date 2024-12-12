@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_within_polygon.R
 \name{atl_within_polygon}
 \alias{atl_within_polygon}
-\title{Detect position intersections with a polygon.}
+\title{Detect position intersections with a polygon}
 \usage{
 atl_within_polygon(data, x = "x", y = "y", polygon)
 }

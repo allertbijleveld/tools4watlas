@@ -1,4 +1,4 @@
-#' Get data from a SQLite-database.
+#' Get data from a SQLite-database
 #'
 #' this function can be used to obtain data from a local or remote SQLite
 #' database. If the full path with filename is provided in 'SQLiteDB', it will

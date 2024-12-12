@@ -1,4 +1,4 @@
-#' Thin tracking data by resampling or aggregation.
+#' Thin tracking data by resampling or aggregation
 #'
 #' Uniformly reduce data volumes with either aggregation or resampling
 #' (specified by the \code{method} argument) over an interval specified in

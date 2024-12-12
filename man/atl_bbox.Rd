@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_bbox.R
 \name{atl_bbox}
 \alias{atl_bbox}
-\title{Create a bounding box with specified aspect ratio and buffer.}
+\title{Create a bounding box with specified aspect ratio and buffer}
 \usage{
 atl_bbox(geometry, asp = "16:9", buffer = 0)
 }

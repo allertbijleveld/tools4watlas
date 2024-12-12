@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_smooth_data.R
 \name{atl_median_smooth}
 \alias{atl_median_smooth}
-\title{Apply a median smooth to coordinates.}
+\title{Apply a median smooth to coordinates}
 \usage{
 atl_median_smooth(data, x = "x", y = "y", time = "time", moving_window = 5)
 }

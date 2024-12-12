@@ -1,4 +1,4 @@
-#' Create a bounding box with specified aspect ratio and buffer.
+#' Create a bounding box with specified aspect ratio and buffer
 #'
 #' This function generates a bounding box for a given geometry with a
 #' specified aspect ratio. Additionally, it allows applying a buffer to

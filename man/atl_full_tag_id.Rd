@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_full_tag_id.R
 \name{atl_full_tag_id}
 \alias{atl_full_tag_id}
-\title{Create full tag ID or tag ID with specific length.}
+\title{Create full tag ID or tag ID with specific length}
 \usage{
 atl_full_tag_id(tag, short = FALSE, n = 4)
 }
@@ -18,7 +18,7 @@ digits, but less work.}
 Full or short tag ID as character
 }
 \description{
-Create full tag ID or tag ID with specific length.
+Create full tag ID or tag ID with specific length
 }
 \examples{
 tag <- 123

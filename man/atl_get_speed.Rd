@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_get_speed.R
 \name{atl_get_speed}
 \alias{atl_get_speed}
-\title{Calculate instantaneous speed.}
+\title{Calculate instantaneous speed}
 \usage{
 atl_get_speed(data, x = "x", y = "y", time = "time", type = c("in"))
 }

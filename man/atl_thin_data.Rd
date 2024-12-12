@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_thin_data.R
 \name{atl_thin_data}
 \alias{atl_thin_data}
-\title{Thin tracking data by resampling or aggregation.}
+\title{Thin tracking data by resampling or aggregation}
 \usage{
 atl_thin_data(
   data,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_get_data.R
 \name{atl_get_data}
 \alias{atl_get_data}
-\title{Get data from a SQLite-database.}
+\title{Get data from a SQLite-database}
 \usage{
 atl_get_data(
   tag,

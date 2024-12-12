@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_get_patch_data.R
 \name{atl_patch_summary}
 \alias{atl_patch_summary}
-\title{Get residence patch data.}
+\title{Get residence patch data}
 \usage{
 atl_patch_summary(patch_data, which_data = "summary", buffer_radius = 10)
 }
