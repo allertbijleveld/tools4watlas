@@ -27,32 +27,34 @@ library(tools4watlas)
 library(data.table)
 
 # Load meta data
-all_tags_path <- system.file("extdata", "tags_watlas_subset.xlsx", 
-                            package = "tools4watlas")
-all_tags  <- readxl::read_excel(all_tags_path, sheet = "tags_watlas_all") |>
+all_tags_path <- system.file("extdata", "tags_watlas_subset.xlsx",
+  package = "tools4watlas"
+)
+all_tags <- readxl::read_excel(all_tags_path, sheet = "tags_watlas_all") |>
   data.table()
 
-# Subset desired tags using data.table 
+# Subset desired tags using data.table
 tags <- all_tags[season == 2023]$tag
 
 # Time period for which data should be extracted form the database (in CET)
 from <- "2023-10-01 12:00:00"
-to   <- "2023-10-02 12:00:00"
+to <- "2023-10-02 12:00:00"
 
 # Database connection
 sqlite_db <- system.file("extdata", "watlas_example.SQLite",
-                        package = "tools4watlas")
+  package = "tools4watlas"
+)
 con <- RSQLite::dbConnect(RSQLite::SQLite(), sqlite_db)
 
 # Load data from database
 data_split <- lapply(
-  tags, 
-  atl_get_data, 
-  tracking_time_start = from, 
-  tracking_time_end = to, 
+  tags,
+  atl_get_data,
+  tracking_time_start = from,
+  tracking_time_end = to,
   timezone = "CET",
   use_connection = con
-) 
+)
 
 # Close connection
 RSQLite::dbDisconnect(con)
@@ -64,12 +66,12 @@ With the data of interest, some basic variables can be calculated, for instance,
 
 ```{r echo=T, results='hide'}						
 # Transform the lists to data.tables
-lapply(data_split, setDT) 
+lapply(data_split, setDT)
 
 # Calculate SD
 lapply(data_split, function(dt) {
   dt[, sd := sqrt(varx + vary + (2 * covxy))]
-}) 
+})
 
 # Calculate speed
 lapply(data_split, function(dt) {
@@ -77,7 +79,7 @@ lapply(data_split, function(dt) {
     speed_in = atl_get_speed(dt, type = "in"),
     speed_out = atl_get_speed(dt, type = "out")
   )]
-}) 
+})
 ```
 Look at the distribution of the data:
 
@@ -92,7 +94,6 @@ ggplot(data = data[!is.na(speed_in) & speed_in > 5 & speed_in < 100]) +
   geom_histogram(aes(x = speed_in), bins = 50) +
   labs(x = "Speed in (m/s)") +
   theme_bw()
-
 ```
 
 ## Filter by the variance of coordinates and speed
@@ -101,17 +102,17 @@ The next step is to remove localization errors, for instance, by applying basic 
 
 ```{r}
 # Filter by speed and variance
-var_max	<- 5000	# variance in meters squared
+var_max <- 5000 # variance in meters squared
 speed_max <- 35 # m/s (126 km/h)
 
 data_split <- lapply(data_split, function(dt) {
   dt <- atl_filter_covariates(
     data = dt,
     filters = c(
-	  "varx < var_max",
-		"vary < var_max",
-		"speed_in < speed_max | is.na(speed_in)",
-		"speed_out < speed_max | is.na(speed_out)"
+      "varx < var_max",
+      "vary < var_max",
+      "speed_in < speed_max | is.na(speed_in)",
+      "speed_out < speed_max | is.na(speed_out)"
     )
   )
 })
@@ -123,7 +124,7 @@ To further reduce error in the localization data, a basic smoother such as a med
 
 ```{r echo=T, results='hide'}		
 # Smooth the data
-med_filter <- 5	# number of localizations within window for smoothing
+med_filter <- 5 # number of localizations within window for smoothing
 
 # since the function modifies in place, we shall make a copy
 data_smooth <- copy(data_split)
@@ -138,7 +139,7 @@ Peek at the data to see what happend:
 
 ```{r echo=T, results='hide'}		
 # Smooth the data
-med_filter <- 5	# number of localizations within window for smoothing
+med_filter <- 5 # number of localizations within window for smoothing
 
 # since the function modifies in place, we shall make a copy
 data_smooth <- copy(data_split)
@@ -162,13 +163,13 @@ d1_smooth <- data_smooth[[1]]
 from <- min(d1_raw[, datetime]) + 5 * 3600
 to <- min(d1_raw[, datetime]) + 24 * 3600
 
-d1_raw <- d1_raw[datetime %between% c(from, to)]   
+d1_raw <- d1_raw[datetime %between% c(from, to)]
 d1_smooth <- d1_smooth[datetime %between% c(from, to)]
 
 # Create basemap
-bm = atl_create_bm(d1_smooth)
+bm <- atl_create_bm(d1_smooth)
 
-# Plot 
+# Plot
 bm +
   geom_path(data = d1_raw, aes(x, y), color = "firebrick3", linewidth = 0.5) +
   geom_path(data = d1_smooth, aes(x, y), color = "black", linewidth = 0.5) +
@@ -182,16 +183,18 @@ After following the above basic steps, the data will be ready for adding environ
 
 ```{r}
 # unlist to data.table
-data = rbindlist(data_smooth, fill = TRUE)
+data <- rbindlist(data_smooth, fill = TRUE)
 setorder(data, tag, time)
 
 # path to tide data
 tides_path <- system.file(
   "extdata", "example_2023_tide_data_UTC.csv",
-  package = "tools4watlas")
+  package = "tools4watlas"
+)
 tide_data_highres_path <- system.file(
-  "extdata", "example_2023_tide_data_highres_UTC.csv", 
-  package = "tools4watlas")
+  "extdata", "example_2023_tide_data_highres_UTC.csv",
+  package = "tools4watlas"
+)
 
 # load tide data
 tides <- data.table::fread(tides_path)
@@ -200,13 +203,15 @@ tide_data_highres <- data.table::fread(tide_data_highres_path)
 # add tide data to movement data
 data <- atl_add_tidaldata(
   data = data,
-  tide_data = tides, 
-  tide_data_highres = tide_data_highres, 
+  tide_data = tides,
+  tide_data_highres = tide_data_highres,
   waterdata_resolution = "10 minute",
-  offset = 30)
+  offset = 30
+)
 
 # Show first 5 rows (subset of columns to show additional ones)
-head(data[, .(posID, tag, datetime, tideID, tidaltime, time2lowtide, waterlevel)]) |>
+head(data[, .(posID, tag, datetime, tideID, tidaltime, time2lowtide, 
+              waterlevel)]) |>
   knitr::kable(digits = 2)
 ```
 
@@ -218,12 +223,13 @@ For specific analyses, the cleaned data can be selected. To select localizations
 # check tide ID
 data[, tideID] |> unique()
 
-# Select the low tide period for a particular tide as specified by tideID	
+# Select the low tide period for a particular tide as specified by tideID
 data_subset <- atl_filter_covariates(
-	data = data,
-	filters = c(
-	"tideID == 2023530",
-	"between(time2lowtide, -2.5 * 60, 2.5 * 60)")
+  data = data,
+  filters = c(
+    "tideID == 2023530",
+    "between(time2lowtide, -2.5 * 60, 2.5 * 60)"
+  )
 )
 ```
 

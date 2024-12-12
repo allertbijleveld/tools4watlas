@@ -43,7 +43,7 @@ reference:
      - atl_make_boundingbox_for_osm
      - atl_plot_tag
      - atl_plot_tag_osm
-     - plot_map_osm
+     - atl_plot_map_osm
      - atl_plot_rpatches
      - atl_plot_add_track
   - title: "Other functions"

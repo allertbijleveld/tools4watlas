@@ -21,7 +21,7 @@ Full or short tag ID as character
 Create full tag ID or tag ID with specific length.
 }
 \examples{
-tag = 123
+tag <- 123
 atl_full_tag_id(tag)
 atl_full_tag_id(tag, short = TRUE)
 

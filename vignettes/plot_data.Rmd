@@ -39,19 +39,21 @@ We can create simple base maps of the study area by using the function `atl_crea
 #### Map with points and tracks
 
 ```{r, fig.cap = "Points and tracks on basemap"}
-
 # Create base map
-bm = atl_create_bm(data, buffer = 800)
+bm <- atl_create_bm(data, buffer = 800)
 
 # Plot points and tracks
 bm +
-  geom_path(data = data, aes(x, y, colour = tag), alpha = 0.1, 
-            show.legend = FALSE) +
-  geom_point(data = data, aes(x, y, colour = tag), size = 0.5, 
-             show.legend = FALSE) +
+  geom_path(
+    data = data, aes(x, y, colour = tag), alpha = 0.1,
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = data, aes(x, y, colour = tag), size = 0.5,
+    show.legend = FALSE
+  ) +
   scale_color_brewer(palette = "Dark2") # for up to 8 categories
-  # scale_color_viridis_d(option = "H") # for N categories 
-
+# scale_color_viridis_d(option = "H") # for N categories
 ```
 
 #### Heatmap of all positions
@@ -68,13 +70,17 @@ data_heatmap[, c("x_round", "y_round") := list(
 data_heatmap <- data_heatmap[, .N, by = c("x_round", "y_round")]
 
 # Plot heatmap
-bm + 
-  geom_tile(data = data_heatmap, aes(x_round, y_round, fill = N), linewidth = 0.1, show.legend = T) +
+bm +
+  geom_tile(
+    data = data_heatmap, aes(x_round, y_round, fill = N),
+    linewidth = 0.1, show.legend = TRUE
+  ) +
   scale_fill_viridis(
     option = "A", discrete = FALSE, trans = "log10", name = "N positions",
-    breaks = trans_breaks("log10", function(x) 10^x), 
-    labels = trans_format("log10", math_format(10^.x)), 
-    direction = -1)
+    breaks = trans_breaks("log10", function(x) 10^x),
+    labels = trans_format("log10", math_format(10^.x)),
+    direction = -1
+  )
 ```
 
 ## Interactive leaflet map with `mapview`
@@ -89,8 +95,10 @@ library(sf)
 d_sf <- atl_as_sf(data, additional_cols = c("datetime"))
 
 # add track
-d_sf_lines <-  atl_as_sf(data, additional_cols = c("datetime"), 
-                         option = "lines")
+d_sf_lines <- atl_as_sf(data,
+  additional_cols = c("datetime"),
+  option = "lines"
+)
 
 # Plot interactive map
 mapview(d_sf_lines, zcol = "tag", legend = FALSE) + mapview(d_sf, zcol = "tag")
@@ -104,34 +112,39 @@ library(sf)
 
 # make data spatial and transform projection to WGS 84 (used in osm)
 d_sf <- atl_as_sf(data, additional_cols = c("tag", "datetime"))
-d_sf <- st_transform(d_sf, crs = st_crs(4326)) 
+d_sf <- st_transform(d_sf, crs = st_crs(4326))
 
 # get bounding box
 bbox <- atl_bbox(d_sf, asp = "16:9", buffer = 500)
 
-# extract openstreetmap 
+# extract openstreetmap
 # other 'type' options are "osm", "maptoolkit-topo", "bing", "stamen-toner",
 # "stamen-watercolor", "esri", "esri-topo", "nps", "apple-iphoto", "skobbler";
 map <- openmap(c(bbox["ymax"], bbox["xmin"]),
-               c(bbox["ymin"], bbox["xmax"]),
-               type = "bing", mergeTiles = TRUE) 
+  c(bbox["ymin"], bbox["xmax"]),
+  type = "bing", mergeTiles = TRUE
+)
 
 bm <- autoplot.OpenStreetMap(map)
 
 # transform points to Mercator and add transformed coordinates to data
-d_sf <- st_transform(d_sf, crs = st_crs(3857)) 
+d_sf <- st_transform(d_sf, crs = st_crs(3857))
 osm_coords <- st_coordinates(d_sf)
 data[, `:=`(x_osm = osm_coords[, 1], y_osm = osm_coords[, 2])]
 
 # plot
 bm +
-  geom_path(data = data, aes(x_osm, y_osm, colour = tag), alpha = 0.1, 
-            show.legend = FALSE) +
-  geom_point(data = data, aes(x_osm, y_osm, colour = tag), size = 0.5, 
-             show.legend = FALSE) +
+  geom_path(
+    data = data, aes(x_osm, y_osm, colour = tag), alpha = 0.1,
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = data, aes(x_osm, y_osm, colour = tag), size = 0.5,
+    show.legend = FALSE
+  ) +
   scale_color_brewer(palette = "Dark2") +
   labs(x = "Longitude", y = "Latitude") +
- coord_sf(crs = 3857)
+  coord_sf(crs = 3857)
 ```
 
 ## Base R map 
@@ -148,8 +161,10 @@ data <- data_example
 d_sf <- atl_as_sf(data, additional_cols = names(data))
 
 # Plot the tracking data with a simple background
-atl_plot_tag(data = d_sf, tag = NULL, fullname = NULL, buffer = 1,
-             color_by = "time")
+atl_plot_tag(
+  data = d_sf, tag = NULL, fullname = NULL, buffer = 1,
+  color_by = "time"
+)
 
 # Note: function opens device and therefore the plot is not shown in markdown
 ```
@@ -167,21 +182,24 @@ data <- data_example[tag == data_example[1, tag]]
 
 # make data spatial and transform projection to WGS 84 (used in osm)
 d_sf <- atl_as_sf(data, additional_cols = names(data))
-d_sf <- st_transform(d_sf, crs = st_crs(4326)) 
+d_sf <- st_transform(d_sf, crs = st_crs(4326))
 
 # get bounding box
 bbox <- atl_bbox(d_sf, buffer = 500)
 
-# extract openstreetmap 
+# extract openstreetmap
 # other 'type' options are "osm", "maptoolkit-topo", "bing", "stamen-toner",
 # "stamen-watercolor", "esri", "esri-topo", "nps", "apple-iphoto", "skobbler";
 map <- openmap(c(bbox["ymax"], bbox["xmin"]),
-               c(bbox["ymin"], bbox["xmax"]),
-               type = "bing", mergeTiles = TRUE) 
+  c(bbox["ymin"], bbox["xmax"]),
+  type = "bing", mergeTiles = TRUE
+)
 
 # Plot the tracking data on the satellite image
-atl_plot_tag_osm(data = d_sf, tag = NULL, mapID = map, color_by = "time", 
-                 fullname = NULL, scalebar = 3)
+atl_plot_tag_osm(
+  data = d_sf, tag = NULL, mapID = map, color_by = "time",
+  fullname = NULL, scalebar = 3
+)
 
 # Note: function opens device and therefore the plot is not shown in markdown
 ```

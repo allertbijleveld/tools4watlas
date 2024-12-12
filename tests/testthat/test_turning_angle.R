@@ -1,5 +1,4 @@
 testthat::test_that("angles are calculated", {
-
   # make test positions
   test_df <- data.table::data.table(
     y = sinpi(seq_len(30) / 10),

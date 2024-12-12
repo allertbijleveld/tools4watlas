@@ -10,11 +10,14 @@ atl_simple_dist(data, x = "x", y = "y", lag = 1)
 \item{data}{A dataframe object of or extending the class data.frame,
 which must contain two coordinate columns for the X and Y coordinates.}
 
-\item{x}{A column name in a data.frame object that contains the numeric X coordinate.}
+\item{x}{A column name in a data.frame object that contains the numeric X
+coordinate.}
 
-\item{y}{A column name in a data.frame object that contains the numeric Y coordinate.}
+\item{y}{A column name in a data.frame object that contains the numeric Y
+coordinate.}
 
-\item{lag}{The lag (in number of localizations) over which to calculate distance}
+\item{lag}{The lag (in number of localizations) over which to calculate
+distance}
 }
 \value{
 Returns a vector of distances between consecutive points.

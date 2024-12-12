@@ -21,15 +21,14 @@
 #' @return None. Breaks if the data does not have required columns.
 atl_check_data <- function(data,
                            names_expected = c("x", "y", "time")) {
-  
   # get the column names
   data_names <- colnames(data)
-  
+
   invisible(
     vapply(names_expected, function(nr) {
       assertthat::assert_that(
         nr %in% data_names,
-        msg = glue::glue("atl_check_data: {nr} is required but 
+        msg = glue::glue("atl_check_data: {nr} is required but
                          missing from data!")
       )
     }, FUN.VALUE = TRUE)

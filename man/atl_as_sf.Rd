@@ -35,8 +35,8 @@ EPSG:32631 (WGS 84 / UTM zone 31N).}
 to include in the resulting sf object. Defaults to \code{NULL} (no additional
 columns included).}
 
-\item{option}{A character string with "points" (default) for returning sf points,
-"lines" to return sf lines and "table" to return a table with a sf
+\item{option}{A character string with "points" (default) for returning sf
+points, "lines" to return sf lines and "table" to return a table with a sf
 coordinates column.}
 }
 \value{
@@ -61,14 +61,16 @@ data <- data.table(
 )
 
 # Convert to sf points with custom CRS and retain the "value" column
-sf_points <- atl_as_sf(data, x = "x", y = "y", tag = "tag", 
-                       projection = sf::st_crs(4326), 
-                       additional_cols = "value")
+sf_points <- atl_as_sf(data,
+  x = "x", y = "y", tag = "tag",
+  projection = sf::st_crs(4326),
+  additional_cols = "value"
+)
 plot(sf_points)
 
 # Convert to sf lines
 sf_lines <- atl_as_sf(data, x = "x", y = "y", tag = "tag", option = "lines")
-plot(sf_lines)  
+plot(sf_lines)
 
 # Convert to a data.table with coordinates column
 sf_table <- atl_as_sf(data, x = "x", y = "y", tag = "tag", option = "table")

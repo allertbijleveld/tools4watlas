@@ -19,26 +19,27 @@ atl_within_polygon <- function(data,
   ptid <- NULL
   # check input type
   assertthat::assert_that("data.frame" %in% class(data),
-                          msg = "filter_bbox: input not a dataframe object!"
+    msg = "filter_bbox: input not a dataframe object!"
   )
-  
+
   assertthat::assert_that("sf" %in% class(polygon),
-                          msg = "filter_polygon: given spatial is not class sf"
+    msg = "filter_polygon: given spatial is not class sf"
   )
   # check polygon type
-  assertthat::assert_that(any(stringr::str_detect(
-    sf::st_geometry_type(polygon),
-    pattern = "(POLYGON)"
-  )),
-  msg = "filter_polygon: given sf is not *POLYGON"
+  assertthat::assert_that(
+    any(stringr::str_detect(
+      sf::st_geometry_type(polygon),
+      pattern = "(POLYGON)"
+    )),
+    msg = "filter_polygon: given sf is not *POLYGON"
   )
-  
+
   # check for crs
   assertthat::assert_that(!is.na(sf::st_crs(polygon)))
-  
+
   # get bounding box of polygon
   bbox <- sf::st_bbox(polygon)
-  
+
   # get bbox filter string
   filter_string <- c(
     sprintf(
@@ -50,7 +51,7 @@ atl_within_polygon <- function(data,
       y, bbox["ymin"], bbox["ymax"]
     )
   )
-  
+
   # filter data on bbox first
   data[, ptid := seq_len(nrow(data))]
   data <- tools4watlas::atl_filter_covariates(
@@ -59,27 +60,27 @@ atl_within_polygon <- function(data,
   )
   # get remaining rows
   rows <- data$ptid
-  
+
   # set ptid to NULL
   data[, ptid := NULL]
-  
+
   # get coordinates
   coord_cols <- c(x, y)
   data <- data[, coord_cols, with = FALSE]
   # make sf
   data <- sf::st_as_sf(data,
-                       coords = c(x, y),
-                       crs = sf::st_crs(polygon)
+    coords = c(x, y),
+    crs = sf::st_crs(polygon)
   )
-  
+
   # get intersection
   poly_intersections <- apply(sf::st_intersects(data, polygon), 1, any)
-  
+
   # add asserts
   assertthat::assert_that(is.logical(poly_intersections),
-                          msg = "filter_polygon: logical not returned"
+    msg = "filter_polygon: logical not returned"
   )
-  
+
   # return rows
   return(rows[poly_intersections])
 }

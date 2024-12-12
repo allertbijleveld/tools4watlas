@@ -1,5 +1,4 @@
 testthat::test_that("simple distance works", {
-
   # make test positions
   testdf <- data.table::data.table(
     a_start = seq(10, 100, 10),

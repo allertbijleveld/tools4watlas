@@ -10,19 +10,20 @@
 #' @export
 #'
 #' @examples
-#' tag = 123
+#' tag <- 123
 #' atl_full_tag_id(tag)
 #' atl_full_tag_id(tag, short = TRUE)
 #'
 atl_full_tag_id <- function(tag, short = FALSE, n = 4) {
-
   # check input
   assertthat::assert_that(
     any(is.numeric(tag), is.character(tag)),
-    msg = "tag provided must be numeric or character")
+    msg = "tag provided must be numeric or character"
+  )
   assertthat::assert_that(
     nchar(as.character(tag)) < 7,
-    msg = glue::glue("tag should be < 7 digits, but is {nchar(tag)} digits"))
+    msg = glue::glue("tag should be < 7 digits, but is {nchar(tag)} digits")
+  )
 
   # create long tag number
   tag_full <- as.character(as.numeric(tag) + 31001000000)
@@ -31,8 +32,8 @@ atl_full_tag_id <- function(tag, short = FALSE, n = 4) {
   tag_last_n <- substr(tag_full, nchar(tag_full) - n + 1, nchar(tag_full))
 
   # return full or short tag number as character string
-  ifelse(short == TRUE, 
-         return(tag_last_n), 
-         return(tag_full))
-
+  ifelse(short == TRUE,
+    return(tag_last_n),
+    return(tag_full)
+  )
 }

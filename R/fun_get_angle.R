@@ -1,6 +1,7 @@
 #' Get the turning angle between points.
 #'
-#' Gets the relative heading between two track segments (three localizations) using the law of cosines.
+#' Gets the relative heading between two track segments (three localizations)
+#' using the law of cosines.
 #' The turning angle is returned in degrees.
 #' Users should apply this function to _one individual at a time_, ideally by
 #' splittng a dataframe with multiple individuals into a list of dataframes.
@@ -26,22 +27,22 @@ atl_turning_angle <- function(data,
                               x = "x",
                               y = "y",
                               time = "time") {
-
   # check for column names
   atl_check_data(data,
     names_expected = c(x, y, time)
   )
 
-  # check whether the data is ordered on time 
-  if(min(diff(data[[time]])) < 0) 
+  # check whether the data is ordered on time
+  if (min(diff(data[[time]])) < 0) {
     warning("data was not ordered by time, but us now")
+  }
 
-	# set order in time
-	if (!data.table::is.data.table(data)) {
-	  data.table::setDT(data)
-	}
-	data.table::setorderv(data, time)
-	
+  # set order in time
+  if (!data.table::is.data.table(data)) {
+    data.table::setDT(data)
+  }
+  data.table::setorderv(data, time)
+
   # handle good data case
   if (nrow(data) > 1) {
     x1 <- data[[x]][seq_len(nrow(data) - 2)]
@@ -58,10 +59,8 @@ atl_turning_angle <- function(data,
     dist_x3_x1 <- sqrt(((x3 - x1)^2) + ((y3 - y1)^2))
 
     # use the law of cosines
-    angle <- acos(((dist_x1_x2^2) +
-      (dist_x2_x3^2) -
-      (dist_x3_x1^2)) /
-      (2 * dist_x1_x2 * dist_x2_x3))
+    angle <- acos(((dist_x1_x2^2) + (dist_x2_x3^2) -
+                     (dist_x3_x1^2)) / (2 * dist_x1_x2 * dist_x2_x3))
 
     # convert to degrees
     angle <- angle * 180 / pi

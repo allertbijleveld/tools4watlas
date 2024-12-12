@@ -31,28 +31,29 @@ atl_get_speed <- function(data,
                           y = "y",
                           time = "time",
                           type = c("in")) {
-  
+  # check names expected
   atl_check_data(data, names_expected = c(x, y, time))
-  
-  # check whether the data is ordered on time 
-  if(min(diff(data[[time]])) < 0)
+
+  # check whether the data is ordered on time
+  if (min(diff(data[[time]])) < 0) {
     warning("data was not ordered by time, but is now")
+  }
 
   # set order in time
   data.table::setorderv(data, time)
-  
+
   # get distance
   distance <- tools4watlas::atl_simple_dist(data, x, y)
-  
+
   # get time
   time <- c(NA, diff(data[[time]]))
-  
+
   if (type == "in") {
     speed <- distance / time
   } else if (type == "out") {
     speed <- data.table::shift(distance, type = "lead") /
       data.table::shift(time, type = "lead")
   }
-  
+
   return(speed)
 }

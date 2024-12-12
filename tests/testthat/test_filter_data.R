@@ -16,10 +16,11 @@ testthat::test_that("data is correctly filtered", {
   testthat::expect_lte(min(test_output$cov_1), 75)
 
   # check warning
-  testthat::expect_warning(tools4watlas::atl_filter_covariates(
-    test_data,
-    "data.table::between(cov_1, 0, 0.5)"
-  ),
-  regexp = "*no rows remaining*"
+  testthat::expect_warning(
+    tools4watlas::atl_filter_covariates(
+      test_data,
+      "data.table::between(cov_1, 0, 0.5)"
+    ),
+    regexp = "*no rows remaining*"
   )
 })

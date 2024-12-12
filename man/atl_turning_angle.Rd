@@ -22,7 +22,8 @@ Negative degrees indicate 'left' turns. There are two fewer
 angles than the number of rows in the dataframe.
 }
 \description{
-Gets the relative heading between two track segments (three localizations) using the law of cosines.
+Gets the relative heading between two track segments (three localizations)
+using the law of cosines.
 The turning angle is returned in degrees.
 Users should apply this function to \emph{one individual at a time}, ideally by
 splittng a dataframe with multiple individuals into a list of dataframes.

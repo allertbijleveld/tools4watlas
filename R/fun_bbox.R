@@ -32,36 +32,36 @@
 atl_bbox <- function(geometry, asp = "16:9", buffer = 0) {
   # Check input
   assertthat::assert_that(
-    stringr::str_detect(asp, ":"), 
+    stringr::str_detect(asp, ":"),
     length(as.numeric(unlist(strsplit(asp, ":")))) == 2,
     msg = "Aspect ratio must be in the format 'width:height'."
   )
-  
+
   if (nrow(geometry) == 1 && all(sf::st_geometry_type(geometry) == "POINT")) {
     assertthat::assert_that(
-      buffer > 0, 
+      buffer > 0,
       msg = "Buffer must be >0 if geometry is a single point"
     )
   }
-  
+
   # Parse the aspect ratio
   ratio <- as.numeric(unlist(strsplit(asp, ":")))
-  
+
   # Apply the buffer to the geometry
   if (buffer != 0) {
     # For all geometries, apply the buffer
     geometry <- sf::st_buffer(geometry, dist = buffer)
   }
-  
+
   # Extract the original bounding box for the geometry (with the buffer applied)
   bbox <- sf::st_bbox(geometry)
   x_range <- bbox["xmax"] - bbox["xmin"]
   y_range <- bbox["ymax"] - bbox["ymin"]
-  
+
   # Compute the desired width and height based on the aspect ratio
   desired_aspect <- ratio[1] / ratio[2]
   current_aspect <- x_range / y_range
-  
+
   if (current_aspect > desired_aspect) {
     # Wider than desired aspect ratio, adjust y-range
     new_y_range <- x_range / desired_aspect
@@ -75,7 +75,7 @@ atl_bbox <- function(geometry, asp = "16:9", buffer = 0) {
     bbox["xmin"] <- bbox["xmin"] - delta_x
     bbox["xmax"] <- bbox["xmax"] + delta_x
   }
-  
+
   # Return the adjusted bounding box
   return(bbox)
-} 
+}

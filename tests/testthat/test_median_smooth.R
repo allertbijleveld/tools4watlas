@@ -1,5 +1,4 @@
 testthat::test_that("cleaning raw data works", {
-
   # make test_data
   starttime <- Sys.time()
   attr(starttime, "tzone") <- "CET"
@@ -40,7 +39,7 @@ testthat::test_that("cleaning raw data works", {
   real_data <- data.table::fread("../testdata/whole_season_tx_435.csv")
   test_output_real <- atl_median_smooth(
     data = real_data,
-    x = "X", 
+    x = "X",
     y = "Y",
     time = "TIME",
     moving_window = 5

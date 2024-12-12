@@ -51,19 +51,19 @@ Loading the `tags_watlas_subset.xlsx` will provide a table with the following co
 
 ```{r}
 # Load meta data
-all_tags_path = system.file("extdata", "tags_watlas_subset.xlsx", 
-                            package = "tools4watlas")
-all_tags = readxl::read_excel(all_tags_path, sheet = "tags_watlas_all") |>
+all_tags_path <- system.file(
+  "extdata", "tags_watlas_subset.xlsx", package = "tools4watlas"
+)
+all_tags <- readxl::read_excel(all_tags_path, sheet = "tags_watlas_all") |>
   data.table()
 
-# Subset desired tags using data.table 
+# Subset desired tags using data.table
 # (For example red knots and redshank from season 2023)
-tags <- all_tags[season == 2023 &
-                   species %in% c("red knot", "redshank")]$tag
+tags <- all_tags[season == 2023 & species %in% c("red knot", "redshank")]$tag
 
 # Time period for which data should be extracted form the database (in CET)
 from <- "2023-10-01 12:00:00"
-to   <- "2023-10-02 12:00:00"
+to <- "2023-10-02 12:00:00"
 ```
 
 #### Extract data from local SQLite file
@@ -73,23 +73,23 @@ First, the path and file name of the local SQLite database need to be provided. 
 
 ```{r}
 # Database connection
-sqlite_db = system.file("extdata", "watlas_example.SQLite",
-                        package = "tools4watlas")
+sqlite_db <- system.file(
+  "extdata", "watlas_example.SQLite", package = "tools4watlas"
+)
 con <- RSQLite::dbConnect(RSQLite::SQLite(), sqlite_db)
 
 # Load data from database
 data_split <- lapply(
-  tags, 
-  atl_get_data, 
-  tracking_time_start = from, 
-  tracking_time_end = to, 
+  tags,
+  atl_get_data,
+  tracking_time_start = from,
+  tracking_time_end = to,
   timezone = "CET",
   use_connection = con
-) 
+)
 
 # Close connection
 RSQLite::dbDisconnect(con)
-
 ```
 
 #### Alternatively, extract from remote SQL-database
@@ -98,8 +98,8 @@ Does the same as when connecting to a local SQLite database. In this example (ch
 
 ```{r, eval = FALSE}
 # Load meta data
-all_tags_path = "C:\\path\\tags_watlas_all.xlsx"
-all_tags = readxl::read_excel(all_tags_path, sheet = "tags_watlas_all") |>
+all_tags_path <- "C:\\path\\tags_watlas_all.xlsx"
+all_tags <- readxl::read_excel(all_tags_path, sheet = "tags_watlas_all") |>
   data.table()
 
 # Subset all tags from 2024
@@ -108,20 +108,20 @@ tags <- all_tags[season == 2024]$tagID
 # Select N last days to get data from
 days <- 3
 from <- Sys.time() - 86400 * days |> as.character()
-to   <- Sys.time() + 3600 |> as.character()
+to <- Sys.time() + 3600 |> as.character()
 
 # Load data from database
-data_split  <- lapply(
-  tags, 
+data_split <- lapply(
+  tags,
   atl_get_data,
   tracking_time_start = from,
   tracking_time_end = to,
   timezone = "CET",
-  host = "host", 
+  host = "host",
   database = "db",
   username = "username",
   password = "password"
-)  			  
+)
 ```
 
 ## Data explanation
@@ -163,15 +163,17 @@ data <- rbindlist(data_split, fill = TRUE) |> data.table()
 data[, .N, tag] |> nrow()
 
 # N positions, first and last data by tag ID
-data[, .(N_positions = .N,
-         fist_data = min(datetime),
-         last_data = max(datetime)), tag]
+data[, .(
+  N_positions = .N,
+  fist_data = min(datetime),
+  last_data = max(datetime)
+), tag]
 
 # add data
 data[, date := as.Date(datetime)] |> invisible()
 
 # N positions by species and day
-data_subset = data[, .N, by = .(tag, date)]
+data_subset <- data[, .N, by = .(tag, date)]
 
 # Plot data
 library(ggplot2)
@@ -182,44 +184,10 @@ ggplot(data_subset, aes(x = date, y = tag, fill = N)) +
   geom_tile() +
   scale_fill_viridis(
     option = "A", discrete = FALSE, trans = "log10", name = "N positions",
-    breaks = trans_breaks("log10", function(x) 10^x), 
-    labels = trans_format("log10", math_format(10^.x)), 
-    direction = -1) + 
+    breaks = trans_breaks("log10", function(x) 10^x),
+    labels = trans_format("log10", math_format(10^.x)),
+    direction = -1
+  ) +
   labs(x = "Date", y = "Tag") +
-  theme_classic() 
+  theme_classic()
 ```
-
-#### Plot by tag
-
-```{r, fig.cap = "Overview plot by tag", fig.width = 7, fig.height = 4}
-
-# Create basemap
-bm = atl_create_bm(data)
-
-# Plot data
-bm +
-  geom_path(data = data, aes(x, y, color = tag), alpha = 0.1) +
-  geom_point(data = data, aes(x, y, color = tag), size = 0.5) 
-```
-
-#### Heatmap of all positions
-
-```{r, fig.cap = "Heatmap of all positions", fig.width = 7, fig.height = 4}
-# Round data to 200 m grid cells
-data_heatmap <- copy(data)
-data_heatmap[, c("x_round", "y_round") := list(
-  plyr::round_any(x, 200),
-  plyr::round_any(y, 200)
-)]
-data_heatmap <- data_heatmap[, .N, by = c("x_round", "y_round")]
-
-# Plot heatmap
-bm + 
-  geom_tile(data = data_heatmap, aes(x_round, y_round, fill = N), linewidth = 0.1, show.legend = T) +
-  scale_fill_viridis(
-    option = "A", discrete = FALSE, trans = "log10", name = "N positions",
-    breaks = trans_breaks("log10", function(x) 10^x), 
-    labels = trans_format("log10", math_format(10^.x)), 
-    direction = -1)
-```
-

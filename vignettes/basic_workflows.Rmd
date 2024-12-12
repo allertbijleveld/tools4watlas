@@ -41,16 +41,16 @@ First, the path and file name of the local SQLite database need to be provided. 
 
 
 ```{r, eval=FALSE}
-SQLiteDB = paste0("path", "SQLite_db_name", ".sqlite")
-MyDBconnection <- RSQLite::dbConnect(RSQLite::SQLite(),SQLiteDB)
+SQLiteDB <- paste0("path", "SQLite_db_name", ".sqlite")
+MyDBconnection <- RSQLite::dbConnect(RSQLite::SQLite(), SQLiteDB)
 
 data <- atl_get_data(
   tag = 31001002707,
-	tracking_time_start = "2022-09-02 01:25:00",
-	tracking_time_end = "2022-09-03 13:47:00",
-	timezone = "CET",
-	SQLiteDB=SQLiteDB,
-	use_connection = MyDBconnection
+  tracking_time_start = "2022-09-02 01:25:00",
+  tracking_time_end = "2022-09-03 13:47:00",
+  timezone = "CET",
+  SQLiteDB = SQLiteDB,
+  use_connection = MyDBconnection
 )
 ```
 
@@ -60,14 +60,15 @@ It is also possible to connect directly to a remote host.
 
 ```{r, eval=FALSE}
 data <- atl_get_data(
-	tag = 31001002707,
-	tracking_time_start = "2022-09-02 01:25:00",
-	tracking_time_end = "2022-09-03 13:47:00",
-	timezone = "CET",
-	host = "host", 
-	database = "db",
-	username = "username",
-	password = "password")			  
+  tag = 31001002707,
+  tracking_time_start = "2022-09-02 01:25:00",
+  tracking_time_end = "2022-09-03 13:47:00",
+  timezone = "CET",
+  host = "host",
+  database = "db",
+  username = "username",
+  password = "password"
+)
 ```
 
 ## Data explanation
@@ -94,11 +95,11 @@ Here, is an example of removing hypothesized erroneous localizations from a rect
 
 ```{r, eval=FALSE}
 data <- atl_filter_bounds(
-	data = data,
-	x_range = c(639470, 639471),
-	y_range = c(5887143, 5887144),
-	sf_polygon = NULL,
-	remove_inside = TRUE
+  data = data,
+  x_range = c(639470, 639471),
+  y_range = c(5887143, 5887144),
+  sf_polygon = NULL,
+  remove_inside = TRUE
 )
 ```
 
@@ -106,11 +107,12 @@ For filtering data, the general *atl_filter_covariates* function can also be use
 
 ```{r, eval=FALSE}
 data <- atl_filter_covariates(
-	data = data,
-	filters = c(
-	"between(time, '2022-09-02 01:25:00', '2022-09-03 13:47:00')",
-	"between(X, 649686, 651938)") 
-)				
+  data = data,
+  filters = c(
+    "between(time, '2022-09-02 01:25:00', '2022-09-03 13:47:00')",
+    "between(X, 649686, 651938)"
+  )
+)
 ```
 
 ## Basic processing 
@@ -118,12 +120,12 @@ data <- atl_filter_covariates(
 With the data of interest, some basic variables can be calculated, for instance, calculating speeds and turning angles from consecutive localizations. Speed can then later be used for filtering potentially erroneous localizations.
 
 ```{r, eval=FALSE}					
-#> calculate speed between consecutive localizations  		
-data$speed_in <- atl_get_speed(data = data, time = "TIME", type = "in") 
-data$speed_out <- atl_get_speed(data = data, time = "TIME", type = "out") 
+#> calculate speed between consecutive localizations
+data$speed_in <- atl_get_speed(data = data, time = "TIME", type = "in")
+data$speed_out <- atl_get_speed(data = data, time = "TIME", type = "out")
 
-#> calculate angle between consecutive localizations  		
-data$angle <- atl_turning_angle(data = data, time = "TIME") 
+#> calculate angle between consecutive localizations
+data$angle <- atl_turning_angle(data = data, time = "TIME")
 ```
 
 ## Filtering 
@@ -131,17 +133,17 @@ data$angle <- atl_turning_angle(data = data, time = "TIME")
 The next step is to remove localization errors, for instance, by applying basic filtering on the variances in estimating x- and y-coordinates and speed.  
 
 ```{r, eval=FALSE}
-VARmax	<- 5000	# variance in meters squared
+VARmax <- 5000 # variance in meters squared
 speed_max <- 35 # meters per second
 
 data <- atl_filter_covariates(
-	data = data,
-	filters = c(
-		"VARX < VARmax", 
-		"VARY < VARmax",
-		"speed_in < speed_max",
-		"speed_out < speed_max"
-	  )
+  data = data,
+  filters = c(
+    "VARX < VARmax",
+    "VARY < VARmax",
+    "speed_in < speed_max",
+    "speed_out < speed_max"
+  )
 )
 ```
 
@@ -150,19 +152,19 @@ data <- atl_filter_covariates(
 To further reduce error in the localization data, a basic smoother such as a median filter can be applied.  
 
 ```{r, eval=FALSE}
-med_filter <- 5	# window for smoothing localizations
+med_filter <- 5 # window for smoothing localizations
 data <- atl_median_smooth(data = data, time = "TIME", moving_window = med_filter)
 ```
 
 After smoothing the data, the speeds and angles need to be recalculated.
 
 ```{r, eval=FALSE}					
-data$speed_in <- atl_get_speed(data=data, time="TIME", type = "in") 
-data$speed_out <- atl_get_speed(data=data, time="TIME", type = "out") 
+data$speed_in <- atl_get_speed(data = data, time = "TIME", type = "in")
+data$speed_out <- atl_get_speed(data = data, time = "TIME", type = "out")
 
-#> Note that the distance between smooted localization can be zero, and 
-#> therefore, the angle cannot be calculated and a warning and NaNs are returned 	
-data$angle <- atl_turning_angle(data = data, time = "TIME") 
+#> Note that the distance between smooted localization can be zero, and
+#> therefore, the angle cannot be calculated and a warning and NaNs are returned
+data$angle <- atl_turning_angle(data = data, time = "TIME")
 ```
 
 ## Adding tidal data 
@@ -171,23 +173,27 @@ After following the above basic steps, the data will be ready for adding environ
 
 ```{r, eval=FALSE}
 #> load the tidal data using the library data.table
-tides_filename <- system.file("extdata", "example_tide_data_UTC.csv", 
-                              package="tools4watlas")
-tide_data_highres_filename <- system.file("extdata", 
-                                          "example_tide_data_highres_UTC.csv", 
-                                          package = "tools4watlas")
+tides_filename <- system.file("extdata", "example_tide_data_UTC.csv",
+  package = "tools4watlas"
+)
+tide_data_highres_filename <- system.file("extdata",
+  "example_tide_data_highres_UTC.csv",
+  package = "tools4watlas"
+)
 tides <- data.table::fread(tides_filename)
 tide_data_highres <- data.table::fread(tide_data_highres_filename)
 
-#> add the tidal data to the tracking data. Note that we use an offset 
-#> of 30 min becasue of the delay in water flow between the tidal gauge 
+#> add the tidal data to the tracking data. Note that we use an offset
+#> of 30 min becasue of the delay in water flow between the tidal gauge
 #> and the location of the example tracking data (the islet of Griend)
 
-data <- atl_add_tidaldata(data = data, 
-                          tide_data = tides, 
-                          tide_data_highres = tide_data_highres, 
-                          waterdata_resolution = "10 minute", 
-                          Offset = 30)
+data <- atl_add_tidaldata(
+  data = data,
+  tide_data = tides,
+  tide_data_highres = tide_data_highres,
+  waterdata_resolution = "10 minute",
+  Offset = 30
+)
 ```
 
 
@@ -196,12 +202,13 @@ data <- atl_add_tidaldata(data = data,
 For specific analyses, the cleaned data can be selected. To select localizations when mudlfats are available for foraging, we can for example select a low tide period from -2.5 hours to +2.5 hours around low tide [(Bijleveld et al. 2016)](https://royalsocietypublishing.org/doi/10.1098/rspb.2015.1557): 
 
 ```{r, eval=FALSE}
-#> select the low tide periode for a particular tide as specified by tideID	
+#> select the low tide periode for a particular tide as specified by tideID
 data <- atl_filter_covariates(
-	data = data,
-	filters = c(
-	"tideID == 2022472",
-	"between(time2lowtide, -2.5 * 60, 2.5 * 60)")
+  data = data,
+  filters = c(
+    "tideID == 2022472",
+    "between(time2lowtide, -2.5 * 60, 2.5 * 60)"
+  )
 )
 ```
 											
@@ -211,14 +218,16 @@ To catch potential errors in the above workflow, it is important to always plot 
 
 ```{r, eval=FALSE}
 #> UTM 31N is the the default coordinate reference system.
-data_spatial_utm<-atlas_make_spatialdataframe(data)
+data_spatial_utm <- atlas_make_spatialdataframe(data)
 
 #> plot locations only
-sp::plot(data_spatial_utm) 
+sp::plot(data_spatial_utm)
 
-#> Plot the tracking data with a simple background 
-atl_plot_tag(data=data_spatial_utm, tag=NULL, fullname=NULL, buffer=1, 
-				color_by="time")
+#> Plot the tracking data with a simple background
+atl_plot_tag(
+  data = data_spatial_utm, tag = NULL, fullname = NULL, buffer = 1,
+  color_by = "time"
+)
 ```
 
 The plotting region can be extended by specifiying *buffer* (in meters), and the scale of the scalebar (in kilometers) can be adjusted. To inspect the localizations, *color_by* can be specified to colour the localizations by time since first localization in plot (*"time"*), standard deviation of the X- and Y-coordinate (*"SD"*), or the number of base stations used for calculating the localization (*"NBS"*). By specifiying the full path and file name (with extension) in *fullname*, it is possible to save the plot  as a *.png*. If necesarry, the legend can also be located elsewhere on the plot with *Legend*.
@@ -227,21 +236,25 @@ With the function *atl_plot_tag_osm* it is possible to plot the track on a satel
 
 ```{r, eval=FALSE}
 #> Obtain the extent of tracking data for retrieving the satellite imagery
-bbox_utm<-atl_get_spatial_bounds(data_spatial_utm)
+bbox_utm <- atl_get_spatial_bounds(data_spatial_utm)
 
 #> Transform the bounding box to the osm coordinate reference system
-Bbox_osm<-atlas_make_boundingbox_for_osm(bbox_utm, buffer=300, 
-					from_crs= sp::CRS("+init=epsg:32631"))
+Bbox_osm <- atlas_make_boundingbox_for_osm(bbox_utm,
+  buffer = 300,
+  from_crs = sp::CRS("+init=epsg:32631")
+)
 
 #> Download the map from OpenStreetMap using the bounding box
-map <- OpenStreetMap::openmap(Bbox_osm[1,],Bbox_osm[2,],type='bing')
+map <- OpenStreetMap::openmap(Bbox_osm[1, ], Bbox_osm[2, ], type = "bing")
 
 #> Transform tracking data to the osm() coordinate reference system
-data_spatial_osm<-sp::spTransform(data_spatial_utm, OpenStreetMap::osm()) # to osm()
+data_spatial_osm <- sp::spTransform(data_spatial_utm, OpenStreetMap::osm()) # to osm()
 
 #> plot the tracking data on the satellite image
-atl_plot_tag_osm(data=data_spatial_osm, tag=NULL, mapID=map, color_by="time", 
-			fullname=NULL, Scalebar=3)
+atl_plot_tag_osm(
+  data = data_spatial_osm, tag = NULL, mapID = map, color_by = "time",
+  fullname = NULL, Scalebar = 3
+)
 ```
 
 The region of the the satellite image can be extended by specifiying *buffer* (in meters) in the function  *atlas_make_boundingbox_for_osm*. The other options are similar to *atl_plot_tag* (see earlier).
@@ -262,59 +275,62 @@ library(tools4watlas)
 Set the tags and time period manually.  
 
 ```{r, eval=FALSE}
-#> select time period 
-	from="2022-09-02 12:00:00"; to="2022-09-02 12:30:00"
-	
-#> set tag numbers and species 
-	tags <- c(2007,2008)
-	species <- c("Red Knot", "Red Knot")
+#> select time period
+from <- "2022-09-02 12:00:00"
+to <- "2022-09-02 12:30:00"
 
+#> set tag numbers and species
+tags <- c(2007, 2008)
+species <- c("Red Knot", "Red Knot")
 ```
 
 Alternatively, we can also get the most recent days of data from the server and obtain the tag metadata from an Excel-file.
   
 ```{r, eval=FALSE}
 #> select number of days to get data for
-	days<-2		# number of days 
-	from=Sys.time()-86400*days; to=Sys.time() + 3600 	# add a buffer at the end
-	#> using Sys.time() makes vector a "POSIXct" that we need to 
-	#> revert back to a character (for now) for using *atl_get_data()*  later 
-	from=as.character(from); to=as.character(to)
-	
-#> load Excel file 
-	# provide the correct path and file name, and sheet of the excel file. 
-	library(readxl)
-	alltags<-as.data.frame(
-					readxl::read_excel(
-							"C:\\path\\tags_watlas.xlsx", 
-							sheet="tags_watlas"
-							)
-						)
+days <- 2 # number of days
+from <- Sys.time() - 86400 * days
+to <- Sys.time() + 3600 # add a buffer at the end
+#> using Sys.time() makes vector a "POSIXct" that we need to
+#> revert back to a character (for now) for using *atl_get_data()*  later
+from <- as.character(from)
+to <- as.character(to)
 
-#> select tags 
-	# select tags of particular species 
-	tags<-alltags$tag[alltags$species=="islandica"]	# select islandica red knots
-	# or provide tag range
-	tags <- 2007:2008 
-	
+#> load Excel file
+# provide the correct path and file name, and sheet of the excel file.
+library(readxl)
+alltags <- as.data.frame(
+  readxl::read_excel(
+    "C:\\path\\tags_watlas.xlsx",
+    sheet = "tags_watlas"
+  )
+)
+
+#> select tags
+# select tags of particular species
+tags <- alltags$tag[alltags$species == "islandica"] # select islandica red knots
+# or provide tag range
+tags <- 2007:2008
+
 #> depending on the tag selection, the species need to be taken from the metadata
-	row_id<-match(tags, alltags$tag)	
-	species<-alltags$species[row_id]	
+row_id <- match(tags, alltags$tag)
+species <- alltags$species[row_id]
 ```
 
 Lastly, the vector with tags need to be in the right format. 
 
 ```{r, eval=FALSE}
-#> specify format of tag numbers 
-	tags<-stringr::str_pad(
-					as.character(tags), 
-					4, #> WATLAS tag string is four characters 
-					pad = "0"
-					)	
-	# for collecting data from server, long tag format is used
-	tags_long<-paste0(
-				"3100100", 
-				tags)	
+#> specify format of tag numbers
+tags <- stringr::str_pad(
+  as.character(tags),
+  4, #> WATLAS tag string is four characters
+  pad = "0"
+)
+# for collecting data from server, long tag format is used
+tags_long <- paste0(
+  "3100100",
+  tags
+)
 ```
 
 ### Load tracking data
@@ -328,38 +344,39 @@ The SQL-database can be hosted locally or remotely:
 #### Local SQL-database
 
 ```{r, eval=FALSE}
-#> First, the path and filename of the local SQLite database need to be provided. 
-SQLiteDB=paste0("path", "SQLite_db_name", ".sqlite")
-MyDBconnection <- RSQLite::dbConnect(RSQLite::SQLite(),SQLiteDB)
+#> First, the path and filename of the local SQLite database need to be provided.
+SQLiteDB <- paste0("path", "SQLite_db_name", ".sqlite")
+MyDBconnection <- RSQLite::dbConnect(RSQLite::SQLite(), SQLiteDB)
 
-#> Second, with the established connection, the database can be queried 
-#> for a particular tag and period and written in a list with lapply. 
-#> Each entry of the list will contain the tracking data for the 
-#> specified tag and period. 
+#> Second, with the established connection, the database can be queried
+#> for a particular tag and period and written in a list with lapply.
+#> Each entry of the list will contain the tracking data for the
+#> specified tag and period.
 ldf_raw <- lapply(
-			tags_long, 
-			atl_get_data, 
-			tracking_time_start = from, 
-			tracking_time_end = to, 
-			timezone = "CET", 
-			SQLiteDB = mydb, 
-			use_connection = MyDBconnection
-			) 	
+  tags_long,
+  atl_get_data,
+  tracking_time_start = from,
+  tracking_time_end = to,
+  timezone = "CET",
+  SQLiteDB = mydb,
+  use_connection = MyDBconnection
+)
 ```
 
 #### Remote SQL-database
 
 ```{r, eval=FALSE}
-ldf_raw<- lapply(
-				tags_long, 
-				atl_get_data,
-				tracking_time_start = from,
-				tracking_time_end = to,
-				timezone = "CET",
-				host= "host", 
-				database = "db",
-				username = "username",
-				password = "password")			  
+ldf_raw <- lapply(
+  tags_long,
+  atl_get_data,
+  tracking_time_start = from,
+  tracking_time_end = to,
+  timezone = "CET",
+  host = "host",
+  database = "db",
+  username = "username",
+  password = "password"
+)
 ```
 
 ### Filtering and Smoothing the data 
@@ -367,34 +384,34 @@ ldf_raw<- lapply(
 Now we could calculate basic variables like speed to filter potentially erroneous localizations. Here, we will not do that and only apply basic filtering on the variances in estimated x- and y-coordinates. To further reduce error in the localization data, we wil lalso apply a basic smoother (median filter). For examples on how to do this for a single tag, see the above section "Basic workflow" and the subsection "Basic processing". We will also filter individuals for a minimum number of localizations.
 
 ```{r, eval=FALSE}
-#> First, filter potentially erroneous localizations 
-VARmax	<- 5000	# variance limit in meters squared
+#> First, filter potentially erroneous localizations
+VARmax <- 5000 # variance limit in meters squared
 ldf_clean <- lapply(
-				ldf_raw, 
-				atl_filter_covariates,
-				filters = c(
-						"VARX < VARmax", 
-						"VARY < VARmax"
-							)
-				)
-						
-#> Second, apply a median smoother 
-med_filter <- 5	# number of localizations within window for smoothing
+  ldf_raw,
+  atl_filter_covariates,
+  filters = c(
+    "VARX < VARmax",
+    "VARY < VARmax"
+  )
+)
+
+#> Second, apply a median smoother
+med_filter <- 5 # number of localizations within window for smoothing
 ldf_smoothed <- lapply(
-				ldf_clean,
-				atl_median_smooth,
-				time = "TIME", 
-				moving_window = med_filter
-				)
-				
-#> Third, filter list for minimum number of localizations per bird 
-	min_locs <- 2 					# specify minimum 
-	ldf_n <- lapply(ldf_smoothed, nrow)	# count localizations per bird 
-	ldf_n[lengths(ldf_n) == 0] <- 0	# replace NULL counts for 0
-	n <- unlist(ldf_n)				# create vector of counts
-	ldf <- ldf_smoothed[n>=min_locs]# filter number of localizations
-	tags <- tags[n>=min_locs]		# clean tag vector 
-	species<-species[n>=min_locs]	# clean species vector 
+  ldf_clean,
+  atl_median_smooth,
+  time = "TIME",
+  moving_window = med_filter
+)
+
+#> Third, filter list for minimum number of localizations per bird
+min_locs <- 2 # specify minimum
+ldf_n <- lapply(ldf_smoothed, nrow) # count localizations per bird
+ldf_n[lengths(ldf_n) == 0] <- 0 # replace NULL counts for 0
+n <- unlist(ldf_n) # create vector of counts
+ldf <- ldf_smoothed[n >= min_locs] # filter number of localizations
+tags <- tags[n >= min_locs] # clean tag vector
+species <- species[n >= min_locs] # clean species vector
 ```
 
 ### Make data spatial and load map 
@@ -403,33 +420,36 @@ The next step is to make the tracking data within the list spatial objects, sele
 
 ```{r, eval=FALSE}
 #> convert to spatial data frames
-	#> to utm for easy analyses	
-	ldf_utm <- lapply(ldf, atlas_make_spatialdataframe)	
-	#> to osm for easy plotting
-	ldf_osm <- lapply(ldf_utm, sp::spTransform, OpenStreetMap::osm()) 
-		
+#> to utm for easy analyses
+ldf_utm <- lapply(ldf, atlas_make_spatialdataframe)
+#> to osm for easy plotting
+ldf_osm <- lapply(ldf_utm, sp::spTransform, OpenStreetMap::osm())
+
 #> get bounding box from utm tracking data
-	#> for each track
-	bbox_utm<-lapply(ldf_utm, atl_get_spatial_bounds) 
-	#> get extent of bounding box between tracks
-	xrange<-range(unlist(lapply(bbox_utm, `[`,,1)))
-	yrange<-range(unlist(lapply(bbox_utm, `[`,,2)))
-	bbox_utm<-matrix(cbind(xrange, yrange), nrow = 2, byrow = FALSE, 
-        dimnames = list(c("min", "max"), c("X", "Y")))
-		
-#> Transform the bounding box to the osm coordinate reference system 
+#> for each track
+bbox_utm <- lapply(ldf_utm, atl_get_spatial_bounds)
+#> get extent of bounding box between tracks
+xrange <- range(unlist(lapply(bbox_utm, `[`, , 1)))
+yrange <- range(unlist(lapply(bbox_utm, `[`, , 2)))
+bbox_utm <- matrix(cbind(xrange, yrange),
+  nrow = 2, byrow = FALSE,
+  dimnames = list(c("min", "max"), c("X", "Y"))
+)
+
+#> Transform the bounding box to the osm coordinate reference system
 #> for plotting with OpenStreetMap
-	bbox_osm <- atlas_make_boundingbox_for_osm(
-							bbox_utm,
-							buffer=1000,
-							from_crs= sp::CRS("+init=epsg:32631")
-							)
+bbox_osm <- atlas_make_boundingbox_for_osm(
+  bbox_utm,
+  buffer = 1000,
+  from_crs = sp::CRS("+init=epsg:32631")
+)
 
 #> Download the map from OpenStreetMap using the bounding box
-	map <- OpenStreetMap::openmap(
-			upperLeft = bbox_osm[1,],
-			lowerRight = bbox_osm[2,],
-			type='bing')
+map <- OpenStreetMap::openmap(
+  upperLeft = bbox_osm[1, ],
+  lowerRight = bbox_osm[2, ],
+  type = "bing"
+)
 ```	 
 
 ### Plot multiple individuals simultaneously
@@ -437,103 +457,103 @@ The next step is to make the tracking data within the list spatial objects, sele
 First, get the plotting colours for invidiuals or species.
 
 ```{r, eval=FALSE}
-#> create colours for different individuals 	
-	if(length(unique(species))==1){ #> colour by individual 
-		COL=rainbow(length(ldf_osm))
-		spec=NULL
-	}else{  #> or colour by species 
-		spec<-as.data.frame(unique(species))
-		names(spec)<-"species"
-		#> create colours for the different species 
-		spec$COL<-brewer.pal(nrow(spec), "Accent")[1:nrow(spec)]
-		COL<-spec$COL[match(species, spec$species)]
-	}
+#> create colours for different individuals
+if (length(unique(species)) == 1) { #> colour by individual
+  COL <- rainbow(length(ldf_osm))
+  spec <- NULL
+} else { #> or colour by species
+  spec <- as.data.frame(unique(species))
+  names(spec) <- "species"
+  #> create colours for the different species
+  spec$COL <- brewer.pal(nrow(spec), "Accent")[1:nrow(spec)]
+  COL <- spec$COL[match(species, spec$species)]
+}
 ```
 
 Second, obtain additional information to be added to the plot. In this case, the time range between individuals will be added to the map.
 
 ```{r, eval=FALSE}
-	#> get time range between birds 
-	timerange <- range(dplyr::combine(lapply(ldf_osm, function(x) range(x$ts))))
+#> get time range between birds
+timerange <- range(dplyr::combine(lapply(ldf_osm, function(x) range(x$ts))))
 ```
 
 Third, make the plot and add the tracks of all individuals as well as additional information like the time range, legend and scale bar.
 
 ```{r, eval=FALSE}
 #> make plot
-	plot_map_osm(map) 
-	
-#> add the timeframe of the underlying tracks 
-	mtext(
-		paste(timerange[1], " to ", timerange[2]," UTC",  sep=""), 
-		col="white", 
-		line=3, 
-		font=2
-	)
-	
-#> Add all tracks to map from list 
-	mapply(
-		atl_plot_add_track, 
-		d = ldf_osm, 
-		Pch=19, 
-		Cex=0.4, 
-		Lwd=1, 
-		col = COL, 
-		Type="o", 
-		endpoint=TRUE
-	) 
+plot_map_osm(map)
 
-#> Provide NAMES of the tagged individuals for the legend 
-	NAMES <- NULL	# NULL if there are no names for individuals  
-	
+#> add the timeframe of the underlying tracks
+mtext(
+  paste(timerange[1], " to ", timerange[2], " UTC", sep = ""),
+  col = "white",
+  line = 3,
+  font = 2
+)
+
+#> Add all tracks to map from list
+mapply(
+  atl_plot_add_track,
+  d = ldf_osm,
+  Pch = 19,
+  Cex = 0.4,
+  Lwd = 1,
+  col = COL,
+  Type = "o",
+  endpoint = TRUE
+)
+
+#> Provide NAMES of the tagged individuals for the legend
+NAMES <- NULL # NULL if there are no names for individuals
+
 #> optionally collect metadata like the Colour Ring Combination (CRC) or
 #> NAMES from the Excel-file with metadata
-	CRC <- alltags$crc[match(tags, alltags$tag)] 			  
-	NAMES <- alltags$bird_name[match(tags, alltags$tag)]	 
-	NAMES[is.na(NAMES)] <- CRC[is.na(NAMES)] # present CRC if NAMES is empty 	
+CRC <- alltags$crc[match(tags, alltags$tag)]
+NAMES <- alltags$bird_name[match(tags, alltags$tag)]
+NAMES[is.na(NAMES)] <- CRC[is.na(NAMES)] # present CRC if NAMES is empty
 
-#> add legend	
-	if(length(unique(species))==1){ #> legend coloured by individual tags
-		legend("topleft", 
-			c(paste(tags, NAMES, sep=" ")), 
-			col=c(COL), 
-			pt.bg=c(COL),
-			pch=c(rep(21,length(COL))),
-			text.col="white",
-			cex=0.75,
-			pt.cex=1.5,
-			bty = "n",
-			title=paste0(species[1]," (", length(tags),")"), 
-			title.cex=1.5
-			)			
-	}else{ #> or else legend coloured by species
-		legend(
-			"topleft", 
-			spec$species,
-			col=spec$COL, 
-			pt.bg=spec$COL,
-			pch=rep(21,length(spec$COL)),
-			text.col="white", 
-			cex=0.75,
-			pt.cex=1.5,
-			bty = "n"
-			)
-		}
-			
+#> add legend
+if (length(unique(species)) == 1) { #> legend coloured by individual tags
+  legend("topleft",
+    c(paste(tags, NAMES, sep = " ")),
+    col = c(COL),
+    pt.bg = c(COL),
+    pch = c(rep(21, length(COL))),
+    text.col = "white",
+    cex = 0.75,
+    pt.cex = 1.5,
+    bty = "n",
+    title = paste0(species[1], " (", length(tags), ")"),
+    title.cex = 1.5
+  )
+} else { #> or else legend coloured by species
+  legend(
+    "topleft",
+    spec$species,
+    col = spec$COL,
+    pt.bg = spec$COL,
+    pch = rep(21, length(spec$COL)),
+    text.col = "white",
+    cex = 0.75,
+    pt.cex = 1.5,
+    bty = "n"
+  )
+}
+
 #> add scalebar
-	fr=0.02	#> custum position of scalebar (in fraction of plot width) 
-	ydiff<-diff(par('usr')[3:4])
-	xdiff<-diff(par('usr')[1:2])
-	xy_scale<-c(par('usr')[1]+xdiff*fr, par('usr')[3] + ydiff*fr)
-	raster::scalebar(
-		5000, #> length of scale bar in meters
-		xy_scale,
-		type='line', 
-		divs=4, 
-		lwd=3, 
-		col="white", 
-		label="5 km"	#> label that goes with the length of scale bar
-		)
+fr <- 0.02 #> custum position of scalebar (in fraction of plot width)
+ydiff <- diff(par("usr")[3:4])
+xdiff <- diff(par("usr")[1:2])
+xy_scale <- c(par("usr")[1] + xdiff * fr, par("usr")[3] + ydiff * fr)
+raster::scalebar(
+  5000, #> length of scale bar in meters
+  xy_scale,
+  type = "line",
+  divs = 4,
+  lwd = 3,
+  col = "white",
+  label = "5 km" #> label that goes with the length of scale bar
+)
 ```
 
 

@@ -56,30 +56,35 @@ atl_get_data <- function(tag,
                          password = "somepassword",
                          SQLiteDB = NULL,
                          use_connection = NULL) {
-
   # global variables
   TIME <- NULL
 
   # check input
   assertthat::assert_that(
     any(is.numeric(tag), is.character(tag)),
-    msg = "tag provided must be numeric or character")
+    msg = "tag provided must be numeric or character"
+  )
   assertthat::assert_that(
     any(nchar(as.character(tag)) < 7, nchar(as.character(tag)) == 11),
-    msg = "tag should be either < 7 digits or full 11 digits")
+    msg = "tag should be either < 7 digits or full 11 digits"
+  )
   assertthat::assert_that(
     is.character(tracking_time_start),
-    msg = "start tracking time is not a character")
+    msg = "start tracking time is not a character"
+  )
   assertthat::assert_that(
     is.character(tracking_time_end),
-    msg = "end tracking time is not a character")
+    msg = "end tracking time is not a character"
+  )
   assertthat::assert_that(
     is.character(timezone),
-    msg = "timezone provided must be numeric or character")
+    msg = "timezone provided must be numeric or character"
+  )
   db_params <- c(host, username, password)
   purrr::walk(db_params, function(this_param) {
     assertthat::assert_that(is.character(this_param),
-    msg = glue::glue("{this_param} is not a character"))
+      msg = glue::glue("{this_param} is not a character")
+    )
   })
 
   # process parameters
@@ -96,52 +101,63 @@ atl_get_data <- function(tag,
   }
 
   # get data
-	sql_query <- glue::glue(
-	  "select TAG, TIME, X, Y, NBS, VARX, VARY, COVXY\n FROM LOCALIZATIONS\n 
-  	WHERE TAG IN ({glue::glue_collapse(tag, sep = ',')})\n 
+  sql_query <- glue::glue(
+    "select TAG, TIME, X, Y, NBS, VARX, VARY, COVXY\n FROM LOCALIZATIONS\n
+  	WHERE TAG IN ({glue::glue_collapse(tag, sep = ',')})\n
 	  AND TIME > {`tracking_time_start`}\n
-  	AND TIME < {`tracking_time_end`}\n 
-  	ORDER BY TIME ASC")
-	
-  # make new connection or use existing
-	if (is.null(use_connection)) {
-	  # from server or file
-		if (is.null(SQLiteDB)) {
-		  # from server database
-			mydb <- RMySQL::dbConnect(RMySQL::MySQL(), user = username,
-				password = password, dbname = database, host = host)
-			tmp_data <- DBI::dbGetQuery(mydb, sql_query)
-			} else {
-			  # connect to SQLite databse file
-			  mydb <- RSQLite::dbConnect(RSQLite::SQLite(),SQLiteDB)
-			  tmp_data <- RSQLite::dbGetQuery(mydb, sql_query)
-			}
-		 RMySQL::dbDisconnect(mydb) # close connection
-   		} else {
-   		  # open data with existing connection
-			  tmp_data <- DBI::dbGetQuery(use_connection, sql_query)
-	}
+  	AND TIME < {`tracking_time_end`}\n
+  	ORDER BY TIME ASC"
+  )
 
-	# recalculate time to seconds (instead of milliseconds)
-	# and add a column with time-stamp in UTC
+  # make new connection or use existing
+  if (is.null(use_connection)) {
+    # from server or file
+    if (is.null(SQLiteDB)) {
+      # from server database
+      mydb <- RMySQL::dbConnect(RMySQL::MySQL(),
+        user = username,
+        password = password, dbname = database, host = host
+      )
+      tmp_data <- DBI::dbGetQuery(mydb, sql_query)
+    } else {
+      # connect to SQLite databse file
+      mydb <- RSQLite::dbConnect(RSQLite::SQLite(), SQLiteDB)
+      tmp_data <- RSQLite::dbGetQuery(mydb, sql_query)
+    }
+    RMySQL::dbDisconnect(mydb) # close connection
+  } else {
+    # open data with existing connection
+    tmp_data <- DBI::dbGetQuery(use_connection, sql_query)
+  }
+
+  # recalculate time to seconds (instead of milliseconds)
+  # and add a column with time-stamp in UTC
   if (nrow(tmp_data) > 0) {
     tmp_data <- tmp_data %>%
-      dplyr::mutate(TIME = TIME / 1000,
-                    datetime = as.POSIXct(TIME,
-                                          origin = "1970-01-01",
-                                          tz = "UTC"))
+      dplyr::mutate(
+        TIME = TIME / 1000,
+        datetime = as.POSIXct(TIME,
+          origin = "1970-01-01",
+          tz = "UTC"
+        )
+      )
     tmp_data$posID <- seq.int(nrow(tmp_data))
     tmp_data$tag <- stringr::str_pad(
-      as.character(substr(tmp_data$TAG, 8, 11)), 4, pad = "0")
+      as.character(substr(tmp_data$TAG, 8, 11)), 4,
+      pad = "0"
+    )
 
     # change names
     data.table::setnames(
       tmp_data,
       old = c("TIME", "X", "Y", "NBS", "VARX", "VARY", "COVXY"),
-      new = c("time", "x", "y", "nbs", "varx", "vary", "covxy"))
+      new = c("time", "x", "y", "nbs", "varx", "vary", "covxy")
+    )
 
-    return(tmp_data[, c("posID", "tag", "time", "datetime", "x", "y",
-                        "nbs", "varx", "vary", "covxy")])
+    return(tmp_data[, c(
+      "posID", "tag", "time", "datetime", "x", "y",
+      "nbs", "varx", "vary", "covxy"
+    )])
   } else {
     warning("no data available for this tag in this time period")
     return(tmp_data)

@@ -71,14 +71,16 @@ library(ggplot2)
 data <- data_example
 
 # Create base map
-bm = atl_create_bm(data, buffer = 800)
+bm <- atl_create_bm(data, buffer = 800)
 
 # Plot points and tracks
 bm +
-  geom_path(data = data, aes(x, y, colour = tag), alpha = 0.1, 
-            show.legend = FALSE) +
-  geom_point(data = data, aes(x, y, colour = tag), size = 0.5, 
-             show.legend = FALSE)
+  geom_path(
+    data = data, aes(x, y, colour = tag), alpha = 0.1, show.legend = FALSE
+  ) +
+  geom_point(
+    data = data, aes(x, y, colour = tag), size = 0.5, show.legend = FALSE
+  )
 ```
 
 <div class="figure">

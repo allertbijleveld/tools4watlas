@@ -1,5 +1,4 @@
 testthat::test_that("data kept within bounds", {
-
   # make test_data
   test_data <- data.table::data.table(
     X = as.double(seq_len(1000)),
@@ -55,7 +54,6 @@ testthat::test_that("data kept within bounds", {
 })
 
 testthat::test_that("data removed within bounds", {
-
   # make test_data
   test_data <- data.table::data.table(
     X = as.double(seq_len(1000)),
@@ -89,8 +87,9 @@ testthat::test_that("data removed within bounds", {
   testthat::expect_gte(nrow(test_data), nrow(test_output))
 
   # check the correct points are kept
-  testthat::expect_true(all(!(data.table::between(test_output$X, 200, 500) &
-    data.table::between(test_output$Y, 700, 900))),
-  info = "within bounds not working"
+  testthat::expect_true(
+    all(!(data.table::between(test_output$X, 200, 500) &
+      data.table::between(test_output$Y, 700, 900))),
+    info = "within bounds not working"
   )
 })

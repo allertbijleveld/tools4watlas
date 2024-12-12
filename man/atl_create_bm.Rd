@@ -24,8 +24,9 @@ atl_create_bm(
 )
 }
 \arguments{
-\item{data}{A \code{data.table} or an object convertible to \code{data.table} containing
-spatial points. Defaults to a single point around Griend if \code{NULL}.}
+\item{data}{A \code{data.table} or an object convertible to \code{data.table}
+containing spatial points. Defaults to a single point around Griend if
+\code{NULL}.}
 
 \item{x}{A character string specifying the column with x-coordinates.
 Defaults to \code{"x"}.}
@@ -46,7 +47,8 @@ format. Default is \code{"16:9"}.}
 
 \item{lakes_data}{An \code{sf} object for lake polygons. Defaults to \code{lakes_sf}.}
 
-\item{rivers_data}{An \code{sf} object for river polygons. Defaults to \code{rivers_sf}.}
+\item{rivers_data}{An \code{sf} object for river polygons. Defaults to
+\code{rivers_sf}.}
 
 \item{sc_dist}{Scale bar distance. Optional; calculated automatically if
 omitted.}
@@ -56,11 +58,11 @@ bar. Default is \code{"br"} (bottom right).}
 
 \item{sc_cex}{Numeric value for the scale bar text size. Default is \code{0.7}.}
 
-\item{sc_height}{A unit object specifying the height of the scale bar. Default
-is \code{unit(0.25, "cm")}.}
-
-\item{sc_pad_x}{A unit object specifying horizontal padding for the scale bar.
+\item{sc_height}{A unit object specifying the height of the scale bar.
 Default is \code{unit(0.25, "cm")}.}
+
+\item{sc_pad_x}{A unit object specifying horizontal padding for the scale
+bar. Default is \code{unit(0.25, "cm")}.}
 
 \item{sc_pad_y}{A unit object specifying vertical padding for the scale bar.
 Default is \code{unit(0.5, "cm")}.}
@@ -78,7 +80,7 @@ custom bounding boxes, aspect ratios, and scale bar adjustments.
 }
 \examples{
 # Example with default settings (map around Griend)
-bm = atl_create_bm(buffer = 5000)
+bm <- atl_create_bm(buffer = 5000)
 print(bm)
 }
 \author{

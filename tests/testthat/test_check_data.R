@@ -1,5 +1,4 @@
 testthat::test_that("data has expected columns", {
-
   # make some test data
   testdata <- data.table::data.table(
     x = as.double(1:1e3),

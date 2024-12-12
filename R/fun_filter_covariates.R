@@ -48,12 +48,11 @@
 #' @export
 atl_filter_covariates <- function(data,
                                   filters = c()) {
-  
   # convert to data.table
   if (!is.data.table(data)) {
     data.table::setDT(data)
   }
-  
+
   # apply filters as a single evaluated parsed expression
   # first wrap them in brackets
   filters <- vapply(
@@ -67,16 +66,16 @@ atl_filter_covariates <- function(data,
   filters <- parse(text = filters)
   # evaluate the parsed filters
   data <- data[eval(filters), ]
-  
+
   # check for class and whether there are rows
   assertthat::assert_that("data.frame" %in% class(data),
-   msg = "filter_covariates: cleaned data is not a dataframe object!"
+    msg = "filter_covariates: cleaned data is not a dataframe object!"
   )
-  
+
   # print warning if all rows are removed
   if (nrow(data) == 0) {
     warning("filter_covariates: cleaned data has no rows remaining!")
   }
-  
+
   return(data)
 }

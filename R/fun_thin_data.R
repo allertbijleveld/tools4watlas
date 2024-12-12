@@ -25,7 +25,7 @@
 #' character vector to the \code{id_columns} argument.
 #'
 #' @author Pratik Gupte & Allert Bijleveld & Johannes Krietsch
-#' @param data Tracking data to aggregate. Must have columns \code{x} and 
+#' @param data Tracking data to aggregate. Must have columns \code{x} and
 #' \code{y}, and a numeric column named \code{time}, as well as \code{datetime}.
 #' @param interval The interval in seconds over which to aggregate.
 #' @param id_columns Column names for grouping columns.
@@ -38,7 +38,7 @@
 #'
 #' @examples
 #' library(data.table)
-#' 
+#'
 # Create sample tracking data
 #' data <- data.table(
 #'   tag = as.character(rep(1:2, each = 10)),
@@ -46,9 +46,9 @@
 #'   x = rnorm(20, 10, 1),
 #'   y = rnorm(20, 15, 1)
 #' )
-#' 
+#'
 #' data[, datetime := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
-#' 
+#'
 #' # Thin the data by aggregation with a 60-second interval
 #' thinned_aggregated <- atl_thin_data(
 #'   data = data,
@@ -56,7 +56,7 @@
 #'   id_columns = "tag",
 #'   method = "aggregate"
 #' )
-#' 
+#'
 #' # Thin the data by subsampling with a 60-second interval
 #' thinned_subsampled <- atl_thin_data(
 #'   data = data,
@@ -64,7 +64,7 @@
 #'   id_columns = "tag",
 #'   method = "subsample"
 #' )
-#' 
+#'
 #' # View results
 #' print(thinned_aggregated)
 #' print(thinned_subsampled)
@@ -74,9 +74,9 @@ atl_thin_data <- function(data,
                           id_columns = NULL,
                           method = c("subsample", "aggregate")) {
   # Global variables to suppress notes in data.table
-  varx <- vary <- covxy <- x <- y <- NULL
+  varx <- vary <- x <- NULL
   time <- time_agg <- time_diff <- datetime <- NULL
-  
+
   # Input validation
   assertthat::assert_that(
     "data.frame" %in% class(data),
@@ -86,15 +86,15 @@ atl_thin_data <- function(data,
     method %in% c("subsample", "aggregate"),
     msg = "thin_data: method must be 'subsample' or 'aggregate'!"
   )
-  
+
   # Convert to data.table if not already
   if (!data.table::is.data.table(data)) {
     data <- data.table::setDT(data)
   }
-  
+
   # Check for required columns
   atl_check_data(data, names_expected = c("x", "y", "time", id_columns))
-  
+
   # Check that the interval is greater than the minimum time difference
   if (is.null(id_columns)) {
     lag <- diff(data$time)
@@ -103,18 +103,18 @@ atl_thin_data <- function(data,
     lag <- data[!is.na(time_diff)]$time_diff
     data[, time_diff := NULL]
   }
-  
+
   assertthat::assert_that(
     interval > min(lag),
     msg = "thin_data: thinning interval is less than the tracking interval!"
   )
-  
+
   # Preserve original column order
   col_order <- copy(colnames(data))
-  
+
   # Round time to the nearest interval
   data[, time_agg := floor(as.numeric(time) / interval) * interval]
-  
+
   # Handle method: aggregate or subsample
   if (method == "aggregate") {
     if (all(c("varx", "vary") %in% colnames(data))) {
@@ -122,42 +122,55 @@ atl_thin_data <- function(data,
       # variance of an average is sum of variances sum(SD ^ 2)
       # divided by sample size squared length(SD) ^ 2
       # the standard deviation is the square root of the variance
-      data_s <- data[, c(lapply(.SD, mean, na.rm = TRUE),
-                         varx_agg = sum(varx, na.rm = TRUE) / (length(varx)^2),
-                         vary_agg = sum(vary, na.rm = TRUE) / (length(vary)^2),
-                         n_aggregated = length(x)),
-                     by = c("time_agg", id_columns)]
+      data_s <- data[, c(
+        lapply(.SD, mean, na.rm = TRUE),
+        varx_agg = sum(varx, na.rm = TRUE) / (length(varx)^2),
+        vary_agg = sum(vary, na.rm = TRUE) / (length(vary)^2),
+        n_aggregated = length(x)
+      ),
+      by = c("time_agg", id_columns)
+      ]
     } else {
       # Simple aggregation
-      data_s <- data[, c(lapply(.SD, mean, na.rm = TRUE),
-                         n_aggregated = length(x)),
-                     by = c("time_agg", id_columns)]
+      data_s <- data[, c(
+        lapply(.SD, mean, na.rm = TRUE),
+        n_aggregated = length(x)
+      ),
+      by = c("time_agg", id_columns)
+      ]
     }
-    
+
     # Recalculate datetime and clean up columns
-    data_s[, datetime := as.POSIXct(time_agg, 
-                                    origin = "1970-01-01", tz = "UTC")]
-    data_s <- data_s[, setdiff(colnames(data_s), c("varx", "vary", 
-                                                   "covxy", "time")),
-                   with = FALSE]
-    
+    data_s[, datetime := as.POSIXct(
+      time_agg, origin = "1970-01-01", tz = "UTC"
+    )]
+    data_s <- data_s[, setdiff(colnames(data_s), c(
+      "varx", "vary",
+      "covxy", "time"
+    )),
+    with = FALSE
+    ]
+
     # Rename columns
     data.table::setnames(data_s,
-                         old = c("varx_agg", "vary_agg", "time_agg"),
-                         new = c("varx", "vary", "time"),
-                         skip_absent = TRUE
+      old = c("varx_agg", "vary_agg", "time_agg"),
+      new = c("varx", "vary", "time"),
+      skip_absent = TRUE
     )
   } else if (method == "subsample") {
     # Subsample the first observation per rounded interval
-    data_s <- data[, c(lapply(.SD, data.table::first),
-                     n_subsampled = length(x)),
-                 by = c("time_agg", id_columns)]
+    data_s <- data[, c(
+      lapply(.SD, data.table::first),
+      n_subsampled = length(x)
+    ),
+    by = c("time_agg", id_columns)
+    ]
     data_s[, time_agg := NULL]
   }
-  
+
   # Restore original column order
   setcolorder(data_s, intersect(col_order, names(data_s)))
-  
+
   # Validate time differences match the interval
   if (is.null(id_columns)) {
     lag <- diff(data_s$time)
@@ -171,15 +184,15 @@ atl_thin_data <- function(data,
     min(lag) >= interval,
     msg = "thin_data: time differences are less than the specified interval!"
   )
-  
+
   # Final validation
   assertthat::assert_that(
     "data.frame" %in% class(data_s),
     msg = "thin_data: thinned data is not a data.frame object!"
   )
-  
+
   # clean original data
   data[, time_agg := NULL]
-  
+
   return(data_s)
 }

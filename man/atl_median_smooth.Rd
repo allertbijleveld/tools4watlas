@@ -7,7 +7,8 @@
 atl_median_smooth(data, x = "x", y = "y", time = "time", moving_window = 5)
 }
 \arguments{
-\item{data}{A dataframe object returned by \code{atl_get_data}, which should contain the original columns (particularly X,Y and TIME).}
+\item{data}{A dataframe object returned by \code{atl_get_data}, which should
+contain the original columns (particularly X,Y and TIME).}
 
 \item{x}{The X coordinate.}
 
@@ -15,10 +16,12 @@ atl_median_smooth(data, x = "x", y = "y", time = "time", moving_window = 5)
 
 \item{time}{The timestamp, ideally as an integer.}
 
-\item{moving_window}{The size of the moving window for the median smooth. Must be an odd number.}
+\item{moving_window}{The size of the moving window for the median smooth.
+Must be an odd number.}
 }
 \value{
-A datatable class object (extends data.frame), including X,Y as smoothed coordinates and the x_raw and y_raw, which are the raw coordinates.
+A datatable class object (extends data.frame), including X,Y as
+smoothed coordinates and the x_raw and y_raw, which are the raw coordinates.
 }
 \description{
 Applies a median smooth defined by a rolling window to the X and Y

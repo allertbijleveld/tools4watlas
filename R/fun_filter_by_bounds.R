@@ -41,35 +41,34 @@ atl_filter_bounds <- function(data,
                               y_range = NA,
                               sf_polygon = NULL,
                               remove_inside = TRUE) {
-  
   # check input type
   assertthat::assert_that(
     "data.frame" %in% class(data),
-     msg = "filter_bbox: input not a dataframe object!"
+    msg = "filter_bbox: input not a dataframe object!"
   )
   assertthat::assert_that(
     is.logical(remove_inside),
     msg = "filter_bbox: remove inside needs TRUE/FALSE"
   )
-  
+
   # include asserts checking for required columns
   names_req <- c(x, y)
   atl_check_data(data, names_req)
-  
+
   # check for x_range or y_range or polygon
   # why NA? because between returns true for paired NA
   assertthat::assert_that(any(
     !is.null(sf_polygon),
     !is.na(x_range), !is.na(y_range)
   ))
-  
+
   # make input list of bound limits
   bounds <- list(x_range = x_range, y_range = y_range)
   # remove NA ie unsupplied limits
   bounds[sapply(bounds, function(b) {
     any(is.na(b))
   })] <- NULL
-  
+
   # check input length of attractors
   invisible(lapply(bounds, function(f) {
     assertthat::assert_that(
@@ -77,29 +76,30 @@ atl_filter_bounds <- function(data,
       msg = "filter_bbox: incorrect bound lengths"
     )
   }))
-  
+
   was_df <- FALSE
   # convert to data.table
   if (!is.data.table(data)) {
     data.table::setDT(data)
     was_df <- TRUE
   }
-  
+
   # filter for spatial extent either inside or outside
   if (remove_inside) {
     # KEEPS DATA OUTSIDE THE BOUNDING BOX AND POLYGON
     # filter by bounding box
-    keep <- !(data.table::between(data[[x]], x_range[1], x_range[2],
-                                  NAbounds = TRUE
+    keep <- !(data.table::between(
+      data[[x]], x_range[1], x_range[2],
+      NAbounds = TRUE
     ) &
       data.table::between(data[[y]], y_range[1], y_range[2],
-                          NAbounds = TRUE
+        NAbounds = TRUE
       ))
     # filter by bbox first
     # this is where the first copy is made
     # because the number of rows is reduced
     data_ <- data[keep, ]
-    
+
     # filter by polygon
     if (!is.null(sf_polygon)) {
       keep <- atl_within_polygon(
@@ -112,15 +112,15 @@ atl_filter_bounds <- function(data,
   } else {
     # KEEPS DATA INSIDE THE BOUNDING BOX AND POLYGON
     keep <- data.table::between(data[[x]], x_range[1], x_range[2],
-                                NAbounds = TRUE
+      NAbounds = TRUE
     ) &
       data.table::between(data[[y]], y_range[1], y_range[2],
-                          NAbounds = TRUE
+        NAbounds = TRUE
       )
-    
+
     # filter by bbox
     data_ <- data[keep, ]
-    
+
     # filter to KEEP those inside polygon
     if (!is.null(sf_polygon)) {
       keep <- atl_within_polygon(
@@ -131,24 +131,22 @@ atl_filter_bounds <- function(data,
       data_ <- data_[keep, ]
     }
   }
-  
+
   # reconvert original data to data.frame
   if (was_df) {
     data.table::setDF(data)
     assertthat::assert_that(!is.data.table(data))
   }
-  
+
   assertthat::assert_that(
     "data.frame" %in% class(data_),
     msg = "filter_bbox: cleaned data is not a dataframe object!"
   )
-  
+
   # print warning if all rows are removed
   if (nrow(data_) == 0) {
     warning("filter_bbox: cleaned data has no rows remaining!")
   }
-  
+
   return(data_)
 }
-
-# ends here
