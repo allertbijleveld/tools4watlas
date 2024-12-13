@@ -1,0 +1,193 @@
+---
+title: "Loading and checking data"
+author: "Johannes Krietsch"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Loading and checking data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  out.width = "100%",
+  fig.width = 8.89, fig.height = 5,
+  dpi = 300,
+  message = FALSE
+)
+```
+
+
+#### Good to know
+
+`tools4watlas` is based on `data.table` to be fast and efficient. A key feature of `data.table` is modification in place, where data is changed without making a copy. To prevent this (whenever it is not desired) use the function `copy()` to make a true copy of the data set. 
+
+Most `tools4watlas` function run on collections of lists `split()` by individual (tag ID) to keep the data separated and allow for easy parallel computing (if necessary). 
+
+```{r}
+library(tools4watlas)
+library(data.table)
+```
+
+## Getting data
+
+WATLAS data can either be loaded from a local SQLite database or a rem remote SQL database server. To do so, first select the tags and time period for which to extract data.
+
+Use the `tags_watlas_all.xlsx` file (including metadata of all tags) or for collaborators the `tags_watlas_subset.xlsx` (including a subset of metadata) to select the desired tags. Here shown with the example data in `tools4watlas`.
+
+Loading the `tags_watlas_subset.xlsx` will provide a table with the following columns:
+
+| Column            | Description |
+| ----              | --------------------- |
+|**season**         |	Year in which the bird was caught |
+|**species**	      |	Species common name  |
+|**tag**	          |	Tag ID with 4 digits |
+|**rings**	        | Metal ring number |
+|**crc**            |	Colour ring combo  |
+|**release_ts**		  |	Release time stamp in CET |
+|**catch_location** |	Location where the bird was caught  |
+
+#### Select the desired tags and time period
+
+```{r}
+# Load meta data
+all_tags_path <- system.file(
+  "extdata", "tags_watlas_subset.xlsx", package = "tools4watlas"
+)
+all_tags <- readxl::read_excel(all_tags_path, sheet = "tags_watlas_all") |>
+  data.table()
+
+# Subset desired tags using data.table
+# (For example red knots and redshank from season 2023)
+tags <- all_tags[season == 2023 & species %in% c("red knot", "redshank")]$tag
+
+# Time period for which data should be extracted form the database (in CET)
+from <- "2023-10-01 12:00:00"
+to <- "2023-10-02 12:00:00"
+```
+
+#### Extract data from local SQLite file
+
+First, the path and file name of the local SQLite database need to be provided. Then, with the established connection, the database can be queried for the selected tags and period. Here we will load the tagging data in a list where each entry is a data.frame with data of one tag.
+
+
+```{r}
+# Database connection
+sqlite_db <- system.file(
+  "extdata", "watlas_example.SQLite", package = "tools4watlas"
+)
+con <- RSQLite::dbConnect(RSQLite::SQLite(), sqlite_db)
+
+# Load data from database
+data_split <- lapply(
+  tags,
+  atl_get_data,
+  tracking_time_start = from,
+  tracking_time_end = to,
+  timezone = "CET",
+  use_connection = con
+)
+
+# Close connection
+RSQLite::dbDisconnect(con)
+```
+
+#### Alternatively, extract from remote SQL-database
+
+Does the same as when connecting to a local SQLite database. In this example (chunk not run and only shown) we load the last three days of data from all tags of season 2024. Host, database, username and password have to be specified.
+
+```{r, eval = FALSE}
+# Load meta data
+all_tags_path <- "C:\\path\\tags_watlas_all.xlsx"
+all_tags <- readxl::read_excel(all_tags_path, sheet = "tags_watlas_all") |>
+  data.table()
+
+# Subset all tags from 2024
+tags <- all_tags[season == 2024]$tagID
+
+# Select N last days to get data from
+days <- 3
+from <- Sys.time() - 86400 * days |> as.character()
+to <- Sys.time() + 3600 |> as.character()
+
+# Load data from database
+data_split <- lapply(
+  tags,
+  atl_get_data,
+  tracking_time_start = from,
+  tracking_time_end = to,
+  timezone = "CET",
+  host = "host",
+  database = "db",
+  username = "username",
+  password = "password"
+)
+```
+
+## Data explanation
+
+The resulting loaded WATLAS data will be a collection of lists split by tag. 
+
+```{r, layout = "l-body-outset"}
+# Show first 5 rows of the first list
+data_split[[1]][1:5, ] |> knitr::kable(digits = 2)
+```
+
+
+Loading the WATLAS data will provide a data frame with different columns representing:  
+
+| Column      | Description |
+| ----        | --------------------- |
+|**posID**    |	Unique number for localizations  |
+|**tag**	    |	4 digit tag number (character), i.e. last 4 digits of the full tag number  |
+|**time**	    |	UNIX time (seconds)  |
+|**datetime**	| Datetime in POSIXct (UTC)  |
+|**x**        |	X-cordinates in meters (UTM 31 N)  |
+|**y**		    |	Y-cordinates in meters (UTM 31 N)  |
+|**nbs**	    |	Number of Base Stations used in calculating coordinates  |
+|**varx**	    |	Variance in estimating X-coordinates  |
+|**vary**	    |	Variance in estimating Y-coordinates  |
+|**covxy**	  |	Co-variance between X- and Y-coordinates  |
+
+## Check data
+
+#### Data summary
+
+Here we simply check for how many individuals we have data and how many positions by tag and date we have. 
+
+```{r, fig.cap = "Number of positions per day by tag", fig.width = 7, fig.height = 4}
+# Bind data into one data.table
+data <- rbindlist(data_split, fill = TRUE) |> data.table()
+
+# N individuals with tagging data
+data[, .N, tag] |> nrow()
+
+# N positions, first and last data by tag ID
+data[, .(
+  N_positions = .N,
+  fist_data = min(datetime),
+  last_data = max(datetime)
+), tag]
+
+# add data
+data[, date := as.Date(datetime)] |> invisible()
+
+# N positions by species and day
+data_subset <- data[, .N, by = .(tag, date)]
+
+# Plot data
+library(ggplot2)
+library(scales)
+library(viridis)
+
+ggplot(data_subset, aes(x = date, y = tag, fill = N)) +
+  geom_tile() +
+  scale_fill_viridis(
+    option = "A", discrete = FALSE, trans = "log10", name = "N positions",
+    breaks = trans_breaks("log10", function(x) 10^x),
+    labels = trans_format("log10", math_format(10^.x)),
+    direction = -1
+  ) +
+  labs(x = "Date", y = "Tag") +
+  theme_classic()
+```

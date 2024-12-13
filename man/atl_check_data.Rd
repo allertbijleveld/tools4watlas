@@ -2,9 +2,9 @@
 % Please edit documentation in R/fun_check_data.R
 \name{atl_check_data}
 \alias{atl_check_data}
-\title{Check data has required columns.}
+\title{Check data has required columns}
 \usage{
-atl_check_data(data, names_expected = c("X", "Y", "TIME"))
+atl_check_data(data, names_expected = c("x", "y", "time"))
 }
 \arguments{
 \item{data}{The tracking data to check for required columns. Must be in the
@@ -12,7 +12,7 @@ form of a data.frame or similar, which can be handled by the function
 colnames.}
 
 \item{names_expected}{The names expected as a character vector.
-By default, checks for the column names \code{X, Y, TIME}.}
+By default, checks for the column names \code{x, y, time}.}
 }
 \value{
 None. Breaks if the data does not have required columns.
@@ -26,7 +26,7 @@ columns.
 \dontrun{
 atl_check_data(
   data = data,
-  names_expected = c("X", "Y", "TIME")
+  names_expected = c("x", "y", "time")
 )
 }
 

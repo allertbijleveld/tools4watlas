@@ -1,4 +1,74 @@
-url: ~
+url: https://allertbijleveld.github.io/tools4watlas/, https://krietsch.github.io/tools4watlas/
 template:
   bootstrap: 5
-
+  bootswatch: flatly
+  bslib:
+    primary: "#303c54"
+reference:
+  - title: "Load and check data"
+    desc: "Functions to load data from SQLlite or remote SQL database"
+    contents:
+     - atl_get_data
+     - atl_check_data
+     - atl_full_tag_id
+  - title: "Filter data"
+    desc: "Fuctions to filter data"
+    contents:
+     - atl_filter_covariates
+     - atl_filter_bounds
+     - atl_within_polygon
+  - title: "Track characteristics"
+    desc: "Functions to calculate speed and turning angle"
+    contents:
+     - atl_simple_dist
+     - atl_get_speed
+     - atl_turning_angle
+  - title: "Smooth or thin track"
+    desc: "Functions to calculate speed and turning angle"
+    contents:
+     - atl_median_smooth
+     - atl_thin_data
+  - title: "Residency patch functions"
+    desc: "Functions to calculate residency patches"
+    contents:
+     - atl_plot_rpatches
+     - atl_res_patch_speed
+     - atl_patch_dist
+     - atl_patch_summary
+  - title: "Spatial functions"
+    desc: "Transform data to sf object and get a bounding box"
+    contents:
+     - atl_as_sf
+     - atl_bbox
+  - title: "Plotting functions"
+    desc: "Functions to plot the data"
+    contents:
+     - atl_create_bm
+     - atl_plot_tag
+     - atl_plot_tag_osm
+     - atl_plot_map_osm
+     - atl_plot_rpatches
+     - atl_plot_add_track
+     - atl_t_col
+  - title: "Add enviromental data"
+    desc: "Functions to add tidal data and other SpatRaster data"
+    contents:
+     - atl_add_tidal_data
+     - atl_add_raster_data
+  - title: "Data"
+    desc: "Example and map data provided with the package"
+    contents:
+     - data_example
+     - mudflats
+     - land
+     - land_sf
+     - mudflats_sf
+     - lakes_sf
+     - rivers_sf
+  - title: "Deprecated"
+    desc: "Functions that are replaced in WATLAS 2.0"
+    contents:
+     - atl_get_spatial_bounds
+     - atl_make_boundingbox_for_osm
+     - atl_make_spatialdataframe
+     - atl_get_data_csv

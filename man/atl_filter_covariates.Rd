@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_filter_covariates.R
 \name{atl_filter_covariates}
 \alias{atl_filter_covariates}
-\title{Filter data by position covariates.}
+\title{Filter data by position covariates}
 \usage{
 atl_filter_covariates(data, filters = c())
 }
@@ -20,7 +20,7 @@ A missing filter variables \emph{will} result in an empty data frame.}
 A dataframe filtered using the filters specified.
 }
 \description{
-The tools4watlas function \code{atl_filter_covariates} allows convenient
+The atlastools function \code{atl_filter_covariates} allows convenient
 filtering of a dataset by any number of logical filters.
 This function can be used to easily filter timestamps in a range, as well as
 combine simple spatial and temporal filters.
@@ -43,7 +43,7 @@ data_in_area <- atl_filter_covariates(
   data = dataset,
   filters = c(
     "between(time, t_min, t_max)",
-    "between(X, x_min, x_max)"
+    "between(x, x_min, x_max)"
   )
 )
 filtered_data <- atl_filter_covariates(

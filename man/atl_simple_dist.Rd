@@ -2,19 +2,22 @@
 % Please edit documentation in R/fun_simple_distance.R
 \name{atl_simple_dist}
 \alias{atl_simple_dist}
-\title{Calculate distances between successive localizations.}
+\title{Calculate distances between successive localizations}
 \usage{
-atl_simple_dist(data, X = "X", Y = "Y", lag = 1)
+atl_simple_dist(data, x = "x", y = "y", lag = 1)
 }
 \arguments{
 \item{data}{A dataframe object of or extending the class data.frame,
 which must contain two coordinate columns for the X and Y coordinates.}
 
-\item{X}{A column name in a data.frame object that contains the numeric X coordinate.}
+\item{x}{A column name in a data.frame object that contains the numeric X
+coordinate.}
 
-\item{Y}{A column name in a data.frame object that contains the numeric Y coordinate.}
+\item{y}{A column name in a data.frame object that contains the numeric Y
+coordinate.}
 
-\item{lag}{The lag (in number of localizations) over which to calculate distance}
+\item{lag}{The lag (in number of localizations) over which to calculate
+distance}
 }
 \value{
 Returns a vector of distances between consecutive points.

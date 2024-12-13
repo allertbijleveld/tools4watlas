@@ -2,12 +2,12 @@
 % Please edit documentation in R/fun_filter_by_bounds.R
 \name{atl_filter_bounds}
 \alias{atl_filter_bounds}
-\title{Filter positions by an area.}
+\title{Filter positions by an area}
 \usage{
 atl_filter_bounds(
   data,
-  X = "X",
-  Y = "Y",
+  x = "x",
+  y = "y",
   x_range = NA,
   y_range = NA,
   sf_polygon = NULL,
@@ -16,6 +16,10 @@ atl_filter_bounds(
 }
 \arguments{
 \item{data}{A dataframe or extension which contains X and Y coordinates.}
+
+\item{x}{The X coordinate column.}
+
+\item{y}{The Y coordinate column.}
 
 \item{x_range}{The range of X coordinates.}
 
@@ -28,10 +32,6 @@ is assigned to the coordinates when determining the intersection.}
 \item{remove_inside}{Whether to remove points from within the range.
 Setting \code{negate = TRUE} removes positions within the bounding
 box specified by the X and Y ranges.}
-
-\item{x}{The X coordinate column.}
-
-\item{y}{The Y coordinate column.}
 }
 \value{
 A data frame of tracking locations with attractor points removed.

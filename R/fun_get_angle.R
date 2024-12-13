@@ -1,15 +1,16 @@
-#' Get the turning angle between points.
+#' Get the turning angle between points
 #'
-#' Gets the relative heading between two track segments (three localizations) using the law of cosines.
+#' Gets the relative heading between two track segments (three localizations)
+#' using the law of cosines.
 #' The turning angle is returned in degrees.
 #' Users should apply this function to _one individual at a time_, ideally by
 #' splittng a dataframe with multiple individuals into a list of dataframes.
 #'
 #' @author Pratik R. Gupte & Allert Bijleveld
-#' @param data A dataframe or similar ordered by time, which must have the columns
-#' specified by \code{X}, \code{Y}, and \code{TIME}.
-#' @param X The X coordinate.
-#' @param Y The Y coordinate.
+#' @param data A dataframe or similar which must have the columns
+#' specified by \code{x}, \code{y}, and \code{time}.
+#' @param x The x coordinate.
+#' @param y The y coordinate.
 #' @param time The timestamp in seconds since the UNIX epoch.
 #' @return A vector of turning angles in degrees.
 #' Negative degrees indicate 'left' turns. There are two fewer
@@ -18,32 +19,39 @@
 #' @examples
 #' \dontrun{
 #' data$angle <- atl_turning_angle(data,
-#'   X = "X", Y = "Y", time = "TIME"
+#'   x = "x", y = "y", time = "time"
 #' )
 #' }
 #' @export
 atl_turning_angle <- function(data,
-                              X = "X",
-                              Y = "Y",
-                              time = "TIME") {
-
+                              x = "x",
+                              y = "y",
+                              time = "time") {
   # check for column names
   atl_check_data(data,
-    names_expected = c(X, Y, time)
+    names_expected = c(x, y, time)
   )
 
-  ## check whether the data is orderd on time 
-	assertthat::assert_that(min(diff(data[,time])) >= 0, msg = "data is not ordered by TIME")
+  # check whether the data is ordered on time
+  if (min(diff(data[[time]])) < 0) {
+    warning("data was not ordered by time, but us now")
+  }
+
+  # set order in time
+  if (!data.table::is.data.table(data)) {
+    data.table::setDT(data)
+  }
+  data.table::setorderv(data, time)
 
   # handle good data case
   if (nrow(data) > 1) {
-    x1 <- data[[X]][seq_len(nrow(data) - 2)]
-    x2 <- data[[X]][2:(nrow(data) - 1)]
-    x3 <- data[[X]][3:nrow(data)]
+    x1 <- data[[x]][seq_len(nrow(data) - 2)]
+    x2 <- data[[x]][2:(nrow(data) - 1)]
+    x3 <- data[[x]][3:nrow(data)]
 
-    y1 <- data[[Y]][seq_len(nrow(data) - 2)]
-    y2 <- data[[Y]][2:(nrow(data) - 1)]
-    y3 <- data[[Y]][3:nrow(data)]
+    y1 <- data[[y]][seq_len(nrow(data) - 2)]
+    y2 <- data[[y]][2:(nrow(data) - 1)]
+    y3 <- data[[y]][3:nrow(data)]
 
     # get three sides of a triangle of (x1,y1), (x2,y2), (x3,y3)
     dist_x1_x2 <- sqrt(((x2 - x1)^2) + ((y2 - y1)^2))
@@ -51,10 +59,8 @@ atl_turning_angle <- function(data,
     dist_x3_x1 <- sqrt(((x3 - x1)^2) + ((y3 - y1)^2))
 
     # use the law of cosines
-    angle <- acos(((dist_x1_x2^2) +
-      (dist_x2_x3^2) -
-      (dist_x3_x1^2)) /
-      (2 * dist_x1_x2 * dist_x2_x3))
+    angle <- acos(((dist_x1_x2^2) + (dist_x2_x3^2) -
+                     (dist_x3_x1^2)) / (2 * dist_x1_x2 * dist_x2_x3))
 
     # convert to degrees
     angle <- angle * 180 / pi
