@@ -48,9 +48,6 @@ Basic workflows and on how to use `tools4watlas` can be found on the
 - [`Plot data`](https://krietsch.github.io/tools4watlas/articles/plot_data.html) -
   How to plot data.
 
-- [`Basic workflows`](https://krietsch.github.io/tools4watlas/articles/basic_workflows.html) -
-  Allert’s basic WATLAS data workflow from `tools4watlas 1.0`.
-
 ### **Installation**
 
 You can install the latest version of `tools4watlas` from
@@ -72,18 +69,7 @@ data <- data_example
 
 # Create base map
 bm <- atl_create_bm(data, buffer = 800)
-```
 
-    ## The legacy packages maptools, rgdal, and rgeos, underpinning the sp package,
-    ## which was just loaded, will retire in October 2023.
-    ## Please refer to R-spatial evolution reports for details, especially
-    ## https://r-spatial.org/r/2023/05/15/evolution4.html.
-    ## It may be desirable to make the sf package available;
-    ## package maintainers should consider adding sf to Suggests:.
-    ## The sp package is now running under evolution status 2
-    ##      (status 2 uses the sf package in place of rgdal)
-
-``` r
 # Plot points and tracks
 bm +
   geom_path(
@@ -120,6 +106,8 @@ Other to do’s:
 - Background map data of the whole Wadden Sea
 - Choose nice example data
 - add examples, vignette & tests for atl_add_raster_data()
+- add species colors
+- order articles and add one for adding enviromental data
 
 ### **Acknowledgments**
 

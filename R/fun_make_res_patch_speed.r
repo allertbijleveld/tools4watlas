@@ -49,33 +49,6 @@
 #' provided.
 #' summary variables.
 #' @import data.table
-#' @examples
-#' require(data.table)
-#' require(ggplot2)
-#'
-#' # Load data
-#' d <- atl_get_data_csv() |> data.table()
-#' setnames(d, c("X", "Y"), c("x", "y"))
-#'
-#' # Calculate residency patches
-#' rp <- atl_res_patch_speed(
-#'   d,
-#'   max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180, min_fixes = 3,
-#'   min_duration = 120,
-#'   summary_functions = c("mean", "median", "sd", "min", "max", "first", "last")
-#' )
-#'
-#' # Extract data from all residency patches
-#' dr <- rp[, rbindlist(lapply(patchdata, function(x) cbind(x))), by = patch]
-#'
-#' # Merge with data
-#' d <- merge(d, dr[, .(TAG, posID, patch)], by = c("TAG", "posID"), all.x = TRUE)
-#'
-#' # Plot data
-#' ggplot(d) +
-#'   geom_path(aes(x, y), alpha = 0.1) +
-#'   geom_point(aes(x, y, color = as.character(patch)), show.legend = FALSE) +
-#'   theme_bw()
 #' @export
 atl_res_patch_speed <- function(data,
                                 max_speed = 3,
