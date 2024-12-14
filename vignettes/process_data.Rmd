@@ -20,9 +20,9 @@ This vignette shows a simple workflow to process WATLAS data and add tidal data.
 
 ## Loading the data
 
-This procedure is described in detail in the vignette [`Load and check data`](https://krietsch.github.io/tools4watlas/articles/load_and_check_data.html). 
+This procedure is described in detail in the vignette [`Load and check data`](https://krietsch.github.io/tools4watlas/articles/load_and_check_data.html). Please run this vignette first, then these chunks will run too.  
 
-```{r class.source = 'fold-hide'}
+```{r class.source = 'fold-hide', include = FALSE}
 library(tools4watlas)
 library(data.table)
 
@@ -47,7 +47,7 @@ sqlite_db <- system.file("extdata", "watlas_example.SQLite",
 con <- RSQLite::dbConnect(RSQLite::SQLite(), sqlite_db)
 
 # Load data from database
-data_split <- lapply(
+data_list <- lapply(
   tags,
   atl_get_data,
   tracking_time_start = from,
@@ -60,21 +60,16 @@ data_split <- lapply(
 RSQLite::dbDisconnect(con)
 ```
 
-## Calculate sd and speed
+## Calculate speed
 
 With the data of interest, some basic variables can be calculated, for instance, calculating speeds and turning angles from consecutive localizations. Speed can then be used for filtering potentially erroneous localizations.
 
 ```{r echo=T, results='hide'}						
 # Transform the lists to data.tables
-lapply(data_split, setDT)
-
-# Calculate SD
-lapply(data_split, function(dt) {
-  dt[, sd := sqrt(varx + vary + (2 * covxy))]
-})
+lapply(data_list, setDT)
 
 # Calculate speed
-lapply(data_split, function(dt) {
+lapply(data_list, function(dt) {
   dt[, `:=`(
     speed_in = atl_get_speed(dt, type = "in"),
     speed_out = atl_get_speed(dt, type = "out")
@@ -86,8 +81,8 @@ Look at the distribution of the data:
 ```{r, fig.cap = "Distribution of flight speeds"}	
 library(ggplot2)
 
-# unlist to data.table
-data <- rbindlist(data_split, fill = TRUE)
+# Unlist to data.table
+data <- rbindlist(data_list, fill = TRUE)
 
 # plot speed (subset relevant range)
 ggplot(data = data[!is.na(speed_in) & speed_in > 5 & speed_in < 100]) +
@@ -105,7 +100,7 @@ The next step is to remove localization errors, for instance, by applying basic 
 var_max <- 5000 # variance in meters squared
 speed_max <- 35 # m/s (126 km/h)
 
-data_split <- lapply(data_split, function(dt) {
+data_list <- lapply(data_list, function(dt) {
   dt <- atl_filter_covariates(
     data = dt,
     filters = c(
@@ -127,22 +122,7 @@ To further reduce error in the localization data, a basic smoother such as a med
 med_filter <- 5 # number of localizations within window for smoothing
 
 # since the function modifies in place, we shall make a copy
-data_smooth <- copy(data_split)
-
-lapply(
-  X = data_smooth,
-  FUN = atl_median_smooth,
-  moving_window = med_filter
-)
-```
-Peek at the data to see what happend:
-
-```{r echo=T, results='hide'}		
-# Smooth the data
-med_filter <- 5 # number of localizations within window for smoothing
-
-# since the function modifies in place, we shall make a copy
-data_smooth <- copy(data_split)
+data_smooth <- copy(data_list)
 
 lapply(
   X = data_smooth,
@@ -154,9 +134,21 @@ lapply(
 After smoothing the data, the speeds need to be recalculated. We now also calculate turning angles. 
 Note: the distance between smoothed positions can be 0 and therefore will produce NAs and a warning
 
+```{r echo=T, results='hide'}		
+# Calculate speed
+lapply(data_list, function(dt) {
+  dt[, `:=`(
+    speed_in = atl_get_speed(dt, type = "in"),
+    speed_out = atl_get_speed(dt, type = "out")
+  )]
+})
+```
+
+Look at the data.
+
 ```{r, fig.cap = "Smoothed track (black) on top of raw track (red)"}	
 # select data from first list
-d1_raw <- data_split[[1]]
+d1_raw <- data_list[[1]]
 d1_smooth <- data_smooth[[1]]
 
 # subset first day
