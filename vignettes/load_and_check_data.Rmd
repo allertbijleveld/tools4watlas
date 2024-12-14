@@ -79,7 +79,7 @@ sqlite_db <- system.file(
 con <- RSQLite::dbConnect(RSQLite::SQLite(), sqlite_db)
 
 # Load data from database
-data_split <- lapply(
+data_list <- lapply(
   tags,
   atl_get_data,
   tracking_time_start = from,
@@ -111,7 +111,7 @@ from <- Sys.time() - 86400 * days |> as.character()
 to <- Sys.time() + 3600 |> as.character()
 
 # Load data from database
-data_split <- lapply(
+data_list <- lapply(
   tags,
   atl_get_data,
   tracking_time_start = from,
@@ -130,7 +130,7 @@ The resulting loaded WATLAS data will be a collection of lists split by tag.
 
 ```{r, layout = "l-body-outset"}
 # Show first 5 rows of the first list
-data_split[[1]][1:5, ] |> knitr::kable(digits = 2)
+data_list[[1]][1:5, ] |> knitr::kable(digits = 2)
 ```
 
 
@@ -157,7 +157,7 @@ Here we simply check for how many individuals we have data and how many position
 
 ```{r, fig.cap = "Number of positions per day by tag", fig.width = 7, fig.height = 4}
 # Bind data into one data.table
-data <- rbindlist(data_split, fill = TRUE) |> data.table()
+data <- rbindlist(data_list, fill = TRUE) |> data.table()
 
 # N individuals with tagging data
 data[, .N, tag] |> nrow()

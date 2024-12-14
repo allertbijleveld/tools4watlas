@@ -37,7 +37,6 @@ Imports:
     RMySQL,
     RSQLite,
     sf,
-    sp,
     stats,
     stringr,
     terra

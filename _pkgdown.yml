@@ -59,16 +59,7 @@ reference:
     desc: "Example and map data provided with the package"
     contents:
      - data_example
-     - mudflats
-     - land
      - land_sf
      - mudflats_sf
      - lakes_sf
      - rivers_sf
-  - title: "Deprecated"
-    desc: "Functions that are replaced in WATLAS 2.0"
-    contents:
-     - atl_get_spatial_bounds
-     - atl_make_boundingbox_for_osm
-     - atl_make_spatialdataframe
-     - atl_get_data_csv
