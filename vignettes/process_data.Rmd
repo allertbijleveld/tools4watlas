@@ -183,7 +183,7 @@ After following the above basic steps, the data will be ready for adding environ
 
 ```{r}
 # unlist to data.table
-data <- rbindlist(data_smooth, fill = TRUE)
+data <- data.table::rbindlist(data_smooth, fill = TRUE)
 setorder(data, tag, time)
 
 # path to tide data
