@@ -98,7 +98,7 @@ atl_plot_tag_osm <- function(data,
     )
   } else if (color_by == "time") {
     color_by_values <- as.numeric(
-      difftime(data$time, min(data$time), units = "hours")
+      difftime(data$datetime, min(data$datetime), units = "hours")
     )
     color_by_title <- paste("Time since start (h)", "\n", "Tag ", tag, sep = "")
   }
