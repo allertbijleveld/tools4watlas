@@ -49,7 +49,6 @@ Suggests:
     readxl,
     rmarkdown,
     scales,
-    sf,
     testthat (>= 3.0.0),
     viridis
 VignetteBuilder: 
