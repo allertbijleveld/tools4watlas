@@ -2,6 +2,7 @@
 title: "Literature"
 output: rmarkdown::html_vignette
 bibliography: literature.bib  
+link-citations: true
 csl: literature_style.csl
 vignette: >
   %\VignetteIndexEntry{Literature}
@@ -31,7 +32,28 @@ knitr::opts_chunk$set(
 ```
 
 
-### This is a list of all publications using WATLAS data:
+## This bibliography contains all peer-reviewed publications linked to WATLAS
+
+The `.bib` file containing the full bibliography in `BibTeX` can be downloaded [here](https://github.com/allertbijleveld/tools4watlas/blob/master/vignettes/literature/literature.bib).
+
+### Introduction 
+
+Tracking animal movement is crucial for understanding interactions with changing environments and predicting the effects of anthropogenic activities, particularly in ecologically significant areas like the Wadden Sea. The WATLAS system  (Wadden Sea Advanced Tracking and Localisation of Animals in real life Systems) enables high-resolution monitoring of small bird movements, offering insights into space use, individual variation, and social networks, thereby supporting research and conservation efforts in the region. A detailed description of WATLAS can be found in **@bijleveld2022**.
+
+### Validation
+
+Validation of methods is crucial to understand the strength and limitations of a method.In **@beardsworth2022** we tested the accuracy and precision of WATLAS using concurrent GPS measurements as a reference.
+
+### Methods
+
+A pipeline with coding examples for cleaning high-throughput tracking data with `atlastools` (`tools4watlas` builds on `atlastools`) is presented in **@gupte2022**.
+
+### Ecology
+
+Add more papers on ecological questions here.
+
+
+## Bibliography
 
 ---
 nocite: '@*'
