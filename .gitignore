@@ -51,3 +51,5 @@ docs
 
 .Rdata
 .DS_Store
+/doc/
+/Meta/
