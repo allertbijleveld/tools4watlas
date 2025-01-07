@@ -104,10 +104,10 @@ data_list <- lapply(data_list, function(dt) {
   dt <- atl_filter_covariates(
     data = dt,
     filters = c(
-      "varx < var_max",
-      "vary < var_max",
-      "speed_in < speed_max | is.na(speed_in)",
-      "speed_out < speed_max | is.na(speed_out)"
+      sprintf("varx < %s", var_max),
+      sprintf("vary < %s", var_max),
+      sprintf("speed_in < %s | is.na(speed_in)", speed_max),
+      sprintf("speed_out < %s | is.na(speed_out)", speed_max)
     )
   )
 })
