@@ -22,7 +22,9 @@ Biotelemetry*: [WATLAS: high-throughput and real-time tracking of many
 small birds in the Dutch Wadden
 Sea](https://doi.org/10.1186/s40317-022-00307-w).
 
-Visit <https://www.nioz.nl/watlas> to follow tracked birds in real time.
+Visit <https://www.nioz.nl/watlas> to follow tracked birds in real time
+and to read [project
+news](https://www.nioz.nl/en/about/cos/coastal-movement-ecology/shorebird-tracking/watlas-tracking-regional-movements/watlas-news-archive).
 
 The package `tools4watlas` builds on the package
 [`atlastools`](https://github.com/pratikunterwegs/atlastools). A
@@ -108,6 +110,9 @@ Other to do’s:
 - add examples, vignette & tests for atl_add_raster_data()
 - add species colors
 - order articles and add one for adding enviromental data
+
+Check - exported tag metadata has timezone UTC for the release time,
+which is different from our metadata (CEST
 
 ### **Acknowledgments**
 

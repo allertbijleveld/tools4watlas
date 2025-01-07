@@ -1,0 +1,39 @@
+---
+title: "Literature"
+output: rmarkdown::html_vignette
+bibliography: literature.bib  
+csl: literature_style.csl
+vignette: >
+  %\VignetteIndexEntry{Literature}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  out.width = "100%",
+  fig.width = 8.89, fig.height = 5,
+  dpi = 300,
+  message = FALSE
+)
+```
+
+
+```{r, echo = FALSE, include = FALSE}
+# Description of how to add new references:
+# Simply add them in the literature.bib file in BibTeX style
+# For further details see here: https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html
+
+# Citation Style
+# Is defined in literature_style.csl it is based on American Psychological Association 7th edition 
+# https://editor.citationstyles.org/styleInfo/?styleId=http%3A%2F%2Fwww.zotero.org%2Fstyles%2Fapa
+# Additionally titles are printed in bold (edited with edit style)
+```
+
+
+### This is a list of all publications using WATLAS data:
+
+---
+nocite: '@*'
+---
+
