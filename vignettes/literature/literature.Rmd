@@ -50,7 +50,7 @@ A pipeline with coding examples for cleaning high-throughput tracking data with 
 
 ### Ecology
 
-Add more papers on ecological questions here.
+**@ersoy2022** & **@ersoy2024** 
 
 
 ## Bibliography
