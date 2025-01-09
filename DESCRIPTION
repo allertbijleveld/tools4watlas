@@ -14,8 +14,7 @@ Authors@R: c(
 Description: Tools to process high-throughput tracking data obtained with
     WATLAS, and add tidal data.
 License: GPL-3
-URL: https://allertbijleveld.github.io/tools4watlas/,
-    https://krietsch.github.io/tools4watlas/
+URL: https://allertbijleveld.github.io/tools4watlas/
 BugReports: https://github.com/allertbijleveld/tools4watlas/issues
 Depends: 
     R (>= 3.5.0)
