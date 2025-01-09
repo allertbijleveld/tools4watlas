@@ -93,6 +93,14 @@ Other to do's:
 Check
 - exported tag metadata has timezone UTC for the release time, which is different from our metadata (CEST
 
+### **Contribute**
+
+If you want to contribute to `tools4watlas` [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) the repository on GitHub and then submit a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Besides clear bug fixes, it is best to discuss potential changes or additions with [Allert Bijleveld](mailto:allert.bijleveld@nioz.nl). 
+
+When contributing, please follow the existing structure of the repository and [style](http://adv-r.had.co.nz/Style.html). You can use [`styler`](https://styler.r-lib.org/) to adapt your code and [`lintr`](https://lintr.r-lib.org/) to check the style. Note that not all code follows this style at the moment, but new code should aim to be consistent with it. 
+
+Before submitting a pull request to the original “upstream” repository, please make sure the code passes all R CMD checks (`devtools::check()`). 
+
 ### **Acknowledgments**
 
 Many people and organisations are involved in hosting the WATLAS equipment, without whom WATLAS would not be possible. We therefore thank Hoogheemraadschap Hollands Noorderkwartier, Koninklijke Nederlandse Redding Maatschappij, Staatsbosbeheer, Marine Eco Analytics, Koninklijke Luchtmacht, Het Posthuys (Vlieland), Natuurmonumenten, Wetterskip Fryslan, Afsluitdijk Wadden Center, Vermilion, Rijkswaterstaat, Carl Zuhorn, Lenze Hofstee and Lydia de Loos. We thank Natuurmonumenten for access to Griend and using their facilities. Also, we thank Hein de Vries, Klaas-Jan Daalder, Hendrik-Jan Lokhorst, Bram Fey, Wim-Jan Boon from the RV Navicula and RV Stern, as well as the many other NIOZ staff and volunteers that facilitated this work. We would particularly like to thank Anita Koolhaas, Hinke and Cornelis Dekinga for their help with building the receiver stations. We thank Jeras de Jonge, Martin Laan, Sander Asjes, and Aris van der Vis for their technical help, and Benjamin Gnep for persistently replacing broken LNA’s. Thanks to Marten Tacoma for visualizing the tracking data in real time on www.nioz.nl/watlas and Ingrid de Raad for help posting WATLAS-related news. We also thank the Minerva Foundation and the Minerva Center for Movement Ecology for supporting the development and maintenance of all ATLAS systems, and for Yotam Orchan and Yoav Bartan for their most valuable technical assistance.
