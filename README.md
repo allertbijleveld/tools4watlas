@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# tools4watlas <a href="https://krietsch.github.io/tools4watlas/g"><img src="man/figures/logo.png" align="right" height="300" alt="tools4watlas website" /></a>
+# tools4watlas <a href="https://allertbijleveld.github.io/tools4watlas/g"><img src="man/figures/logo.png" align="right" height="300" alt="tools4watlas website" /></a>
 
 <!-- badges: start -->
 
@@ -10,9 +10,9 @@ state and is being actively
 developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![R-CMD-check](https://github.com/krietsch/tools4watlas/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/krietsch/tools4watlas/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/allertbijleveld/tools4watlas/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/allertbijleveld/tools4watlas/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/krietsch/tools4watlas/graph/badge.svg)](https://app.codecov.io/gh/krietsch/tools4watlas)
+coverage](https://codecov.io/gh/allertbijleveld/tools4watlas/graph/badge.svg)](https://app.codecov.io/gh/allertbijleveld/tools4watlas)
 <!-- badges: end -->
 
 The goal of `tools4watlas` is to provide tools for getting, processing
@@ -36,18 +36,18 @@ Data](https://doi.org/10.1111/1365-2656.13610).
 ### **Documentation**
 
 Basic workflows and on how to use `tools4watlas` can be found on the
-[package website](https://krietsch.github.io/tools4watlas/).
+[package website](https://allertbijleveld.github.io/tools4watlas/).
 
 **Vignettes**:
 
-- [`Load and check data`](https://krietsch.github.io/tools4watlas/articles/load_and_check_data.html) -
+- [`Load and check data`](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html) -
   How to load and check data.
 
-- [`Process data`](https://krietsch.github.io/tools4watlas/articles/process_data.html) -
+- [`Process data`](https://allertbijleveld.github.io/tools4watlas/articles/process_data.html) -
   How to process data (calculate speed & angles, filter, smooth and add
   tidal data)
 
-- [`Plot data`](https://krietsch.github.io/tools4watlas/articles/plot_data.html) -
+- [`Plot data`](https://allertbijleveld.github.io/tools4watlas/articles/plot_data.html) -
   How to plot data.
 
 ### **Installation**
