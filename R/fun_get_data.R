@@ -31,7 +31,7 @@
 #'  user = 'username', password = 'password', dbname = 'database',
 #'  host = 'host')}. This argument overrules making a connection to a
 #'  local host \code{SQLiteDB} or a remote host.
-#' @returns A dataframe of localizations of the specified tag, filtered between
+#' @returns A data.table of localizations of the specified tag, filtered between
 #' the start and end times.\cr
 #' posID	  =	Unique number for localizations \cr
 #' tag		  =	4 digit tag number (character) \cr
@@ -153,13 +153,29 @@ atl_get_data <- function(tag,
       old = c("TIME", "X", "Y", "NBS", "VARX", "VARY", "COVXY"),
       new = c("time", "x", "y", "nbs", "varx", "vary", "covxy")
     )
-
+    
+    # transform to data.table
+    setDT(tmp_data)
+    
     return(tmp_data[, c(
       "posID", "tag", "time", "datetime", "x", "y",
       "nbs", "varx", "vary", "covxy"
     )])
   } else {
     warning("no data available for this tag in this time period")
-    return(tmp_data)
+    # return empty data.table with same columns
+    return(tmp_data = data.table(
+      posID = as.integer(),
+      tag = as.character(),
+      time = as.numeric(),
+      datetime = as.POSIXct(NA),
+      x = as.numeric(),
+      y = as.numeric(),
+      nbs = as.integer(),
+      varx = as.numeric(),
+      vary = as.numeric(),
+      covxy = as.numeric()
+      )
+    )
   }
 }
