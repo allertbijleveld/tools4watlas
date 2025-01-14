@@ -18,6 +18,10 @@
 # Output files from R CMD check
 /*.Rcheck/
 
+# Output files from testthat
+tests/testthat/*.pdf
+tests/testthat/*.db
+
 # RStudio files
 .Rproj.user
 

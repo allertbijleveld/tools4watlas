@@ -114,6 +114,25 @@ Other to do’s:
 Check - exported tag metadata has timezone UTC for the release time,
 which is different from our metadata (CEST
 
+### **Contribute**
+
+If you want to contribute to `tools4watlas`
+[fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)
+the repository on GitHub and then submit a [pull
+request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
+Besides clear bug fixes, it is best to discuss potential changes or
+additions with [Allert Bijleveld](mailto:allert.bijleveld@nioz.nl).
+
+When contributing, please follow the existing structure of the
+repository and [style](http://adv-r.had.co.nz/Style.html). You can use
+[`styler`](https://styler.r-lib.org/) to adapt your code and
+[`lintr`](https://lintr.r-lib.org/) to check the style. Note that not
+all code follows this style at the moment, but new code should aim to be
+consistent with it.
+
+Before submitting a pull request to the original “upstream” repository,
+please make sure the code passes all R CMD checks (`devtools::check()`).
+
 ### **Acknowledgments**
 
 Many people and organisations are involved in hosting the WATLAS

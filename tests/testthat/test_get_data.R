@@ -120,3 +120,28 @@ test_that("atl_get_data retrieves and processes data correctly", {
   expect_equal(result$time[1], 1672444800) # Milliseconds to seconds
   expect_equal(result$tag[1], "1234") # Short format
 })
+
+testthat::test_that("atl_get_data gives correct warning", {
+  sqlite_db <- system.file(
+    "extdata", "watlas_example.SQLite", package = "tools4watlas"
+  )
+  con <- RSQLite::dbConnect(RSQLite::SQLite(), sqlite_db)
+  
+  expect_warning(
+    result <- atl_get_data(
+      tag = "31001000001",
+      tracking_time_start = "2023-01-01 00:00:00",
+      tracking_time_end = "2023-01-02 00:00:00",
+      use_connection = con
+    ),
+    regexp = "No data available for tag 0001 in this time period."
+  )
+  
+  # Validate result is an empty data.table with correct columns
+  expected_cols <- c("posID", "tag", "time", "datetime", "x", "y", "nbs", "varx", "vary", "covxy")
+  expect_true(is.data.table(result))
+  expect_equal(colnames(result), expected_cols)
+  expect_equal(nrow(result), 0)
+  
+})
+
