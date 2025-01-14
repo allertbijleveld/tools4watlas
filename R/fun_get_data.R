@@ -153,29 +153,33 @@ atl_get_data <- function(tag,
       old = c("TIME", "X", "Y", "NBS", "VARX", "VARY", "COVXY"),
       new = c("time", "x", "y", "nbs", "varx", "vary", "covxy")
     )
-    
+
     # transform to data.table
     setDT(tmp_data)
-    
+
     return(tmp_data[, c(
       "posID", "tag", "time", "datetime", "x", "y",
       "nbs", "varx", "vary", "covxy"
     )])
   } else {
-    warning("no data available for this tag in this time period")
+    warning(paste0("No data available for tag ",
+                   stringr::str_pad(
+                     as.character(substr(tag, 8, 11)), 4,
+                     pad = "0"
+                   ),
+                   " in this time period."))
+    
     # return empty data.table with same columns
-    return(tmp_data = data.table(
-      posID = as.integer(),
-      tag = as.character(),
-      time = as.numeric(),
-      datetime = as.POSIXct(NA),
-      x = as.numeric(),
-      y = as.numeric(),
-      nbs = as.integer(),
-      varx = as.numeric(),
-      vary = as.numeric(),
-      covxy = as.numeric()
-      )
+    return(tmp_data = data.table(posID = as.integer(),
+                                 tag = as.character(),
+                                 time = as.numeric(),
+                                 datetime = as.POSIXct(NA),
+                                 x = as.numeric(),
+                                 y = as.numeric(),
+                                 nbs = as.integer(),
+                                 varx = as.numeric(),
+                                 vary = as.numeric(),
+                                 covxy = as.numeric())
     )
   }
 }
