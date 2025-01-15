@@ -53,6 +53,9 @@ atl_filter_covariates <- function(data,
     data.table::setDT(data)
   }
 
+  # nrows of data
+  nrow_before <- nrow(data)
+
   # apply filters as a single evaluated parsed expression
   # first wrap them in brackets
   filters <- vapply(
@@ -75,6 +78,19 @@ atl_filter_covariates <- function(data,
   # print warning if all rows are removed
   if (nrow(data) == 0) {
     warning("filter_covariates: cleaned data has no rows remaining!")
+  }
+
+  # how much was filtered?
+  nrow_after <- nrow(data)
+  nrows_filtered <- nrow_before - nrow_after
+  percentage_decrease <- (nrows_filtered / nrow_before) * 100
+  percentage_decrease <- round(percentage_decrease, 2)
+
+  if (nrow(data) > 0) {
+    message(glue::glue(
+      "Note: {percentage_decrease}% of the dataset was filtered out, ",
+      "corresponding to {nrows_filtered} positions."
+    ))
   }
 
   return(data)
