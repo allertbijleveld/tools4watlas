@@ -10,18 +10,28 @@ navbar:
     left:  [home, reference, articles, literature]
     right: [search, github]
   components:
-    literature:
-      text: Literature
-      href: articles/literature/literature.html
     articles:
       text: Articles
       menu:
-      - text: "Loading and checking data"
+      - text: Basic Worflow (Vignettes)
+      - text: "Step 1: Loading and Checking Data"
         href: articles/load_and_check_data.html
-      - text: "Plotting data"
-        href: articles/plot_data.html
-      - text: "Processing data"
+      - text: "Step 2: Processing Data"
         href: articles/process_data.html
+      - text: "Step 3: Plotting Data"
+        href: articles/plot_data.html      
+      - text: "--------"
+      - text: Other Tutorials
+      - text: "Test"
+        href: articles/other_examples/test.html
+      - text: "--------"
+      - text: Package Development
+      - text: "tools4watlas Logo"
+        href: articles/package_development/package_logo.html
+    literature:
+      text: Literature
+      href: articles/literature/literature.html
+    
 reference:
   - title: "Load and check data"
     desc: "Functions to load data from SQLlite or remote SQL database"
