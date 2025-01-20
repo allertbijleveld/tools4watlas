@@ -27,9 +27,11 @@ navbar:
       - text: "--------"
       - text: Additional Tutorials
       - text: "Test"
-        href: articles/other_examples/test.html
+        href: articles/additional_tutorials/test.html
       - text: "--------"
       - text: Package Development
+      - text: "Package maintenance"
+        href: articles/package_development/package_maintenance.html
       - text: "tools4watlas logo"
         href: articles/package_development/package_logo.html
     literature:
