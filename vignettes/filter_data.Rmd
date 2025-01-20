@@ -1,9 +1,9 @@
 ---
-title: "Filter Data"
+title: "Filter data"
 author: "Johannes Krietsch"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Filter Data}
+  %\VignetteIndexEntry{Filter data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

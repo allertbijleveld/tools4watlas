@@ -1,9 +1,9 @@
 ---
-title: "Add Tidal Data"
+title: "Add tidal data"
 author: "Johannes Krietsch"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Add Tidal Data}
+  %\VignetteIndexEntry{Add tidal data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

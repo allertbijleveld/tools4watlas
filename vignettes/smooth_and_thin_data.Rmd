@@ -1,9 +1,9 @@
 ---
-title: "Smooth and Thin Data"
+title: "Smooth and thin data"
 author: "Johannes Krietsch"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Smooth and Thin Data}
+  %\VignetteIndexEntry{Smooth and thin data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

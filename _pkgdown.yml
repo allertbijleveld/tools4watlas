@@ -14,15 +14,15 @@ navbar:
       text: Articles
       menu:
       - text: Basic Worflow (Vignettes)
-      - text: "Step 1: Load and Check Data"
+      - text: "Step 1: Load and check data"
         href: articles/load_and_check_data.html
       - text: "Step 2: Filter Data"
         href: articles/filter_data.html
-      - text: "Step 3: Smooth and Thin Data"
+      - text: "Step 3: Smooth and thin data"
         href: articles/smooth_and_thin_data.html
-      - text: "Step 4: Add Tidal Data"
+      - text: "Step 4: Add tidal data"
         href: articles/add_tidal_data.html   
-      - text: "Step 5: Plot Data"
+      - text: "Step 5: Plot data"
         href: articles/plot_data.html   
       - text: "--------"
       - text: Additional Tutorials
@@ -30,7 +30,7 @@ navbar:
         href: articles/other_examples/test.html
       - text: "--------"
       - text: Package Development
-      - text: "tools4watlas Logo"
+      - text: "tools4watlas logo"
         href: articles/package_development/package_logo.html
     literature:
       text: Literature
