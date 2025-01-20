@@ -16,7 +16,7 @@ navbar:
       - text: Basic Worflow (Vignettes)
       - text: "Step 1: Load and check data"
         href: articles/load_and_check_data.html
-      - text: "Step 2: Filter Data"
+      - text: "Step 2: Filter data"
         href: articles/filter_data.html
       - text: "Step 3: Smooth and thin data"
         href: articles/smooth_and_thin_data.html
