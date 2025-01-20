@@ -1,5 +1,12 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/404.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/1_load_and_check_data.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/2_filter_data.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/3_smooth_and_thin_data.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/4_add_tidal_data.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/5_plot_data.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/add_tidal_data.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/index.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/literature/literature.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html</loc></url>
@@ -8,6 +15,7 @@
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/package_develpment/package_logo.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/plot_data.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/process_data.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/authors.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/index.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/atl_add_raster_data.html</loc></url>

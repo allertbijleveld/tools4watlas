@@ -14,14 +14,18 @@ navbar:
       text: Articles
       menu:
       - text: Basic Worflow (Vignettes)
-      - text: "Step 1: Loading and Checking Data"
+      - text: "Step 1: Load and Check Data"
         href: articles/load_and_check_data.html
-      - text: "Step 2: Processing Data"
-        href: articles/process_data.html
-      - text: "Step 3: Plotting Data"
-        href: articles/plot_data.html      
+      - text: "Step 2: Filter Data"
+        href: articles/filter_data.html
+      - text: "Step 3: Smooth and Thin Data"
+        href: articles/smooth_and_thin_data.html
+      - text: "Step 4: Add Tidal Data"
+        href: articles/add_tidal_data.html   
+      - text: "Step 5: Plot Data"
+        href: articles/plot_data.html   
       - text: "--------"
-      - text: Other Tutorials
+      - text: Additional Tutorials
       - text: "Test"
         href: articles/other_examples/test.html
       - text: "--------"
