@@ -54,10 +54,10 @@ atl_get_data <- function(tag,
                          host = "some.host.nl",
                          username = "someuser",
                          password = "somepassword",
-                         SQLiteDB = NULL,
+                         SQLiteDB = NULL, # nolint
                          use_connection = NULL) {
   # global variables
-  TIME <- NULL
+  TIME <- NULL # nolint
 
   # check input
   assertthat::assert_that(
@@ -168,7 +168,7 @@ atl_get_data <- function(tag,
                      pad = "0"
                    ),
                    " in this time period."))
-    
+
     # return empty data.table with same columns
     return(tmp_data = data.table(posID = as.integer(),
                                  tag = as.character(),
