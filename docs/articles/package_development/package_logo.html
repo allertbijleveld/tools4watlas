@@ -48,9 +48,10 @@
     <li><a class="dropdown-item" href="../../articles/plot_data.html">Step 5: Plot data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Additional Tutorials</h6></li>
-    <li><a class="dropdown-item" href="../../articles/other_examples/test.html">Test</a></li>
+    <li><a class="dropdown-item" href="../../articles/additional_tutorials/test.html">Test</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Package Development</h6></li>
+    <li><a class="dropdown-item" href="../../articles/package_development/package_maintenance.html">Package maintenance</a></li>
     <li><a class="dropdown-item" href="../../articles/package_development/package_logo.html">tools4watlas logo</a></li>
   </ul>
 </li>
@@ -91,7 +92,7 @@ Krietsch</h4>
 <code>tools4watlas</code> logo using the R package <a href="https://github.com/GuangchuangYu/hexSticker" class="external-link"><code>hexSticker</code></a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Packages</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/GuangchuangYu/hexSticker" class="external-link">hexSticker</a></span><span class="op">)</span> <span class="co"># remotes::install_github("GuangchuangYu/hexSticker")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/GuangchuangYu/hexSticker" class="external-link">hexSticker</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yixuan/showtext" class="external-link">showtext</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Loading Google fonts (http://www.google.com/fonts)</span></span>
@@ -103,11 +104,11 @@ Krietsch</h4>
 <span><span class="va">watlas</span> <span class="op">&lt;-</span> <span class="st">"../../man/figures/watlas_logo.png"</span></span>
 <span></span>
 <span><span class="co"># make sticker</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/hexSticker/man/sticker.html" class="external-link">sticker</a></span><span class="op">(</span><span class="va">watlas</span>, </span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/hexSticker/man/sticker.html" class="external-link">sticker</a></span><span class="op">(</span><span class="va">watlas</span>,</span>
 <span>        <span class="co"># name</span></span>
 <span>        package <span class="op">=</span> <span class="st">"tools4watlas"</span>, p_size <span class="op">=</span> <span class="fl">12</span>, p_y <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>        p_color <span class="op">=</span> <span class="st">"black"</span>, p_family <span class="op">=</span> <span class="st">"merriweather"</span>,</span>
-<span>        </span>
+<span></span>
 <span>        <span class="co"># logo</span></span>
 <span>        s_x <span class="op">=</span> <span class="fl">1</span>, s_y <span class="op">=</span> <span class="fl">1.15</span>, s_width <span class="op">=</span> <span class="fl">.85</span>,</span>
 <span>        h_fill <span class="op">=</span> <span class="st">"#c8dbee"</span>, h_color <span class="op">=</span> <span class="st">"#303c54"</span>,</span>

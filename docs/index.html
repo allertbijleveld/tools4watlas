@@ -43,17 +43,17 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><h6 class="dropdown-header" data-toc-skip>Basic Worflow (Vignettes)</h6></li>
+<li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
     <li><a class="dropdown-item" href="articles/load_and_check_data.html">Step 1: Load and check data</a></li>
     <li><a class="dropdown-item" href="articles/filter_data.html">Step 2: Filter data</a></li>
     <li><a class="dropdown-item" href="articles/smooth_and_thin_data.html">Step 3: Smooth and thin data</a></li>
     <li><a class="dropdown-item" href="articles/add_tidal_data.html">Step 4: Add tidal data</a></li>
     <li><a class="dropdown-item" href="articles/plot_data.html">Step 5: Plot data</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Additional Tutorials</h6></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Additional tutorials</h6></li>
     <li><a class="dropdown-item" href="articles/additional_tutorials/test.html">Test</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Package Development</h6></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
     <li><a class="dropdown-item" href="articles/package_development/package_maintenance.html">Package maintenance</a></li>
     <li><a class="dropdown-item" href="articles/package_development/package_logo.html">tools4watlas logo</a></li>
   </ul>
@@ -88,11 +88,20 @@
 <strong>Documentation</strong><a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h3>
 <p>Basic workflows and on how to use <code>tools4watlas</code> can be found on the <a href="https://allertbijleveld.github.io/tools4watlas/">package website</a>.</p>
-<p><strong>Vignettes</strong>:</p>
+<p><strong>Basic workflow (Vignettes)</strong>:</p>
+<p>Are all running with the data provided in <code>tools4watlas</code> and follow a logic order, but each vignette can be run independently.</p>
 <ul>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html"><code>Load and check data</code></a> - How to load and check data.</p></li>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/process_data.html"><code>Process data</code></a> - How to process data (calculate speed &amp; angles, filter, smooth and add tidal data)</p></li>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/plot_data.html"><code>Plot data</code></a> - How to plot data.</p></li>
+<li><p>Step 1: <a href="https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html"><strong>Load and check data</strong></a> - How to load and check data.</p></li>
+<li><p>Step 2: <a href="https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html"><strong>Filter data</strong></a> - How to filter data based on spatial boundaries, temporal specifications, error estimates and speed.</p></li>
+<li><p>Step 3: <a href="https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html"><strong>Smooth and thin data</strong></a> - How to smooth and thin data.</p></li>
+<li><p>Step 4: <a href="https://allertbijleveld.github.io/tools4watlas/articles/add_tidal_data.html"><strong>Add tidal data</strong></a> - How to add tidal data.</p></li>
+<li><p>Step 5: <a href="https://allertbijleveld.github.io/tools4watlas/articles/plot_data.html"><strong>Plot data</strong></a> - How to plot data.</p></li>
+</ul>
+<p><strong>Additional tutorials</strong>:</p>
+<p>Some are only running with local access to the WATLAS data folder.</p>
+<ul>
+<li>
+<a href="https://allertbijleveld.github.io/tools4watlas/articles/additional_tutorials/test.html"><strong>Add and plot bathymetry data</strong></a> - How to add bathymetry data and plot them.</li>
 </ul>
 </div>
 <div class="section level3">
@@ -137,7 +146,7 @@ Example tracks
 <strong>Work in progress</strong><a class="anchor" aria-label="anchor" href="#work-in-progress"></a>
 </h3>
 <p>More examples of workflows aimed at processing, plotting and adding environmental data to WATLAS tracking data are being prepared. If you have a request, please contact <a href="mailto:allert.bijleveld@nioz.nl">Allert Bijleveld</a>.</p>
-<p>We are working on the following vignettes at the moment:</p>
+<p>We are working on the following articles at the moment:</p>
 <ul>
 <li>Animate movement data</li>
 <li>Residency patch analysis</li>
@@ -148,17 +157,18 @@ Example tracks
 <li>Choose nice example data</li>
 <li>add examples, vignette &amp; tests for atl_add_raster_data()</li>
 <li>add species colors</li>
-<li>order articles and add one for adding enviromental data</li>
+<li>add article for adding environmental data</li>
 </ul>
-<p>Check - exported tag metadata has timezone UTC for the release time, which is different from our metadata (CEST</p>
+<p>Check:</p>
+<ul>
+<li>exported tag metadata has timezone UTC for the release time, which is different from our metadata (CEST)</li>
+</ul>
 </div>
 <div class="section level3">
 <h3 id="contribute">
 <strong>Contribute</strong><a class="anchor" aria-label="anchor" href="#contribute"></a>
 </h3>
-<p>If you want to contribute to <code>tools4watlas</code> <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo" class="external-link">fork</a> the repository on GitHub and then submit a <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests" class="external-link">pull request</a>. Besides clear bug fixes, it is best to discuss potential changes or additions with <a href="mailto:allert.bijleveld@nioz.nl">Allert Bijleveld</a>.</p>
-<p>When contributing, please follow the existing structure of the repository and <a href="http://adv-r.had.co.nz/Style.html" class="external-link">style</a>. You can use <a href="https://styler.r-lib.org/" class="external-link"><code>styler</code></a> to adapt your code and <a href="https://lintr.r-lib.org/" class="external-link"><code>lintr</code></a> to check the style. Note that not all code follows this style at the moment, but new code should aim to be consistent with it.</p>
-<p>Before submitting a pull request to the original “upstream” repository, please make sure the code passes all R CMD checks (<code><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">devtools::check()</a></code>).</p>
+<p>If you want to contribute to <code>tools4watlas</code> <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo" class="external-link">fork</a> the repository on GitHub and then submit a <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests" class="external-link">pull request</a>. Besides clear bug fixes, it is best to discuss potential changes or additions with <a href="mailto:allert.bijleveld@nioz.nl">Allert Bijleveld</a>. Check the article <a href="https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_maintenance.html">Package maintenance</a> for more details.</p>
 </div>
 <div class="section level3">
 <h3 id="acknowledgments">

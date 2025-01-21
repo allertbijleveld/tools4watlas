@@ -40,17 +40,17 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><h6 class="dropdown-header" data-toc-skip>Basic Worflow (Vignettes)</h6></li>
+<li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
     <li><a class="dropdown-item" href="../../articles/load_and_check_data.html">Step 1: Load and check data</a></li>
     <li><a class="dropdown-item" href="../../articles/filter_data.html">Step 2: Filter data</a></li>
     <li><a class="dropdown-item" href="../../articles/smooth_and_thin_data.html">Step 3: Smooth and thin data</a></li>
     <li><a class="dropdown-item" href="../../articles/add_tidal_data.html">Step 4: Add tidal data</a></li>
     <li><a class="dropdown-item" href="../../articles/plot_data.html">Step 5: Plot data</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Additional Tutorials</h6></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Additional tutorials</h6></li>
     <li><a class="dropdown-item" href="../../articles/additional_tutorials/test.html">Test</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Package Development</h6></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
     <li><a class="dropdown-item" href="../../articles/package_development/package_maintenance.html">Package maintenance</a></li>
     <li><a class="dropdown-item" href="../../articles/package_development/package_logo.html">tools4watlas logo</a></li>
   </ul>
@@ -107,8 +107,22 @@ used packages.</p>
 <h2 id="working-on-tools4watlas">Working on <code>tools4watlas</code><a class="anchor" aria-label="anchor" href="#working-on-tools4watlas"></a>
 </h2>
 <p>When contributing, please follow the existing structure of the
-repository and <a href="http://adv-r.had.co.nz/Style.html" class="external-link">R
-style</a>.</p>
+repository and <a href="http://adv-r.had.co.nz/Style.html" class="external-link">R style</a>
+(see below).</p>
+<div class="section level3">
+<h3 id="required-packages">Required packages<a class="anchor" aria-label="anchor" href="#required-packages"></a>
+</h3>
+<p>These are all R packages needed:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://roxygen2.r-lib.org/" class="external-link">roxygen2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://usethis.r-lib.org" class="external-link">usethis</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/lintr" class="external-link">lintr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/styler" class="external-link">styler</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://testthat.r-lib.org" class="external-link">testthat</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://covr.r-lib.org" class="external-link">covr</a></span><span class="op">)</span></span></code></pre></div>
+</div>
 <div class="section level3">
 <h3 id="coding-style">Coding style<a class="anchor" aria-label="anchor" href="#coding-style"></a>
 </h3>
@@ -116,18 +130,15 @@ style</a>.</p>
 style</a> and can be checked using <a href="https://lintr.r-lib.org/" class="external-link"><code>lintr</code></a>. You can use <a href="https://styler.r-lib.org/" class="external-link"><code>styler</code></a> to format your
 code (will take care of most needed changes, but not all). Only use
 style in the file you are working on or selected code. The easiest is to
-use the R Studio addin otherwise use
+use the R Studio addin, otherwise use
 <code>styler::style_file("my_file.R")</code>.</p>
-<p>Note that not all code follows this style at the moment, but new code
-should aim to be consistent with it.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># lintr tidyverse style</span></span>
-<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/use_lintr.html" class="external-link">use_lintr</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"tidyverse"</span><span class="op">)</span></span>
+<p>Note that not all code follows this style at the moment (see <a href="https://github.com/allertbijleveld/tools4watlas/blob/master/.lintr" class="external-link">.lintr</a>
+for exclusions), but new code should aim to be consistent with it.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># single file</span></span>
+<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint</a></span><span class="op">(</span><span class="st">"./file_name.R"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># in a project:</span></span>
-<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint_dir</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># in a package:</span></span>
+<span><span class="co"># the whole package</span></span>
 <span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint_package</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -136,49 +147,101 @@ should aim to be consistent with it.</p>
 <p>The package is documented useing <a href="https://roxygen2.r-lib.org/" class="external-link"><code>roxygen2</code></a>. Functions
 are in the <a href="https://github.com/allertbijleveld/tools4watlas/tree/master/R" class="external-link">R
 folder</a> and always have the prefix <code>atl_</code>. Each function
-has a <a href="https://roxygen2.r-lib.org/" class="external-link"><code>roxygen2</code></a>
-header. This header can be created by using
-<code>Ctrl + Shift + D</code> within a new function, if you’re using
-RStudio. Optimally, each function has an runable example. Once done
-run:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+has a <a href="https://roxygen2.r-lib.org/articles/rd.html" class="external-link"><code>roxygen2 header</code></a>.
+This header can be created by using <code>Ctrl + Shift + D</code> within
+a new function, if you’re using RStudio. Optimally, each function has an
+runable example. Once done run:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">document</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="vignettes">Vignettes<a class="anchor" aria-label="anchor" href="#vignettes"></a>
+<h3 id="test-coverage">Test coverage<a class="anchor" aria-label="anchor" href="#test-coverage"></a>
 </h3>
+<p>Why test your code? Testing your code is crucial for ensuring
+reliability, correctness, and maintainability. It helps prevent errors
+and ensures that your code works as expected. <code>tools4watlas</code>
+uses <a href="https://testthat.r-lib.org/" class="external-link"><code>testthat</code></a> and
+code is located in <code>tests/testthat</code> containing one R script
+for each function. When adding new functions or code, please add tests
+for this code too. Check the code coverage with <a href="https://covr.r-lib.org/" class="external-link"><code>covr</code></a>. For more test
+coverage details see <a href="https://app.codecov.io/gh/allertbijleveld/tools4watlas" class="external-link">codecov</a>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># run tests</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/test.html" class="external-link">test</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check code coverage</span></span>
+<span><span class="fu">covr</span><span class="fu">::</span><span class="fu"><a href="http://covr.r-lib.org/reference/package_coverage.html" class="external-link">package_coverage</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="vignettes-and-articles">Vignettes and articles<a class="anchor" aria-label="anchor" href="#vignettes-and-articles"></a>
+</h3>
+<p>Vignettes and articles are both types of documentation of an R
+packaged. The difference is that vignettes are included in the package
+(always checked with <code><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">devtools::check()</a></code> and would be
+included on CRAN) and have to run with all data provided with the
+package. Articles on the other hand, are not included in the package and
+can include links to local data (e.g. that are to large to include in
+the package). They are only presented on the package website (see
+below). All vignettes are articles, but not all articles are
+vignettes.</p>
+<div class="section level4">
+<h4 id="check-vignettes">Check vignettes<a class="anchor" aria-label="anchor" href="#check-vignettes"></a>
+</h4>
 <p>To check if the vignettes are correctly compiled, either use the
 <code>Knit</code> button in R Studio or build all or single vignettes.
 This is also checked when running <code><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">devtools::check()</a></code>, so not
 necessary if everything is fine there (but can help when debugging).</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># check if all vignettes build</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/build_vignettes.html" class="external-link">build_vignettes</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># check single vignette</span></span>
+<span><span class="co"># check if single vignette builds</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/build_rmd.html" class="external-link">build_rmd</a></span><span class="op">(</span><span class="st">"vignettes/vignette-name.Rmd"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="check-articles">Check articles<a class="anchor" aria-label="anchor" href="#check-articles"></a>
+</h4>
+<p>To check if the articles are correctly compiled, either use the
+<code>Knit</code> button in R Studio build is using
+<code>build_article</code>. Do not build all articles new (lazy =
+FALSE), if you did not specify the correct local file path.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># check if all articles build</span></span>
+<span><span class="co"># (only use lazy = FALSE with correct file path to local files)</span></span>
+<span><span class="fu">pkgdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgdown.r-lib.org/reference/build_articles.html" class="external-link">build_articles</a></span><span class="op">(</span>lazy <span class="op">=</span> <span class="cn">TRUE</span>, preview <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check if single vignette builds</span></span>
+<span><span class="co"># (path relative to vignettes folder with no file extension)</span></span>
+<span><span class="fu">pkgdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgdown.r-lib.org/reference/build_articles.html" class="external-link">build_article</a></span><span class="op">(</span><span class="st">"subfolder/article_name"</span>, preview <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="package-website">Package website<a class="anchor" aria-label="anchor" href="#package-website"></a>
 </h3>
 <p>The package website is build using <a href="https://pkgdown.r-lib.org/" class="external-link"><code>pkgdown</code></a>. It’s
-structure is defined in the <a href="https://github.com/allertbijleveld/tools4watlas/blob/master/_pkgdown.yml" class="external-link">_pkgdown.yml</a>.</p>
+structure is defined in the <a href="https://github.com/allertbijleveld/tools4watlas/blob/master/_pkgdown.yml" class="external-link">_pkgdown.yml</a>.
+It is build in the docs folder. Please commit all changes in the docs
+folder separately (to make it easier to check changes).</p>
 <p>When editing anything simply run with <code>lazy = TRUE</code>.
 Otherwise, make sure you have to correct file path in articles that rely
 on local data.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># build site new without rebuilding all articles</span></span>
 <span><span class="fu">pkgdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">build_site</a></span><span class="op">(</span>lazy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># rebuilds everything (correct file path to local data?)</span></span>
+<span><span class="co"># rebuilds everything (only use with correct file path to local files)</span></span>
 <span><span class="fu">pkgdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">build_site</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="check-before-pushing-to-github">Check before pushing to GitHub<a class="anchor" aria-label="anchor" href="#check-before-pushing-to-github"></a>
+<h3 id="checks-before-pushing-to-github">Checks before pushing to GitHub<a class="anchor" aria-label="anchor" href="#checks-before-pushing-to-github"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<p>Summarised steps to check before pushing to GitHub.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># set working directory (not necessary if R Studio project)</span></span>
-<span><span class="co"># setwd("C:/Users/..path../tools4watlas")</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="st">"C:/Users/..path../tools4watlas"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># lintr</span></span>
+<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint_package</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># document</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">document</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -197,9 +260,8 @@ on local data.</p>
 <span></span>
 <span><span class="co"># build website (lazy = TRUE only changes files that were edited)</span></span>
 <span><span class="fu">pkgdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">build_site</a></span><span class="op">(</span>lazy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>Give meaningful commit message and commit the everything in the docs
-folder with the website separately (to make it easier to check
-changes).</p>
+<p>Give meaningful commit message and commit everything in the docs
+folder with the website separately.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -48,9 +48,10 @@
     <li><a class="dropdown-item" href="../articles/plot_data.html">Step 5: Plot data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Additional Tutorials</h6></li>
-    <li><a class="dropdown-item" href="../articles/other_examples/test.html">Test</a></li>
+    <li><a class="dropdown-item" href="../articles/additional_tutorials/test.html">Test</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Package Development</h6></li>
+    <li><a class="dropdown-item" href="../articles/package_development/package_maintenance.html">Package maintenance</a></li>
     <li><a class="dropdown-item" href="../articles/package_development/package_logo.html">tools4watlas logo</a></li>
   </ul>
 </li>
@@ -196,7 +197,7 @@ data).</p>
 <span></span>
 <span><span class="co"># join release_ts with data</span></span>
 <span><span class="va">all_tags</span><span class="op">[</span>, <span class="va">tag</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">tag</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">data</span><span class="op">[</span><span class="va">all_tags</span>, on <span class="op">=</span> <span class="st">"tag"</span>, <span class="fu">`:=`</span> <span class="op">(</span>release_ts <span class="op">=</span> <span class="va">i.release_ts</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">data</span><span class="op">[</span><span class="va">all_tags</span>, on <span class="op">=</span> <span class="st">"tag"</span>, <span class="fu">`:=`</span><span class="op">(</span>release_ts <span class="op">=</span> <span class="va">i.release_ts</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># exclude positions before the release and 24h after</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">datetime</span> <span class="op">&gt;</span> <span class="va">release_ts</span> <span class="op">+</span> <span class="fl">24</span> <span class="op">*</span> <span class="fl">3600</span><span class="op">]</span></span>
