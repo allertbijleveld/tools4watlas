@@ -136,7 +136,7 @@ Returns one random location for each time step. The additional column `n_subsamp
 #   id_columns = "tag",
 #   method = "subsample"
 # )
-# 
+#
 # # View results
 # print(thinned_aggregated)
 # print(thinned_subsampled)
@@ -149,7 +149,7 @@ Returns one random location for each time step. The additional column `n_subsamp
 
 ```{r, eval = FALSE}
 # Save data
-fwrite(thinned_aggregated, file = "../inst/extdata/watlas_data_aggregated.csv", 
+fwrite(thinned_aggregated, file = "../inst/extdata/watlas_data_aggregated.csv",
        yaml = TRUE)
 ```
 

@@ -115,7 +115,7 @@ all_tags[, release_ts := with_tz(release_ts, tzone = "UTC")]
 
 # join release_ts with data
 all_tags[, tag := as.character(tag)]
-data[all_tags, on = "tag", `:=` (release_ts = i.release_ts)]
+data[all_tags, on = "tag", `:=`(release_ts = i.release_ts)]
 
 # exclude positions before the release and 24h after
 data <- data[datetime > release_ts + 24 * 3600]

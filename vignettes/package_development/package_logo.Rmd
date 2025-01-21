@@ -21,7 +21,7 @@ This script uses the WATLAS logo to create the `tools4watlas` logo using the R p
 
 ```{r, eval=FALSE}
 # Packages
-library(hexSticker) # remotes::install_github("GuangchuangYu/hexSticker")
+library(hexSticker)
 library(showtext)
 
 # Loading Google fonts (http://www.google.com/fonts)
@@ -33,16 +33,15 @@ showtext_auto()
 watlas <- "../../man/figures/watlas_logo.png"
 
 # make sticker
-sticker(watlas, 
+sticker(watlas,
         # name
         package = "tools4watlas", p_size = 12, p_y = 0.5,
         p_color = "black", p_family = "merriweather",
-        
+
         # logo
         s_x = 1, s_y = 1.15, s_width = .85,
         h_fill = "#c8dbee", h_color = "#303c54",
         filename = "../../man/figures/logo.png")
-
 ```
 <p align="middle">
     <a>

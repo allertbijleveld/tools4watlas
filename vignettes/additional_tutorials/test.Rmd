@@ -26,5 +26,4 @@ wd <- "C:/Users/jkrietsch/OneDrive - NIOZ/Documents/MAP_DATA/"
 bat <- rast(paste0(wd, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
 
 bat
-
 ```

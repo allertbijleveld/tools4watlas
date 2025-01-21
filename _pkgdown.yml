@@ -13,7 +13,7 @@ navbar:
     articles:
       text: Articles
       menu:
-      - text: Basic Worflow (Vignettes)
+      - text: Basic workflow (Vignettes)
       - text: "Step 1: Load and check data"
         href: articles/load_and_check_data.html
       - text: "Step 2: Filter data"
@@ -25,11 +25,11 @@ navbar:
       - text: "Step 5: Plot data"
         href: articles/plot_data.html   
       - text: "--------"
-      - text: Additional Tutorials
+      - text: Additional tutorials
       - text: "Test"
         href: articles/additional_tutorials/test.html
       - text: "--------"
-      - text: Package Development
+      - text: Package development
       - text: "Package maintenance"
         href: articles/package_development/package_maintenance.html
       - text: "tools4watlas logo"

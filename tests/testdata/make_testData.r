@@ -18,9 +18,7 @@ testrevdata <- data.table::CJ(
     rep(res_time_limit, 550)
   ),
   tidaltime = seq(1, 12.41 * 60, length.out = length(resTime)),
-  waterlevel = cospi(pi * seq(1, 12.41 * 60,
-    length.out = length(tidaltime)
-  ) /
+  waterlevel = cospi(pi * seq(1, 12.41 * 60, length.out = length(tidaltime)) /
     (11 * 60 * 2)) * 100
 )
 

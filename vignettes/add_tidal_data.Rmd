@@ -64,7 +64,7 @@ data <- atl_add_tidal_data(
 )
 
 # Show first 5 rows (subset of columns to show additional ones)
-head(data[, .(posID, tag, datetime, tideID, tidaltime, time2lowtide, 
+head(data[, .(posID, tag, datetime, tideID, tidaltime, time2lowtide,
               waterlevel)]) |>
   knitr::kable(digits = 2)
 ```

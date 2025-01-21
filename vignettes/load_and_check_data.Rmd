@@ -235,5 +235,4 @@ bm +
     labels = trans_format("log10", math_format(10^.x)),
     direction = -1
   )
-
 ```
