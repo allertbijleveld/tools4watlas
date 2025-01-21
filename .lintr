@@ -1,0 +1,8 @@
+linters: linters_with_defaults() # see vignette("lintr")
+encoding: "UTF-8"
+exclusions: list(
+    "R/fun_auxiliary.r",
+    "R/fun_plot_tag.r",
+    "R/fun_plot_tag_osm.r",
+    "tests/"
+  )
