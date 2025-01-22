@@ -52,6 +52,7 @@
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
     <li><a class="dropdown-item" href="../../articles/package_development/package_maintenance.html">Package maintenance</a></li>
+    <li><a class="dropdown-item" href="../../articles/package_development/basemap_data.html">Base map data</a></li>
     <li><a class="dropdown-item" href="../../articles/package_development/package_logo.html">tools4watlas logo</a></li>
   </ul>
 </li>
@@ -94,11 +95,8 @@ request</a>. Besides clear bug fixes, it is best to discuss potential
 changes or additions with <a href="mailto:allert.bijleveld@nioz.nl">Allert Bijleveld</a>.</p>
 <p>Before submitting a pull request to the original “upstream”
 repository, please make sure the code passes all R CMD checks
-(<code><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">devtools::check()</a></code>). If you changed content that changes
-the website, rebuild the website with <code><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">pkgdown::build_site()</a></code>
-into the docs folder. Note that some articles that are not vignettes,
-require a path to the WATLAS data folder “tools4watlas_articles”
-including additional data.</p>
+(<code><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">devtools::check()</a></code>) and follow the procedure described
+below.</p>
 <p>For more details see <a href="https://r-pkgs.org/" class="external-link">R Packages by
 Hadley Wickham and Jennifer Bryan</a> and read the documentation of the
 used packages.</p>

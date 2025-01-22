@@ -32,6 +32,8 @@ navbar:
       - text: Package development
       - text: "Package maintenance"
         href: articles/package_development/package_maintenance.html
+      - text: "Base map data"
+        href: articles/package_development/basemap_data.html
       - text: "tools4watlas logo"
         href: articles/package_development/package_logo.html
     literature:
@@ -93,7 +95,6 @@ reference:
     desc: "Example and map data provided with the package"
     contents:
      - data_example
-     - land_sf
-     - mudflats_sf
-     - lakes_sf
-     - rivers_sf
+     - land
+     - mudflats
+     - lakes

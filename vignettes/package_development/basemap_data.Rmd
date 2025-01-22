@@ -41,7 +41,7 @@ wd <- "C:/Users/jkrietsch/OneDrive - NIOZ/Documents/map_data/"
 
 First define a bounding box which is used to crop the land polygon data.
 
-```{r}
+```{r, fig.cap="Bounding box around the Dutch Wadden Sea"}
 # get data from the Netherlands
 netherlands <- ne_countries(
   country = "netherlands", scale = "large", returnclass = "sf"
@@ -68,7 +68,7 @@ ggplot() +
 
 ## Extract the land polygon data from this bounding box
 
-```{r}
+```{r, fig.cap="Cropped land polygon around the Dutch Wadden Sea"}
 # load osm land polygon
 land_ <- st_read(quiet = TRUE, paste0(
   wd, "open_street_map/land-polygons-complete-4326/land_polygons.shp"
@@ -107,7 +107,7 @@ save(land, file = "../../data/land.rda", compress = "xz")
 
 To simplify the basemap we only want the mudflats from within the Wadden Sea, otherwise *fclass* also includes other wetlands.  
 
-```{r}
+```{r, fig.cap="Polygon of the Dutch Wadden Sea"}
 # load polygon of Wadden sea
 wadden_sea <- st_read(quiet = TRUE, paste0(
   wd, "wadden_area_legally/pkb_gebied_derde_nota_waddenzee.shp"
@@ -131,7 +131,7 @@ ggplot() +
 
 We only take the lakes from Griend to not blow up the data. 
 
-```{r}
+```{r, fig.cap="Final basemap data of the Dutch Wadden Sea"}
 # Friesland
 lakes_fr <- st_read(quiet = TRUE, paste0(
   wd, "open_street_map/friesland-latest-free.shp/gis_osm_water_a_free_1.shp"

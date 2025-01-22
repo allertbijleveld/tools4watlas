@@ -45,7 +45,7 @@ testthat::test_that("angles are calculated", {
     x = seq_len(1),
     time = 1
   )
-  bad_angle <- tools4watlas::atl_turning_angle(test_df)
+  bad_angle <- suppressWarnings(tools4watlas::atl_turning_angle(test_df))
 
   testthat::expect_equal(bad_angle, NA_real_,
     info = "bad data returns angles"

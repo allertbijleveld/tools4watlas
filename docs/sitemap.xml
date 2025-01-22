@@ -12,6 +12,7 @@
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/literature/literature.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/other_examples/test.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/package_development/basemap_data.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_logo.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_maintenance.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/package_develpment/package_logo.html</loc></url>
@@ -47,8 +48,11 @@
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/atl_within_polygon.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/data_example.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/index.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/reference/lakes.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/lakes_sf.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/reference/land.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/land_sf.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/reference/mudflats.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/mudflats_sf.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/pipe.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/rivers_sf.html</loc></url>
