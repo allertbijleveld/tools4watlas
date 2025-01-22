@@ -43,7 +43,8 @@ testthat::test_that("simple distance and speed works", {
 })
 
 testthat::test_that("simple distance is correct", {
-  test_data <- data.table::fread("../testdata/whole_season_tx_435.csv")[1:1000, ]
+  test_data <- data.table::fread(
+    "../testdata/whole_season_tx_435.csv")[1:1000, ]
 
   # distance using custom fun
   test_distances <- tools4watlas::atl_simple_dist(test_data,

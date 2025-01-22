@@ -1,0 +1,50 @@
+---
+title: "tools4watlas logo"
+author: "Johannes Krietsch"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{tools4watlas logo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  dpi = 300,
+  message = FALSE
+)
+```
+
+## Making the tools4watlas logo
+
+This script uses the WATLAS logo to create the `tools4watlas` logo using the R package [`hexSticker`](https://github.com/GuangchuangYu/hexSticker). 
+
+```{r, eval=FALSE}
+# Packages
+library(hexSticker)
+library(showtext)
+
+# Loading Google fonts (http://www.google.com/fonts)
+font_add_google("Merriweather", "merriweather")
+# Automatically use showtext to render text for future devices
+showtext_auto()
+
+# path to WATLAS logo
+watlas <- "../../man/figures/watlas_logo.png"
+
+# make sticker
+sticker(watlas,
+        # name
+        package = "tools4watlas", p_size = 12, p_y = 0.5,
+        p_color = "black", p_family = "merriweather",
+
+        # logo
+        s_x = 1, s_y = 1.15, s_width = .85,
+        h_fill = "#c8dbee", h_color = "#303c54",
+        filename = "../../man/figures/logo.png")
+```
+<p align="middle">
+    <a>
+        <img src="../../man/figures/logo.png" align="middle" height="300" alt="tools4watlas logo"/>
+    </a>
+</p>

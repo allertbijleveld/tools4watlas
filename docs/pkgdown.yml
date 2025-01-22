@@ -1,0 +1,16 @@
+pandoc: '3.2'
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  add_tidal_data: add_tidal_data.html
+  filter_data: filter_data.html
+  literature/literature: literature/literature.html
+  load_and_check_data: load_and_check_data.html
+  package_development/package_logo: package_development/package_logo.html
+  plot_data: plot_data.html
+  smooth_and_thin_data: smooth_and_thin_data.html
+  other_examples/test: other_examples/test.html
+last_built: 2025-01-20T15:32Z
+urls:
+  reference: https://allertbijleveld.github.io/tools4watlas/reference
+  article: https://allertbijleveld.github.io/tools4watlas/articles

@@ -37,10 +37,10 @@ atl_bbox <- function(geometry, asp = "16:9", buffer = 0) {
     msg = "Aspect ratio must be in the format 'width:height'."
   )
 
-  if (mapview::npts(geometry, by_feature = FALSE) == 1 && 
-      sf::st_geometry_type(geometry)[1] == "POINT") {
+  if (mapview::npts(geometry, by_feature = FALSE) == 1 &&
+        sf::st_geometry_type(geometry)[1] == "POINT") {
     assertthat::assert_that(
-      buffer > 0, 
+      buffer > 0,
       msg = "Buffer must be >0 if geometry is a single point"
     )
   }

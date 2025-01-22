@@ -1,4 +1,4 @@
-testthat::test_that("tools4watlas::atl_create_bm works with default parameters", {
+testthat::test_that("tools4watlas::atl_create_bm works with defaults", {
   bm <- tools4watlas::atl_create_bm(buffer = 5000)
   testthat::expect_s3_class(bm, "ggplot") # Check if output is a ggplot object
 })

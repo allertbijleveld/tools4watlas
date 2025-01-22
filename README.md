@@ -38,17 +38,39 @@ Data](https://doi.org/10.1111/1365-2656.13610).
 Basic workflows and on how to use `tools4watlas` can be found on the
 [package website](https://allertbijleveld.github.io/tools4watlas/).
 
-**Vignettes**:
+**Basic workflow (Vignettes)**:
 
-- [`Load and check data`](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html) -
+Are all running with the data provided in `tools4watlas` and follow a
+logic order, but each vignette can be run independently.
+
+- Step 1: [**Load and check
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html) -
   How to load and check data.
 
-- [`Process data`](https://allertbijleveld.github.io/tools4watlas/articles/process_data.html) -
-  How to process data (calculate speed & angles, filter, smooth and add
-  tidal data)
+- Step 2: [**Filter
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html) -
+  How to filter data based on spatial boundaries, temporal
+  specifications, error estimates and speed.
 
-- [`Plot data`](https://allertbijleveld.github.io/tools4watlas/articles/plot_data.html) -
+- Step 3: [**Smooth and thin
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html) -
+  How to smooth and thin data.
+
+- Step 4: [**Add tidal
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/add_tidal_data.html) -
+  How to add tidal data.
+
+- Step 5: [**Plot
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/plot_data.html) -
   How to plot data.
+
+**Additional tutorials**:
+
+Some are only running with local access to the WATLAS data folder.
+
+- [**Add and plot bathymetry
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/additional_tutorials/test.html) -
+  How to add bathymetry data and plot them.
 
 ### **Installation**
 
@@ -98,7 +120,7 @@ environmental data to WATLAS tracking data are being prepared. If you
 have a request, please contact [Allert
 Bijleveld](mailto:allert.bijleveld@nioz.nl).
 
-We are working on the following vignettes at the moment:
+We are working on the following articles at the moment:
 
 - Animate movement data
 - Residency patch analysis
@@ -109,10 +131,12 @@ Other to do’s:
 - Choose nice example data
 - add examples, vignette & tests for atl_add_raster_data()
 - add species colors
-- order articles and add one for adding enviromental data
+- add article for adding environmental data
 
-Check - exported tag metadata has timezone UTC for the release time,
-which is different from our metadata (CEST
+Check:
+
+- exported tag metadata has timezone UTC for the release time, which is
+  different from our metadata (CEST)
 
 ### **Contribute**
 
@@ -122,16 +146,9 @@ the repository on GitHub and then submit a [pull
 request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
 Besides clear bug fixes, it is best to discuss potential changes or
 additions with [Allert Bijleveld](mailto:allert.bijleveld@nioz.nl).
-
-When contributing, please follow the existing structure of the
-repository and [style](http://adv-r.had.co.nz/Style.html). You can use
-[`styler`](https://styler.r-lib.org/) to adapt your code and
-[`lintr`](https://lintr.r-lib.org/) to check the style. Note that not
-all code follows this style at the moment, but new code should aim to be
-consistent with it.
-
-Before submitting a pull request to the original “upstream” repository,
-please make sure the code passes all R CMD checks (`devtools::check()`).
+Check the article [Package
+maintenance](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_maintenance.html)
+for more details.
 
 ### **Acknowledgments**
 

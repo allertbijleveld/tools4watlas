@@ -1,9 +1,9 @@
 ---
-title: "Plotting data"
+title: "Plot data"
 author: "Johannes Krietsch"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Plotting data}
+  %\VignetteIndexEntry{Plot data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -53,7 +53,6 @@ bm +
     show.legend = FALSE
   ) +
   scale_color_brewer(palette = "Dark2") # for up to 8 categories
-# scale_color_viridis_d(option = "H") # for N categories
 ```
 
 #### Heatmap of all positions
@@ -101,10 +100,12 @@ d_sf_lines <- atl_as_sf(data,
 )
 
 # Plot interactive map
-mapview::mapview(d_sf_lines, zcol = "tag", legend = FALSE) + mapview::mapview(d_sf, zcol = "tag")
+mapview(d_sf_lines, zcol = "tag", legend = FALSE) + mapview(d_sf, zcol = "tag")
 ```
 
 ## Static map with `OpenStreetMap` 
+
+"bing" is not working at the moment, switched to "osm"
 
 ```{r, fig.cap = "Static map with satellite image"}
 library(OpenStreetMap)
@@ -112,7 +113,7 @@ library(sf)
 
 # make data spatial and transform projection to WGS 84 (used in osm)
 d_sf <- atl_as_sf(data, additional_cols = c("tag", "datetime"))
-d_sf <- sf::st_transform(d_sf, crs = sf::st_crs(4326))
+d_sf <- st_transform(d_sf, crs = st_crs(4326))
 
 # get bounding box
 bbox <- atl_bbox(d_sf, asp = "16:9", buffer = 500)
@@ -120,16 +121,17 @@ bbox <- atl_bbox(d_sf, asp = "16:9", buffer = 500)
 # extract openstreetmap
 # other 'type' options are "osm", "maptoolkit-topo", "bing", "stamen-toner",
 # "stamen-watercolor", "esri", "esri-topo", "nps", "apple-iphoto", "skobbler";
-map <- OpenStreetMap::openmap(c(bbox["ymax"], bbox["xmin"]),
+map <- openmap(
+  c(bbox["ymax"], bbox["xmin"]),
   c(bbox["ymin"], bbox["xmax"]),
-  type = "bing", mergeTiles = TRUE
+  type = "osm", mergeTiles = TRUE
 )
 
-bm <- OpenStreetMap::autoplot.OpenStreetMap(map)
+bm <- autoplot.OpenStreetMap(map)
 
 # transform points to Mercator and add transformed coordinates to data
-d_sf <- sf::st_transform(d_sf, crs = sf::st_crs(3857))
-osm_coords <- sf::st_coordinates(d_sf)
+d_sf <- st_transform(d_sf, crs = sf::st_crs(3857))
+osm_coords <- st_coordinates(d_sf)
 data[, `:=`(x_osm = osm_coords[, 1], y_osm = osm_coords[, 2])]
 
 # plot
@@ -192,7 +194,7 @@ bbox <- atl_bbox(d_sf, buffer = 500)
 # "stamen-watercolor", "esri", "esri-topo", "nps", "apple-iphoto", "skobbler";
 map <- OpenStreetMap::openmap(c(bbox["ymax"], bbox["xmin"]),
   c(bbox["ymin"], bbox["xmax"]),
-  type = "bing", mergeTiles = TRUE
+  type = "osm", mergeTiles = TRUE
 )
 
 # Plot the tracking data on the satellite image

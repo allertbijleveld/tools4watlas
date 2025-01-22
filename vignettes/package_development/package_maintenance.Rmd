@@ -1,0 +1,154 @@
+---
+title: "Package maintenance"
+author: "Johannes Krietsch"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Package maintenance}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  dpi = 300,
+  message = FALSE
+)
+```
+
+## Contributing to `tools4watlas`
+
+If you want to contribute to `tools4watlas` [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) the repository on GitHub and then submit a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Besides clear bug fixes, it is best to discuss potential changes or additions with [Allert Bijleveld](mailto:allert.bijleveld@nioz.nl). 
+
+Before submitting a pull request to the original “upstream” repository, please make sure the code passes all R CMD checks (`devtools::check()`). If you changed content that changes the website, rebuild the website with `pkgdown::build_site()` into the docs folder. Note that some articles that are not vignettes, require a path to the WATLAS data folder "tools4watlas_articles" including additional data. 
+
+For more details see [R Packages by Hadley Wickham and Jennifer Bryan](https://r-pkgs.org/) and read the documentation of the used packages. 
+
+## Working on `tools4watlas`
+
+When contributing, please follow the existing structure of the repository and [R style](http://adv-r.had.co.nz/Style.html) (see below). 
+
+### Required packages
+
+These are all R packages needed:
+ 
+```{r, eval=FALSE}
+library(devtools)
+library(roxygen2)
+library(usethis)
+library(pkgdown)
+library(lintr)
+library(styler)
+library(testthat)
+library(covr)
+```
+
+### Coding style
+
+Follows the standard [tidyverse style](https://style.tidyverse.org/) and can be checked using [`lintr`](https://lintr.r-lib.org/). You can use [`styler`](https://styler.r-lib.org/) to format your code (will take care of most needed changes, but not all). Only use style in the file you are working on or selected code. The easiest is to use the R Studio addin, otherwise use `styler::style_file("my_file.R")`.
+
+Note that not all code follows this style at the moment (see [.lintr](https://github.com/allertbijleveld/tools4watlas/blob/master/.lintr) for exclusions), but new code should aim to be consistent with it. 
+
+```{r, eval=FALSE}
+# single file
+lintr::lint("./file_name.R")
+
+# the whole package
+lintr::lint_package()
+```
+
+### Documentation and functions
+
+The package is documented useing [`roxygen2`](https://roxygen2.r-lib.org/). Functions are in the [R folder](https://github.com/allertbijleveld/tools4watlas/tree/master/R) and always have the prefix `atl_`. Each function has a [`roxygen2 header`](https://roxygen2.r-lib.org/articles/rd.html). This header can be created by using `Ctrl + Shift + D` within a new function, if you’re using RStudio. Optimally, each function has an runable example. Once done run:
+
+```{r, eval=FALSE}
+devtools::document()
+```
+
+### Test coverage
+
+Why test your code? Testing your code is crucial for ensuring reliability, correctness, and maintainability. It helps prevent errors and ensures that your code works as expected. `tools4watlas` uses [`testthat`](https://testthat.r-lib.org/) and code is located in `tests/testthat` containing one R script for each function. When adding new functions or code, please add tests for this code too. Check the code coverage with [`covr`](https://covr.r-lib.org/). For more test coverage details see [codecov](https://app.codecov.io/gh/allertbijleveld/tools4watlas).
+
+```{r, eval=FALSE}
+# run tests
+devtools::test()
+
+# check code coverage
+covr::package_coverage()
+```
+
+### Vignettes and articles
+
+Vignettes and articles are both types of documentation of an R packaged. The difference is that vignettes are included in the package (always checked with `devtools::check()` and would be included on CRAN) and have to run with all data provided with the package. Articles on the other hand, are not included in the package and can include links to local data (e.g. that are to large to include in the package). They are only presented on the package website (see below). All vignettes are articles, but not all articles are vignettes.
+
+#### Check vignettes
+
+To check if the vignettes are correctly compiled, either use the `Knit` button in R Studio or build all or single vignettes. This is also checked when running `devtools::check()`, so not necessary if everything is fine there (but can help when debugging). 
+
+```{r, eval=FALSE}
+# check if all vignettes build
+devtools::build_vignettes()
+
+# check if single vignette builds
+devtools::build_rmd("vignettes/vignette-name.Rmd")
+```
+
+#### Check articles
+
+To check if the articles are correctly compiled, either use the `Knit` button in R Studio build is using `build_article`. Do not build all articles new (lazy = FALSE), if you did not specify the correct local file path. 
+
+```{r, eval=FALSE}
+# check if all articles build
+# (only use lazy = FALSE with correct file path to local files)
+pkgdown::build_articles(lazy = TRUE, preview = TRUE)
+
+# check if single vignette builds
+# (path relative to vignettes folder with no file extension)
+pkgdown::build_article("subfolder/article_name", preview = TRUE)
+```
+
+### Package website
+
+The package website is build using [`pkgdown`](https://pkgdown.r-lib.org/). It's structure is defined in the [_pkgdown.yml](https://github.com/allertbijleveld/tools4watlas/blob/master/_pkgdown.yml). It is build in the docs folder. Please commit all changes in the docs folder separately (to make it easier to check changes).
+
+When editing anything simply run with `lazy = TRUE`. Otherwise, make sure you have to correct file path in articles that rely on local data. 
+
+```{r, eval=FALSE}
+# build site new without rebuilding all articles
+pkgdown::build_site(lazy = TRUE)
+
+# rebuilds everything (only use with correct file path to local files)
+pkgdown::build_site()
+
+```
+
+### Checks before pushing to GitHub
+
+Summarised steps to check before pushing to GitHub.
+
+```{r, eval=FALSE}
+# set working directory (not necessary if R Studio project)
+setwd("C:/Users/..path../tools4watlas")
+
+# lintr
+lintr::lint_package()
+
+# document
+devtools::document()
+
+# load all functions
+devtools::load_all()
+
+# build readme (run only if changed)
+devtools::build_readme()
+
+# tidy description
+usethis::use_tidy_description()
+
+# R CMD check
+devtools::check()
+
+# build website (lazy = TRUE only changes files that were edited)
+pkgdown::build_site(lazy = TRUE)
+```
+
+Give meaningful commit message and commit everything in the docs folder with the website separately.

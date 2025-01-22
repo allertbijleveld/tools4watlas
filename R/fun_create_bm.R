@@ -76,7 +76,9 @@ atl_create_bm <- function(data = NULL,
   d_sf <- atl_as_sf(data, tag = NULL, x, y, projection = projection)
 
   # Change projection if data were not UTM31
-  d_sf <- sf::st_transform(d_sf, crs = sf::st_crs(32631))
+  if (sf::st_crs(d_sf)$epsg != 32631) {
+    d_sf <- sf::st_transform(d_sf, crs = sf::st_crs(32631))
+  }
 
   # Create bounding box
   bbox <- atl_bbox(d_sf, asp = asp, buffer = buffer)

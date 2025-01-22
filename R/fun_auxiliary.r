@@ -105,7 +105,6 @@ atl_plot_map_osm <- function(map,
   px_width <- map$tiles[[1]]$yres[1]
   px_height <- map$tiles[[1]]$xres[1]
   ## initiate plotting window
-  # win.graph(width=px_width/ppi, height=px_height/ppi)
   dev.new(width = px_width / ppi, height = px_height / ppi)
   par(bg = "black")
   par(xpd = TRUE)

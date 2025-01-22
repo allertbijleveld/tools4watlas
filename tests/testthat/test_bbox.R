@@ -36,7 +36,7 @@ testthat::test_that("atl_bbox applies buffer correctly long format", {
 })
 
 # Test error handling for invalid aspect ratio format
-testthat::test_that("atl_bbox throws an error for invalid aspect ratio format", {
+testthat::test_that("atl_bbox throws an error for invalid asp ratio format", {
   geom <- sf::st_as_sfc("POLYGON((0 0, 1 0, 1 2, 0 2, 0 0))")
 
   testthat::expect_error(

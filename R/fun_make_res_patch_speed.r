@@ -103,13 +103,14 @@ atl_res_patch_speed <- function(data,
 
     # Create proto-patches based on thresholds
     data[, `:=`(patch, cumsum(speed > max_speed | spat_diff >
-      lim_spat_indep | time_diff > lim_time_indep))]
+                                lim_spat_indep | time_diff > lim_time_indep))]
 
     # Filter based on minimum fixes
-    data[, `:=`(nfixes, .N), by = c("tag", "patch")] # .N provides the number of rows in a group
+    data[, `:=`(nfixes, .N), by = c("tag", "patch")]
     data <- data[nfixes >= min_fixes]
     data[, `:=`(nfixes, NULL)] # remove nfixes-column
-    data <- data[, list(list(.SD)), by = list(tag, patch)] # Subset Data by id and patch
+    # Subset by id and patch
+    data <- data[, list(list(.SD)), by = list(tag, patch)]
     setnames(data, old = "V1", new = "patchdata")
     data[, `:=`(nfixes, as.integer(lapply(patchdata, nrow)))]
 
@@ -133,7 +134,7 @@ atl_res_patch_speed <- function(data,
 
     # Calculate duration in patch and filter for minimal duration
     patch_summary[, `:=`(duration, as.numeric(time_end) -
-      as.numeric(time_start))]
+                           as.numeric(time_start))]
     patch_summary <- patch_summary[duration > min_duration]
 
     # Recalculate variables for merging residence patches e.g. distances,
@@ -142,7 +143,7 @@ atl_res_patch_speed <- function(data,
     patch_summary[, `:=`(
       time_diff_end_start,
       c(Inf, as.numeric(time_start[2:length(time_start)] -
-        time_end[seq_len(length(time_end) - 1)]))
+                          time_end[seq_len(length(time_end) - 1)]))
     )]
     patch_summary[, `:=`(
       spat_diff_end_start,
@@ -169,7 +170,7 @@ atl_res_patch_speed <- function(data,
     patch_summary[, `:=`(
       speed_between_patches_medianxy =
         patch_summary$spat_diff /
-          patch_summary$time_diff_end_start
+        patch_summary$time_diff_end_start
     )]
     patch_summary[1, "speed_between_patches_medianxy"] <- Inf
 
@@ -229,10 +230,10 @@ atl_res_patch_speed <- function(data,
     temp_data[, `:=`(
       time_bw_patch,
       c(NA, as.numeric(time_start[2:length(time_start)] -
-        time_end[seq_len(length(time_end) - 1)]))
+                         time_end[seq_len(length(time_end) - 1)]))
     )]
     temp_data[, `:=`(disp_in_patch, sqrt((x_end - x_start)^2 +
-      (y_end - y_start)^2))]
+                                           (y_end - y_start)^2))]
     temp_data[, `:=`(duration, (time_end - time_start))]
     data <- data.table::merge.data.table(data, temp_data,
       by = c("tag", "patch")

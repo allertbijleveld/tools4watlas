@@ -50,16 +50,16 @@ test_that("atl_add_tidal_data adds tidal information correctly", {
 
   # Check the result has the expected columns
   expect_true(all(c("tideID", "tidaltime", "time2lowtide", "waterlevel") %in%
-    colnames(result)))
+                    colnames(result)))
 
   # Check the tideID is correctly assigned
   expect_equal(result$tideID, c(1, 1, 1)) # All points fall under tideID 1
 
   # Check tidaltime calculation
-  expect_equal(result$tidaltime, c(60, 70, 80)) # Time since high tide in minutes
+  expect_equal(result$tidaltime, c(60, 70, 80)) # Time since high tide in min
 
   # Check time2lowtide calculation
-  expect_equal(result$time2lowtide, c(-300, -290, -280)) # Time to low tide in minutes
+  expect_equal(result$time2lowtide, c(-300, -290, -280)) # T to low tide in min
 
   # Check waterlevel mapping
   datetime_example <- result$datetime[1]

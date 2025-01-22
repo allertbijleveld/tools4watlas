@@ -42,10 +42,11 @@
 #'
 #' # extract openstreetmap
 #' # other 'type' options are "osm", "maptoolkit-topo", "bing", "stamen-toner",
-#' # "stamen-watercolor", "esri", "esri-topo", "nps", "apple-iphoto", "skobbler";
+#' # "stamen-watercolor", "esri", "esri-topo", "nps", "apple-iphoto",
+#' "skobbler";
 #' map <- openmap(c(bbox["ymax"], bbox["xmin"]),
 #'   c(bbox["ymin"], bbox["xmax"]),
-#'   type = "bing", mergeTiles = TRUE
+#'   type = "osm", mergeTiles = TRUE
 #' )
 #'
 #' # Plot the tracking data on the satellite image

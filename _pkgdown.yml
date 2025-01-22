@@ -10,18 +10,34 @@ navbar:
     left:  [home, reference, articles, literature]
     right: [search, github]
   components:
-    literature:
-      text: Literature
-      href: articles/literature/literature.html
     articles:
       text: Articles
       menu:
-      - text: "Loading and checking data"
+      - text: Basic workflow (Vignettes)
+      - text: "Step 1: Load and check data"
         href: articles/load_and_check_data.html
-      - text: "Plotting data"
-        href: articles/plot_data.html
-      - text: "Processing data"
-        href: articles/process_data.html
+      - text: "Step 2: Filter data"
+        href: articles/filter_data.html
+      - text: "Step 3: Smooth and thin data"
+        href: articles/smooth_and_thin_data.html
+      - text: "Step 4: Add tidal data"
+        href: articles/add_tidal_data.html   
+      - text: "Step 5: Plot data"
+        href: articles/plot_data.html   
+      - text: "--------"
+      - text: Additional tutorials
+      - text: "Test"
+        href: articles/additional_tutorials/test.html
+      - text: "--------"
+      - text: Package development
+      - text: "Package maintenance"
+        href: articles/package_development/package_maintenance.html
+      - text: "tools4watlas logo"
+        href: articles/package_development/package_logo.html
+    literature:
+      text: Literature
+      href: articles/literature/literature.html
+    
 reference:
   - title: "Load and check data"
     desc: "Functions to load data from SQLlite or remote SQL database"
