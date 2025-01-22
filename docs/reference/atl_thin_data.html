@@ -11,9 +11,6 @@ this cannot be propagated to the averaged position.
 Both options handle the column 'time' differently: while 'subsample' returns
 the actual timestamp (in UNIX time) of each sample, 'aggregate' returns the
 mean timestamp (also in UNIX time).
-In both cases, an extra column, time_agg, is added which has a uniform
-difference between each element corresponding to the user-defined thinning
-interval.
 The 'aggregate' option only recognises errors named varx and
 vary.
 If all of these columns are not present together the function assumes there
@@ -33,9 +30,6 @@ this cannot be propagated to the averaged position.
 Both options handle the column 'time' differently: while 'subsample' returns
 the actual timestamp (in UNIX time) of each sample, 'aggregate' returns the
 mean timestamp (also in UNIX time).
-In both cases, an extra column, time_agg, is added which has a uniform
-difference between each element corresponding to the user-defined thinning
-interval.
 The 'aggregate' option only recognises errors named varx and
 vary.
 If all of these columns are not present together the function assumes there
@@ -62,17 +56,19 @@ character vector to the id_columns argument."><meta property="og:image" content=
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><h6 class="dropdown-header" data-toc-skip>Basic Worflow (Vignettes)</h6></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
     <li><a class="dropdown-item" href="../articles/load_and_check_data.html">Step 1: Load and check data</a></li>
     <li><a class="dropdown-item" href="../articles/filter_data.html">Step 2: Filter data</a></li>
     <li><a class="dropdown-item" href="../articles/smooth_and_thin_data.html">Step 3: Smooth and thin data</a></li>
     <li><a class="dropdown-item" href="../articles/add_tidal_data.html">Step 4: Add tidal data</a></li>
     <li><a class="dropdown-item" href="../articles/plot_data.html">Step 5: Plot data</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Additional Tutorials</h6></li>
-    <li><a class="dropdown-item" href="../articles/other_examples/test.html">Test</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Additional tutorials</h6></li>
+    <li><a class="dropdown-item" href="../articles/additional_tutorials/test.html">Test</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Package Development</h6></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
+    <li><a class="dropdown-item" href="../articles/package_development/package_maintenance.html">Package maintenance</a></li>
+    <li><a class="dropdown-item" href="../articles/package_development/basemap_data.html">Base map data</a></li>
     <li><a class="dropdown-item" href="../articles/package_development/package_logo.html">tools4watlas logo</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../articles/literature/literature.html">Literature</a></li>
@@ -104,9 +100,6 @@ this cannot be propagated to the averaged position.
 Both options handle the column 'time' differently: while 'subsample' returns
 the actual timestamp (in UNIX time) of each sample, 'aggregate' returns the
 mean timestamp (also in UNIX time).
-In both cases, an extra column, <code>time_agg</code>, is added which has a uniform
-difference between each element corresponding to the user-defined thinning
-interval.
 The 'aggregate' option only recognises errors named <code>varx</code> and
 <code>vary</code>.
 If all of these columns are not present together the function assumes there
