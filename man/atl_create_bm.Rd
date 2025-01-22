@@ -10,10 +10,9 @@ atl_create_bm(
   y = "y",
   buffer = 100,
   asp = "16:9",
-  land_data = tools4watlas::land_sf,
-  mudflats_data = tools4watlas::mudflats_sf,
-  lakes_data = tools4watlas::lakes_sf,
-  rivers_data = tools4watlas::rivers_sf,
+  land_data = tools4watlas::land,
+  mudflats_data = tools4watlas::mudflats,
+  lakes_data = tools4watlas::lakes,
   sc_dist,
   sc_location = "br",
   sc_cex = 0.7,
@@ -40,15 +39,12 @@ box. Default is \code{1000}.}
 \item{asp}{A character string specifying the aspect ratio in \code{"width:height"}
 format. Default is \code{"16:9"}.}
 
-\item{land_data}{An \code{sf} object for land polygons. Defaults to \code{land_sf}.}
+\item{land_data}{An \code{sf} object for land polygons. Defaults to \code{land}.}
 
 \item{mudflats_data}{An \code{sf} object for mudflat polygons. Defaults to
-\code{mudflats_sf}.}
+\code{mudflats}.}
 
-\item{lakes_data}{An \code{sf} object for lake polygons. Defaults to \code{lakes_sf}.}
-
-\item{rivers_data}{An \code{sf} object for river polygons. Defaults to
-\code{rivers_sf}.}
+\item{lakes_data}{An \code{sf} object for lake polygons. Defaults to \code{lakes}.}
 
 \item{sc_dist}{Scale bar distance. Optional; calculated automatically if
 omitted.}

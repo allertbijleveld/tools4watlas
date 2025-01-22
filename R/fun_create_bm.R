@@ -15,12 +15,10 @@
 #'   box. Default is `1000`.
 #' @param asp A character string specifying the aspect ratio in `"width:height"`
 #'   format. Default is `"16:9"`.
-#' @param land_data An `sf` object for land polygons. Defaults to `land_sf`.
+#' @param land_data An `sf` object for land polygons. Defaults to `land`.
 #' @param mudflats_data An `sf` object for mudflat polygons. Defaults to
-#'   `mudflats_sf`.
-#' @param lakes_data An `sf` object for lake polygons. Defaults to `lakes_sf`.
-#' @param rivers_data An `sf` object for river polygons. Defaults to
-#' `rivers_sf`.
+#'   `mudflats`.
+#' @param lakes_data An `sf` object for lake polygons. Defaults to `lakes`.
 #' @param sc_dist Scale bar distance. Optional; calculated automatically if
 #'   omitted.
 #' @param sc_location A character string specifying the location of the scale
@@ -50,10 +48,9 @@ atl_create_bm <- function(data = NULL,
                           y = "y",
                           buffer = 100,
                           asp = "16:9",
-                          land_data = tools4watlas::land_sf,
-                          mudflats_data = tools4watlas::mudflats_sf,
-                          lakes_data = tools4watlas::lakes_sf,
-                          rivers_data = tools4watlas::rivers_sf,
+                          land_data = tools4watlas::land,
+                          mudflats_data = tools4watlas::mudflats,
+                          lakes_data = tools4watlas::lakes,
                           sc_dist,
                           sc_location = "br",
                           sc_cex = 0.7,
@@ -94,7 +91,6 @@ atl_create_bm <- function(data = NULL,
       data = lakes_data, fill = "#D7E7FF",
       colour = "grey80"
     ) +
-    geom_sf(data = rivers_data, fill = "#D7E7FF", colour = "grey80") +
     # Scale bar
     ggspatial::annotation_scale(aes(location = "br"),
       text_cex = 0.7,
