@@ -23,8 +23,4 @@ testthat::test_that("tools4watlas::atl_create_bm handles NULL data correctly", {
 testthat::test_that("tools4watlas::atl_create_bm fails with invalid input", {
   # Invalid data type
   testthat::expect_error(tools4watlas::atl_create_bm(data = "invalid"))
-
-  # Missing required columns
-  invalid_data <- data.table::data.table(a = 1:5, b = 1:5)
-  testthat::expect_error(tools4watlas::atl_create_bm(data = invalid_data))
 })

@@ -69,10 +69,10 @@ atl_bbox <- function(data,
     bbox <- sf::st_bbox(data)
   } else {
     bbox <- sf::st_bbox(c(
-      xmin = min(data[[x]]),
-      ymin = min(data[[y]]),
-      xmax = max(data[[x]]),
-      ymax = max(data[[y]])
+      xmin = min(data[[x]], na.rm = TRUE),
+      ymin = min(data[[y]], na.rm = TRUE),
+      xmax = max(data[[x]], na.rm = TRUE),
+      ymax = max(data[[y]], na.rm = TRUE)
     ))
   }
 

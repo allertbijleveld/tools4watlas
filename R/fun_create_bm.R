@@ -69,16 +69,15 @@ atl_create_bm <- function(data = NULL,
     data.table::setDT(data)
   }
 
-  # Exclude rows where x or y are NA and convert to sf object
-  d_sf <- atl_as_sf(data, tag = NULL, x, y, projection = projection)
+  # Create bounding box
+  bbox <- atl_bbox(data, asp = asp, buffer = buffer)
 
   # Change projection if data were not UTM31
-  if (sf::st_crs(d_sf)$epsg != 32631) {
-    d_sf <- sf::st_transform(d_sf, crs = sf::st_crs(32631))
+  if (projection != 32631) {
+    bbox <- sf::st_as_sfc(bbox)
+    bbox <- sf::st_set_crs(bbox, projection)
+    bbox <- sf::st_transform(bbox, crs = sf::st_crs(32631)) |> sf::st_bbox()
   }
-
-  # Create bounding box
-  bbox <- atl_bbox(d_sf, asp = asp, buffer = buffer)
 
   # Create base map
   bm <- ggplot() +
