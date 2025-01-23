@@ -32,7 +32,7 @@ navbar:
       - text: Package development
       - text: "Package maintenance"
         href: articles/package_development/package_maintenance.html
-      - text: "Base map data"
+      - text: "Basemap data"
         href: articles/package_development/basemap_data.html
       - text: "tools4watlas logo"
         href: articles/package_development/package_logo.html
