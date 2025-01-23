@@ -5,8 +5,12 @@
 #' expand or contract the bounding box.
 #'
 #' @author Johannes Krietsch
-#' @param geometry An `sf` or `sfc` object for which the bounding box is
-#' calculated.
+#' @param data An `sf` or `sfc` object for which the bounding box is
+#' calculated or a data.table with x- and y- coordinates.
+#' @param x A character string representing the name of the column containing
+#'  x-coordinates. Defaults to "x".
+#' @param y A character string representing the name of the column containing
+#'  y-coordinates. Defaults to "y".
 #' @param asp A character string specifying the desired aspect ratio in the
 #' format `"width:height"`. Default is `"16:9"`.
 #' @param buffer A numeric value specifying the buffer distance to be applied
@@ -29,7 +33,11 @@
 #'
 #' # Create a bounding box with a 1:1 aspect ratio and a buffer of 0.5 units
 #' atl_bbox(geom, asp = "1:1", buffer = 0.5)
-atl_bbox <- function(geometry, asp = "16:9", buffer = 0) {
+atl_bbox <- function(data,
+                     x = "x",
+                     y = "y",
+                     asp = "16:9",
+                     buffer = 0) {
   # Check input
   assertthat::assert_that(
     stringr::str_detect(asp, ":"),
@@ -37,25 +45,43 @@ atl_bbox <- function(geometry, asp = "16:9", buffer = 0) {
     msg = "Aspect ratio must be in the format 'width:height'."
   )
 
-  if (mapview::npts(geometry, by_feature = FALSE) == 1 &&
-        sf::st_geometry_type(geometry)[1] == "POINT") {
-    assertthat::assert_that(
-      buffer > 0,
-      msg = "Buffer must be >0 if geometry is a single point"
-    )
+  if (inherits(data, c("sf", "sfc"))) {
+    if (nrow(sf::st_coordinates(data)) == 1) {
+      assertthat::assert_that(
+        buffer > 0,
+        msg = "Buffer must be >0 if geometry is a single point"
+      )
+    }
+  } else {
+    if (nrow(data) == 1) {
+      assertthat::assert_that(
+        buffer > 0,
+        msg = "Buffer must be >0 if geometry is a single point"
+      )
+    }
   }
 
   # Parse the aspect ratio
   ratio <- as.numeric(unlist(strsplit(asp, ":")))
 
-  # Apply the buffer to the geometry
-  if (buffer != 0) {
-    # For all geometries, apply the buffer
-    geometry <- sf::st_buffer(geometry, dist = buffer)
+  # Extract the original bounding box
+  if (inherits(data, c("sf", "sfc"))) {
+    bbox <- sf::st_bbox(data)
+  } else {
+    bbox <- sf::st_bbox(c(
+      xmin = min(data[[x]]),
+      ymin = min(data[[y]]),
+      xmax = max(data[[x]]),
+      ymax = max(data[[y]])
+    ))
   }
 
-  # Extract the original bounding box for the geometry (with the buffer applied)
-  bbox <- sf::st_bbox(geometry)
+  # Apply the buffer to the bbox
+  if (buffer != 0) {
+    bbox <- sf::st_as_sfc(bbox) |> sf::st_buffer(dist = buffer) |> sf::st_bbox()
+  }
+
+  # Extract range
   x_range <- bbox["xmax"] - bbox["xmin"]
   y_range <- bbox["ymax"] - bbox["ymin"]
 
