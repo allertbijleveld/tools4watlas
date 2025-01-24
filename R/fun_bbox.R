@@ -68,6 +68,9 @@ atl_bbox <- function(data,
   if (inherits(data, c("sf", "sfc"))) {
     bbox <- sf::st_bbox(data)
   } else {
+    # check if required columns are present
+    names_req <- c(x, y)
+    atl_check_data(data, names_req)
     bbox <- sf::st_bbox(c(
       xmin = min(data[[x]], na.rm = TRUE),
       ymin = min(data[[y]], na.rm = TRUE),

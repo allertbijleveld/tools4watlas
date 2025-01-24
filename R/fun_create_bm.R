@@ -68,14 +68,18 @@ atl_create_bm <- function(data = NULL,
     data.table::setDT(data)
   }
 
-  # Create bounding box
-  bbox <- atl_bbox(data, asp = asp, buffer = buffer)
+  # check if required columns are present
+  names_req <- c(x, y)
+  atl_check_data(data, names_req)
 
-  # Change projection if data were not UTM31
-  if (projection != sf::st_crs(32631)) {
-    bbox <- sf::st_as_sfc(bbox)
-    bbox <- sf::st_set_crs(bbox, projection)
-    bbox <- sf::st_transform(bbox, crs = sf::st_crs(32631)) |> sf::st_bbox()
+  # Create bounding box
+  if (projection == sf::st_crs(32631)){
+    bbox <- atl_bbox(data, asp = asp, buffer = buffer)
+  } else {
+    # Create sf and change projection if data were not UTM31
+    d_sf <- atl_as_sf(data, tag = NULL, x, y, projection = projection)
+    d_sf <- sf::st_transform(d_sf, crs = sf::st_crs(32631))
+    bbox <- atl_bbox(d_sf, asp = asp, buffer = buffer)
   }
 
   # Create base map

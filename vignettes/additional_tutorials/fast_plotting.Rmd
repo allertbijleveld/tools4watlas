@@ -133,9 +133,7 @@ bm +
   scale_colour_viridis(discrete = TRUE)
 
 # run time
-et <- Sys.time()
-t <- round(et - st, 2)
-print(t)
+round(Sys.time() - st, 2)
 ```
 
 ## `ggplot2` with points as geom_scattermore() and tracks
