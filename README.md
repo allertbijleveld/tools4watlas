@@ -68,6 +68,10 @@ logic order, but each vignette can be run independently.
 
 Some are only running with local access to the WATLAS data folder.
 
+- [**Fast plotting with
+  ggplot2**](https://allertbijleveld.github.io/tools4watlas/articles/additional_tutorials/fast_plotting.html) -
+  How to speed up plotting in `ggplot2`.
+
 - [**Add and plot bathymetry
   data**](https://allertbijleveld.github.io/tools4watlas/articles/additional_tutorials/test.html) -
   How to add bathymetry data and plot them.
@@ -127,7 +131,6 @@ We are working on the following articles at the moment:
 
 Other to do’s:
 
-- Background map data of the whole Wadden Sea
 - Choose nice example data
 - add examples, vignette & tests for atl_add_raster_data()
 - add species colors

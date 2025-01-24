@@ -26,6 +26,8 @@ navbar:
         href: articles/plot_data.html   
       - text: "--------"
       - text: Additional tutorials
+      - text: "Fast plotting"
+        href: articles/additional_tutorials/fast_plotting.html
       - text: "Test"
         href: articles/additional_tutorials/test.html
       - text: "--------"

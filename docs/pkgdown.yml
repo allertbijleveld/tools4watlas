@@ -4,6 +4,7 @@ pkgdown_sha: ~
 articles:
   add_tidal_data: add_tidal_data.html
   package_development/basemap_data: package_development/basemap_data.html
+  additional_tutorials/fast_plotting: additional_tutorials/fast_plotting.html
   filter_data: filter_data.html
   literature/literature: literature/literature.html
   load_and_check_data: load_and_check_data.html
@@ -12,7 +13,7 @@ articles:
   plot_data: plot_data.html
   smooth_and_thin_data: smooth_and_thin_data.html
   additional_tutorials/test: additional_tutorials/test.html
-last_built: 2025-01-22T20:25Z
+last_built: 2025-01-24T13:26Z
 urls:
   reference: https://allertbijleveld.github.io/tools4watlas/reference
   article: https://allertbijleveld.github.io/tools4watlas/articles
