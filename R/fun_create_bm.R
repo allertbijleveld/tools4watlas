@@ -60,8 +60,7 @@ atl_create_bm <- function(data = NULL,
                           projection = sf::st_crs(32631)) {
   if (is.null(data) || nrow(data) == 0) {
     # If no data make map around Griend
-    data <- data.table::data.table(x = 5.2525, y = 53.2523)
-    projection <- sf::st_crs(4326)
+    data <- data.table::data.table(tag = 1, x = 650272.5, y = 5902705)
   }
 
   # Convert to data.table if not already
@@ -73,7 +72,7 @@ atl_create_bm <- function(data = NULL,
   bbox <- atl_bbox(data, asp = asp, buffer = buffer)
 
   # Change projection if data were not UTM31
-  if (projection != 32631) {
+  if (projection != sf::st_crs(32631)) {
     bbox <- sf::st_as_sfc(bbox)
     bbox <- sf::st_set_crs(bbox, projection)
     bbox <- sf::st_transform(bbox, crs = sf::st_crs(32631)) |> sf::st_bbox()
