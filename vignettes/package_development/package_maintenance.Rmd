@@ -58,7 +58,7 @@ lintr::lint_package()
 
 ### Documentation and functions
 
-The package is documented useing [`roxygen2`](https://roxygen2.r-lib.org/). Functions are in the [R folder](https://github.com/allertbijleveld/tools4watlas/tree/master/R) and always have the prefix `atl_`. Each function has a [`roxygen2 header`](https://roxygen2.r-lib.org/articles/rd.html). This header can be created by using `Ctrl + Shift + D` within a new function, if you’re using RStudio. Optimally, each function has an runable example. Once done run:
+The package is documented useing [`roxygen2`](https://roxygen2.r-lib.org/). Functions are in the [R folder](https://github.com/allertbijleveld/tools4watlas/tree/master/R) and always have the prefix `atl_`. Each function has a [`roxygen2 header`](https://roxygen2.r-lib.org/articles/rd.html). This header can be created by using `Ctrl + Alt + Shift + R` within a new function, if you’re using RStudio. Optimally, each function has an runable example. Once done run:
 
 ```{r, eval=FALSE}
 devtools::document()

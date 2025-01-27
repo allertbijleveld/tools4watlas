@@ -94,7 +94,7 @@ bm <- atl_create_bm(data, buffer = 3000)
 
 ## Standard `ggplot2` with points and tracks
 
-```{r}
+```{r, fig.alt = "Standard ggplot2 with points and tracks"}
 # start time
 st <- Sys.time()
 
@@ -116,7 +116,7 @@ round(Sys.time() - st, 2)
 
 ## `ggplot2` with points as pch = "." and tracks
 
-```{r}
+```{r, fig.alt = "ggplot2 with points as dots and tracks"}
 # start time
 st <- Sys.time()
 
@@ -138,7 +138,7 @@ round(Sys.time() - st, 2)
 
 ## `ggplot2` with points as geom_scattermore() and tracks
 
-```{r}
+```{r, fig.alt = "ggplot2 with points as geom_scattermore() and tracks"}
 # start time
 st <- Sys.time()
 
@@ -162,7 +162,7 @@ round(Sys.time() - st, 2)
 
 The larger the grid cell size, the faster. 
 
-```{r}
+```{r, fig.alt = "ggplot2 summarized points in heat map"}
 # Round data to 200 m grid cells
 data_heatmap <- copy(data)
 data_heatmap[, c("x_round", "y_round") := list(

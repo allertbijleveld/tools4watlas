@@ -133,7 +133,6 @@ Other to do’s:
 
 - Choose nice example data
 - add examples, vignette & tests for atl_add_raster_data()
-- add species colors
 - add article for adding environmental data
 
 Check:

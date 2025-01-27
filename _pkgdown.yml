@@ -88,6 +88,8 @@ reference:
      - atl_plot_rpatches
      - atl_plot_add_track
      - atl_t_col
+     - atl_spec_cols
+     - atl_spec_labs
   - title: "Add enviromental data"
     desc: "Functions to add tidal data and other SpatRaster data"
     contents:

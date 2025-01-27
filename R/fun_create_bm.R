@@ -73,7 +73,7 @@ atl_create_bm <- function(data = NULL,
   atl_check_data(data, names_req)
 
   # Create bounding box
-  if (projection == sf::st_crs(32631)){
+  if (projection == sf::st_crs(32631)) {
     bbox <- atl_bbox(data, asp = asp, buffer = buffer)
   } else {
     # Create sf and change projection if data were not UTM31
