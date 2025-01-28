@@ -28,8 +28,8 @@ navbar:
       - text: Additional tutorials
       - text: "Fast plotting"
         href: articles/additional_tutorials/fast_plotting.html
-      - text: "Test"
-        href: articles/additional_tutorials/test.html
+      - text: "Add and plot bathymetry data"
+        href: articles/additional_tutorials/add_and_plot_bathymetry_data.html
       - text: "--------"
       - text: Package development
       - text: "Package maintenance"
