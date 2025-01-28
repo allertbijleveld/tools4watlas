@@ -49,7 +49,7 @@
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Additional tutorials</h6></li>
     <li><a class="dropdown-item" href="../articles/additional_tutorials/fast_plotting.html">Fast plotting</a></li>
-    <li><a class="dropdown-item" href="../articles/additional_tutorials/test.html">Test</a></li>
+    <li><a class="dropdown-item" href="../articles/additional_tutorials/add_and_plot_bathymetry_data.html">Add and plot bathymetry data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
     <li><a class="dropdown-item" href="../articles/package_development/package_maintenance.html">Package maintenance</a></li>
@@ -96,7 +96,7 @@ modification in place, where data is changed without making a copy. To
 prevent this (whenever it is not desired) use the function
 <code><a href="https://rdrr.io/pkg/data.table/man/copy.html" class="external-link">copy()</a></code> to make a true copy of the data set.</p>
 <p>Most <code>tools4watlas</code> function run on collections of lists
-<code><a href="https://rdrr.io/r/base/split.html" class="external-link">split()</a></code> by individual (tag) to keep the data separated and
+<code><a href="https://rspatial.github.io/terra/reference/split.html" class="external-link">split()</a></code> by individual (tag) to keep the data separated and
 allow for easy parallel computing (if necessary).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Packages</span></span>
@@ -167,7 +167,7 @@ with the following columns:</p>
 <span></span>
 <span><span class="co"># Subset desired tags using data.table</span></span>
 <span><span class="co"># (For example red knots and redshank from season 2023)</span></span>
-<span><span class="va">tags</span> <span class="op">&lt;-</span> <span class="va">all_tags</span><span class="op">[</span><span class="va">season</span> <span class="op">==</span> <span class="fl">2023</span> <span class="op">&amp;</span> <span class="va">species</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red knot"</span>, <span class="st">"redshank"</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">tag</span></span>
+<span><span class="va">tags</span> <span class="op">&lt;-</span> <span class="va">all_tags</span><span class="op">[</span><span class="va">season</span> <span class="op">==</span> <span class="fl">2023</span> <span class="op">&amp;</span> <span class="va">species</span> <span class="op"><a href="https://rspatial.github.io/terra/reference/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red knot"</span>, <span class="st">"redshank"</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">tag</span></span>
 <span></span>
 <span><span class="co"># Time period for which data should be extracted form the database (in CET)</span></span>
 <span><span class="va">from</span> <span class="op">&lt;-</span> <span class="st">"2023-10-01 12:00:00"</span></span>
@@ -417,7 +417,7 @@ many positions by tag and date we have.</p>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="st">"../inst/extdata/watlas_data_raw.csv"</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># N individuals with tagging data</span></span>
-<span><span class="va">data</span><span class="op">[</span>, <span class="va">.N</span>, <span class="va">tag</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">data</span><span class="op">[</span>, <span class="va">.N</span>, <span class="va">tag</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 3</span></span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># N positions, first and last data by tag ID</span></span>
@@ -432,7 +432,7 @@ many positions by tag and date we have.</p>
 <span><span class="co">## 2:   3085        3453 2023-10-01 10:00:01 2023-10-02 09:41:16</span></span>
 <span><span class="co">## 3:   3086        3548 2023-10-01 10:00:01 2023-10-02 09:59:42</span></span></code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># add data</span></span>
+<code class="sourceCode R"><span><span class="co"># add date</span></span>
 <span><span class="va">data</span><span class="op">[</span>, <span class="va">date</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">datetime</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># N positions by species and day</span></span>
