@@ -38,7 +38,8 @@ Imports:
     sf,
     stats,
     stringr,
-    terra
+    terra,
+    tidyterra
 Suggests:
     knitr,
     mapview,

@@ -186,7 +186,7 @@ data[, .(
   last_data = max(datetime)
 ), tag]
 
-# add data
+# add date
 data[, date := as.Date(datetime)] |> invisible()
 
 # N positions by species and day

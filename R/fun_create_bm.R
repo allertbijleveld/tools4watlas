@@ -15,10 +15,15 @@
 #'   box. Default is `1000`.
 #' @param asp A character string specifying the aspect ratio in `"width:height"`
 #'   format. Default is `"16:9"`.
+#' @param option Either "osm" for OpenStreetMap polygons or "bathymetry" for 
+#' bathymetry data. Note that for the later it is necessary to provide the 
+#' bathymetry data in UTM31.
 #' @param land_data An `sf` object for land polygons. Defaults to `land`.
 #' @param mudflats_data An `sf` object for mudflat polygons. Defaults to
 #'   `mudflats`.
 #' @param lakes_data An `sf` object for lake polygons. Defaults to `lakes`.
+#' @param raster_data An `SpatRaster` (tif opened with `terra::rast()` of 
+#' bathymetry data.
 #' @param sc_dist Scale bar distance. Optional; calculated automatically if
 #'   omitted.
 #' @param sc_location A character string specifying the location of the scale
@@ -48,9 +53,11 @@ atl_create_bm <- function(data = NULL,
                           y = "y",
                           buffer = 100,
                           asp = "16:9",
+                          option = "osm",
                           land_data = tools4watlas::land,
                           mudflats_data = tools4watlas::mudflats,
                           lakes_data = tools4watlas::lakes,
+                          raster_data,
                           sc_dist,
                           sc_location = "br",
                           sc_cex = 0.7,
@@ -82,17 +89,57 @@ atl_create_bm <- function(data = NULL,
     bbox <- atl_bbox(d_sf, asp = asp, buffer = buffer)
   }
 
+  if (option == "batymetry") {
+    # bounding box as vector
+    bbox_vec <-  sf::st_as_sfc(bbox) |> terra::vect()
+    # crop bathymetry data
+    raster_data_c <- terra::crop(raster_data, bbox_vec, mask = TRUE)
+    # discrete steps in color scale to highlight mudflats
+    x <- c(
+      -50,
+      seq(-6, -30, -4),
+      seq(-2, -6, -1),
+      seq(0, -2, -0.05),
+      seq(0, 2, 0.05),
+      seq(2, 6, 1),
+      45
+    ) |> unique()
+    x <- sort(x)
+    # classify in categories
+    raster_data_class <- terra::classify(
+      raster_data_c, x, include.lowest = TRUE, brackets = TRUE
+    )
+    # custom made scale
+    cc <- scales::pal_div_gradient(
+      "#567e9f", "#e4ccb6", "#fdf2f3", "Lab"
+    )(seq(0, 1, length.out = length(x)))
+    # variable name
+    var_name <- names(raster_data)[1]
+  }
   # Create base map
-  bm <- ggplot() +
-    geom_sf(
-      data = mudflats_data, fill = "#faf5ef", alpha = 0.6,
-      colour = "#faf5ef"
-    ) +
-    geom_sf(data = land_data, fill = "#faf5ef", colour = "grey80") +
-    geom_sf(
-      data = lakes_data, fill = "#D7E7FF",
-      colour = "grey80"
-    ) +
+  bm <- ggplot()
+  # Define layers conditionally
+  if (option == "osm") {
+    layers <- list(
+      geom_sf(
+        data = mudflats_data, fill = "#faf5ef", alpha = 0.6,
+        colour = "#faf5ef"
+      ),
+      geom_sf(data = land_data, fill = "#faf5ef", colour = "grey80"),
+      geom_sf(data = lakes_data, fill = "#D7E7FF", colour = "grey80")
+    )
+  } else {
+    layers <- list(
+      tidyterra::geom_spatraster(
+        data = raster_data_class, aes(fill = !!sym(var_name)),
+        show.legend = FALSE
+      ),
+      geom_sf(data = land_data, fill = "transparent", colour = "grey60"),
+      scale_fill_manual(values = cc, na.value = "#fdf2f3")
+    )
+  }
+  # add layers and plot modifications
+  bm <- bm + layers +
     # Scale bar
     ggspatial::annotation_scale(aes(location = "br"),
       text_cex = 0.7,
