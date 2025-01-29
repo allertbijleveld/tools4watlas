@@ -129,7 +129,7 @@ data <- atl_get_data(
 The resulting loaded WATLAS data will be a collection of lists split by tag. 
 
 ```{r, layout = "l-body-outset"}
-# Show first 5 rows of the first list
+# Show head of the table
 head(data) |> knitr::kable(digits = 2)
 ```
 

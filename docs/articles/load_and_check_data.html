@@ -95,9 +95,6 @@ fast and efficient. A key feature of <code>data.table</code> is
 modification in place, where data is changed without making a copy. To
 prevent this (whenever it is not desired) use the function
 <code><a href="https://rdrr.io/pkg/data.table/man/copy.html" class="external-link">copy()</a></code> to make a true copy of the data set.</p>
-<p>Most <code>tools4watlas</code> function run on collections of lists
-<code><a href="https://rspatial.github.io/terra/reference/split.html" class="external-link">split()</a></code> by individual (tag) to keep the data separated and
-allow for easy parallel computing (if necessary).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span>
@@ -167,7 +164,7 @@ with the following columns:</p>
 <span></span>
 <span><span class="co"># Subset desired tags using data.table</span></span>
 <span><span class="co"># (For example red knots and redshank from season 2023)</span></span>
-<span><span class="va">tags</span> <span class="op">&lt;-</span> <span class="va">all_tags</span><span class="op">[</span><span class="va">season</span> <span class="op">==</span> <span class="fl">2023</span> <span class="op">&amp;</span> <span class="va">species</span> <span class="op"><a href="https://rspatial.github.io/terra/reference/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red knot"</span>, <span class="st">"redshank"</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">tag</span></span>
+<span><span class="va">tags</span> <span class="op">&lt;-</span> <span class="va">all_tags</span><span class="op">[</span><span class="va">season</span> <span class="op">==</span> <span class="fl">2023</span> <span class="op">&amp;</span> <span class="va">species</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red knot"</span>, <span class="st">"redshank"</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">tag</span></span>
 <span></span>
 <span><span class="co"># Time period for which data should be extracted form the database (in CET)</span></span>
 <span><span class="va">from</span> <span class="op">&lt;-</span> <span class="st">"2023-10-01 12:00:00"</span></span>
@@ -179,8 +176,7 @@ with the following columns:</p>
 <p>First, the path and file name of the local SQLite database need to be
 provided. Then, with the established connection, the database can be
 queried for the selected tags and period. Here we will load the tagging
-data in a list where each entry is a data.frame with data of one
-tag.</p>
+data in one data.table.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Database connection</span></span>
 <span><span class="va">sqlite_db</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
@@ -189,9 +185,8 @@ tag.</p>
 <span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">RSQLite</span><span class="fu">::</span><span class="fu">dbConnect</span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">sqlite_db</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load data from database</span></span>
-<span><span class="va">data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_get_data.html">atl_get_data</a></span><span class="op">(</span></span>
 <span>  <span class="va">tags</span>,</span>
-<span>  <span class="va">atl_get_data</span>,</span>
 <span>  tracking_time_start <span class="op">=</span> <span class="va">from</span>,</span>
 <span>  tracking_time_end <span class="op">=</span> <span class="va">to</span>,</span>
 <span>  timezone <span class="op">=</span> <span class="st">"CET"</span>,</span>
@@ -223,9 +218,7 @@ have to be specified.</p>
 <span><span class="va">to</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fl">3600</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load data from database</span></span>
-<span><span class="va">data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
-<span>  <span class="va">tags</span>,</span>
-<span>  <span class="va">atl_get_data</span>,</span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_get_data.html">atl_get_data</a></span><span class="op">(</span></span>
 <span>  tracking_time_start <span class="op">=</span> <span class="va">from</span>,</span>
 <span>  tracking_time_end <span class="op">=</span> <span class="va">to</span>,</span>
 <span>  timezone <span class="op">=</span> <span class="st">"CET"</span>,</span>
@@ -242,8 +235,8 @@ have to be specified.</p>
 <p>The resulting loaded WATLAS data will be a collection of lists split
 by tag.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Show first 5 rows of the first list</span></span>
-<span><span class="va">data_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Show head of the table</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="7%">
@@ -271,7 +264,7 @@ by tag.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">1</td>
+<td align="right">205</td>
 <td align="left">3040</td>
 <td align="right">1696154919</td>
 <td align="left">2023-10-01 10:08:39</td>
@@ -283,7 +276,7 @@ by tag.</p>
 <td align="right">45.05</td>
 </tr>
 <tr class="even">
-<td align="right">2</td>
+<td align="right">208</td>
 <td align="left">3040</td>
 <td align="right">1696154922</td>
 <td align="left">2023-10-01 10:08:42</td>
@@ -295,7 +288,7 @@ by tag.</p>
 <td align="right">32.48</td>
 </tr>
 <tr class="odd">
-<td align="right">3</td>
+<td align="right">212</td>
 <td align="left">3040</td>
 <td align="right">1696154928</td>
 <td align="left">2023-10-01 10:08:48</td>
@@ -307,7 +300,7 @@ by tag.</p>
 <td align="right">31.28</td>
 </tr>
 <tr class="even">
-<td align="right">4</td>
+<td align="right">215</td>
 <td align="left">3040</td>
 <td align="right">1696154931</td>
 <td align="left">2023-10-01 10:08:51</td>
@@ -319,7 +312,7 @@ by tag.</p>
 <td align="right">37.77</td>
 </tr>
 <tr class="odd">
-<td align="right">5</td>
+<td align="right">218</td>
 <td align="left">3040</td>
 <td align="right">1696154934</td>
 <td align="left">2023-10-01 10:08:54</td>
@@ -329,6 +322,18 @@ by tag.</p>
 <td align="right">47.88</td>
 <td align="right">83.48</td>
 <td align="right">37.93</td>
+</tr>
+<tr class="even">
+<td align="right">219</td>
+<td align="left">3040</td>
+<td align="right">1696154937</td>
+<td align="left">2023-10-01 10:08:57</td>
+<td align="right">650692.1</td>
+<td align="right">5902574</td>
+<td align="right">3</td>
+<td align="right">37.56</td>
+<td align="right">66.21</td>
+<td align="right">29.64</td>
 </tr>
 </tbody>
 </table>
@@ -398,10 +403,7 @@ convenient and fast way is to use <code>fwrite</code> from the
 we make sure the data stays in the same format when we load it again.
 Change the file path when running this example.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Bind data into one data.table</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="va">data_list</span>, fill <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Save data</span></span>
+<code class="sourceCode R"><span><span class="co"># Save data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span><span class="va">data</span>, file <span class="op">=</span> <span class="st">"../inst/extdata/watlas_data_raw.csv"</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -417,7 +419,7 @@ many positions by tag and date we have.</p>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="st">"../inst/extdata/watlas_data_raw.csv"</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># N individuals with tagging data</span></span>
-<span><span class="va">data</span><span class="op">[</span>, <span class="va">.N</span>, <span class="va">tag</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">data</span><span class="op">[</span>, <span class="va">.N</span>, <span class="va">tag</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 3</span></span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># N positions, first and last data by tag ID</span></span>

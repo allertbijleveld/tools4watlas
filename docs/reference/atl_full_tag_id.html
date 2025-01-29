@@ -64,8 +64,8 @@
 
 
 <dl><dt id="arg-tag">tag<a class="anchor" aria-label="anchor" href="#arg-tag"></a></dt>
-<dd><p>Tag number (either numeric or character). Maximally provide 6
-digits, but less work.</p></dd>
+<dd><p>Tag number or vector with multiple numbers (either numeric or
+character). Maximally provide 6 digits, but less work.</p></dd>
 
 
 <dt id="arg-short">short<a class="anchor" aria-label="anchor" href="#arg-short"></a></dt>
@@ -87,11 +87,11 @@ digits, but less work.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">tag</span> <span class="op">&lt;-</span> <span class="fl">123</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">tag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3040</span>, <span class="fl">3085</span>, <span class="fl">3086</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">atl_full_tag_id</span><span class="op">(</span><span class="va">tag</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "31001000123"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "31001003040" "31001003085" "31001003086"</span>
 <span class="r-in"><span><span class="fu">atl_full_tag_id</span><span class="op">(</span><span class="va">tag</span>, short <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0123"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "3040" "3085" "3086"</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
