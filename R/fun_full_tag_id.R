@@ -1,8 +1,8 @@
 #' Create full tag ID or tag ID with specific length
 #'
 #' @author Johannes Krietsch
-#' @param tag Tag number (either numeric or character). Maximally provide 6
-#' digits, but less work.
+#' @param tag Tag number or vector with multiple numbers (either numeric or
+#' character). Maximally provide 6 digits, but less work.
 #' @param short TRUE or FALSE for short or long tag ID
 #' @param n if short = TRUE, how many digits should the short tag ID have?
 #'
@@ -10,18 +10,18 @@
 #' @export
 #'
 #' @examples
-#' tag <- 123
+#' tag <- c(3040, 3085, 3086)
 #' atl_full_tag_id(tag)
 #' atl_full_tag_id(tag, short = TRUE)
 #'
 atl_full_tag_id <- function(tag, short = FALSE, n = 4) {
   # check input
   assertthat::assert_that(
-    any(is.numeric(tag), is.character(tag)),
+    all(is.numeric(tag) | is.character(tag)),
     msg = "tag provided must be numeric or character"
   )
   assertthat::assert_that(
-    nchar(as.character(tag)) < 7,
+    all(nchar(as.character(tag)) < 7),
     msg = glue::glue("tag should be < 7 digits, but is {nchar(tag)} digits")
   )
 

@@ -15,14 +15,14 @@
 #'   box. Default is `1000`.
 #' @param asp A character string specifying the aspect ratio in `"width:height"`
 #'   format. Default is `"16:9"`.
-#' @param option Either "osm" for OpenStreetMap polygons or "bathymetry" for 
-#' bathymetry data. Note that for the later it is necessary to provide the 
+#' @param option Either "osm" for OpenStreetMap polygons or "bathymetry" for
+#' bathymetry data. Note that for the later it is necessary to provide the
 #' bathymetry data in UTM31.
 #' @param land_data An `sf` object for land polygons. Defaults to `land`.
 #' @param mudflats_data An `sf` object for mudflat polygons. Defaults to
 #'   `mudflats`.
 #' @param lakes_data An `sf` object for lake polygons. Defaults to `lakes`.
-#' @param raster_data An `SpatRaster` (tif opened with `terra::rast()` of 
+#' @param raster_data An `SpatRaster` (tif opened with `terra::rast()` of
 #' bathymetry data.
 #' @param sc_dist Scale bar distance. Optional; calculated automatically if
 #'   omitted.

@@ -7,8 +7,8 @@
 atl_full_tag_id(tag, short = FALSE, n = 4)
 }
 \arguments{
-\item{tag}{Tag number (either numeric or character). Maximally provide 6
-digits, but less work.}
+\item{tag}{Tag number or vector with multiple numbers (either numeric or
+character). Maximally provide 6 digits, but less work.}
 
 \item{short}{TRUE or FALSE for short or long tag ID}
 
@@ -21,7 +21,7 @@ Full or short tag ID as character
 Create full tag ID or tag ID with specific length
 }
 \examples{
-tag <- 123
+tag <- c(3040, 3085, 3086)
 atl_full_tag_id(tag)
 atl_full_tag_id(tag, short = TRUE)
 

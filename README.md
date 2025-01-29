@@ -59,8 +59,9 @@ access to the local NIOZ file server.
 - Step 4: [**Add tidal
   data**](https://allertbijleveld.github.io/tools4watlas/articles/add_tidal_data.html)
 
-- Step 5: [**Plot
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/plot_data.html)
+- [**Plot
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/plot_data.html) -
+  important in between all steps to check the data.
 
 **Additional tutorials**:
 

@@ -57,15 +57,15 @@ atl_get_data <- function(tag,
                          SQLiteDB = NULL, # nolint
                          use_connection = NULL) {
   # global variables
-  TIME <- NULL # nolint
+  TIME <- time <- NULL # nolint
 
   # check input
   assertthat::assert_that(
-    any(is.numeric(tag), is.character(tag)),
+    all(is.numeric(tag) | is.character(tag)),
     msg = "tag provided must be numeric or character"
   )
   assertthat::assert_that(
-    any(nchar(as.character(tag)) < 7, nchar(as.character(tag)) == 11),
+    all(nchar(as.character(tag)) < 7 | nchar(as.character(tag)) == 11),
     msg = "tag should be either < 7 digits or full 11 digits"
   )
   assertthat::assert_that(
@@ -96,7 +96,7 @@ atl_get_data <- function(tag,
   tracking_time_end <- as.numeric(tracking_time_end) * 1000
 
   # if tag is in short format, create long format
-  if (nchar(as.character(tag)) < 11) {
+  if (any(nchar(as.character(tag)) < 11)) {
     tag <- atl_full_tag_id(tag)
   }
 
@@ -156,6 +156,9 @@ atl_get_data <- function(tag,
 
     # transform to data.table
     setDT(tmp_data)
+
+    # set order
+    setorder(tmp_data, tag, time)
 
     return(tmp_data[, c(
       "posID", "tag", "time", "datetime", "x", "y",
