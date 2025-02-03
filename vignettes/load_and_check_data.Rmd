@@ -98,17 +98,25 @@ RSQLite::dbDisconnect(con)
 
 To safely work with database credentials one option is to store them as environmental variables in R. This allows for example to have scripts on GitHub without sharing them. Restart R after adding variables to be able to access them. Ask Allert for the host, username and password and then add them in your environment like this:
 
+```{r nolint_start, echo = FALSE}
+# nolint start: assignment_linter.
+```
+
 ```{r, eval = FALSE}
 # open .Renviron to edit
 file.edit("~/.Renviron")
 
 # add variables
-HOST = "host"
-USER = "username"
-PASS = "password"
+host = "host"
+username = "username"
+password = "password"
 
 # access variables (example)
-Sys.getenv("VARIABLE")
+Sys.getenv("variable_name")
+```
+
+```{r nolint_stop, echo = FALSE}
+# nolint end: assignment_linter.
 ```
 
 `atl_get_data` does the same as when connecting to a local SQLite database when connecting to a remote database. In this example (chunk not run and only shown) we load the last three days of data from all tags of season 2024. Host, username and password are specified as environmental variables in this example, but can also be specified directly.
@@ -133,10 +141,10 @@ data <- atl_get_data(
   tracking_time_start = from,
   tracking_time_end = to,
   timezone = "CET",
-  host = Sys.getenv("HOST"),
+  host = Sys.getenv("host"),
   database = "atlas2024",
-  username = Sys.getenv("USER"),
-  password = Sys.getenv("PASS")
+  username = Sys.getenv("username"),
+  password = Sys.getenv("password")
 )
 ```
 
