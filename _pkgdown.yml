@@ -22,7 +22,7 @@ navbar:
         href: articles/smooth_and_thin_data.html
       - text: "Step 4: Add tidal data"
         href: articles/add_tidal_data.html   
-      - text: "Step 5: Plot data"
+      - text: "Plot data"
         href: articles/plot_data.html   
       - text: "--------"
       - text: Additional tutorials

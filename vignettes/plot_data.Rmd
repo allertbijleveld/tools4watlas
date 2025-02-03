@@ -107,8 +107,6 @@ mapview(d_sf_lines, zcol = "tag", legend = FALSE) + mapview(d_sf, zcol = "tag")
 
 ## Static map with `OpenStreetMap` 
 
-"bing" is not working at the moment, switched to "osm"
-
 ```{r, fig.cap = "Static map with satellite image"}
 library(OpenStreetMap)
 library(sf)
@@ -126,7 +124,7 @@ bbox <- atl_bbox(d_sf, asp = "16:9", buffer = 500)
 map <- openmap(
   c(bbox["ymax"], bbox["xmin"]),
   c(bbox["ymin"], bbox["xmax"]),
-  type = "osm", mergeTiles = TRUE
+  type = "bing", mergeTiles = TRUE
 )
 
 bm <- autoplot.OpenStreetMap(map)
@@ -196,7 +194,7 @@ bbox <- atl_bbox(d_sf, buffer = 500)
 # "stamen-watercolor", "esri", "esri-topo", "nps", "apple-iphoto", "skobbler";
 map <- OpenStreetMap::openmap(c(bbox["ymax"], bbox["xmin"]),
   c(bbox["ymin"], bbox["xmax"]),
-  type = "osm", mergeTiles = TRUE
+  type = "bing", mergeTiles = TRUE
 )
 
 # Plot the tracking data on the satellite image
@@ -207,21 +205,3 @@ atl_plot_tag_osm(
 
 # Note: function opens device and therefore the plot is not shown in markdown
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -45,7 +45,7 @@
     <li><a class="dropdown-item" href="../articles/filter_data.html">Step 2: Filter data</a></li>
     <li><a class="dropdown-item" href="../articles/smooth_and_thin_data.html">Step 3: Smooth and thin data</a></li>
     <li><a class="dropdown-item" href="../articles/add_tidal_data.html">Step 4: Add tidal data</a></li>
-    <li><a class="dropdown-item" href="../articles/plot_data.html">Step 5: Plot data</a></li>
+    <li><a class="dropdown-item" href="../articles/plot_data.html">Plot data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Additional tutorials</h6></li>
     <li><a class="dropdown-item" href="../articles/additional_tutorials/fast_plotting.html">Fast plotting</a></li>
@@ -207,7 +207,6 @@ layer symbol, to for example a satellite image.</p>
 <div class="section level2">
 <h2 id="static-map-with-openstreetmap">Static map with <code>OpenStreetMap</code><a class="anchor" aria-label="anchor" href="#static-map-with-openstreetmap"></a>
 </h2>
-<p>“bing” is not working at the moment, switched to “osm”</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ifellows/ROSM" class="external-link">OpenStreetMap</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
@@ -225,7 +224,7 @@ layer symbol, to for example a satellite image.</p>
 <span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/OpenStreetMap/man/openmap.html" class="external-link">openmap</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">[</span><span class="st">"ymax"</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="st">"xmin"</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">[</span><span class="st">"ymin"</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="st">"xmax"</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"osm"</span>, mergeTiles <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  type <span class="op">=</span> <span class="st">"bing"</span>, mergeTiles <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/OpenStreetMap/man/autoplot.OpenStreetMap.html" class="external-link">autoplot.OpenStreetMap</a></span><span class="op">(</span><span class="va">map</span><span class="op">)</span></span>
@@ -312,7 +311,7 @@ atl_plot_tag (see earlier).</p>
 <span><span class="co"># "stamen-watercolor", "esri", "esri-topo", "nps", "apple-iphoto", "skobbler";</span></span>
 <span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu">OpenStreetMap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/OpenStreetMap/man/openmap.html" class="external-link">openmap</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">[</span><span class="st">"ymax"</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="st">"xmin"</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">[</span><span class="st">"ymin"</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="st">"xmax"</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"osm"</span>, mergeTiles <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  type <span class="op">=</span> <span class="st">"bing"</span>, mergeTiles <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Plot the tracking data on the satellite image</span></span>
