@@ -209,12 +209,12 @@ then add them in your environment like this:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/file.edit.html" class="external-link">file.edit</a></span><span class="op">(</span><span class="st">"~/.Renviron"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># add variables</span></span>
-<span><span class="va">HOST</span> <span class="op">=</span> <span class="st">"host"</span></span>
-<span><span class="va">USER</span> <span class="op">=</span> <span class="st">"username"</span></span>
-<span><span class="va">PASS</span> <span class="op">=</span> <span class="st">"password"</span></span>
+<span><span class="va">host</span> <span class="op">=</span> <span class="st">"host"</span></span>
+<span><span class="va">username</span> <span class="op">=</span> <span class="st">"username"</span></span>
+<span><span class="va">password</span> <span class="op">=</span> <span class="st">"password"</span></span>
 <span></span>
 <span><span class="co"># access variables (example)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"VARIABLE"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"variable_name"</span><span class="op">)</span></span></code></pre></div>
 <p><code>atl_get_data</code> does the same as when connecting to a local
 SQLite database when connecting to a remote database. In this example
 (chunk not run and only shown) we load the last three days of data from
@@ -241,18 +241,18 @@ directly.</p>
 <span>  tracking_time_start <span class="op">=</span> <span class="va">from</span>,</span>
 <span>  tracking_time_end <span class="op">=</span> <span class="va">to</span>,</span>
 <span>  timezone <span class="op">=</span> <span class="st">"CET"</span>,</span>
-<span>  host <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"HOST"</span><span class="op">)</span>,</span>
+<span>  host <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"host"</span><span class="op">)</span>,</span>
 <span>  database <span class="op">=</span> <span class="st">"atlas2024"</span>,</span>
-<span>  username <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"USER"</span><span class="op">)</span>,</span>
-<span>  password <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"PASS"</span><span class="op">)</span></span>
+<span>  username <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"username"</span><span class="op">)</span>,</span>
+<span>  password <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"password"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="data-explanation">Data explanation<a class="anchor" aria-label="anchor" href="#data-explanation"></a>
 </h2>
-<p>The resulting loaded WATLAS data will be a collection of lists split
-by tag.</p>
+<p>The resulting loaded WATLAS data will be a <code>data.table</code>
+with the following columns:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Show head of the table</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
@@ -356,8 +356,6 @@ by tag.</p>
 </tr>
 </tbody>
 </table>
-<p>Loading the WATLAS data will provide a data frame with different
-columns representing:</p>
 <table class="table">
 <colgroup>
 <col width="16%">

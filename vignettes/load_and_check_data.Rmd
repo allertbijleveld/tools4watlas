@@ -150,15 +150,12 @@ data <- atl_get_data(
 
 ## Data explanation
 
-The resulting loaded WATLAS data will be a collection of lists split by tag. 
+The resulting loaded WATLAS data will be a `data.table` with the following columns:
 
 ```{r, layout = "l-body-outset"}
 # Show head of the table
 head(data) |> knitr::kable(digits = 2)
 ```
-
-
-Loading the WATLAS data will provide a data frame with different columns representing:  
 
 | Column      | Description |
 | ----        | --------------------- |
