@@ -96,7 +96,22 @@ RSQLite::dbDisconnect(con)
 
 #### Alternatively, extract from remote SQL-database
 
-Does the same as when connecting to a local SQLite database. In this example (chunk not run and only shown) we load the last three days of data from all tags of season 2024. Host, database, username and password have to be specified.
+To safely work with database credentials one option is to store them as environmental variables in R. This allows for example to have scripts on GitHub without sharing them. Restart R after adding variables to be able to access them. Ask Allert for the host, username and password and then add them in your environment like this:
+
+```{r, eval = FALSE}
+# open .Renviron to edit
+file.edit("~/.Renviron")
+
+# add variables
+HOST = "host"
+USER = "username"
+PASS = "password"
+
+# access variables (example)
+Sys.getenv("VARIABLE")
+```
+
+`atl_get_data` does the same as when connecting to a local SQLite database when connecting to a remote database. In this example (chunk not run and only shown) we load the last three days of data from all tags of season 2024. Host, username and password are specified as environmental variables in this example, but can also be specified directly.
 
 ```{r, eval = FALSE}
 # Load meta data
@@ -105,22 +120,23 @@ all_tags <- readxl::read_excel(all_tags_path, sheet = "tags_watlas_all") |>
   data.table()
 
 # Subset all tags from 2024
-tags <- all_tags[season == 2024]$tagID
+tags <- all_tags[season == 2024]$tag
 
 # Select N last days to get data from
 days <- 3
-from <- Sys.time() - 86400 * days |> as.character()
-to <- Sys.time() + 3600 |> as.character()
+from <- (Sys.time() - 86400 * days) |> as.character()
+to <- (Sys.time() + 3600) |> as.character()
 
 # Load data from database
 data <- atl_get_data(
+  tags,
   tracking_time_start = from,
   tracking_time_end = to,
   timezone = "CET",
-  host = "host",
-  database = "db",
-  username = "username",
-  password = "password"
+  host = Sys.getenv("HOST"),
+  database = "atlas2024",
+  username = Sys.getenv("USER"),
+  password = Sys.getenv("PASS")
 )
 ```
 
