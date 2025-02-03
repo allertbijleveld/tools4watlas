@@ -38,16 +38,19 @@ Imports:
     sf,
     stats,
     stringr,
-    terra
+    terra,
+    tidyterra
 Suggests:
     knitr,
     mapview,
     mockery,
     plyr,
+    ragg,
     RColorBrewer,
     readxl,
     rmarkdown,
     scales,
+    scattermore,
     testthat (>= 3.0.0),
     viridis
 VignetteBuilder: 

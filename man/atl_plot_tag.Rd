@@ -16,10 +16,9 @@ atl_plot_tag(
   legend = "topleft",
   scalebar = 5,
   cex_legend = 1,
-  land_data = tools4watlas::land_sf,
-  mudflats_data = tools4watlas::mudflats_sf,
-  lakes_data = tools4watlas::lakes_sf,
-  rivers_data = tools4watlas::rivers_sf
+  land_data = tools4watlas::land,
+  mudflats_data = tools4watlas::mudflats,
+  lakes_data = tools4watlas::lakes
 )
 }
 \arguments{
@@ -54,15 +53,12 @@ of the legend in the plot.}
 
 \item{cex_legend}{The size of the text in the legend.}
 
-\item{land_data}{An \code{sf} object for land polygons. Defaults to \code{land_sf}.}
+\item{land_data}{An \code{sf} object for land polygons. Defaults to \code{land}.}
 
 \item{mudflats_data}{An \code{sf} object for mudflat polygons. Defaults to
-\code{mudflats_sf}.}
+\code{mudflats}.}
 
-\item{lakes_data}{An \code{sf} object for lake polygons. Defaults to \code{lakes_sf}.}
-
-\item{rivers_data}{An \code{sf} object for river polygons. Defaults to
-\code{rivers_sf}.}
+\item{lakes_data}{An \code{sf} object for lake polygons. Defaults to \code{lakes}.}
 }
 \value{
 Returns nothing but a plot.

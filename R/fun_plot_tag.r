@@ -23,12 +23,10 @@
 #' of the legend in the plot.
 #' @param scalebar Length of scalebar in km.
 #' @param cex_legend The size of the text in the legend.
-#' @param land_data An `sf` object for land polygons. Defaults to `land_sf`.
+#' @param land_data An `sf` object for land polygons. Defaults to `land`.
 #' @param mudflats_data An `sf` object for mudflat polygons. Defaults to
-#'   `mudflats_sf`.
-#' @param lakes_data An `sf` object for lake polygons. Defaults to `lakes_sf`.
-#' @param rivers_data An `sf` object for river polygons. Defaults to
-#' `rivers_sf`.
+#'   `mudflats`.
+#' @param lakes_data An `sf` object for lake polygons. Defaults to `lakes`.
 #' @return Returns nothing but a plot.
 #' @importFrom grDevices colorRampPalette dev.new dev.off png rgb
 #' @importFrom graphics axis box legend lines mtext par points
@@ -68,10 +66,9 @@ atl_plot_tag <- function(data,
                          legend = "topleft",
                          scalebar = 5,
                          cex_legend = 1,
-                         land_data = tools4watlas::land_sf,
-                         mudflats_data = tools4watlas::mudflats_sf,
-                         lakes_data = tools4watlas::lakes_sf,
-                         rivers_data = tools4watlas::rivers_sf) {
+                         land_data = tools4watlas::land,
+                         mudflats_data = tools4watlas::mudflats,
+                         lakes_data = tools4watlas::lakes) {
   # Ensure data has rows
   assertthat::assert_that(nrow(data) > 0, msg = "No data to plot")
 
@@ -149,7 +146,6 @@ atl_plot_tag <- function(data,
     border = COL_MUD
   )
   plot(sf::st_geometry(land_data), add = TRUE, col = COL_LAND, border = 1)
-  plot(sf::st_geometry(rivers_data), add = TRUE, col = COL_WATER, border = NA)
   plot(sf::st_geometry(lakes_data),
     add = TRUE, col = COL_WATER,
     border = COL_WATER

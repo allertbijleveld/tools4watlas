@@ -45,13 +45,15 @@
     <li><a class="dropdown-item" href="../../articles/filter_data.html">Step 2: Filter data</a></li>
     <li><a class="dropdown-item" href="../../articles/smooth_and_thin_data.html">Step 3: Smooth and thin data</a></li>
     <li><a class="dropdown-item" href="../../articles/add_tidal_data.html">Step 4: Add tidal data</a></li>
-    <li><a class="dropdown-item" href="../../articles/plot_data.html">Step 5: Plot data</a></li>
+    <li><a class="dropdown-item" href="../../articles/plot_data.html">Plot data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Additional tutorials</h6></li>
-    <li><a class="dropdown-item" href="../../articles/additional_tutorials/test.html">Test</a></li>
+    <li><a class="dropdown-item" href="../../articles/additional_tutorials/fast_plotting.html">Fast plotting</a></li>
+    <li><a class="dropdown-item" href="../../articles/additional_tutorials/add_and_plot_bathymetry_data.html">Add and plot bathymetry data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
     <li><a class="dropdown-item" href="../../articles/package_development/package_maintenance.html">Package maintenance</a></li>
+    <li><a class="dropdown-item" href="../../articles/package_development/basemap_data.html">Basemap data</a></li>
     <li><a class="dropdown-item" href="../../articles/package_development/package_logo.html">tools4watlas logo</a></li>
   </ul>
 </li>
@@ -94,11 +96,8 @@ request</a>. Besides clear bug fixes, it is best to discuss potential
 changes or additions with <a href="mailto:allert.bijleveld@nioz.nl">Allert Bijleveld</a>.</p>
 <p>Before submitting a pull request to the original “upstream”
 repository, please make sure the code passes all R CMD checks
-(<code><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">devtools::check()</a></code>). If you changed content that changes
-the website, rebuild the website with <code><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">pkgdown::build_site()</a></code>
-into the docs folder. Note that some articles that are not vignettes,
-require a path to the WATLAS data folder “tools4watlas_articles”
-including additional data.</p>
+(<code><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">devtools::check()</a></code>) and follow the procedure described
+below.</p>
 <p>For more details see <a href="https://r-pkgs.org/" class="external-link">R Packages by
 Hadley Wickham and Jennifer Bryan</a> and read the documentation of the
 used packages.</p>
@@ -148,9 +147,9 @@ for exclusions), but new code should aim to be consistent with it.</p>
 are in the <a href="https://github.com/allertbijleveld/tools4watlas/tree/master/R" class="external-link">R
 folder</a> and always have the prefix <code>atl_</code>. Each function
 has a <a href="https://roxygen2.r-lib.org/articles/rd.html" class="external-link"><code>roxygen2 header</code></a>.
-This header can be created by using <code>Ctrl + Shift + D</code> within
-a new function, if you’re using RStudio. Optimally, each function has an
-runable example. Once done run:</p>
+This header can be created by using <code>Ctrl + Alt + Shift + R</code>
+within a new function, if you’re using RStudio. Optimally, each function
+has an runable example. Once done run:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">document</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>

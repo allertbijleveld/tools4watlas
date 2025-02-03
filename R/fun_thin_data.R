@@ -12,9 +12,6 @@
 #' Both options handle the column 'time' differently: while 'subsample' returns
 #' the actual timestamp (in UNIX time) of each sample, 'aggregate' returns the
 #' mean timestamp (also in UNIX time).
-#' In both cases, an extra column, \code{time_agg}, is added which has a uniform
-#'  difference between each element corresponding to the user-defined thinning
-#' interval.
 #' The 'aggregate' option only recognises errors named \code{varx} and
 #' \code{vary}.
 #' If all of these columns are not present together the function assumes there
@@ -180,10 +177,13 @@ atl_thin_data <- function(data,
     data_s[, time_diff := NULL]
   }
 
-  assertthat::assert_that(
-    min(lag) >= interval,
-    msg = "thin_data: time differences are less than the specified interval!"
-  )
+  # Check if intervalls are correct
+  if (method == "aggregate") {
+    assertthat::assert_that(
+      min(lag) >= interval,
+      msg = "thin_data: time differences are less than the specified interval!"
+    )
+  }
 
   # Final validation
   assertthat::assert_that(

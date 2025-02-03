@@ -35,42 +35,57 @@ Data](https://doi.org/10.1111/1365-2656.13610).
 
 ### **Documentation**
 
-Basic workflows and on how to use `tools4watlas` can be found on the
-[package website](https://allertbijleveld.github.io/tools4watlas/).
+`tools4watlas` is documented in detail on the [**package
+website**](https://allertbijleveld.github.io/tools4watlas/). The package
+vignettes describe the basic workflow when working with WATLAS data and
+follow a logic order of steps. Further articles give additional
+tutorials and insights into the package development (read if you want to
+contribute to `tools4watlas`), some (indicated by an asterisk) require
+access to the local NIOZ file server.
 
 **Basic workflow (Vignettes)**:
 
-Are all running with the data provided in `tools4watlas` and follow a
-logic order, but each vignette can be run independently.
-
 - Step 1: [**Load and check
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html) -
-  How to load and check data.
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html)
 
 - Step 2: [**Filter
   data**](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html) -
-  How to filter data based on spatial boundaries, temporal
-  specifications, error estimates and speed.
+  based on spatial boundaries, temporal specifications, error estimates
+  and speed.
 
 - Step 3: [**Smooth and thin
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html) -
-  How to smooth and thin data.
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html)
 
 - Step 4: [**Add tidal
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/add_tidal_data.html) -
-  How to add tidal data.
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/add_tidal_data.html)
 
-- Step 5: [**Plot
+- [**Plot
   data**](https://allertbijleveld.github.io/tools4watlas/articles/plot_data.html) -
-  How to plot data.
+  important in between all steps to check the data.
 
 **Additional tutorials**:
 
-Some are only running with local access to the WATLAS data folder.
+- [**Fast plotting with
+  ggplot2**](https://allertbijleveld.github.io/tools4watlas/articles/additional_tutorials/fast_plotting.html)
 
 - [**Add and plot bathymetry
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/additional_tutorials/test.html) -
-  How to add bathymetry data and plot them.
+  data**\*](https://allertbijleveld.github.io/tools4watlas/articles/additional_tutorials/add_and_plot_bathymetry_data.html)
+
+**Package development**:
+
+- [**Package
+  maintenance**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_maintenance.html) -
+  describes how to work on `tools4watlas`.
+
+- [**Basemap
+  data**\*](https://allertbijleveld.github.io/tools4watlas/articles/package_development/basemap_data.html) -
+  describes how the base map data were extracted. Can guide user to make
+  customised base maps.
+
+- [**tools4watlas
+  logo**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_logo.html)
+
+\**requires access to the local NIOZ file server*
 
 ### **Installation**
 
@@ -127,11 +142,8 @@ We are working on the following articles at the moment:
 
 Other to do’s:
 
-- Background map data of the whole Wadden Sea
 - Choose nice example data
-- add examples, vignette & tests for atl_add_raster_data()
-- add species colors
-- add article for adding environmental data
+- add examples & tests for atl_add_raster_data()
 
 Check:
 

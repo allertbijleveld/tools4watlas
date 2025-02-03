@@ -1,30 +1,23 @@
-#' OSM data land around Griend
+#' Land polygon around the Dutch Wadden Sea
 #'
 #' @format sf object used for background layer in the function atl_create_bm()
 #'
 #' @source <https://www.openstreetmap.org>
-"land_sf"
+"land"
 
-#' OSM data mudflats around Griend
+#' Mudflats polygons within the Dutch Wadden Sea
 #'
 #' @format sf object used for background layer in the function atl_create_bm()
 #'
 #' @source <https://www.openstreetmap.org>
-"mudflats_sf"
+"mudflats"
 
-#' OSM data lakes around Griend
+#' Lake on Griend
 #'
 #' @format sf object used for background layer in the function atl_create_bm()
 #'
 #' @source <https://www.openstreetmap.org>
-"lakes_sf"
-
-#' OSM data rivers around Griend
-#'
-#' @format sf object used for background layer in the function atl_create_bm()
-#'
-#' @source <https://www.openstreetmap.org>
-"rivers_sf"
+"lakes"
 
 #' Data from two red knots and one redshank
 #'

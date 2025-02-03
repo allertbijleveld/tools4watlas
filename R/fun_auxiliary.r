@@ -1,6 +1,108 @@
-#' Make a colour transparant
+#' WATLAS species colours
 #'
-#' A functionm that will make the provided colour transparant.
+#' Returns a vector or table of predefined colours for WATLAS species.
+#'
+#' @param option A character string specifying the output format. Options are 
+#'   `"vector"` (default), which returns a named colour vector, or `"table"`, 
+#'   which returns a data.table with species names and colours.
+#'
+#' @return A named character vector (for use in ggplot2) or a data.table 
+#'   with species names and corresponding colours.
+#' @export
+#'
+#' @examples
+#' library(tools4watlas)
+#' atl_spec_cols("vector")
+#' atl_spec_cols("table")
+atl_spec_cols <- function(option = "vector") {
+  # Ensure valid input
+  match.arg(option, choices = c("vector", "table"))
+
+  # Vector with colors
+  species_colours <- c(
+    "curlew" = "mediumpurple",
+    "bar-tailed godwit" = "#E69F00",
+    "oystercatcher" = "grey20",
+    "redshank" = "#ffdd3c",
+    "red knot" = "firebrick",
+    "sanderling" = "#0072B2",
+    "dunlin" = "#66A61E",
+    "turnstone" = "#A6761D",
+    "grey plover" = "grey70",
+    "curlew sandpiper" = "#FC94AF",
+    "spoonbill" = "ivory",
+    "kentish plover" = "#56B4E9"
+  )
+
+  # Return selected format
+  if (option == "vector") {
+    return(species_colours)
+  } else {
+    return(data.table::data.table(
+      species = names(species_colours),
+      colour = species_colours
+    ))
+  }
+}
+
+#' WATLAS species labels
+#'
+#' Returns a named vector of species labels in either a multiline or single-line
+#' format.
+#'
+#' @param option A character string specifying the format of the species names. 
+#'   Options are `"multiline"` (default), where names include line breaks
+#'   (`\n`),  or `"singleline"`, where names are returned as a single line.
+#'
+#' @return A named character vector where names correspond to species 
+#' identifiers and values are formatted species names.
+#' @export
+#'
+#' @examples
+#' library(tools4watlas)
+#' atl_spec_labs("multiline")
+#' atl_spec_labs("multiline")
+atl_spec_labs <- function(option = "multiline") {
+  # Ensure valid input
+  match.arg(option, choices = c("multiline", "singleline"))
+
+  # Return selected format
+  if (option == "multiline") {
+    return(c(
+      "curlew" = "Eurasian\ncurlew",
+      "bar-tailed godwit" = "Bar-tailed\ngodwit",
+      "oystercatcher" = "Eurasian\noystercatcher",
+      "redshank" = "Common\nredshank",
+      "red knot" = "Red knot",
+      "sanderling" = "Sanderling",
+      "dunlin" = "Dunlin",
+      "turnstone" = "Turnstone",
+      "grey plover" = "Grey\nplover",
+      "curlew sandpiper" = "Curlew\nsandpiper",
+      "spoonbill" = "Eurasian\nspoonbill",
+      "kentish plover" = "Kentish\nplover"
+    ))
+  } else {
+    return(c(
+      "curlew" = "Eurasian curlew",
+      "bar-tailed godwit" = "Bar-tailed godwit",
+      "oystercatcher" = "Eurasian oystercatcher",
+      "redshank" = "Common redshank",
+      "red knot" = "Red knot",
+      "sanderling" = "Sanderling",
+      "dunlin" = "Dunlin",
+      "turnstone" = "Turnstone",
+      "grey plover" = "Grey plover",
+      "curlew sandpiper" = "Curlew sandpiper",
+      "spoonbill" = "Eurasian spoonbill",
+      "kentish plover" = "Kentish plover"
+    ))
+  }
+}
+
+#' Make a colour transparent
+#'
+#' A functionm that will make the provided colour transparent.
 #'
 #' @author Allert Bijleveld & Johannes Krietsch
 #' @param color The color to make transparant.

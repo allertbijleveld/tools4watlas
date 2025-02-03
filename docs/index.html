@@ -48,13 +48,15 @@
     <li><a class="dropdown-item" href="articles/filter_data.html">Step 2: Filter data</a></li>
     <li><a class="dropdown-item" href="articles/smooth_and_thin_data.html">Step 3: Smooth and thin data</a></li>
     <li><a class="dropdown-item" href="articles/add_tidal_data.html">Step 4: Add tidal data</a></li>
-    <li><a class="dropdown-item" href="articles/plot_data.html">Step 5: Plot data</a></li>
+    <li><a class="dropdown-item" href="articles/plot_data.html">Plot data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Additional tutorials</h6></li>
-    <li><a class="dropdown-item" href="articles/additional_tutorials/test.html">Test</a></li>
+    <li><a class="dropdown-item" href="articles/additional_tutorials/fast_plotting.html">Fast plotting</a></li>
+    <li><a class="dropdown-item" href="articles/additional_tutorials/add_and_plot_bathymetry_data.html">Add and plot bathymetry data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
     <li><a class="dropdown-item" href="articles/package_development/package_maintenance.html">Package maintenance</a></li>
+    <li><a class="dropdown-item" href="articles/package_development/basemap_data.html">Basemap data</a></li>
     <li><a class="dropdown-item" href="articles/package_development/package_logo.html">tools4watlas logo</a></li>
   </ul>
 </li>
@@ -87,22 +89,27 @@
 <h3 id="documentation">
 <strong>Documentation</strong><a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h3>
-<p>Basic workflows and on how to use <code>tools4watlas</code> can be found on the <a href="https://allertbijleveld.github.io/tools4watlas/">package website</a>.</p>
+<p><code>tools4watlas</code> is documented in detail on the <a href="https://allertbijleveld.github.io/tools4watlas/"><strong>package website</strong></a>. The package vignettes describe the basic workflow when working with WATLAS data and follow a logic order of steps. Further articles give additional tutorials and insights into the package development (read if you want to contribute to <code>tools4watlas</code>), some (indicated by an asterisk) require access to the local NIOZ file server.</p>
 <p><strong>Basic workflow (Vignettes)</strong>:</p>
-<p>Are all running with the data provided in <code>tools4watlas</code> and follow a logic order, but each vignette can be run independently.</p>
 <ul>
-<li><p>Step 1: <a href="https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html"><strong>Load and check data</strong></a> - How to load and check data.</p></li>
-<li><p>Step 2: <a href="https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html"><strong>Filter data</strong></a> - How to filter data based on spatial boundaries, temporal specifications, error estimates and speed.</p></li>
-<li><p>Step 3: <a href="https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html"><strong>Smooth and thin data</strong></a> - How to smooth and thin data.</p></li>
-<li><p>Step 4: <a href="https://allertbijleveld.github.io/tools4watlas/articles/add_tidal_data.html"><strong>Add tidal data</strong></a> - How to add tidal data.</p></li>
-<li><p>Step 5: <a href="https://allertbijleveld.github.io/tools4watlas/articles/plot_data.html"><strong>Plot data</strong></a> - How to plot data.</p></li>
+<li><p>Step 1: <a href="https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html"><strong>Load and check data</strong></a></p></li>
+<li><p>Step 2: <a href="https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html"><strong>Filter data</strong></a> - based on spatial boundaries, temporal specifications, error estimates and speed.</p></li>
+<li><p>Step 3: <a href="https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html"><strong>Smooth and thin data</strong></a></p></li>
+<li><p>Step 4: <a href="https://allertbijleveld.github.io/tools4watlas/articles/add_tidal_data.html"><strong>Add tidal data</strong></a></p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/plot_data.html"><strong>Plot data</strong></a> - important in between all steps to check the data.</p></li>
 </ul>
 <p><strong>Additional tutorials</strong>:</p>
-<p>Some are only running with local access to the WATLAS data folder.</p>
 <ul>
-<li>
-<a href="https://allertbijleveld.github.io/tools4watlas/articles/additional_tutorials/test.html"><strong>Add and plot bathymetry data</strong></a> - How to add bathymetry data and plot them.</li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/additional_tutorials/fast_plotting.html"><strong>Fast plotting with ggplot2</strong></a></p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/additional_tutorials/add_and_plot_bathymetry_data.html"><strong>Add and plot bathymetry data</strong>*</a></p></li>
 </ul>
+<p><strong>Package development</strong>:</p>
+<ul>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_maintenance.html"><strong>Package maintenance</strong></a> - describes how to work on <code>tools4watlas</code>.</p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/package_development/basemap_data.html"><strong>Basemap data</strong>*</a> - describes how the base map data were extracted. Can guide user to make customised base maps.</p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_logo.html"><strong>tools4watlas logo</strong></a></p></li>
+</ul>
+<p>*<em>requires access to the local NIOZ file server</em></p>
 </div>
 <div class="section level3">
 <h3 id="installation">
@@ -153,11 +160,8 @@ Example tracks
 </ul>
 <p>Other to do’s:</p>
 <ul>
-<li>Background map data of the whole Wadden Sea</li>
 <li>Choose nice example data</li>
-<li>add examples, vignette &amp; tests for atl_add_raster_data()</li>
-<li>add species colors</li>
-<li>add article for adding environmental data</li>
+<li>add examples &amp; tests for atl_add_raster_data()</li>
 </ul>
 <p>Check:</p>
 <ul>

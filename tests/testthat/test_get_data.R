@@ -144,4 +144,3 @@ testthat::test_that("atl_get_data gives correct warning", {
   expect_equal(nrow(result), 0)
   
 })
-

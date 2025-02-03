@@ -22,16 +22,20 @@ navbar:
         href: articles/smooth_and_thin_data.html
       - text: "Step 4: Add tidal data"
         href: articles/add_tidal_data.html   
-      - text: "Step 5: Plot data"
+      - text: "Plot data"
         href: articles/plot_data.html   
       - text: "--------"
       - text: Additional tutorials
-      - text: "Test"
-        href: articles/additional_tutorials/test.html
+      - text: "Fast plotting"
+        href: articles/additional_tutorials/fast_plotting.html
+      - text: "Add and plot bathymetry data"
+        href: articles/additional_tutorials/add_and_plot_bathymetry_data.html
       - text: "--------"
       - text: Package development
       - text: "Package maintenance"
         href: articles/package_development/package_maintenance.html
+      - text: "Basemap data"
+        href: articles/package_development/basemap_data.html
       - text: "tools4watlas logo"
         href: articles/package_development/package_logo.html
     literature:
@@ -84,6 +88,8 @@ reference:
      - atl_plot_rpatches
      - atl_plot_add_track
      - atl_t_col
+     - atl_spec_cols
+     - atl_spec_labs
   - title: "Add enviromental data"
     desc: "Functions to add tidal data and other SpatRaster data"
     contents:
@@ -93,7 +99,6 @@ reference:
     desc: "Example and map data provided with the package"
     contents:
      - data_example
-     - land_sf
-     - mudflats_sf
-     - lakes_sf
-     - rivers_sf
+     - land
+     - mudflats
+     - lakes

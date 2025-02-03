@@ -10,10 +10,11 @@ atl_create_bm(
   y = "y",
   buffer = 100,
   asp = "16:9",
-  land_data = tools4watlas::land_sf,
-  mudflats_data = tools4watlas::mudflats_sf,
-  lakes_data = tools4watlas::lakes_sf,
-  rivers_data = tools4watlas::rivers_sf,
+  option = "osm",
+  land_data = tools4watlas::land,
+  mudflats_data = tools4watlas::mudflats,
+  lakes_data = tools4watlas::lakes,
+  raster_data,
   sc_dist,
   sc_location = "br",
   sc_cex = 0.7,
@@ -40,15 +41,19 @@ box. Default is \code{1000}.}
 \item{asp}{A character string specifying the aspect ratio in \code{"width:height"}
 format. Default is \code{"16:9"}.}
 
-\item{land_data}{An \code{sf} object for land polygons. Defaults to \code{land_sf}.}
+\item{option}{Either "osm" for OpenStreetMap polygons or "bathymetry" for
+bathymetry data. Note that for the later it is necessary to provide the
+bathymetry data in UTM31.}
+
+\item{land_data}{An \code{sf} object for land polygons. Defaults to \code{land}.}
 
 \item{mudflats_data}{An \code{sf} object for mudflat polygons. Defaults to
-\code{mudflats_sf}.}
+\code{mudflats}.}
 
-\item{lakes_data}{An \code{sf} object for lake polygons. Defaults to \code{lakes_sf}.}
+\item{lakes_data}{An \code{sf} object for lake polygons. Defaults to \code{lakes}.}
 
-\item{rivers_data}{An \code{sf} object for river polygons. Defaults to
-\code{rivers_sf}.}
+\item{raster_data}{An \code{SpatRaster} (tif opened with \code{terra::rast()} of
+bathymetry data.}
 
 \item{sc_dist}{Scale bar distance. Optional; calculated automatically if
 omitted.}

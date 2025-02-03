@@ -52,7 +52,7 @@ A pipeline with coding examples for cleaning high-throughput tracking data with 
 
 ### Ecology
 
-**@ersoy2022** & **@ersoy2024** 
+**@ersoy2022** & **@ersoy2024** & **@gobbens2024**
 
 
 ## Bibliography

@@ -12,13 +12,15 @@ vignette: >
 knitr::opts_chunk$set(
   out.width = "100%",
   fig.width = 8.89, fig.height = 5,
-  dpi = 300
+  dpi = 300,
+  dev = "ragg_png"
 )
 ```
 
  This vignette shows how to smooth and thin WATLAS data. 
 
 ```{r}
+# Packages
 library(tools4watlas)
 library(data.table)
 library(ggplot2)
@@ -106,10 +108,9 @@ Depending on the desired analysis, it might make sense to thin data, either by a
 
 ### By aggregation
 
-Returns the average of all columns for each time step. The additional column `n_aggregated` shows how many locations were aggregated for this location.
+Returns the average of all columns for each time step. The additional column `n_aggregated` shows how many locations were aggregated for this location. Time and datetime are returned rounded to the interval.
 
 ```{r echo=T}		
-
 # rbind data
 data <- rbindlist(data_smooth)
 
@@ -121,6 +122,9 @@ thinned_aggregated <- atl_thin_data(
   method = "aggregate"
 )
 
+# Show head of selected data
+head(thinned_aggregated[, .(tag, time, datetime, x, y, n_aggregated)]) |>
+  knitr::kable(digits = 2)
 ```
 
 ### By subsampling
@@ -128,20 +132,17 @@ thinned_aggregated <- atl_thin_data(
 Returns one random location for each time step. The additional column `n_subsampled` shows from how many locations this location was sampled.
 
 ```{r echo=T}		
+# Thin the data by subsampling with a 60-second interval
+thinned_subsampled <- atl_thin_data(
+  data = data,
+  interval = 60,
+  id_columns = "tag",
+  method = "subsample"
+)
 
-# # Thin the data by subsampling with a 60-second interval
-# thinned_subsampled <- atl_thin_data(
-#   data = data,
-#   interval = 60,
-#   id_columns = "tag",
-#   method = "subsample"
-# )
-#
-# # View results
-# print(thinned_aggregated)
-# print(thinned_subsampled)
-
-
+# Show head of selected data
+head(thinned_subsampled[, .(tag, time, datetime, x, y, n_subsampled)]) |>
+  knitr::kable(digits = 2)
 ```
 
 
@@ -149,7 +150,8 @@ Returns one random location for each time step. The additional column `n_subsamp
 
 ```{r, eval = FALSE}
 # Save data
-fwrite(thinned_aggregated, file = "../inst/extdata/watlas_data_aggregated.csv",
-       yaml = TRUE)
+fwrite(thinned_aggregated,
+  file = "../inst/extdata/watlas_data_aggregated.csv", yaml = TRUE
+)
 ```
 

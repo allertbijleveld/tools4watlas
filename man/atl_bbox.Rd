@@ -4,11 +4,17 @@
 \alias{atl_bbox}
 \title{Create a bounding box with specified aspect ratio and buffer}
 \usage{
-atl_bbox(geometry, asp = "16:9", buffer = 0)
+atl_bbox(data, x = "x", y = "y", asp = "16:9", buffer = 0)
 }
 \arguments{
-\item{geometry}{An \code{sf} or \code{sfc} object for which the bounding box is
-calculated.}
+\item{data}{An \code{sf} or \code{sfc} object for which the bounding box is
+calculated or a data.table with x- and y- coordinates.}
+
+\item{x}{A character string representing the name of the column containing
+x-coordinates. Defaults to "x".}
+
+\item{y}{A character string representing the name of the column containing
+y-coordinates. Defaults to "y".}
 
 \item{asp}{A character string specifying the desired aspect ratio in the
 format \code{"width:height"}. Default is \code{"16:9"}.}

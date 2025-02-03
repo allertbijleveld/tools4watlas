@@ -18,17 +18,20 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><h6 class="dropdown-header" data-toc-skip>Basic Worflow (Vignettes)</h6></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
     <li><a class="dropdown-item" href="../articles/load_and_check_data.html">Step 1: Load and check data</a></li>
     <li><a class="dropdown-item" href="../articles/filter_data.html">Step 2: Filter data</a></li>
     <li><a class="dropdown-item" href="../articles/smooth_and_thin_data.html">Step 3: Smooth and thin data</a></li>
     <li><a class="dropdown-item" href="../articles/add_tidal_data.html">Step 4: Add tidal data</a></li>
-    <li><a class="dropdown-item" href="../articles/plot_data.html">Step 5: Plot data</a></li>
+    <li><a class="dropdown-item" href="../articles/plot_data.html">Plot data</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Additional Tutorials</h6></li>
-    <li><a class="dropdown-item" href="../articles/other_examples/test.html">Test</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Additional tutorials</h6></li>
+    <li><a class="dropdown-item" href="../articles/additional_tutorials/fast_plotting.html">Fast plotting</a></li>
+    <li><a class="dropdown-item" href="../articles/additional_tutorials/add_and_plot_bathymetry_data.html">Add and plot bathymetry data</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Package Development</h6></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
+    <li><a class="dropdown-item" href="../articles/package_development/package_maintenance.html">Package maintenance</a></li>
+    <li><a class="dropdown-item" href="../articles/package_development/basemap_data.html">Basemap data</a></li>
     <li><a class="dropdown-item" href="../articles/package_development/package_logo.html">tools4watlas logo</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../articles/literature/literature.html">Literature</a></li>
@@ -61,8 +64,8 @@
 
 
 <dl><dt id="arg-tag">tag<a class="anchor" aria-label="anchor" href="#arg-tag"></a></dt>
-<dd><p>Tag number (either numeric or character). Maximally provide 6
-digits, but less work.</p></dd>
+<dd><p>Tag number or vector with multiple numbers (either numeric or
+character). Maximally provide 6 digits, but less work.</p></dd>
 
 
 <dt id="arg-short">short<a class="anchor" aria-label="anchor" href="#arg-short"></a></dt>
@@ -84,11 +87,11 @@ digits, but less work.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">tag</span> <span class="op">&lt;-</span> <span class="fl">123</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">tag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3040</span>, <span class="fl">3085</span>, <span class="fl">3086</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">atl_full_tag_id</span><span class="op">(</span><span class="va">tag</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "31001000123"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "31001003040" "31001003085" "31001003086"</span>
 <span class="r-in"><span><span class="fu">atl_full_tag_id</span><span class="op">(</span><span class="va">tag</span>, short <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0123"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "3040" "3085" "3086"</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

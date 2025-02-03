@@ -40,18 +40,20 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><h6 class="dropdown-header" data-toc-skip>Basic Worflow (Vignettes)</h6></li>
+<li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
     <li><a class="dropdown-item" href="../articles/load_and_check_data.html">Step 1: Load and check data</a></li>
     <li><a class="dropdown-item" href="../articles/filter_data.html">Step 2: Filter data</a></li>
     <li><a class="dropdown-item" href="../articles/smooth_and_thin_data.html">Step 3: Smooth and thin data</a></li>
     <li><a class="dropdown-item" href="../articles/add_tidal_data.html">Step 4: Add tidal data</a></li>
-    <li><a class="dropdown-item" href="../articles/plot_data.html">Step 5: Plot data</a></li>
+    <li><a class="dropdown-item" href="../articles/plot_data.html">Plot data</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Additional Tutorials</h6></li>
-    <li><a class="dropdown-item" href="../articles/additional_tutorials/test.html">Test</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Additional tutorials</h6></li>
+    <li><a class="dropdown-item" href="../articles/additional_tutorials/fast_plotting.html">Fast plotting</a></li>
+    <li><a class="dropdown-item" href="../articles/additional_tutorials/add_and_plot_bathymetry_data.html">Add and plot bathymetry data</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Package Development</h6></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
     <li><a class="dropdown-item" href="../articles/package_development/package_maintenance.html">Package maintenance</a></li>
+    <li><a class="dropdown-item" href="../articles/package_development/basemap_data.html">Basemap data</a></li>
     <li><a class="dropdown-item" href="../articles/package_development/package_logo.html">tools4watlas logo</a></li>
   </ul>
 </li>
@@ -93,9 +95,6 @@ fast and efficient. A key feature of <code>data.table</code> is
 modification in place, where data is changed without making a copy. To
 prevent this (whenever it is not desired) use the function
 <code><a href="https://rdrr.io/pkg/data.table/man/copy.html" class="external-link">copy()</a></code> to make a true copy of the data set.</p>
-<p>Most <code>tools4watlas</code> function run on collections of lists
-<code><a href="https://rdrr.io/r/base/split.html" class="external-link">split()</a></code> by individual (tag) to keep the data separated and
-allow for easy parallel computing (if necessary).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span>
@@ -177,8 +176,7 @@ with the following columns:</p>
 <p>First, the path and file name of the local SQLite database need to be
 provided. Then, with the established connection, the database can be
 queried for the selected tags and period. Here we will load the tagging
-data in a list where each entry is a data.frame with data of one
-tag.</p>
+data in one data.table.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Database connection</span></span>
 <span><span class="va">sqlite_db</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
@@ -187,9 +185,8 @@ tag.</p>
 <span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">RSQLite</span><span class="fu">::</span><span class="fu">dbConnect</span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">sqlite_db</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load data from database</span></span>
-<span><span class="va">data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_get_data.html">atl_get_data</a></span><span class="op">(</span></span>
 <span>  <span class="va">tags</span>,</span>
-<span>  <span class="va">atl_get_data</span>,</span>
 <span>  tracking_time_start <span class="op">=</span> <span class="va">from</span>,</span>
 <span>  tracking_time_end <span class="op">=</span> <span class="va">to</span>,</span>
 <span>  timezone <span class="op">=</span> <span class="st">"CET"</span>,</span>
@@ -202,46 +199,63 @@ tag.</p>
 <div class="section level4">
 <h4 id="alternatively-extract-from-remote-sql-database">Alternatively, extract from remote SQL-database<a class="anchor" aria-label="anchor" href="#alternatively-extract-from-remote-sql-database"></a>
 </h4>
-<p>Does the same as when connecting to a local SQLite database. In this
-example (chunk not run and only shown) we load the last three days of
-data from all tags of season 2024. Host, database, username and password
-have to be specified.</p>
+<p>To safely work with database credentials one option is to store them
+as environmental variables in R. This allows for example to have scripts
+on GitHub without sharing them. Restart R after adding variables to be
+able to access them. Ask Allert for the host, username and password and
+then add them in your environment like this:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># open .Renviron to edit</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/file.edit.html" class="external-link">file.edit</a></span><span class="op">(</span><span class="st">"~/.Renviron"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># add variables</span></span>
+<span><span class="va">host</span> <span class="op">=</span> <span class="st">"host"</span></span>
+<span><span class="va">username</span> <span class="op">=</span> <span class="st">"username"</span></span>
+<span><span class="va">password</span> <span class="op">=</span> <span class="st">"password"</span></span>
+<span></span>
+<span><span class="co"># access variables (example)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"variable_name"</span><span class="op">)</span></span></code></pre></div>
+<p><code>atl_get_data</code> does the same as when connecting to a local
+SQLite database when connecting to a remote database. In this example
+(chunk not run and only shown) we load the last three days of data from
+all tags of season 2024. Host, username and password are specified as
+environmental variables in this example, but can also be specified
+directly.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load meta data</span></span>
 <span><span class="va">all_tags_path</span> <span class="op">&lt;-</span> <span class="st">"C:\\path\\tags_watlas_all.xlsx"</span></span>
 <span><span class="va">all_tags</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span><span class="va">all_tags_path</span>, sheet <span class="op">=</span> <span class="st">"tags_watlas_all"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Subset all tags from 2024</span></span>
-<span><span class="va">tags</span> <span class="op">&lt;-</span> <span class="va">all_tags</span><span class="op">[</span><span class="va">season</span> <span class="op">==</span> <span class="fl">2024</span><span class="op">]</span><span class="op">$</span><span class="va">tagID</span></span>
+<span><span class="va">tags</span> <span class="op">&lt;-</span> <span class="va">all_tags</span><span class="op">[</span><span class="va">season</span> <span class="op">==</span> <span class="fl">2024</span><span class="op">]</span><span class="op">$</span><span class="va">tag</span></span>
 <span></span>
 <span><span class="co"># Select N last days to get data from</span></span>
 <span><span class="va">days</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
-<span><span class="va">from</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="fl">86400</span> <span class="op">*</span> <span class="va">days</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">to</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fl">3600</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">from</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="fl">86400</span> <span class="op">*</span> <span class="va">days</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">to</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fl">3600</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load data from database</span></span>
-<span><span class="va">data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_get_data.html">atl_get_data</a></span><span class="op">(</span></span>
 <span>  <span class="va">tags</span>,</span>
-<span>  <span class="va">atl_get_data</span>,</span>
 <span>  tracking_time_start <span class="op">=</span> <span class="va">from</span>,</span>
 <span>  tracking_time_end <span class="op">=</span> <span class="va">to</span>,</span>
 <span>  timezone <span class="op">=</span> <span class="st">"CET"</span>,</span>
-<span>  host <span class="op">=</span> <span class="st">"host"</span>,</span>
-<span>  database <span class="op">=</span> <span class="st">"db"</span>,</span>
-<span>  username <span class="op">=</span> <span class="st">"username"</span>,</span>
-<span>  password <span class="op">=</span> <span class="st">"password"</span></span>
+<span>  host <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"host"</span><span class="op">)</span>,</span>
+<span>  database <span class="op">=</span> <span class="st">"atlas2024"</span>,</span>
+<span>  username <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"username"</span><span class="op">)</span>,</span>
+<span>  password <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"password"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="data-explanation">Data explanation<a class="anchor" aria-label="anchor" href="#data-explanation"></a>
 </h2>
-<p>The resulting loaded WATLAS data will be a collection of lists split
-by tag.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Show first 5 rows of the first list</span></span>
-<span><span class="va">data_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p>The resulting loaded WATLAS data will be a <code>data.table</code>
+with the following columns:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Show head of the table</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="7%">
@@ -269,7 +283,7 @@ by tag.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">1</td>
+<td align="right">205</td>
 <td align="left">3040</td>
 <td align="right">1696154919</td>
 <td align="left">2023-10-01 10:08:39</td>
@@ -281,7 +295,7 @@ by tag.</p>
 <td align="right">45.05</td>
 </tr>
 <tr class="even">
-<td align="right">2</td>
+<td align="right">208</td>
 <td align="left">3040</td>
 <td align="right">1696154922</td>
 <td align="left">2023-10-01 10:08:42</td>
@@ -293,7 +307,7 @@ by tag.</p>
 <td align="right">32.48</td>
 </tr>
 <tr class="odd">
-<td align="right">3</td>
+<td align="right">212</td>
 <td align="left">3040</td>
 <td align="right">1696154928</td>
 <td align="left">2023-10-01 10:08:48</td>
@@ -305,7 +319,7 @@ by tag.</p>
 <td align="right">31.28</td>
 </tr>
 <tr class="even">
-<td align="right">4</td>
+<td align="right">215</td>
 <td align="left">3040</td>
 <td align="right">1696154931</td>
 <td align="left">2023-10-01 10:08:51</td>
@@ -317,7 +331,7 @@ by tag.</p>
 <td align="right">37.77</td>
 </tr>
 <tr class="odd">
-<td align="right">5</td>
+<td align="right">218</td>
 <td align="left">3040</td>
 <td align="right">1696154934</td>
 <td align="left">2023-10-01 10:08:54</td>
@@ -328,10 +342,20 @@ by tag.</p>
 <td align="right">83.48</td>
 <td align="right">37.93</td>
 </tr>
+<tr class="even">
+<td align="right">219</td>
+<td align="left">3040</td>
+<td align="right">1696154937</td>
+<td align="left">2023-10-01 10:08:57</td>
+<td align="right">650692.1</td>
+<td align="right">5902574</td>
+<td align="right">3</td>
+<td align="right">37.56</td>
+<td align="right">66.21</td>
+<td align="right">29.64</td>
+</tr>
 </tbody>
 </table>
-<p>Loading the WATLAS data will provide a data frame with different
-columns representing:</p>
 <table class="table">
 <colgroup>
 <col width="16%">
@@ -395,11 +419,8 @@ convenient and fast way is to use <code>fwrite</code> from the
 <code>data.table</code> package. By including <code>yaml = TRUE</code>
 we make sure the data stays in the same format when we load it again.
 Change the file path when running this example.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Bind data into one data.table</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="va">data_list</span>, fill <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Save data</span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Save data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span><span class="va">data</span>, file <span class="op">=</span> <span class="st">"../inst/extdata/watlas_data_raw.csv"</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -410,14 +431,14 @@ Change the file path when running this example.</p>
 </h4>
 <p>Here we simply check for how many individuals we have data and how
 many positions by tag and date we have.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="st">"../inst/extdata/watlas_data_raw.csv"</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># N individuals with tagging data</span></span>
 <span><span class="va">data</span><span class="op">[</span>, <span class="va">.N</span>, <span class="va">tag</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 3</span></span></code></pre>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># N positions, first and last data by tag ID</span></span>
 <span><span class="va">data</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span></span>
 <span>  N_positions <span class="op">=</span> <span class="va">.N</span>,</span>
@@ -429,8 +450,8 @@ many positions by tag and date we have.</p>
 <span><span class="co">## 1:   3040        5779 2023-10-01 10:08:39 2023-10-02 09:59:59</span></span>
 <span><span class="co">## 2:   3085        3453 2023-10-01 10:00:01 2023-10-02 09:41:16</span></span>
 <span><span class="co">## 3:   3086        3548 2023-10-01 10:00:01 2023-10-02 09:59:42</span></span></code></pre>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># add data</span></span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># add date</span></span>
 <span><span class="va">data</span><span class="op">[</span>, <span class="va">date</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">datetime</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># N positions by species and day</span></span>
@@ -448,7 +469,7 @@ many positions by tag and date we have.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Date"</span>, y <span class="op">=</span> <span class="st">"Tag"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_classic</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="load_and_check_data_files/figure-html/unnamed-chunk-7-1.png" alt="Number of positions per day by tag" width="100%"><p class="caption">
+<img src="load_and_check_data_files/figure-html/unnamed-chunk-8-1.png" alt="Number of positions per day by tag" width="100%"><p class="caption">
 Number of positions per day by tag
 </p>
 </div>
@@ -461,7 +482,7 @@ convenient to plot heatmaps, as plotting for example 40 million points
 would result in a lot of over plotting and makes the plotting slow. If
 the dataset is small, one can obviously also plot the data by tag number
 or in other ways (see vignette plotting data).</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Make a basemap with the extent of the data</span></span>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data</span>, buffer <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
 <span></span>
@@ -486,7 +507,7 @@ or in other ways (see vignette plotting data).</p>
 <span>    direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="load_and_check_data_files/figure-html/unnamed-chunk-8-1.png" alt="Heatmap of all positions" width="100%"><p class="caption">
+<img src="load_and_check_data_files/figure-html/unnamed-chunk-9-1.png" alt="Heatmap of all positions" width="100%"><p class="caption">
 Heatmap of all positions
 </p>
 </div>
