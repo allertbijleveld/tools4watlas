@@ -128,7 +128,10 @@ atl_as_sf <- function(data,
       # Return sf with lines
       d_sf %>%
         dplyr::group_by(!!tag_col_group) %>%
-        dplyr::summarise(do_union = FALSE) %>%
+        dplyr::summarise(
+          do_union = FALSE,
+          dplyr::across(dplyr::all_of(additional_cols), first)
+        ) %>%
         sf::st_cast("LINESTRING")
     },
     table = {

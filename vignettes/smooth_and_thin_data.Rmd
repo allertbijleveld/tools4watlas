@@ -42,21 +42,8 @@ data <- fread(data_path, yaml = TRUE)
 To further reduce error in the localization data, a basic smoother such as a median filter can be applied. The resulting table has the smoothed location stored in the `x` and `y` column and the original location stored in the `x_raw` and `y_raw` column. 
 
 ```{r echo=T, results='hide'}		
-
-# split in list as atl_median_smooth() does not work by tag
-data_list <- split(data, by = "tag")
-
 # Smooth the data
-med_filter <- 5 # number of localizations within window for smoothing
-
-# since the function modifies in place, we shall make a copy
-data_smooth <- copy(data_list)
-
-lapply(
-  X = data_smooth,
-  FUN = atl_median_smooth,
-  moving_window = med_filter
-) |> invisible()
+data <- atl_median_smooth(data, moving_window = 5)
 ```
 
 ### Recalculate speed
@@ -65,13 +52,8 @@ After smoothing the data, the speeds need to be recalculated. We now also calcul
 Note: the distance between smoothed positions can be 0 and therefore will produce NAs and a warning
 
 ```{r echo=T}		
-# Calculate speed
-lapply(data_list, function(dt) {
-  dt[, `:=`(
-    speed_in = atl_get_speed(dt, type = "in"),
-    speed_out = atl_get_speed(dt, type = "out")
-  )]
-}) |> invisible()
+# Recalculate speed
+data <- atl_get_speed(data, type = c("in", "out"))
 ```
 
 #### Look at the data
@@ -79,26 +61,35 @@ lapply(data_list, function(dt) {
 This plot just shows one example.
 
 ```{r, fig.cap = "Smoothed track (black) on top of raw track (red)"}	
-# select data from first list
-d1_raw <- data_list[[1]]
-d1_smooth <- data_smooth[[1]]
+# subset first tag
+data_subset <- data[tag == data[1]$tag]
 
-# subset first day
-from <- min(d1_raw[, datetime]) + 5 * 3600
-to <- min(d1_raw[, datetime]) + 24 * 3600
-
-d1_raw <- d1_raw[datetime %between% c(from, to)]
-d1_smooth <- d1_smooth[datetime %between% c(from, to)]
+# subset some data to look at
+from <- min(data_subset[, datetime]) + 1 * 3600
+to <- min(data_subset[, datetime]) + 12 * 3600
+data_subset <- data_subset[datetime %between% c(from, to)]
 
 # Create basemap
-bm <- atl_create_bm(d1_smooth)
+bm <- atl_create_bm(data_subset)
 
 # Plot
 bm +
-  geom_path(data = d1_raw, aes(x, y), color = "firebrick3", linewidth = 0.5) +
-  geom_path(data = d1_smooth, aes(x, y), color = "black", linewidth = 0.5) +
-  geom_point(data = d1_raw, aes(x, y), color = "firebrick3", size = 1.2) +
-  geom_point(data = d1_smooth, aes(x, y), color = "black", size = 1)
+  geom_path(
+    data = data_subset, aes(x_raw, y_raw),
+    color = "firebrick3", linewidth = 0.5
+  ) +
+  geom_path(
+    data = data_subset, aes(x, y),
+    color = "black", linewidth = 0.5
+  ) +
+  geom_point(
+    data = data_subset, aes(x_raw, y_raw),
+    color = "firebrick3", size = 1.2
+  ) +
+  geom_point(
+    data = data_subset, aes(x, y),
+    color = "black", size = 1
+  )
 ```
 
 
@@ -111,9 +102,6 @@ Depending on the desired analysis, it might make sense to thin data, either by a
 Returns the average of all columns for each time step. The additional column `n_aggregated` shows how many locations were aggregated for this location. Time and datetime are returned rounded to the interval.
 
 ```{r echo=T}		
-# rbind data
-data <- rbindlist(data_smooth)
-
 # Thin the data by aggregation with a 60-second interval
 thinned_aggregated <- atl_thin_data(
   data = data,

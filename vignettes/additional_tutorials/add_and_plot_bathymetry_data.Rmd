@@ -68,7 +68,7 @@ Subset data at low tide and plot on bathymetry base map.
 
 ```{r, fig.cap = "Movement tracks colored with bathymetry data"}
 # subset low tide data
-data_subset <- data[tide == "low tide"]
+data_subset <- data[tide == "low tide" | tide == "changing"]
 
 # create base map with bathymetry data
 bm <- atl_create_bm(
@@ -79,8 +79,8 @@ bm <- atl_create_bm(
 # plot data
 bm +
   geom_path(
-    data = data, aes(x, y, group = tag, colour = bathymetry), alpha = 0.1,
-    show.legend = FALSE
+    data = data_subset, aes(x, y, group = tag, colour = bathymetry),
+    alpha = 0.1, show.legend = FALSE
   ) +
   geom_point(
     data = data_subset, aes(x, y, color = bathymetry), size = 1,

@@ -1,32 +1,73 @@
 #' Apply a median smooth to coordinates
 #'
-#' Applies a median smooth defined by a rolling window to the X and Y
-#' coordinates of the data.
+#' Applies a median smooth defined by a rolling window to the x and y
+#' coordinates of the data, by tag ID
 #'
-#' @author Pratik Gupte & Allert Bijleveld
-#' @param data A dataframe object returned by \code{atl_get_data}, which should
-#' contain the original columns (particularly X,Y and TIME).
+#' @author Pratik Gupte & Allert Bijleveld & Johannes Krietsch
+#' @param data A data.frame or data.table object returned by
+#' \code{atl_get_data}, which should contain the original columns
+#' (particularly tag, x, y, and time).
 #' @param moving_window The size of the moving window for the median smooth.
 #' Must be an odd number.
+#' @param tag The tag ID.
 #' @param x The X coordinate.
 #' @param y The Y coordinate.
 #' @param time The timestamp, ideally as an integer.
-#' @return A datatable class object (extends data.frame), including X,Y as
+#' @return A data.table class object (extends data.frame), including X,Y as
 #' smoothed coordinates and the x_raw and y_raw, which are the raw coordinates.
 #'
 #' @examples
-#' \dontrun{
-#' atl_median_smooth(
-#'   data = track_data,
-#'   x = "x", y = "y",
-#'   time = "time",
-#'   moving_window = 5
-#' )
-#' }
+#' library(tools4watlas)
+#' library(data.table)
+#' library(ggplot2)
 #'
+#' # Example dataset
+#' # tag 1
+#' data1 <- data.table(
+#'   tag = rep(1, 10),
+#'   x = c(1, 2, 5, 6, 8, 10, 12, 14, 17, 21),
+#'   y = c(1, 7, 8, 12, 13, 20, 16, 18, 20, 21),
+#'   time = 1:10
+#' )
+#'
+#' # tag 2
+#' data2 <- data.table(
+#'   tag = rep(2, 10),
+#'   x = c(2, 3, 6, 7, 9, 11, 13, 15, 18, 26),
+#'   y = c(2, 6, 7, 11, 12, 19, 15, 17, 19, 20),
+#'   time = 1:10
+#' )
+#'
+#' # Combine both datasets
+#' data <- rbind(data1, data2)
+#' setorder(data, tag, time)
+#'
+#' # Run the function
+#' smoothed_data <- atl_median_smooth(data, moving_window = 5)
+#'
+#' ggplot() +
+#'   geom_path(
+#'     data = smoothed_data, aes(x_raw, y_raw),
+#'     color = "firebrick3", linewidth = 0.5
+#'   ) +
+#'   geom_path(
+#'     data = smoothed_data, aes(x, y),
+#'     color = "black", linewidth = 0.5
+#'   ) +
+#'   geom_point(
+#'     data = smoothed_data, aes(x_raw, y_raw),
+#'     color = "firebrick3", size = 1.2
+#'   ) +
+#'   geom_point(
+#'     data = smoothed_data, aes(x, y),
+#'     color = "black", size = 1
+#'   ) +
+#'   theme_bw() +
+#'   facet_wrap(~tag)
 #' @export
 #'
 atl_median_smooth <- function(data,
+                              tag = "tag",
                               x = "x",
                               y = "y",
                               time = "time",
@@ -40,7 +81,7 @@ atl_median_smooth <- function(data,
   )
 
   # check the data
-  names_req <- c(x, y, time)
+  names_req <- c(tag, x, y, time)
   atl_check_data(data, names_req)
 
   # check args positive
@@ -56,8 +97,8 @@ atl_median_smooth <- function(data,
     data.table::setDT(data)
   }
 
-  # set in ascending order of time
-  data.table::setorderv(data, time)
+  # set in ascending order of tag and time
+  data.table::setorder(data, tag, time)
 
   # add original coordinates
   data[, x_raw := x]
@@ -73,15 +114,15 @@ atl_median_smooth <- function(data,
       ))
     }
   ),
-  .SDcols = c(x, y)
-  ]
+  .SDcols = c(x, y),
+  by = tag]
 
   assertthat::assert_that("data.frame" %in% class(data),
     msg = "median_smooth: cleanded data is not a dataframe object!"
   )
 
   if (nrow(data) > 0) {
-    return(as.data.frame(data))
+    return(data)
   } else {
     warning("median_smooth: no data remaining")
     return(NULL)

@@ -111,20 +111,8 @@ smoothed location stored in the <code>x</code> and <code>y</code> column
 and the original location stored in the <code>x_raw</code> and
 <code>y_raw</code> column.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># split in list as atl_median_smooth() does not work by tag</span></span>
-<span><span class="va">data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">data</span>, by <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Smooth the data</span></span>
-<span><span class="va">med_filter</span> <span class="op">&lt;-</span> <span class="fl">5</span> <span class="co"># number of localizations within window for smoothing</span></span>
-<span></span>
-<span><span class="co"># since the function modifies in place, we shall make a copy</span></span>
-<span><span class="va">data_smooth</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/copy.html" class="external-link">copy</a></span><span class="op">(</span><span class="va">data_list</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
-<span>  X <span class="op">=</span> <span class="va">data_smooth</span>,</span>
-<span>  FUN <span class="op">=</span> <span class="va">atl_median_smooth</span>,</span>
-<span>  moving_window <span class="op">=</span> <span class="va">med_filter</span></span>
-<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Smooth the data</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_median_smooth.html">atl_median_smooth</a></span><span class="op">(</span><span class="va">data</span>, moving_window <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="recalculate-speed">Recalculate speed<a class="anchor" aria-label="anchor" href="#recalculate-speed"></a>
 </h3>
@@ -132,38 +120,42 @@ and the original location stored in the <code>x_raw</code> and
 also calculate turning angles. Note: the distance between smoothed
 positions can be 0 and therefore will produce NAs and a warning</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Calculate speed</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">data_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">dt</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">dt</span><span class="op">[</span>, <span class="fu">`:=`</span><span class="op">(</span></span>
-<span>    speed_in <span class="op">=</span> <span class="fu"><a href="../reference/atl_get_speed.html">atl_get_speed</a></span><span class="op">(</span><span class="va">dt</span>, type <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span>,</span>
-<span>    speed_out <span class="op">=</span> <span class="fu"><a href="../reference/atl_get_speed.html">atl_get_speed</a></span><span class="op">(</span><span class="va">dt</span>, type <span class="op">=</span> <span class="st">"out"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span><span class="op">]</span></span>
-<span><span class="op">}</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Recalculate speed</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_get_speed.html">atl_get_speed</a></span><span class="op">(</span><span class="va">data</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"in"</span>, <span class="st">"out"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="look-at-the-data">Look at the data<a class="anchor" aria-label="anchor" href="#look-at-the-data"></a>
 </h4>
 <p>This plot just shows one example.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># select data from first list</span></span>
-<span><span class="va">d1_raw</span> <span class="op">&lt;-</span> <span class="va">data_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="va">d1_smooth</span> <span class="op">&lt;-</span> <span class="va">data_smooth</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="co"># subset first tag</span></span>
+<span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">$</span><span class="va">tag</span><span class="op">]</span></span>
 <span></span>
-<span><span class="co"># subset first day</span></span>
-<span><span class="va">from</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">d1_raw</span><span class="op">[</span>, <span class="va">datetime</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">5</span> <span class="op">*</span> <span class="fl">3600</span></span>
-<span><span class="va">to</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">d1_raw</span><span class="op">[</span>, <span class="va">datetime</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">24</span> <span class="op">*</span> <span class="fl">3600</span></span>
-<span></span>
-<span><span class="va">d1_raw</span> <span class="op">&lt;-</span> <span class="va">d1_raw</span><span class="op">[</span><span class="va">datetime</span> <span class="op"><a href="https://rdrr.io/pkg/data.table/man/between.html" class="external-link">%between%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">d1_smooth</span> <span class="op">&lt;-</span> <span class="va">d1_smooth</span><span class="op">[</span><span class="va">datetime</span> <span class="op"><a href="https://rdrr.io/pkg/data.table/man/between.html" class="external-link">%between%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co"># subset some data to look at</span></span>
+<span><span class="va">from</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">data_subset</span><span class="op">[</span>, <span class="va">datetime</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">*</span> <span class="fl">3600</span></span>
+<span><span class="va">to</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">data_subset</span><span class="op">[</span>, <span class="va">datetime</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">12</span> <span class="op">*</span> <span class="fl">3600</span></span>
+<span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data_subset</span><span class="op">[</span><span class="va">datetime</span> <span class="op"><a href="https://rdrr.io/pkg/data.table/man/between.html" class="external-link">%between%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># Create basemap</span></span>
-<span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">d1_smooth</span><span class="op">)</span></span>
+<span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data_subset</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Plot</span></span>
 <span><span class="va">bm</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">d1_raw</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"firebrick3"</span>, linewidth <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">d1_smooth</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"black"</span>, linewidth <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">d1_raw</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"firebrick3"</span>, size <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">d1_smooth</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">data_subset</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x_raw</span>, <span class="va">y_raw</span><span class="op">)</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"firebrick3"</span>, linewidth <span class="op">=</span> <span class="fl">0.5</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">data_subset</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"black"</span>, linewidth <span class="op">=</span> <span class="fl">0.5</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">data_subset</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x_raw</span>, <span class="va">y_raw</span><span class="op">)</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"firebrick3"</span>, size <span class="op">=</span> <span class="fl">1.2</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">data_subset</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">1</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="smooth_and_thin_data_files/figure-html/unnamed-chunk-4-1.png" alt="Smoothed track (black) on top of raw track (red)" width="100%"><p class="caption">
 Smoothed track (black) on top of raw track (red)
@@ -186,10 +178,7 @@ column <code>n_aggregated</code> shows how many locations were
 aggregated for this location. Time and datetime are returned rounded to
 the interval.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># rbind data</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="va">data_smooth</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Thin the data by aggregation with a 60-second interval</span></span>
+<code class="sourceCode R"><span><span class="co"># Thin the data by aggregation with a 60-second interval</span></span>
 <span><span class="va">thinned_aggregated</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_thin_data.html">atl_thin_data</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data</span>,</span>
 <span>  interval <span class="op">=</span> <span class="fl">60</span>,</span>
@@ -198,7 +187,7 @@ the interval.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Show head of selected data</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">thinned_aggregated</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">time</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">n_aggregated</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">thinned_aggregated</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">time</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">n_aggregated</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -219,52 +208,52 @@ the interval.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">3040</td>
-<td align="right">1696154880</td>
-<td align="left">2023-10-01 10:08:00</td>
-<td align="right">650693.6</td>
-<td align="right">5902572</td>
+<td align="left">3027</td>
+<td align="right">1695438780</td>
+<td align="left">2023-09-23 03:13:00</td>
+<td align="right">650705.6</td>
+<td align="right">5902556</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">3027</td>
+<td align="right">1695439140</td>
+<td align="left">2023-09-23 03:19:00</td>
+<td align="right">650722.1</td>
+<td align="right">5902562</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">3027</td>
+<td align="right">1695439200</td>
+<td align="left">2023-09-23 03:20:00</td>
+<td align="right">650712.0</td>
+<td align="right">5902563</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">3027</td>
+<td align="right">1695439260</td>
+<td align="left">2023-09-23 03:21:00</td>
+<td align="right">650702.9</td>
+<td align="right">5902562</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">3027</td>
+<td align="right">1695439440</td>
+<td align="left">2023-09-23 03:24:00</td>
+<td align="right">650705.2</td>
+<td align="right">5902576</td>
 <td align="right">6</td>
 </tr>
 <tr class="even">
-<td align="left">3040</td>
-<td align="right">1696154940</td>
-<td align="left">2023-10-01 10:09:00</td>
-<td align="right">650692.8</td>
-<td align="right">5902572</td>
-<td align="right">19</td>
-</tr>
-<tr class="odd">
-<td align="left">3040</td>
-<td align="right">1696155000</td>
-<td align="left">2023-10-01 10:10:00</td>
-<td align="right">650695.8</td>
-<td align="right">5902573</td>
-<td align="right">19</td>
-</tr>
-<tr class="even">
-<td align="left">3040</td>
-<td align="right">1696155060</td>
-<td align="left">2023-10-01 10:11:00</td>
-<td align="right">650695.1</td>
-<td align="right">5902570</td>
-<td align="right">20</td>
-</tr>
-<tr class="odd">
-<td align="left">3040</td>
-<td align="right">1696155120</td>
-<td align="left">2023-10-01 10:12:00</td>
-<td align="right">650695.8</td>
-<td align="right">5902575</td>
-<td align="right">19</td>
-</tr>
-<tr class="even">
-<td align="left">3040</td>
-<td align="right">1696155180</td>
-<td align="left">2023-10-01 10:13:00</td>
-<td align="right">650695.6</td>
-<td align="right">5902573</td>
-<td align="right">19</td>
+<td align="left">3027</td>
+<td align="right">1695439500</td>
+<td align="left">2023-09-23 03:25:00</td>
+<td align="right">650700.1</td>
+<td align="right">5902562</td>
+<td align="right">17</td>
 </tr>
 </tbody>
 </table>
@@ -285,7 +274,7 @@ was sampled.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Show head of selected data</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">thinned_subsampled</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">time</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">n_subsampled</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">thinned_subsampled</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">time</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">n_subsampled</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -306,52 +295,52 @@ was sampled.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">3040</td>
-<td align="right">1696154919</td>
-<td align="left">2023-10-01 10:08:39</td>
-<td align="right">650694.1</td>
-<td align="right">5902569</td>
+<td align="left">3027</td>
+<td align="right">1695438802</td>
+<td align="left">2023-09-23 03:13:22</td>
+<td align="right">650705.6</td>
+<td align="right">5902556</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">3027</td>
+<td align="right">1695439189</td>
+<td align="left">2023-09-23 03:19:49</td>
+<td align="right">650721.0</td>
+<td align="right">5902559</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">3027</td>
+<td align="right">1695439201</td>
+<td align="left">2023-09-23 03:20:01</td>
+<td align="right">650723.1</td>
+<td align="right">5902564</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">3027</td>
+<td align="right">1695439261</td>
+<td align="left">2023-09-23 03:21:01</td>
+<td align="right">650702.9</td>
+<td align="right">5902562</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">3027</td>
+<td align="right">1695439477</td>
+<td align="left">2023-09-23 03:24:37</td>
+<td align="right">650702.8</td>
+<td align="right">5902562</td>
 <td align="right">6</td>
 </tr>
 <tr class="even">
-<td align="left">3040</td>
-<td align="right">1696154943</td>
-<td align="left">2023-10-01 10:09:03</td>
-<td align="right">650692.1</td>
-<td align="right">5902571</td>
-<td align="right">19</td>
-</tr>
-<tr class="odd">
-<td align="left">3040</td>
-<td align="right">1696155000</td>
-<td align="left">2023-10-01 10:10:00</td>
-<td align="right">650694.7</td>
-<td align="right">5902573</td>
-<td align="right">19</td>
-</tr>
-<tr class="even">
-<td align="left">3040</td>
-<td align="right">1696155060</td>
-<td align="left">2023-10-01 10:11:00</td>
-<td align="right">650701.0</td>
-<td align="right">5902577</td>
-<td align="right">20</td>
-</tr>
-<tr class="odd">
-<td align="left">3040</td>
-<td align="right">1696155120</td>
-<td align="left">2023-10-01 10:12:00</td>
-<td align="right">650693.1</td>
-<td align="right">5902572</td>
-<td align="right">19</td>
-</tr>
-<tr class="even">
-<td align="left">3040</td>
-<td align="right">1696155180</td>
-<td align="left">2023-10-01 10:13:00</td>
-<td align="right">650702.6</td>
-<td align="right">5902572</td>
-<td align="right">19</td>
+<td align="left">3027</td>
+<td align="right">1695439501</td>
+<td align="left">2023-09-23 03:25:01</td>
+<td align="right">650709.9</td>
+<td align="right">5902598</td>
+<td align="right">17</td>
 </tr>
 </tbody>
 </table>

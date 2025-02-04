@@ -47,7 +47,7 @@ testthat::test_that("atl_as_sf handles option lines", {
   testthat::expect_s3_class(d_sf, "sf")
 
   # Check that the output has the expected number of columns
-  testthat::expect_equal(ncol(d_sf), 2) # geometry, value, category
+  testthat::expect_equal(ncol(d_sf), 4) # tag, geometry, value, category
 
   # Check that geometry is correctly set
   testthat::expect_true("geometry" %in% names(d_sf))

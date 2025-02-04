@@ -37,11 +37,18 @@ testthat::test_that("cleaning raw data works", {
 
   # test on real data
   real_data <- data.table::fread("../testdata/whole_season_tx_435.csv")
-  test_output_real <- atl_median_smooth(
+  
+  data.table::setnames(real_data, 
+                       c("TAG", "X", "Y", "TIME"),
+                       c("tag", "x", "y", "time"))
+  
+  
+  test_output_real <- tools4watlas::atl_median_smooth(
     data = real_data,
-    x = "X",
-    y = "Y",
-    time = "TIME",
+    tag = "tag",
+    x = "x",
+    y = "y",
+    time = "time",
     moving_window = 5
   )
 

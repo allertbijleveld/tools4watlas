@@ -210,7 +210,7 @@ data).</p>
 <span></span>
 <span><span class="co"># exclude tags with less than 100 positions</span></span>
 <span><span class="va">data</span><span class="op">[</span>, <span class="va">N</span> <span class="op">:=</span> <span class="va">.N</span>, <span class="va">tag</span><span class="op">]</span></span>
-<span><span class="va">data</span><span class="op">[</span><span class="va">N</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/unique.html" class="external-link">unique</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></span>
+<span><span class="va">data</span><span class="op">[</span><span class="va">N</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">N</span> <span class="op">&gt;</span> <span class="fl">100</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># remove unneeded columns</span></span>
@@ -235,26 +235,17 @@ data).</p>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"vary &lt; %s"</span>, <span class="va">var_max</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Note: 0% of the dataset was filtered out, corresponding to 0 positions.</span></span></code></pre>
+<pre><code><span><span class="co">## Note: 0.54% of the dataset was filtered out, corresponding to 470 positions.</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="based-on-speed">Based on speed<a class="anchor" aria-label="anchor" href="#based-on-speed"></a>
 </h3>
 <p>This will filter more unrealistic positions.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># split in list as get_speed() does not work by tag</span></span>
-<span><span class="va">data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">data</span>, by <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># calculate speed</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">data_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">dt</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">dt</span><span class="op">[</span>, <span class="fu">`:=`</span><span class="op">(</span></span>
-<span>    speed_in <span class="op">=</span> <span class="fu"><a href="../reference/atl_get_speed.html">atl_get_speed</a></span><span class="op">(</span><span class="va">dt</span>, type <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span>,</span>
-<span>    speed_out <span class="op">=</span> <span class="fu"><a href="../reference/atl_get_speed.html">atl_get_speed</a></span><span class="op">(</span><span class="va">dt</span>, type <span class="op">=</span> <span class="st">"out"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span><span class="op">]</span></span>
-<span><span class="op">}</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># rbind data</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="va">data_list</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># calculate speed</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_get_speed.html">atl_get_speed</a></span><span class="op">(</span><span class="va">data</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"in"</span>, <span class="st">"out"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># plot speed (subset relevant range)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">speed_in</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">speed_in</span> <span class="op">&gt;</span> <span class="fl">5</span> <span class="op">&amp;</span> <span class="va">speed_in</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
@@ -277,28 +268,19 @@ Histogram of speed
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"speed_out &lt; %s | is.na(speed_out)"</span>, <span class="va">speed_max</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Note: 0.13% of the dataset was filtered out, corresponding to 16 positions.</span></span></code></pre>
+<pre><code><span><span class="co">## Note: 0.23% of the dataset was filtered out, corresponding to 200 positions.</span></span></code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># split in list to recalculate speed</span></span>
-<span><span class="va">data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">data</span>, by <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># recalculate speed</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">data_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">dt</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">dt</span><span class="op">[</span>, <span class="fu">`:=`</span><span class="op">(</span></span>
-<span>    speed_in <span class="op">=</span> <span class="fu"><a href="../reference/atl_get_speed.html">atl_get_speed</a></span><span class="op">(</span><span class="va">dt</span>, type <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span>,</span>
-<span>    speed_out <span class="op">=</span> <span class="fu"><a href="../reference/atl_get_speed.html">atl_get_speed</a></span><span class="op">(</span><span class="va">dt</span>, type <span class="op">=</span> <span class="st">"out"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span><span class="op">]</span></span>
-<span><span class="op">}</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># recalculate speed</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_get_speed.html">atl_get_speed</a></span><span class="op">(</span><span class="va">data</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"in"</span>, <span class="st">"out"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="save-data">Save data<a class="anchor" aria-label="anchor" href="#save-data"></a>
 </h2>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># rbind data</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="va">data_list</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Save data</span></span>
+<code class="sourceCode R"><span><span class="co"># Save data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span><span class="va">data</span>, file <span class="op">=</span> <span class="st">"../inst/extdata/watlas_data_filtered.csv"</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

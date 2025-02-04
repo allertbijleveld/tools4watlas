@@ -29,32 +29,68 @@ library(data.table)
 library(ggplot2)
 library(viridis)
 library(RColorBrewer)
-
-# Load example data
-data <- data_example
 ```
 
 ## Using `ggplot2` and a basemap layer
 
 We can create simple base maps of the study area by using the function `atl_create_bm()`. This function uses a data.table with x- and y-coordinates to check the required bounding box (which can be extended with a buffer in meters) and spatial features (polygons) of land, lakes, mudflats and rivers. Without adding costmized data, it will default to the data provided in the package. By changing `asp` the desired aspect ratio can be chosen (default is "16:9"). If no data are provided the function creates a map around Griend with a specified buffer. 
 
-#### Map with points and tracks
+#### Map with points and tracks of one individual
 
 ```{r, fig.cap = "Points and tracks on basemap"}
+# Load example data
+data <- data_example
+
+# Subset bar-tailed godwit
+data_subset <- data[species == "bar-tailed godwit"]
+
+# Create base map
+bm <- atl_create_bm(data_subset, buffer = 800)
+
+# Plot points and tracks
+bm +
+  geom_path(
+    data = data_subset, aes(x, y, colour = tag),
+    alpha = 0.1, show.legend = FALSE
+  ) +
+  geom_point(
+    data = data_subset, aes(x, y, colour = tag),
+    size = 0.5, show.legend = FALSE
+  ) +
+  scale_color_brewer(palette = "Dark2") # for up to 8 categories
+```
+
+#### Map with points and tracks of multiple species
+
+```{r, fig.cap = "Points and tracks of multiple species on basemap"}
+
 # Create base map
 bm <- atl_create_bm(data, buffer = 800)
 
 # Plot points and tracks
 bm +
   geom_path(
-    data = data, aes(x, y, colour = tag), alpha = 0.1,
-    show.legend = FALSE
+    data = data, aes(x, y, colour = species),
+    alpha = 0.5, show.legend = FALSE
   ) +
   geom_point(
-    data = data, aes(x, y, colour = tag), size = 0.5,
-    show.legend = FALSE
+    data = data, aes(x, y, color = species),
+    size = 1, show.legend = TRUE
   ) +
-  scale_color_brewer(palette = "Dark2") # for up to 8 categories
+  scale_color_manual(
+    values = atl_spec_cols(),
+    labels = atl_spec_labs("multiline"),
+    name = ""
+  ) +
+  guides(colour = guide_legend(
+    nrow = 1, override.aes = list(size = 7, pch = 16, alpha = 1)
+  )) +
+  theme(
+    legend.position = "top",
+    legend.justification = "center",
+    legend.key = element_blank(),
+    legend.background = element_rect(fill = "transparent")
+  )
 ```
 
 #### Heatmap of all positions
@@ -93,16 +129,17 @@ library(mapview)
 library(sf)
 
 # make data spatial
-d_sf <- atl_as_sf(data, additional_cols = c("datetime"))
+d_sf <- atl_as_sf(data, additional_cols = c("datetime", "species"))
 
 # add track
 d_sf_lines <- atl_as_sf(data,
-  additional_cols = c("datetime"),
+  additional_cols = c("species"),
   option = "lines"
 )
 
 # Plot interactive map
-mapview(d_sf_lines, zcol = "tag", legend = FALSE) + mapview(d_sf, zcol = "tag")
+mapview(d_sf_lines, zcol = "species", legend = FALSE) +
+  mapview(d_sf, zcol = "species")
 ```
 
 ## Static map with `OpenStreetMap` 
@@ -137,14 +174,27 @@ data[, `:=`(x_osm = osm_coords[, 1], y_osm = osm_coords[, 2])]
 # plot
 bm +
   geom_path(
-    data = data, aes(x_osm, y_osm, colour = tag), alpha = 0.1,
+    data = data, aes(x_osm, y_osm, colour = species), alpha = 0.1,
     show.legend = FALSE
   ) +
   geom_point(
-    data = data, aes(x_osm, y_osm, colour = tag), size = 0.5,
-    show.legend = FALSE
+    data = data, aes(x_osm, y_osm, colour = species), size = 0.5,
+    show.legend = TRUE
   ) +
-  scale_color_brewer(palette = "Dark2") +
+  scale_color_manual(
+    values = atl_spec_cols(),
+    labels = atl_spec_labs("multiline"),
+    name = ""
+  ) +
+  guides(colour = guide_legend(
+    nrow = 1, override.aes = list(size = 7, pch = 16, alpha = 1)
+  )) +
+  theme(
+    legend.position = "top",
+    legend.justification = "center",
+    legend.key = element_blank(),
+    legend.background = element_rect(fill = "transparent")
+  ) +
   labs(x = "Longitude", y = "Latitude") +
   coord_sf(crs = 3857)
 ```
