@@ -129,16 +129,17 @@ library(mapview)
 library(sf)
 
 # make data spatial
-d_sf <- atl_as_sf(data, additional_cols = c("datetime"))
+d_sf <- atl_as_sf(data, additional_cols = c("datetime", "species"))
 
 # add track
 d_sf_lines <- atl_as_sf(data,
-  additional_cols = c("datetime"),
+  additional_cols = c("species"),
   option = "lines"
 )
 
 # Plot interactive map
-mapview(d_sf_lines, zcol = "tag", legend = FALSE) + mapview(d_sf, zcol = "tag")
+mapview(d_sf_lines, zcol = "species", legend = FALSE) +
+  mapview(d_sf, zcol = "species")
 ```
 
 ## Static map with `OpenStreetMap` 
@@ -173,14 +174,27 @@ data[, `:=`(x_osm = osm_coords[, 1], y_osm = osm_coords[, 2])]
 # plot
 bm +
   geom_path(
-    data = data, aes(x_osm, y_osm, colour = tag), alpha = 0.1,
+    data = data, aes(x_osm, y_osm, colour = species), alpha = 0.1,
     show.legend = FALSE
   ) +
   geom_point(
-    data = data, aes(x_osm, y_osm, colour = tag), size = 0.5,
-    show.legend = FALSE
+    data = data, aes(x_osm, y_osm, colour = species), size = 0.5,
+    show.legend = TRUE
   ) +
-  scale_color_brewer(palette = "Dark2") +
+  scale_color_manual(
+    values = atl_spec_cols(),
+    labels = atl_spec_labs("multiline"),
+    name = ""
+  ) +
+  guides(colour = guide_legend(
+    nrow = 1, override.aes = list(size = 7, pch = 16, alpha = 1)
+  )) +
+  theme(
+    legend.position = "top",
+    legend.justification = "center",
+    legend.key = element_blank(),
+    legend.background = element_rect(fill = "transparent")
+  ) +
   labs(x = "Longitude", y = "Latitude") +
   coord_sf(crs = 3857)
 ```
