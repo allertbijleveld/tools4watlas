@@ -43,14 +43,7 @@ To further reduce error in the localization data, a basic smoother such as a med
 
 ```{r echo=T, results='hide'}		
 # Smooth the data
-data <- atl_median_smooth(
-  data,
-  tag = "tag",
-  x = "x",
-  y = "y",
-  time = "time",
-  moving_window = 5
-)
+data <- atl_median_smooth(data, moving_window = 5)
 ```
 
 ### Recalculate speed
@@ -60,13 +53,7 @@ Note: the distance between smoothed positions can be 0 and therefore will produc
 
 ```{r echo=T}		
 # Recalculate speed
-data <- atl_get_speed(data,
-  tag = "tag",
-  x = "x",
-  y = "y",
-  time = "time",
-  type = c("in", "out")
-)
+data <- atl_get_speed(data, type = c("in", "out"))
 ```
 
 #### Look at the data

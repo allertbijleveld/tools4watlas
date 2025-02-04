@@ -112,14 +112,7 @@ and the original location stored in the <code>x_raw</code> and
 <code>y_raw</code> column.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Smooth the data</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_median_smooth.html">atl_median_smooth</a></span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  tag <span class="op">=</span> <span class="st">"tag"</span>,</span>
-<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span>  time <span class="op">=</span> <span class="st">"time"</span>,</span>
-<span>  moving_window <span class="op">=</span> <span class="fl">5</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_median_smooth.html">atl_median_smooth</a></span><span class="op">(</span><span class="va">data</span>, moving_window <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="recalculate-speed">Recalculate speed<a class="anchor" aria-label="anchor" href="#recalculate-speed"></a>
 </h3>
@@ -128,13 +121,7 @@ also calculate turning angles. Note: the distance between smoothed
 positions can be 0 and therefore will produce NAs and a warning</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Recalculate speed</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_get_speed.html">atl_get_speed</a></span><span class="op">(</span><span class="va">data</span>,</span>
-<span>  tag <span class="op">=</span> <span class="st">"tag"</span>,</span>
-<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span>  time <span class="op">=</span> <span class="st">"time"</span>,</span>
-<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"in"</span>, <span class="st">"out"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_get_speed.html">atl_get_speed</a></span><span class="op">(</span><span class="va">data</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"in"</span>, <span class="st">"out"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="look-at-the-data">Look at the data<a class="anchor" aria-label="anchor" href="#look-at-the-data"></a>
 </h4>

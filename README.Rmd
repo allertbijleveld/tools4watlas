@@ -7,7 +7,7 @@ output: github_document
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   out.width = "100%",
-  fig.width = 8, fig.height = 5,
+  fig.width = 7.87, fig.height = 5,
   dpi = 300,
   fig.path = "man/figures/README-"
 )

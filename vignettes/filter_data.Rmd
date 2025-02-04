@@ -165,10 +165,6 @@ This will filter more unrealistic positions.
 
 # calculate speed
 data <- atl_get_speed(data,
-  tag = "tag",
-  x = "x",
-  y = "y",
-  time = "time",
   type = c("in", "out")
 )
 
@@ -191,10 +187,6 @@ data <- atl_filter_covariates(
 
 # recalculate speed
 data <- atl_get_speed(data,
-  tag = "tag",
-  x = "x",
-  y = "y",
-  time = "time",
   type = c("in", "out")
 )
 ```
@@ -202,9 +194,6 @@ data <- atl_get_speed(data,
 ## Save data
 
 ```{r, eval = FALSE}
-# rbind data
-data <- rbindlist(data_list)
-
 # Save data
 fwrite(data, file = "../inst/extdata/watlas_data_filtered.csv", yaml = TRUE)
 ```
