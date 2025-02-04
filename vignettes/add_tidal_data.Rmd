@@ -82,18 +82,34 @@ data[, tideID] |> unique()
 data_subset <- atl_filter_covariates(
   data = data,
   filters = c(
-    "tideID == 2023530",
+    "tideID %in% c(2023513, 2023514)",
     "between(time2lowtide, -2.5 * 60, 2.5 * 60)"
   )
 )
+```
+
+### Add species column
+
+```{r}
+# Load meta data
+all_tags_path <- system.file(
+  "extdata", "tags_watlas_subset.xlsx", package = "tools4watlas"
+)
+all_tags <- readxl::read_excel(all_tags_path, sheet = "tags_watlas_all") |>
+  data.table()
+
+# join with data
+all_tags[, tag := as.character(tag)]
+data[all_tags, on = "tag", `:=`(species = i.species)]
+
+# make species first column
+setcolorder(data, c("species", setdiff(names(data), c("species"))))
 ```
 
 ### Save as example data for `tools4watlas`.
 	
 ```{r, eval=FALSE}
 # reassign so data is data
-data_example <- data_subset
+data_example <- data
 save(data_example, file = "../data/watlas_data_example.rda")
 ```	
-	
-			

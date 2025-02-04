@@ -83,9 +83,9 @@ This plot just shows one example.
 d1_raw <- data_list[[1]]
 d1_smooth <- data_smooth[[1]]
 
-# subset first day
-from <- min(d1_raw[, datetime]) + 5 * 3600
-to <- min(d1_raw[, datetime]) + 24 * 3600
+# subset some data to look at
+from <- min(d1_raw[, datetime]) + 1 * 3600
+to <- min(d1_raw[, datetime]) + 12 * 3600
 
 d1_raw <- d1_raw[datetime %between% c(from, to)]
 d1_smooth <- d1_smooth[datetime %between% c(from, to)]

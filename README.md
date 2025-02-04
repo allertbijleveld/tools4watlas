@@ -97,7 +97,7 @@ library(remotes)
 install_github("allertbijleveld/tools4watlas")
 ```
 
-### **Example**
+### **Example data**
 
 ``` r
 library(tools4watlas)
@@ -112,18 +112,34 @@ bm <- atl_create_bm(data, buffer = 800)
 # Plot points and tracks
 bm +
   geom_path(
-    data = data, aes(x, y, colour = tag), alpha = 0.1, show.legend = FALSE
+    data = data, aes(x, y, colour = species),
+    alpha = 0.5, show.legend = FALSE
   ) +
   geom_point(
-    data = data, aes(x, y, colour = tag), size = 0.5, show.legend = FALSE
+    data = data, aes(x, y, color = species),
+    size = 1, show.legend = TRUE
+  ) +
+  scale_color_manual(
+    values = atl_spec_cols(),
+    labels = atl_spec_labs("multiline"),
+    name = ""
+  ) +
+  guides(colour = guide_legend(
+    nrow = 1, override.aes = list(size = 7, pch = 16, alpha = 1)
+  )) +
+  theme(
+    legend.position = "top",
+    legend.justification = "center",
+    legend.key = element_blank(),
+    legend.background = element_rect(fill = "transparent")
   )
 ```
 
-<div class="figure">
+<div class="figure" style="text-align: center">
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" alt="Example tracks" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" alt="Example tracks with one individual by species for two tide cycles" width="100%" />
 <p class="caption">
-Example tracks
+Example tracks with one individual by species for two tide cycles
 </p>
 
 </div>
@@ -142,13 +158,9 @@ We are working on the following articles at the moment:
 
 Other to do’s:
 
-- Choose nice example data
 - add examples & tests for atl_add_raster_data()
-
-Check:
-
-- exported tag metadata has timezone UTC for the release time, which is
-  different from our metadata (CEST)
+- check: exported tag metadata has timezone UTC for the release time,
+  which is different from our metadata (CEST)?
 
 ### **Contribute**
 

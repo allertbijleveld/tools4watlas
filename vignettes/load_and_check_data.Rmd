@@ -61,12 +61,12 @@ all_tags <- readxl::read_excel(all_tags_path, sheet = "tags_watlas_all") |>
   data.table()
 
 # Subset desired tags using data.table
-# (For example red knots and redshank from season 2023)
-tags <- all_tags[season == 2023 & species %in% c("red knot", "redshank")]$tag
+# (For example all tags from season 2023)
+tags <- all_tags[season == 2023]$tag
 
 # Time period for which data should be extracted form the database (in CET)
-from <- "2023-10-01 12:00:00"
-to <- "2023-10-02 12:00:00"
+from <- "2023-09-21 00:00:00"
+to <- "2023-09-25 00:00:00"
 ```
 
 #### Extract data from local SQLite file
