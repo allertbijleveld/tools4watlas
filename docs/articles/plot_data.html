@@ -327,7 +327,7 @@ also be located elsewhere on the plot with Legend.</p>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
 <span></span>
 <span><span class="co"># Transform to sf</span></span>
-<span><span class="va">d_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_as_sf.html">atl_as_sf</a></span><span class="op">(</span><span class="va">data</span>, additional_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">d_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_as_sf.html">atl_as_sf</a></span><span class="op">(</span><span class="va">data</span>, additional_cols <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Plot the tracking data with a simple background</span></span>
 <span><span class="fu"><a href="../reference/atl_plot_tag.html">atl_plot_tag</a></span><span class="op">(</span></span>
@@ -354,7 +354,7 @@ atl_plot_tag (see earlier).</p>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="va">data_example</span><span class="op">[</span><span class="fl">1</span>, <span class="va">tag</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># make data spatial and transform projection to WGS 84 (used in osm)</span></span>
-<span><span class="va">d_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_as_sf.html">atl_as_sf</a></span><span class="op">(</span><span class="va">data</span>, additional_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">d_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_as_sf.html">atl_as_sf</a></span><span class="op">(</span><span class="va">data</span>, additional_cols <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">d_sf</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="va">d_sf</span>, crs <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="fl">4326</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># get bounding box</span></span>
