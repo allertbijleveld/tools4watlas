@@ -163,12 +163,12 @@ with the following columns:</p>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Subset desired tags using data.table</span></span>
-<span><span class="co"># (For example red knots and redshank from season 2023)</span></span>
-<span><span class="va">tags</span> <span class="op">&lt;-</span> <span class="va">all_tags</span><span class="op">[</span><span class="va">season</span> <span class="op">==</span> <span class="fl">2023</span> <span class="op">&amp;</span> <span class="va">species</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red knot"</span>, <span class="st">"redshank"</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">tag</span></span>
+<span><span class="co"># (For example all tags from season 2023)</span></span>
+<span><span class="va">tags</span> <span class="op">&lt;-</span> <span class="va">all_tags</span><span class="op">[</span><span class="va">season</span> <span class="op">==</span> <span class="fl">2023</span><span class="op">]</span><span class="op">$</span><span class="va">tag</span></span>
 <span></span>
 <span><span class="co"># Time period for which data should be extracted form the database (in CET)</span></span>
-<span><span class="va">from</span> <span class="op">&lt;-</span> <span class="st">"2023-10-01 12:00:00"</span></span>
-<span><span class="va">to</span> <span class="op">&lt;-</span> <span class="st">"2023-10-02 12:00:00"</span></span></code></pre></div>
+<span><span class="va">from</span> <span class="op">&lt;-</span> <span class="st">"2023-09-21 00:00:00"</span></span>
+<span><span class="va">to</span> <span class="op">&lt;-</span> <span class="st">"2023-09-25 00:00:00"</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="extract-data-from-local-sqlite-file">Extract data from local SQLite file<a class="anchor" aria-label="anchor" href="#extract-data-from-local-sqlite-file"></a>
@@ -255,8 +255,8 @@ directly.</p>
 with the following columns:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Show head of the table</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
 <colgroup>
 <col width="7%">
 <col width="6%">
@@ -267,7 +267,7 @@ with the following columns:</p>
 <col width="4%">
 <col width="7%">
 <col width="8%">
-<col width="7%">
+<col width="8%">
 </colgroup>
 <thead><tr class="header">
 <th align="right">posID</th>
@@ -283,76 +283,76 @@ with the following columns:</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">205</td>
-<td align="left">3040</td>
-<td align="right">1696154919</td>
-<td align="left">2023-10-01 10:08:39</td>
-<td align="right">650694.1</td>
-<td align="right">5902569</td>
+<td align="right">7914</td>
+<td align="left">3027</td>
+<td align="right">1695438802</td>
+<td align="left">2023-09-23 03:13:22</td>
+<td align="right">650692.8</td>
+<td align="right">5902549</td>
 <td align="right">3</td>
-<td align="right">44.25</td>
-<td align="right">112.78</td>
-<td align="right">45.05</td>
+<td align="right">46.97</td>
+<td align="right">392.42</td>
+<td align="right">126.62</td>
 </tr>
 <tr class="even">
-<td align="right">208</td>
-<td align="left">3040</td>
-<td align="right">1696154922</td>
-<td align="left">2023-10-01 10:08:42</td>
-<td align="right">650694.1</td>
+<td align="right">7917</td>
+<td align="left">3027</td>
+<td align="right">1695438805</td>
+<td align="left">2023-09-23 03:13:25</td>
+<td align="right">650705.6</td>
+<td align="right">5902576</td>
+<td align="right">3</td>
+<td align="right">49.09</td>
+<td align="right">460.84</td>
+<td align="right">141.21</td>
+</tr>
+<tr class="odd">
+<td align="right">7921</td>
+<td align="left">3027</td>
+<td align="right">1695438808</td>
+<td align="left">2023-09-23 03:13:28</td>
+<td align="right">650691.6</td>
+<td align="right">5902536</td>
+<td align="right">3</td>
+<td align="right">58.18</td>
+<td align="right">471.81</td>
+<td align="right">155.89</td>
+</tr>
+<tr class="even">
+<td align="right">8230</td>
+<td align="left">3027</td>
+<td align="right">1695439189</td>
+<td align="left">2023-09-23 03:19:49</td>
+<td align="right">650728.6</td>
 <td align="right">5902571</td>
 <td align="right">3</td>
-<td align="right">50.44</td>
-<td align="right">60.84</td>
-<td align="right">32.48</td>
+<td align="right">49.97</td>
+<td align="right">441.46</td>
+<td align="right">138.20</td>
 </tr>
 <tr class="odd">
-<td align="right">212</td>
-<td align="left">3040</td>
-<td align="right">1696154928</td>
-<td align="left">2023-10-01 10:08:48</td>
-<td align="right">650694.1</td>
-<td align="right">5902573</td>
+<td align="right">8234</td>
+<td align="left">3027</td>
+<td align="right">1695439192</td>
+<td align="left">2023-09-23 03:19:52</td>
+<td align="right">650721.0</td>
+<td align="right">5902556</td>
 <td align="right">3</td>
-<td align="right">44.08</td>
-<td align="right">64.09</td>
-<td align="right">31.28</td>
+<td align="right">5.34</td>
+<td align="right">28.16</td>
+<td align="right">8.58</td>
 </tr>
 <tr class="even">
-<td align="right">215</td>
-<td align="left">3040</td>
-<td align="right">1696154931</td>
-<td align="left">2023-10-01 10:08:51</td>
-<td align="right">650694.1</td>
-<td align="right">5902574</td>
+<td align="right">8237</td>
+<td align="left">3027</td>
+<td align="right">1695439195</td>
+<td align="left">2023-09-23 03:19:55</td>
+<td align="right">650721.1</td>
+<td align="right">5902559</td>
 <td align="right">3</td>
-<td align="right">50.26</td>
-<td align="right">79.94</td>
-<td align="right">37.77</td>
-</tr>
-<tr class="odd">
-<td align="right">218</td>
-<td align="left">3040</td>
-<td align="right">1696154934</td>
-<td align="left">2023-10-01 10:08:54</td>
-<td align="right">650692.7</td>
-<td align="right">5902574</td>
-<td align="right">3</td>
-<td align="right">47.88</td>
-<td align="right">83.48</td>
-<td align="right">37.93</td>
-</tr>
-<tr class="even">
-<td align="right">219</td>
-<td align="left">3040</td>
-<td align="right">1696154937</td>
-<td align="left">2023-10-01 10:08:57</td>
-<td align="right">650692.1</td>
-<td align="right">5902574</td>
-<td align="right">3</td>
-<td align="right">37.56</td>
-<td align="right">66.21</td>
-<td align="right">29.64</td>
+<td align="right">5.55</td>
+<td align="right">35.03</td>
+<td align="right">10.43</td>
 </tr>
 </tbody>
 </table>
@@ -436,8 +436,8 @@ many positions by tag and date we have.</p>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="st">"../inst/extdata/watlas_data_raw.csv"</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># N individuals with tagging data</span></span>
-<span><span class="va">data</span><span class="op">[</span>, <span class="va">.N</span>, <span class="va">tag</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 3</span></span></code></pre>
+<span><span class="va">data</span><span class="op">[</span>, <span class="va">.N</span>, <span class="va">tag</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 8</span></span></code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># N positions, first and last data by tag ID</span></span>
 <span><span class="va">data</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span></span>
@@ -447,9 +447,14 @@ many positions by tag and date we have.</p>
 <span><span class="op">)</span>, <span class="va">tag</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">##       tag N_positions           fist_data           last_data</span></span>
 <span><span class="co">##    &lt;char&gt;       &lt;int&gt;              &lt;POSc&gt;              &lt;POSc&gt;</span></span>
-<span><span class="co">## 1:   3040        5779 2023-10-01 10:08:39 2023-10-02 09:59:59</span></span>
-<span><span class="co">## 2:   3085        3453 2023-10-01 10:00:01 2023-10-02 09:41:16</span></span>
-<span><span class="co">## 3:   3086        3548 2023-10-01 10:00:01 2023-10-02 09:59:42</span></span></code></pre>
+<span><span class="co">## 1:   3027       15859 2023-09-23 03:13:22 2023-09-23 22:24:26</span></span>
+<span><span class="co">## 2:   3038       15959 2023-09-23 00:00:01 2023-09-23 23:59:57</span></span>
+<span><span class="co">## 3:   3063       12614 2023-09-23 03:27:49 2023-09-23 22:24:55</span></span>
+<span><span class="co">## 4:   3100        8423 2023-09-23 04:21:46 2023-09-23 21:41:16</span></span>
+<span><span class="co">## 5:   3158       12533 2023-09-23 00:00:01 2023-09-23 23:59:57</span></span>
+<span><span class="co">## 6:   3188       10195 2023-09-23 00:00:45 2023-09-23 23:41:50</span></span>
+<span><span class="co">## 7:   3212        3856 2023-09-23 00:00:00 2023-09-23 23:59:56</span></span>
+<span><span class="co">## 8:   3288        8131 2023-09-23 00:00:03 2023-09-23 23:59:54</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># add date</span></span>
 <span><span class="va">data</span><span class="op">[</span>, <span class="va">date</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">datetime</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="op">)</span></span>

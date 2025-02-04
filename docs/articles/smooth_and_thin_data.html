@@ -148,9 +148,9 @@ positions can be 0 and therefore will produce NAs and a warning</p>
 <span><span class="va">d1_raw</span> <span class="op">&lt;-</span> <span class="va">data_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">d1_smooth</span> <span class="op">&lt;-</span> <span class="va">data_smooth</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
-<span><span class="co"># subset first day</span></span>
-<span><span class="va">from</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">d1_raw</span><span class="op">[</span>, <span class="va">datetime</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">5</span> <span class="op">*</span> <span class="fl">3600</span></span>
-<span><span class="va">to</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">d1_raw</span><span class="op">[</span>, <span class="va">datetime</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">24</span> <span class="op">*</span> <span class="fl">3600</span></span>
+<span><span class="co"># subset some data to look at</span></span>
+<span><span class="va">from</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">d1_raw</span><span class="op">[</span>, <span class="va">datetime</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">*</span> <span class="fl">3600</span></span>
+<span><span class="va">to</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">d1_raw</span><span class="op">[</span>, <span class="va">datetime</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">12</span> <span class="op">*</span> <span class="fl">3600</span></span>
 <span></span>
 <span><span class="va">d1_raw</span> <span class="op">&lt;-</span> <span class="va">d1_raw</span><span class="op">[</span><span class="va">datetime</span> <span class="op"><a href="https://rdrr.io/pkg/data.table/man/between.html" class="external-link">%between%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">d1_smooth</span> <span class="op">&lt;-</span> <span class="va">d1_smooth</span><span class="op">[</span><span class="va">datetime</span> <span class="op"><a href="https://rdrr.io/pkg/data.table/man/between.html" class="external-link">%between%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span><span class="op">)</span><span class="op">]</span></span>
@@ -219,52 +219,52 @@ the interval.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">3040</td>
-<td align="right">1696154880</td>
-<td align="left">2023-10-01 10:08:00</td>
-<td align="right">650693.6</td>
-<td align="right">5902572</td>
+<td align="left">3027</td>
+<td align="right">1695438780</td>
+<td align="left">2023-09-23 03:13:00</td>
+<td align="right">650705.6</td>
+<td align="right">5902556</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">3027</td>
+<td align="right">1695439140</td>
+<td align="left">2023-09-23 03:19:00</td>
+<td align="right">650722.1</td>
+<td align="right">5902562</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">3027</td>
+<td align="right">1695439200</td>
+<td align="left">2023-09-23 03:20:00</td>
+<td align="right">650712.0</td>
+<td align="right">5902563</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">3027</td>
+<td align="right">1695439260</td>
+<td align="left">2023-09-23 03:21:00</td>
+<td align="right">650702.9</td>
+<td align="right">5902562</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">3027</td>
+<td align="right">1695439440</td>
+<td align="left">2023-09-23 03:24:00</td>
+<td align="right">650705.2</td>
+<td align="right">5902576</td>
 <td align="right">6</td>
 </tr>
 <tr class="even">
-<td align="left">3040</td>
-<td align="right">1696154940</td>
-<td align="left">2023-10-01 10:09:00</td>
-<td align="right">650692.8</td>
-<td align="right">5902572</td>
-<td align="right">19</td>
-</tr>
-<tr class="odd">
-<td align="left">3040</td>
-<td align="right">1696155000</td>
-<td align="left">2023-10-01 10:10:00</td>
-<td align="right">650695.8</td>
-<td align="right">5902573</td>
-<td align="right">19</td>
-</tr>
-<tr class="even">
-<td align="left">3040</td>
-<td align="right">1696155060</td>
-<td align="left">2023-10-01 10:11:00</td>
-<td align="right">650695.1</td>
-<td align="right">5902570</td>
-<td align="right">20</td>
-</tr>
-<tr class="odd">
-<td align="left">3040</td>
-<td align="right">1696155120</td>
-<td align="left">2023-10-01 10:12:00</td>
-<td align="right">650695.8</td>
-<td align="right">5902575</td>
-<td align="right">19</td>
-</tr>
-<tr class="even">
-<td align="left">3040</td>
-<td align="right">1696155180</td>
-<td align="left">2023-10-01 10:13:00</td>
-<td align="right">650695.6</td>
-<td align="right">5902573</td>
-<td align="right">19</td>
+<td align="left">3027</td>
+<td align="right">1695439500</td>
+<td align="left">2023-09-23 03:25:00</td>
+<td align="right">650700.1</td>
+<td align="right">5902562</td>
+<td align="right">17</td>
 </tr>
 </tbody>
 </table>
@@ -306,52 +306,52 @@ was sampled.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">3040</td>
-<td align="right">1696154919</td>
-<td align="left">2023-10-01 10:08:39</td>
-<td align="right">650694.1</td>
-<td align="right">5902569</td>
+<td align="left">3027</td>
+<td align="right">1695438802</td>
+<td align="left">2023-09-23 03:13:22</td>
+<td align="right">650705.6</td>
+<td align="right">5902556</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">3027</td>
+<td align="right">1695439189</td>
+<td align="left">2023-09-23 03:19:49</td>
+<td align="right">650721.0</td>
+<td align="right">5902559</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">3027</td>
+<td align="right">1695439201</td>
+<td align="left">2023-09-23 03:20:01</td>
+<td align="right">650723.1</td>
+<td align="right">5902564</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">3027</td>
+<td align="right">1695439261</td>
+<td align="left">2023-09-23 03:21:01</td>
+<td align="right">650702.9</td>
+<td align="right">5902562</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">3027</td>
+<td align="right">1695439477</td>
+<td align="left">2023-09-23 03:24:37</td>
+<td align="right">650702.8</td>
+<td align="right">5902562</td>
 <td align="right">6</td>
 </tr>
 <tr class="even">
-<td align="left">3040</td>
-<td align="right">1696154943</td>
-<td align="left">2023-10-01 10:09:03</td>
-<td align="right">650692.1</td>
-<td align="right">5902571</td>
-<td align="right">19</td>
-</tr>
-<tr class="odd">
-<td align="left">3040</td>
-<td align="right">1696155000</td>
-<td align="left">2023-10-01 10:10:00</td>
-<td align="right">650694.7</td>
-<td align="right">5902573</td>
-<td align="right">19</td>
-</tr>
-<tr class="even">
-<td align="left">3040</td>
-<td align="right">1696155060</td>
-<td align="left">2023-10-01 10:11:00</td>
-<td align="right">650701.0</td>
-<td align="right">5902577</td>
-<td align="right">20</td>
-</tr>
-<tr class="odd">
-<td align="left">3040</td>
-<td align="right">1696155120</td>
-<td align="left">2023-10-01 10:12:00</td>
-<td align="right">650693.1</td>
-<td align="right">5902572</td>
-<td align="right">19</td>
-</tr>
-<tr class="even">
-<td align="left">3040</td>
-<td align="right">1696155180</td>
-<td align="left">2023-10-01 10:13:00</td>
-<td align="right">650702.6</td>
-<td align="right">5902572</td>
-<td align="right">19</td>
+<td align="left">3027</td>
+<td align="right">1695439501</td>
+<td align="left">2023-09-23 03:25:01</td>
+<td align="right">650709.9</td>
+<td align="right">5902598</td>
+<td align="right">17</td>
 </tr>
 </tbody>
 </table>
