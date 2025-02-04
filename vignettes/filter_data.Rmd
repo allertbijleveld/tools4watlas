@@ -163,19 +163,14 @@ This will filter more unrealistic positions.
 
 ```{r, fig.cap = "Histogram of speed"}
 
-# split in list as get_speed() does not work by tag
-data_list <- split(data, by = "tag")
-
 # calculate speed
-lapply(data_list, function(dt) {
-  dt[, `:=`(
-    speed_in = atl_get_speed(dt, type = "in"),
-    speed_out = atl_get_speed(dt, type = "out")
-  )]
-}) |> invisible()
-
-# rbind data
-data <- rbindlist(data_list)
+data <- atl_get_speed(data,
+  tag = "tag",
+  x = "x",
+  y = "y",
+  time = "time",
+  type = c("in", "out")
+)
 
 # plot speed (subset relevant range)
 ggplot(data = data[!is.na(speed_in) & speed_in > 5 & speed_in < 100]) +
@@ -194,16 +189,14 @@ data <- atl_filter_covariates(
   )
 )
 
-# split in list to recalculate speed
-data_list <- split(data, by = "tag")
-
 # recalculate speed
-lapply(data_list, function(dt) {
-  dt[, `:=`(
-    speed_in = atl_get_speed(dt, type = "in"),
-    speed_out = atl_get_speed(dt, type = "out")
-  )]
-}) |> invisible()
+data <- atl_get_speed(data,
+  tag = "tag",
+  x = "x",
+  y = "y",
+  time = "time",
+  type = c("in", "out")
+)
 ```
 
 ## Save data

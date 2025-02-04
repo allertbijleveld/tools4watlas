@@ -65,13 +65,8 @@ After smoothing the data, the speeds need to be recalculated. We now also calcul
 Note: the distance between smoothed positions can be 0 and therefore will produce NAs and a warning
 
 ```{r echo=T}		
-# Calculate speed
-lapply(data_list, function(dt) {
-  dt[, `:=`(
-    speed_in = atl_get_speed(dt, type = "in"),
-    speed_out = atl_get_speed(dt, type = "out")
-  )]
-}) |> invisible()
+# Recalculate speed
+lapply(data_list, atl_get_speed) |> invisible()
 ```
 
 #### Look at the data
