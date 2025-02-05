@@ -20,6 +20,8 @@
 #' present; this makes it flexible, allowing expressions such as
 #' \code{"between(speed, 2, 20)"}, but also something to use at your own risk.
 #' A missing filter variables \emph{will} result in an empty data frame.
+#' @param quietly If TRUE returns percentage and number of positions filtered,
+#' if FALSE functions runs quietly
 #'
 #' @return A dataframe filtered using the filters specified.
 #' @examples
@@ -47,7 +49,8 @@
 #' }
 #' @export
 atl_filter_covariates <- function(data,
-                                  filters = c()) {
+                                  filters = c(),
+                                  quietly = FALSE) {
   # convert to data.table
   if (!is.data.table(data)) {
     data.table::setDT(data)
@@ -86,7 +89,7 @@ atl_filter_covariates <- function(data,
   percentage_decrease <- (nrows_filtered / nrow_before) * 100
   percentage_decrease <- round(percentage_decrease, 2)
 
-  if (nrow(data) > 0) {
+  if (nrow(data) > 0 && quietly == TRUE) {
     message(glue::glue(
       "Note: {percentage_decrease}% of the dataset was filtered out, ",
       "corresponding to {nrows_filtered} positions."
