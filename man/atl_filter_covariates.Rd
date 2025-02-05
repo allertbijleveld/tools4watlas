@@ -4,7 +4,7 @@
 \alias{atl_filter_covariates}
 \title{Filter data by position covariates}
 \usage{
-atl_filter_covariates(data, filters = c())
+atl_filter_covariates(data, filters = c(), quietly = FALSE)
 }
 \arguments{
 \item{data}{A dataframe or similar containing the variables to be filtered.}
@@ -15,6 +15,9 @@ The function will not explicitly check whether the filtering variables are
 present; this makes it flexible, allowing expressions such as
 \code{"between(speed, 2, 20)"}, but also something to use at your own risk.
 A missing filter variables \emph{will} result in an empty data frame.}
+
+\item{quietly}{If TRUE returns percentage and number of positions filtered,
+if FALSE functions runs quietly}
 }
 \value{
 A dataframe filtered using the filters specified.
