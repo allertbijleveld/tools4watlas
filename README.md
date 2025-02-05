@@ -101,6 +101,11 @@ install_github("allertbijleveld/tools4watlas")
 
 ``` r
 library(tools4watlas)
+```
+
+    ## Loading required package: data.table
+
+``` r
 library(ggplot2)
 
 # Load example data
@@ -155,12 +160,6 @@ We are working on the following articles at the moment:
 
 - Animate movement data
 - Residency patch analysis
-
-Other to do’s:
-
-- add examples & tests for atl_add_raster_data()
-- check: exported tag metadata has timezone UTC for the release time,
-  which is different from our metadata (CEST)?
 
 ### **Contribute**
 

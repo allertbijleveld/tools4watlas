@@ -57,7 +57,7 @@ atl_get_data <- function(tag,
                          SQLiteDB = NULL, # nolint
                          use_connection = NULL) {
   # global variables
-  TIME <- time <- NULL # nolint
+  TIME <- time <- posID <- NULL # nolint
 
   # check input
   assertthat::assert_that(
@@ -141,7 +141,7 @@ atl_get_data <- function(tag,
           tz = "UTC"
         )
       )
-    tmp_data$posID <- seq.int(nrow(tmp_data))
+
     tmp_data$tag <- stringr::str_pad(
       as.character(substr(tmp_data$TAG, 8, 11)), 4,
       pad = "0"
@@ -159,6 +159,9 @@ atl_get_data <- function(tag,
 
     # set order
     setorder(tmp_data, tag, time)
+
+    # create posID
+    tmp_data[, posID := seq_len(.N), by = tag]
 
     return(tmp_data[, c(
       "posID", "tag", "time", "datetime", "x", "y",
