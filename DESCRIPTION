@@ -17,10 +17,10 @@ License: GPL-3
 URL: https://allertbijleveld.github.io/tools4watlas/
 BugReports: https://github.com/allertbijleveld/tools4watlas/issues
 Depends: 
+    data.table,
     R (>= 3.5.0)
 Imports:
     assertthat,
-    data.table,
     DBI,
     dplyr,
     ggplot2,
