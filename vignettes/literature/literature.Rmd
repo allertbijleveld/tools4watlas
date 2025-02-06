@@ -50,7 +50,7 @@ Validation of methods is crucial for understanding the strengths and limitations
 
 ### Methods
 
-A pipeline with coding examples for cleaning, for instance by Filter-Smoothing, high-throughput tracking data with `atlastools` (`tools4watlas` builds on `atlastools`) is presented in **@gupte2022**. 
+A pipeline with coding examples for cleaning (e.g. Filter-Smoothing) high-throughput tracking data with `atlastools` (`tools4watlas` builds on `atlastools`) is presented in **@gupte2022**.
 
 In  **@toledo2022** we describe our tags and particulary the design of these versatile, widely-applicable, and field-proven 'Vildehaye' tags for wildlife sensing and radio tracking. Also, we discuss longevity of tags and show that WATLAS tags with a CR2032 battery transmitting at 6 s can last 226 days. 
 
