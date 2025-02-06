@@ -42,17 +42,25 @@ The `.bib` file containing the full bibliography in `BibTeX` can be downloaded [
 
 Tracking animal movement is crucial for understanding interactions with changing environments and predicting the effects of anthropogenic activities, particularly in ecologically significant areas like the Wadden Sea. The WATLAS system  (Wadden Sea Advanced Tracking and Localisation of Animals in real life Systems) enables high-resolution monitoring of small bird movements, offering insights into space use, individual variation, and social networks, thereby supporting research and conservation efforts in the region. A detailed description of WATLAS can be found in **@bijleveld2022**.
 
+In **@nathan2022** we discuss how big-data approaches, such as high-throughput tracking with WATLAS, can lead to an increased understanding of the ecology of animal movement. Particularly that advances in high-throughput wildlife tracking systems now allow more thorough investigation of variation among individuals and species across space and time, the nature of biological interactions, and behavioral responses to the environment.  
+
 ### Validation
 
-Validation of methods is crucial to understand the strength and limitations of a method.In **@beardsworth2022** we tested the accuracy and precision of WATLAS using concurrent GPS measurements as a reference.
+Validation of methods is crucial for understanding the strengths and limitations. In **@beardsworth2022** we tested the accuracy and precision of WATLAS using concurrent GPS measurements as a reference. The median accuracy of WATLAS was 4 m compared with GPS localizations. Localizations that were collected by more receiver stations were more accurate. The three-receiver localizations provided an accuracy of 10 m, which increased to 3 m with seven receivers contributing to the localization. Applying Filter-Smoothing on the data further increased the accuracy to 6 m for three-receiver localizations and to 2 m for seven-receiver localizations. 
 
 ### Methods
 
-A pipeline with coding examples for cleaning high-throughput tracking data with `atlastools` (`tools4watlas` builds on `atlastools`) is presented in **@gupte2022**.
+A pipeline with coding examples for cleaning, for instance by Filter-Smoothing, high-throughput tracking data with `atlastools` (`tools4watlas` builds on `atlastools`) is presented in **@gupte2022**. 
+
+In  **@toledo2022** we describe our tags and particulary the design of these versatile, widely-applicable, and field-proven 'Vildehaye' tags for wildlife sensing and radio tracking. Also, we discuss longevity of tags and show that WATLAS tags with a CR2032 battery transmitting at 6 s can last 226 days. 
 
 ### Ecology
+ 
+We studied the environmental conditions that red knots selected for relocation flights across the North Sea to the United Kingdom in **@gobbens2024**. Approximately 37% of tagged red knots departed yearly and on average did so a few hours after sunset, 4h before high tide, with tailwinds, and little cloud cover.  
 
-**@ersoy2022** & **@ersoy2024** & **@gobbens2024**
+In **@ersoy2022** we showed that foraging tactics and diet are associated with the personality trait exploration, independent of morphological differences. WATLAS was used to locate tagged individuals on mudflats for detailed behavioural observations.  
+
+Following this result, in **@ersoy2024** we studied the development of consistent exploration behaviour and found that juvenile red knots had a more diverse diet than adults and had less consistent personalites. We discuss a pathway how early foraging experiences could shape development of exploratory personalities. WATLAS was used to show how juvenile red knots differed in habitat use, which is presented in the appendix. 
 
 
 ## Bibliography

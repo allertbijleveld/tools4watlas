@@ -24,13 +24,13 @@ knitr::opts_chunk$set(
 
 The goal of `tools4watlas` is to provide tools for getting, processing and plotting WATLAS tracking data. More information on the WATLAS tracking system can be found in this article published in *Animal Biotelemetry*: [WATLAS: high-throughput and real-time tracking of many small birds in the Dutch Wadden Sea](https://doi.org/10.1186/s40317-022-00307-w). 
 
-Visit <https://www.nioz.nl/watlas> to follow tracked birds in real time and to read [project news](https://www.nioz.nl/en/about/cos/coastal-movement-ecology/shorebird-tracking/watlas-tracking-regional-movements/watlas-news-archive).
+Visit <https://www.nioz.nl/watlas> to follow tracked birds in real time and to read the latest project news. You can also access the news [archive ](https://www.nioz.nl/en/about/cos/coastal-movement-ecology/shorebird-tracking/watlas-tracking-regional-movements/watlas-news-archive).
 
 The package `tools4watlas` builds on the package [`atlastools`](https://github.com/pratikunterwegs/atlastools). A pipeline with coding examples for cleaning high-throughput tracking data with `atlastools` is presented in this article in the *Journal of Animal Ecology*: [A Guide to Pre-processing High-throughput Animal Tracking Data](https://doi.org/10.1111/1365-2656.13610).
 
 ### **Documentation**
 
-`tools4watlas` is documented in detail on the [**package website**](https://allertbijleveld.github.io/tools4watlas/). The package vignettes describe the basic workflow when working with WATLAS data and follow a logic order of steps. Further articles give additional tutorials and insights into the package development (read if you want to contribute to `tools4watlas`), some (indicated by an asterisk) require access to the local NIOZ file server.
+`tools4watlas` is documented in detail on the [**package website**](https://allertbijleveld.github.io/tools4watlas/). The package vignettes describe the basic workflow when working with WATLAS data. 'Additional articles' provide tutorials for specific analyses, and 'Package development' provides insight into maintenance and contributing to `tools4watlas`). Some articles  (indicated by an asterisk) require access to the local NIOZ file server.
 
 **Basic workflow (Vignettes)**:
 
@@ -60,7 +60,7 @@ The package `tools4watlas` builds on the package [`atlastools`](https://github.c
   - [**Basemap data***](https://allertbijleveld.github.io/tools4watlas/articles/package_development/basemap_data.html) - 
   describes how the base map data were extracted. Can guide user to make customised base maps.
 
-  - [**tools4watlas logo**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_logo.html)
+  - [**tools4watlas logo**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_logo.html) - describes how a logo is made.
 
 *_requires access to the local NIOZ file server_
 
@@ -125,8 +125,8 @@ We are working on the following articles at the moment:
 If you want to contribute to `tools4watlas` [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) the repository on GitHub and then submit a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Besides clear bug fixes, it is best to discuss potential changes or additions with [Allert Bijleveld](mailto:allert.bijleveld@nioz.nl). Check the article [Package maintenance](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_maintenance.html) for more details.
 
 ### **Acknowledgments**
+Many people and organisations are involved in developing and maintaining WATLAS. We particularly thank Sivan Toledo and Ran Nathan for the initial development of ATLAS, and Frank van Maarseveen and Bas Denissen for the initial development of the Wadden Sea ATLAS (WATLAS). Additionally, we thank Remko de Haan, Aris van der Vis, Yetzo de Hoo, and NMF colleagues for further developments, assemblage and support. Anne Dekinga is crucial for the field deployment and logistical solutions. We thank our colleagues from COS for help catching birds, especially Job ten Horn, Anne Dekinga, and Luc de Monte. Also, we thank all partners and stakeholders for hosting equipment and for access to their sites. Lastly, we thank the crews of the RV Wim Wolff and Wim-Jan Boon of the RV Adriaen Coenen for their help in the field, Marten Tacoma for visualizing the tracking data in real time on <https://www.nioz.nl/watlas>, and the many other NIOZ staff and volunteers that facilitated this work.
 
-Many people and organisations are involved in hosting the WATLAS equipment, without whom WATLAS would not be possible. We therefore thank Hoogheemraadschap Hollands Noorderkwartier, Koninklijke Nederlandse Redding Maatschappij, Staatsbosbeheer, Marine Eco Analytics, Koninklijke Luchtmacht, Het Posthuys (Vlieland), Natuurmonumenten, Wetterskip Fryslan, Afsluitdijk Wadden Center, Vermilion, Rijkswaterstaat, Carl Zuhorn, Lenze Hofstee and Lydia de Loos. We thank Natuurmonumenten for access to Griend and using their facilities. Also, we thank Hein de Vries, Klaas-Jan Daalder, Hendrik-Jan Lokhorst, Bram Fey, Wim-Jan Boon from the RV Navicula and RV Stern, as well as the many other NIOZ staff and volunteers that facilitated this work. We would particularly like to thank Anita Koolhaas, Hinke and Cornelis Dekinga for their help with building the receiver stations. We thank Jeras de Jonge, Martin Laan, Sander Asjes, and Aris van der Vis for their technical help, and Benjamin Gnep for persistently replacing broken LNA’s. Thanks to Marten Tacoma for visualizing the tracking data in real time on www.nioz.nl/watlas and Ingrid de Raad for help posting WATLAS-related news. We also thank the Minerva Foundation and the Minerva Center for Movement Ecology for supporting the development and maintenance of all ATLAS systems, and for Yotam Orchan and Yoav Bartan for their most valuable technical assistance.
 
 
 <p align="middle">
