@@ -86,7 +86,7 @@ order to avoid errors.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">atl_filter_covariates</span><span class="op">(</span><span class="va">data</span>, filters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">atl_filter_covariates</span><span class="op">(</span><span class="va">data</span>, filters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>, quietly <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -104,6 +104,11 @@ The function will not explicitly check whether the filtering variables are
 present; this makes it flexible, allowing expressions such as
 <code>"between(speed, 2, 20)"</code>, but also something to use at your own risk.
 A missing filter variables <em>will</em> result in an empty data frame.</p></dd>
+
+
+<dt id="arg-quietly">quietly<a class="anchor" aria-label="anchor" href="#arg-quietly"></a></dt>
+<dd><p>If TRUE returns percentage and number of positions filtered,
+if FALSE functions runs quietly</p></dd>
 
 </dl></div>
     <div class="section level2">
