@@ -207,7 +207,7 @@ The plotting region can be extended by specifiying buffer (in meters), and the s
 
 ```{r, fig.cap = "Base R map"}
 # Load example data
-data <- data_example
+data <- data_example[tag == data_example[1, tag]]
 
 # Transform to sf
 d_sf <- atl_as_sf(data, additional_cols = names(data))

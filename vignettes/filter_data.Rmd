@@ -40,7 +40,6 @@ data_path <- system.file(
 
 # Load data
 data <- fread(data_path, yaml = TRUE)
-
 ```
 
 ## Spatial filtering
@@ -92,7 +91,6 @@ data <- atl_filter_bounds(
   y_range = c(bbox["ymin"], bbox["ymax"]),
   remove_inside = FALSE
 )
-
 ```
 
 ## Temporal filtering
@@ -133,7 +131,6 @@ data <- data[N > 100]
 # remove unneeded columns
 data[, release_ts := NULL]
 data[, N := NULL]
-
 ```
 
 ## Filtering location errors
@@ -143,7 +140,6 @@ data[, N := NULL]
 5000 is typically used by Allert. 
 
 ```{r}
-
 # filter based on variance in the Easting and Northing
 var_max <- 5000 # in meters squared
 
@@ -154,7 +150,6 @@ data <- atl_filter_covariates(
     sprintf("vary < %s", var_max)
   )
 )
-
 ```
 
 ### Based on speed
@@ -162,7 +157,6 @@ data <- atl_filter_covariates(
 This will filter more unrealistic positions. 
 
 ```{r, fig.cap = "Histogram of speed"}
-
 # calculate speed
 data <- atl_get_speed(data,
   type = c("in", "out")
