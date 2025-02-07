@@ -109,9 +109,7 @@ atl_plot_tag_osm <- function(data,
   px_height <- mapID$tiles[[1]]$xres[1]
 
   # Handle output: graphics device or file
-  if (is.null(fullname)) {
-    dev.new(width = px_width / ppi, height = px_height / ppi)
-  } else {
+  if (!is.null(fullname)) {
     dir.create(file.path(dirname(fullname)), showWarnings = FALSE)
     png(filename = fullname, width = px_width, height = px_height, units = "px")
   }
