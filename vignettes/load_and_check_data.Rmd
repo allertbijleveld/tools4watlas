@@ -170,6 +170,33 @@ head(data) |> knitr::kable(digits = 2)
 |**vary**	    |	Variance in estimating Y-coordinates  |
 |**covxy**	  |	Co-variance between X- and Y-coordinates  |
 
+### Add species column (or other relevant columns)
+
+If we are working with multiple species, then we can join the species from the metadata. In this case I want the species to be the first row of the table. 
+
+```{r}
+# join with data
+all_tags[, tag := as.character(tag)]
+data[all_tags, on = "tag", `:=`(species = i.species)]
+
+# make species first column
+setcolorder(data, c("species", setdiff(names(data), c("species"))))
+```
+We can also add other metadata by merging whatever column we want (e.g. color rings and catch location). However, when working with large data sets, it is advised to only add columns that are necessary. This can also always be done whenever needed. This is just an example and Here we delete the columns again.
+
+```{r}
+# join with metal rings, color rings and catch location
+all_tags[, tag := as.character(tag)]
+data[all_tags, on = "tag", `:=`(
+  rings = i.rings, 
+  crc = i.crc,
+  catch_location = i.catch_location
+)]
+
+# delete columns
+data[, c("rings", "crc", "catch_location") := NULL]
+```
+
 ## Save data
 
 At this point it might be good to save the raw data, as extrating the data from the database can take a long time with big datasets. A convenient and fast way is to use `fwrite` from the `data.table` package. By including `yaml = TRUE` we make sure the data stays in the same format when we load it again. Change the file path when running this example.
