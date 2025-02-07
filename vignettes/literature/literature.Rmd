@@ -44,6 +44,9 @@ Tracking animal movement is crucial for understanding interactions with changing
 
 In **@nathan2022** we discuss how big-data approaches, such as high-throughput tracking with WATLAS, can lead to an increased understanding of the ecology of animal movement. Particularly that advances in high-throughput wildlife tracking systems now allow more thorough investigation of variation among individuals and species across space and time, the nature of biological interactions, and behavioral responses to the environment.  
 
+### Prologue to WATLAS
+ATLAS builds on and is inspired by 'Time Of Arrival'-tracking developed by Rob MacCurdy **@maccurdy2009**. This tracking method is described in **@maccurdy2019** that also includes a pilot study in the Wadden Sea as a 'proof of concept'. After these initial tests in 2008-2009, this pre-WATLAS TOA-system was deployed in the Wadden Sea with 15 receivers studying red knot habitat use. After much trial and error, we could show in **@bijleveld2016** how red knots selected habitat to maximise their intake rate. They did, however, not select areas with the highest density of prey but trade-off the quantity and quality. Moreover, individuals differed in how they leaned towards quantity or quality in selecting mudflat habitat. 
+
 ### Validation
 
 Validation of methods is crucial for understanding the strengths and limitations. In **@beardsworth2022** we tested the accuracy and precision of WATLAS using concurrent GPS measurements as a reference. The median accuracy of WATLAS was 4 m compared with GPS localizations. Localizations that were collected by more receiver stations were more accurate. The three-receiver localizations provided an accuracy of 10 m, which increased to 3 m with seven receivers contributing to the localization. Applying Filter-Smoothing on the data further increased the accuracy to 6 m for three-receiver localizations and to 2 m for seven-receiver localizations. 
