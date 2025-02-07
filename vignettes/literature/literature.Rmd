@@ -45,7 +45,8 @@ Tracking animal movement is crucial for understanding interactions with changing
 In **@nathan2022** we discuss how big-data approaches, such as high-throughput tracking with WATLAS, can lead to an increased understanding of the ecology of animal movement. Particularly that advances in high-throughput wildlife tracking systems now allow more thorough investigation of variation among individuals and species across space and time, the nature of biological interactions, and behavioral responses to the environment.  
 
 ### Prologue to WATLAS
-ATLAS builds on and is inspired by 'Time Of Arrival'-tracking developed by Rob MacCurdy **@maccurdy2009**. This tracking method is described in **@maccurdy2019** that also includes a pilot study in the Wadden Sea as a 'proof of concept'. After these initial tests in 2008-2009, this pre-WATLAS TOA-system was deployed in the Wadden Sea with 15 receivers studying red knot habitat use. After much trial and error, we could show in **@bijleveld2016** how red knots selected habitat to maximise their intake rate. They did, however, not select areas with the highest density of prey but trade-off the quantity and quality. Moreover, individuals differed in how they leaned towards quantity or quality in selecting mudflat habitat. 
+
+ATLAS builds on and is inspired by 'Time Of Arrival'-tracking developed by Rob MacCurdy **@maccurdy2009**. This tracking method is described in **@maccurdy2019** that also includes a pilot study in the Wadden Sea as a 'proof of concept'. After these initial tests in 2008-2009, this pre-WATLAS TOA-system was deployed in the Wadden Sea with 15 receivers studying red knot habitat use. After much trial and error, we could show in **@bijleveld2016** how red knots selected habitat to maximise their energy intake rates. They did, however, not select areas with the highest density of prey but trade-off prey quantity and quality. Moreover, individuals differed in how they leaned towards quantity or quality of prey in selecting mudflat habitat. 
 
 ### Validation
 
@@ -58,9 +59,14 @@ A pipeline with coding examples for cleaning (e.g. Filter-Smoothing) high-throug
 In  **@toledo2022** we describe our tags and particulary the design of these versatile, widely-applicable, and field-proven 'Vildehaye' tags for wildlife sensing and radio tracking. Also, we discuss longevity of tags and show that WATLAS tags with a CR2032 battery transmitting at 6 s can last 226 days. 
 
 ### Ecology
- 
+
+#### Migration, relocation and departure decisions  
 We studied the environmental conditions that red knots selected for relocation flights across the North Sea to the United Kingdom in **@gobbens2024**. Approximately 37% of tagged red knots departed yearly and on average did so a few hours after sunset, 4h before high tide, with tailwinds, and little cloud cover.  
 
+#### Habitat use
+Red knots foraging on the thick-shelled cockles, that are swallowed whole, needed to trade-off quantity and quality of their prey. In **@bijleveld2016** we show how they, therefore, select habitat with intermediate prey densities to maximise energy intake rates. Other shorebirds, do select for highest desnities where prey are easiliy discovered. In **Penning et al. (in prep)** we show how Sanderling select habitat with the highest desnities of shrimp.
+
+#### Individual variation
 In **@ersoy2022** we showed that foraging tactics and diet are associated with the personality trait exploration, independent of morphological differences. WATLAS was used to locate tagged individuals on mudflats for detailed behavioural observations.  
 
 Following this result, in **@ersoy2024** we studied the development of consistent exploration behaviour and found that juvenile red knots had a more diverse diet than adults and had less consistent personalites. We discuss a pathway how early foraging experiences could shape development of exploratory personalities. WATLAS was used to show how juvenile red knots differed in habitat use, which is presented in the appendix. 
