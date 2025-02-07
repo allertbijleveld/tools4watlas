@@ -252,6 +252,4 @@ atl_plot_tag_osm(
   data = d_sf, tag = NULL, mapID = map, color_by = "time",
   fullname = NULL, scalebar = 3
 )
-
-# Note: function opens device and therefore the plot is not shown in markdown
 ```

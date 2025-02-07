@@ -109,9 +109,7 @@ atl_plot_tag <- function(data,
   COLID <- colramp[as.numeric(cuts)]
 
   # Open graphics device
-  if (is.null(fullname)) {
-    dev.new(height = h, width = w)
-  } else {
+  if (!is.null(fullname)) {
     dir.create(file.path(dirname(fullname)), showWarnings = FALSE)
     png(filename = fullname, height = h, width = w, units = "in", res = 96)
   }
