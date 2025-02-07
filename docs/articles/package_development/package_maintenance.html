@@ -223,7 +223,8 @@ It is build in the docs folder. Please commit all changes in the docs
 folder separately (to make it easier to check changes).</p>
 <p>When editing anything simply run with <code>lazy = TRUE</code>.
 Otherwise, make sure you have to correct file path in articles that rely
-on local data.</p>
+on local data. <code>lazy = FALSE</code> is necessary to run when for
+example a new article was added.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># build site new without rebuilding all articles</span></span>
 <span><span class="fu">pkgdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">build_site</a></span><span class="op">(</span>lazy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
