@@ -110,7 +110,7 @@ pkgdown::build_article("subfolder/article_name", preview = TRUE)
 
 The package website is build using [`pkgdown`](https://pkgdown.r-lib.org/). It's structure is defined in the [_pkgdown.yml](https://github.com/allertbijleveld/tools4watlas/blob/master/_pkgdown.yml). It is build in the docs folder. Please commit all changes in the docs folder separately (to make it easier to check changes).
 
-When editing anything simply run with `lazy = TRUE`. Otherwise, make sure you have to correct file path in articles that rely on local data. 
+When editing anything simply run with `lazy = TRUE`. Otherwise, make sure you have to correct file path in articles that rely on local data. `lazy = FALSE` is necessary to run when for example a new article was added.
 
 ```{r, eval=FALSE}
 # build site new without rebuilding all articles
