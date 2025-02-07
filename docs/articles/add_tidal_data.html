@@ -89,8 +89,10 @@ Krietsch</h4>
     
 <p>This vignette shows how to add tidal data to WATLAS data.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Loading required package: data.table</span></span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Path to csv with raw data</span></span>
@@ -104,11 +106,8 @@ Krietsch</h4>
 <div class="section level2">
 <h2 id="add-tidal-data">Add tidal data<a class="anchor" aria-label="anchor" href="#add-tidal-data"></a>
 </h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># setorder</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/setorder.html" class="external-link">setorder</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">tag</span>, <span class="va">time</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># path to tide data</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># path to tide data</span></span>
 <span><span class="va">tides_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
 <span>  <span class="st">"extdata"</span>, <span class="st">"example_2023_tide_data_UTC.csv"</span>,</span>
 <span>  package <span class="op">=</span> <span class="st">"tools4watlas"</span></span>
@@ -132,7 +131,7 @@ Krietsch</h4>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Show first 5 rows (subset of columns to show additional ones)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">posID</span>, <span class="va">tag</span>, <span class="va">datetime</span>, <span class="va">tideID</span>, <span class="va">tidaltime</span>, <span class="va">time2lowtide</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">posID</span>, <span class="va">tag</span>, <span class="va">datetime</span>, <span class="va">tideID</span>, <span class="va">tidaltime</span>, <span class="va">time2lowtide</span>,</span>
 <span>              <span class="va">waterlevel</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -219,11 +218,11 @@ localizations when mudlfats are available for foraging, we can for
 example select a low tide period from -2.5 hours to +2.5 hours around
 low tide <a href="https://royalsocietypublishing.org/doi/10.1098/rspb.2015.1557" class="external-link">(Bijleveld
 et al. 2016)</a>:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># check tide ID</span></span>
-<span><span class="va">data</span><span class="op">[</span>, <span class="va">tideID</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 2023513 2023514 2023512</span></span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># check tide ID</span></span>
+<span><span class="va">data</span><span class="op">[</span>, <span class="va">tideID</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 2023513 2023514 2023512</span></span></code></pre>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Select the low tide period for a particular tide as specified by tideID</span></span>
 <span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_filter_covariates.html">atl_filter_covariates</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data</span>,</span>
@@ -235,27 +234,9 @@ et al. 2016)</a>:</p>
 <pre><code><span><span class="co">## Note: 51.24% of the dataset was filtered out, corresponding to 3531 positions.</span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="add-species-column">Add species column<a class="anchor" aria-label="anchor" href="#add-species-column"></a>
-</h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load meta data</span></span>
-<span><span class="va">all_tags_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
-<span>  <span class="st">"extdata"</span>, <span class="st">"tags_watlas_subset.xlsx"</span>, package <span class="op">=</span> <span class="st">"tools4watlas"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">all_tags</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span><span class="va">all_tags_path</span>, sheet <span class="op">=</span> <span class="st">"tags_watlas_all"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># join with data</span></span>
-<span><span class="va">all_tags</span><span class="op">[</span>, <span class="va">tag</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">tag</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">data</span><span class="op">[</span><span class="va">all_tags</span>, on <span class="op">=</span> <span class="st">"tag"</span>, <span class="fu">`:=`</span><span class="op">(</span>species <span class="op">=</span> <span class="va">i.species</span><span class="op">)</span><span class="op">]</span></span>
-<span></span>
-<span><span class="co"># make species first column</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/setcolorder.html" class="external-link">setcolorder</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
 <h3 id="save-as-example-data-for-tools4watlas-">Save as example data for <code>tools4watlas</code>.<a class="anchor" aria-label="anchor" href="#save-as-example-data-for-tools4watlas-"></a>
 </h3>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># reassign so data is data</span></span>
 <span><span class="va">data_example</span> <span class="op">&lt;-</span> <span class="va">data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">data_example</span>, file <span class="op">=</span> <span class="st">"../data/watlas_data_example.rda"</span><span class="op">)</span></span></code></pre></div>
