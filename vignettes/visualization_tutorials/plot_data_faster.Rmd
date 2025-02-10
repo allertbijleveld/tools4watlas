@@ -1,9 +1,9 @@
 ---
-title: "Fast plotting"
+title: "Plot data faster"
 author: "Johannes Krietsch"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Fast plotting}
+  %\VignetteIndexEntry{Plot data faster}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

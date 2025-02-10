@@ -1,0 +1,87 @@
+---
+title: "Plot data in base R"
+author: "Johannes Krietsch"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Plot data in base R}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  out.width = "100%",
+  fig.width = 8.89, fig.height = 5,
+  dpi = 300,
+  dev = "ragg_png",
+  message = FALSE
+)
+```
+
+#### Load packages and data
+
+This vignette shows different ways on how to plot WATLAS data. Each chunk of code only requires this chunk with loading the data to be run before and is otherwise independent. 
+
+```{r}
+# Packages
+library(tools4watlas)
+library(data.table)
+library(ggplot2)
+library(viridis)
+library(RColorBrewer)
+```
+
+## Base R map 
+
+#### Plot with simple base map
+
+The plotting region can be extended by specifiying buffer (in meters), and the scale of the scalebar (in kilometers) can be adjusted. To inspect the localizations, color_by can be specified to colour the localizations by time since first localization in plot (“time”), standard deviation of the x- and y-coordinate (“sd”), or the number of base stations used for calculating the localization (“nbs”). By specifiying the full path and file name (with extension) in fullname, it is possible to save the plot as a .png. If necesarry, the legend can also be located elsewhere on the plot with Legend.
+
+```{r, fig.cap = "Base R map"}
+# Load example data
+data <- data_example[tag == data_example[1, tag]]
+
+# Transform to sf
+d_sf <- atl_as_sf(data, additional_cols = names(data))
+
+# Plot the tracking data with a simple background
+atl_plot_tag(
+  data = d_sf, tag = NULL, fullname = NULL, buffer = 1,
+  color_by = "time"
+)
+
+# Note: function opens device and therefore the plot is not shown in markdown
+```
+
+#### Plot with `OpenStreetMap` 
+
+With the function `atl_plot_tag_osm()` it is possible to plot the track on a satellite image with the library OpenStreetMap. The region of the the satellite image can be extended by specifying a buffer (in meters) in the function atl_bbox The other options are similar to atl_plot_tag (see earlier).
+
+```{r, fig.cap = "Base R map with satellite image"}
+library(OpenStreetMap)
+library(sf)
+
+# Load example data
+data <- data_example[tag == data_example[1, tag]]
+
+# make data spatial and transform projection to WGS 84 (used in osm)
+d_sf <- atl_as_sf(data, additional_cols = names(data))
+d_sf <- sf::st_transform(d_sf, crs = sf::st_crs(4326))
+
+# get bounding box
+bbox <- atl_bbox(d_sf, buffer = 500)
+
+# extract openstreetmap
+# other 'type' options are "osm", "maptoolkit-topo", "bing", "stamen-toner",
+# "stamen-watercolor", "esri", "esri-topo", "nps", "apple-iphoto", "skobbler";
+map <- OpenStreetMap::openmap(c(bbox["ymax"], bbox["xmin"]),
+  c(bbox["ymin"], bbox["xmax"]),
+  type = "osm", mergeTiles = TRUE
+)
+
+# Plot the tracking data on the satellite image
+atl_plot_tag_osm(
+  data = d_sf, tag = NULL, mapID = map, color_by = "time",
+  fullname = NULL, scalebar = 3
+)
+```
