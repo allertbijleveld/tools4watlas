@@ -188,7 +188,7 @@ We can also add other metadata by merging whatever column we want (e.g. color ri
 # join with metal rings, color rings and catch location
 all_tags[, tag := as.character(tag)]
 data[all_tags, on = "tag", `:=`(
-  rings = i.rings, 
+  rings = i.rings,
   crc = i.crc,
   catch_location = i.catch_location
 )]

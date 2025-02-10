@@ -1,0 +1,21 @@
+---
+title: "Cluster data in residency patches"
+author: "Johannes Krietsch"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Cluster data in residency patches}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  out.width = "100%",
+  fig.width = 8.89, fig.height = 5,
+  dpi = 300,
+  dev = "ragg_png",
+  message = FALSE
+)
+```
+
+# Work in progress

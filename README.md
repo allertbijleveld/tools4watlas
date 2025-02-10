@@ -17,21 +17,25 @@ coverage](https://codecov.io/gh/allertbijleveld/tools4watlas/graph/badge.svg)](h
 
 The goal of `tools4watlas` is to provide tools for getting, processing
 and plotting WATLAS tracking data. More information on the WATLAS
-tracking system can be found in this article published in *Animal
-Biotelemetry*: [WATLAS: high-throughput and real-time tracking of many
-small birds in the Dutch Wadden
-Sea](https://doi.org/10.1186/s40317-022-00307-w).
+tracking system can be found in [Bijleveld et al. 2022. WATLAS:
+high-throughput and real-time tracking of many small birds in the Dutch
+Wadden Sea.](https://doi.org/10.1186/s40317-022-00307-w).
 
 Visit <https://www.nioz.nl/watlas> to follow tracked birds in real time
-and to read the latest project news. You can also access the news
-[archive](https://www.nioz.nl/en/about/cos/coastal-movement-ecology/shorebird-tracking/watlas-tracking-regional-movements/watlas-news-archive).
+and to read the latest project news.
 
 The package `tools4watlas` builds on the package
-[`atlastools`](https://github.com/pratikunterwegs/atlastools). A
-pipeline with coding examples for cleaning high-throughput tracking data
-with `atlastools` is presented in this article in the *Journal of Animal
-Ecology*: [A Guide to Pre-processing High-throughput Animal Tracking
-Data](https://doi.org/10.1111/1365-2656.13610).
+[`atlastools`](https://github.com/pratikunterwegs/atlastools) ([Gupte et
+al. 2021. A Guide to Pre-processing High-throughput Animal Tracking
+Data.](https://doi.org/10.1111/1365-2656.13610)). In `tools4watlas`, we
+have improved the data processing functions of
+[`atlastools`](https://github.com/pratikunterwegs/atlastools) with a
+more efficient approach using
+[`data.table`](https://rdatatable.gitlab.io/data.table/) by tag ID. This
+change enhances memory efficiency and significantly speeds up processing
+for large datasets. Additionally, `tools4watlas` includes functions to
+integrate tidal and raster data (e.g. bathymetry), and functions and
+tutorials on how to visualize movement data.
 
 ### **Documentation**
 
@@ -56,20 +60,28 @@ access to the local NIOZ file server.
 - Step 3: [**Smooth and thin
   data**](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html)
 
-- Step 4: [**Add tidal
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/add_tidal_data.html)
+**Extended workflow**:
 
-- [**Plot
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/plot_data.html) -
-  important in between all steps to check the data.
+- [**Add tidal and bathymetry
+  data**\*](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html)
 
-**Additional tutorials**:
+- [**Cluster data in residency
+  patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/cluster_data_in_residency_patches.html) -
+  work in progress.
+
+**Visualization tutorials**:
+
+- [**Plot movement
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html) -
+  an important step between all stages to check the data. (Bathymetry
+  basemap option\*)
 
 - [**Fast plotting with
-  ggplot2**](https://allertbijleveld.github.io/tools4watlas/articles/additional_tutorials/fast_plotting.html)
+  ggplot2**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/fast_plotting.html)
 
-- [**Add and plot bathymetry
-  data**\*](https://allertbijleveld.github.io/tools4watlas/articles/additional_tutorials/add_and_plot_bathymetry_data.html)
+- [**Animate movement
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/animate_data.html) -
+  work in progress.
 
 **Package development**:
 
@@ -79,12 +91,12 @@ access to the local NIOZ file server.
 
 - [**Basemap
   data**\*](https://allertbijleveld.github.io/tools4watlas/articles/package_development/basemap_data.html) -
-  describes how the base map data were extracted. Can guide user to make
-  customised base maps.
+  describes how the basemap data were extracted and can guide the user
+  in creating customized base maps.
 
 - [**tools4watlas
   logo**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_logo.html) -
-  describes how a logo is made.
+  describes how the `tools4watlas` logo is made.
 
 \**requires access to the local NIOZ file server*
 

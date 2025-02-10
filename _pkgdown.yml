@@ -20,16 +20,20 @@ navbar:
         href: articles/filter_data.html
       - text: "Step 3: Smooth and thin data"
         href: articles/smooth_and_thin_data.html
-      - text: "Step 4: Add tidal data"
-        href: articles/add_tidal_data.html   
-      - text: "Plot data"
-        href: articles/plot_data.html   
       - text: "--------"
-      - text: Additional tutorials
+      - text: Extended workflow
+      - text: "Add tidal and bathymetry data"
+        href: articles/extended_workflow/add_tidal_and_bathymetry_data.html
+      - text: "Clustering in residency patches"
+        href: articles/extended_workflow/cluster_data_in_residency_patches.html
+      - text: "--------"
+      - text: Visualization tutorials
+      - text: "Plot data"
+        href: articles/visualization_tutorials/plot_data.html   
       - text: "Fast plotting"
-        href: articles/additional_tutorials/fast_plotting.html
-      - text: "Add and plot bathymetry data"
-        href: articles/additional_tutorials/add_and_plot_bathymetry_data.html
+        href: articles/visualization_tutorials/fast_plotting.html
+      - text: "Animate data"
+        href: articles/visualization_tutorials/animate_data.html
       - text: "--------"
       - text: Package development
       - text: "Package maintenance"
