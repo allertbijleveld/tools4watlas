@@ -1,0 +1,159 @@
+---
+title: "Create a basemap"
+author: "Johannes Krietsch"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Create a basemap}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  out.width = "100%",
+  fig.width = 8.89, fig.height = 5,
+  dpi = 300,
+  dev = "ragg_png",
+  message = FALSE
+)
+```
+
+#### Load packages and data
+
+This vignette shows different ways on how to plot WATLAS data. Each chunk of code only requires this chunk with loading the data to be run before and is otherwise independent. 
+
+```{r}
+# Packages
+library(tools4watlas)
+library(ggplot2)
+library(viridis)
+library(RColorBrewer)
+```
+
+## Using `ggplot2` and a basemap layer
+
+One can create a simple basemaps of the study area by using the function `atl_create_bm()`. This function uses a data.table with x- and y-coordinates to check the required bounding box (which can be extended with a buffer in meters) and spatial features (polygons) of land, lakes, mudflats and rivers. Without adding spatial data, it will default to the spatial data provided in the package. By changing `asp` the desired aspect ratio can be chosen (default is "16:9"). The resulting map is always in EPSG:32631 (WGS 84 / UTM zone 31N), but the data can be provided in other projections, which then needs to be specified as `projection`.
+
+### Basemap independent of movement data
+
+This can be useful when one wants to zoom into a specific area of the plot or has an area of interest, but the movement data also go out of this range. If no data are provided the function creates a map around Griend (our main study site) with a specified buffer. 
+
+
+```{r, fig.alt = "Basemap around Griend"}
+# create basemap
+bm <- atl_create_bm(buffer = 30000)
+
+# plot
+bm
+```
+
+Alternatively, one can provide a table with one or multiple locations, which will then be used to buffer the map. This can for example be a location in EPSG:4326 (WGS 84 in degrees) that can be exacted from [Google Maps](https://www.google.com/maps/@53.1892078,5.5670405,68619m/data=!3m1!1e3?entry=ttu&g_ep=EgoyMDI1MDIwNS4xIKXMDSoASAFQAw%3D%3D) by a right click on a specific location. Here I choose a point a bit east of Griend, to include Richel and Ballastplaat in the map.
+
+```{r, fig.alt = "Basemap around Griend"}
+# create base map 
+location <- data.table(x = c(5.275), y = c(53.2523))
+
+# create basemap
+bm <- atl_create_bm(location, buffer = 7000, projection = sf::st_crs(4326))
+
+# plot
+bm
+```
+
+### Basemap with extend of movement data
+
+```{r, fig.alt = "Points and tracks on basemap"}
+# load example data
+data <- data_example
+
+# create basemap
+bm <- atl_create_bm(data, buffer = 1000)
+
+# plot
+bm +
+  geom_point(data = data, aes(x, y), alpha = 0.1, color = "darkolivegreen4")
+```
+
+## Basemap with bathymetry data
+
+Bathymetry data can be found in the "Birds, fish 'n chips" SharePoint folder: `Documents/data/GIS/rasters/`. To run the script set the file path (`wd`) to the local copy of the folder on your computer. The data can also be downloaded from the [Waddenregister](https://datahuiswadden.openearth.nl/geonetwork/srv/eng/catalog.search#/metadata/JkrvJXasRSGAWU1mJLHUzg).
+
+```{r, fig.alt = "Static map with satellite image"}
+library(terra)
+
+# Load bathymetry data
+wd <- "C:/Users/jkrietsch/OneDrive - NIOZ/Documents/MAP_DATA/"
+bat <- rast(paste0(wd, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
+
+# create base map with bathymetry data
+bm <- atl_create_bm(
+  buffer = 8000, raster_data = bat, option = "batymetry"
+)
+
+# plot
+bm
+```
+
+## Basemap with `OpenStreetMap`
+
+Provides a range of different basemap options. For this we first have to transform the data to WGS 84 to extract the basemap with the bounding box and then transform them to a Mercator projection to plot the data on top of the map.
+
+Unfortunatly, sometimes the type = `"bing"` does not work.
+
+```{r, fig.alt = "Static map with satellite image"}
+library(OpenStreetMap)
+library(sf)
+
+# load example data
+data <- data_example
+
+# make data spatial and transform projection to WGS 84 (used in osm)
+d_sf <- atl_as_sf(data, additional_cols = c("tag", "datetime"))
+d_sf <- st_transform(d_sf, crs = st_crs(4326))
+
+# get bounding box
+bbox <- atl_bbox(d_sf, asp = "16:9", buffer = 1000)
+
+# extract openstreetmap
+# other 'type' options are "osm", "maptoolkit-topo", "bing", "stamen-toner",
+# "stamen-watercolor", "esri", "esri-topo", "nps", "apple-iphoto", "skobbler";
+map <- openmap(
+  c(bbox["ymax"], bbox["xmin"]),
+  c(bbox["ymin"], bbox["xmax"]),
+  type = "osm", mergeTiles = TRUE
+)
+
+bm <- autoplot.OpenStreetMap(map)
+
+# transform points to Mercator and add transformed coordinates to data
+d_sf <- st_transform(d_sf, crs = sf::st_crs(3857))
+osm_coords <- st_coordinates(d_sf)
+data[, `:=`(x_osm = osm_coords[, 1], y_osm = osm_coords[, 2])]
+
+# plot
+bm +
+  geom_path(
+    data = data, aes(x_osm, y_osm, colour = species), alpha = 0.1,
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = data, aes(x_osm, y_osm, colour = species), size = 0.5,
+    show.legend = TRUE
+  ) +
+  scale_color_manual(
+    values = atl_spec_cols(),
+    labels = atl_spec_labs("multiline"),
+    name = ""
+  ) +
+  guides(colour = guide_legend(
+    nrow = 1, override.aes = list(size = 7, pch = 16, alpha = 1)
+  )) +
+  theme(
+    legend.position = "top",
+    legend.justification = "center",
+    legend.key = element_blank(),
+    legend.background = element_rect(fill = "transparent")
+  ) +
+  labs(x = "Longitude", y = "Latitude") +
+  coord_sf(crs = 3857)
+```
