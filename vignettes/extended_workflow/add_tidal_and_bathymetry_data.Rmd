@@ -1,9 +1,9 @@
 ---
-title: "Add tidal data"
+title: "Add tidal and bathymetry data"
 author: "Johannes Krietsch"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Add tidal data}
+  %\VignetteIndexEntry{Add tidal and bathymetry data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,11 +17,13 @@ knitr::opts_chunk$set(
 )
 ```
 
- This vignette shows how to add tidal data to WATLAS data.
+This article shows how to add tidal and bathymetry data to WATLAS data and provides an example of how to subset by specific times witin the tide and plot the data with bathymetry.
+
+#### Load packages and movement data
 
 ```{r, message = FALSE}
 library(tools4watlas)
-library(data.table)
+library(terra)
 library(ggplot2)
 
 # Path to csv with raw data
@@ -32,49 +34,88 @@ data_path <- system.file(
 
 # Load data
 data <- fread(data_path, yaml = TRUE)
-
 ```
 
-## Add tidal data 
+## Add tidal data
+
+Tide data are from West-Terschelling and prepared by Allert. They are located in the "WATLAS" SharePoint folder: `Documents/data/`. Either specify the path to your local copy of this folder or add the path for your user in the `atl_file_path()` function.
+
+The offset of 30 minutes is set to match Griend.
 
 ```{r}
-# path to tide data
-tides_path <- system.file(
-  "extdata", "example_2023_tide_data_UTC.csv",
-  package = "tools4watlas"
+# file path to WATLAS teams data folder
+fp <- atl_file_path("watlas_teams")
+
+# sub path to tide data
+tidal_pattern_fp <- paste0(
+  fp, "waterdata/allYears-tidalPattern-west_terschelling-UTC.csv"
 )
-tide_data_highres_path <- system.file(
-  "extdata", "example_2023_tide_data_highres_UTC.csv",
-  package = "tools4watlas"
+measured_water_height_fp <- paste0(
+  fp, "waterdata/allYears-gemeten_waterhoogte-west_terschelling-clean-UTC.csv"
 )
 
 # load tide data
-tides <- data.table::fread(tides_path)
-tide_data_highres <- data.table::fread(tide_data_highres_path)
+tidal_pattern <- fread(tidal_pattern_fp)
+measured_water_height <- fread(measured_water_height_fp)
 
 # add tide data to movement data
 data <- atl_add_tidal_data(
   data = data,
-  tide_data = tides,
-  tide_data_highres = tide_data_highres,
+  tide_data = tidal_pattern,
+  tide_data_highres = measured_water_height,
   waterdata_resolution = "10 minute",
   offset = 30
 )
 
 # Show first 5 rows (subset of columns to show additional ones)
-head(data[, .(posID, tag, datetime, tideID, tidaltime, time2lowtide,
+head(data[, .(tag, datetime, tideID, tidaltime, time2lowtide,
               waterlevel)]) |>
   knitr::kable(digits = 2)
 ```
 
-### Select specific times within the tide cycle  
+## Add bathymetry data
 
-For specific analyses, the cleaned data can be selected. To select localizations when mudlfats are available for foraging, we can for example select a low tide period from -2.5 hours to +2.5 hours around low tide [(Bijleveld et al. 2016)](https://royalsocietypublishing.org/doi/10.1098/rspb.2015.1557): 
+A short example of how to add bathymetry data to WATLAS data. 
+
+Bathymetry data can be found in the "Birds, fish 'n chips" SharePoint folder: `Documents/data/GIS/rasters/`. To run the script set the file path (`fp`) to the local copy of the folder on your computer. The data can also be downloaded from the [Waddenregister](https://datahuiswadden.openearth.nl/geonetwork/srv/eng/catalog.search#/metadata/JkrvJXasRSGAWU1mJLHUzg).
+
+
+Extract bathymetry data for each location and coarsely classify time in the tide cycle. 
 
 ```{r}
-# check tide ID
-data[, tideID] |> unique()
+# file path to Birds, fish 'n chips GIS/rasters folder
+fp <- atl_file_path("rasters")
 
+# load bathymetry data
+bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
+
+# add bathymetry data
+data <- atl_add_raster_data(
+  data, raster_data = bat, new_name = "bathymetry", change_unit = 100 # m to cm
+)
+
+# Show first 5 rows (subset of columns to show additional ones)
+head(data[, .(tag, datetime, bathymetry)]) |>
+  knitr::kable(digits = 2)
+```
+
+### Save as example data for `tools4watlas`.
+
+(This step is just to save the `tools4watlas` example data)
+
+```{r, eval=FALSE}
+# reassign so data_example is data and select two tides
+data_example <- data[tideID %in% c(2023513, 2023514)]
+save(data_example, file = "../../data/watlas_data_example.rda")
+```	
+
+## Example: Filter data with by tide and plot with bathymetry data
+
+### Filter data with specific times within the tide cycle
+
+To select localizations when mudlfats are available for foraging, we can for example select a low tide period from -2.5 hours to +2.5 hours around low tide [(Bijleveld et al. 2016)](https://royalsocietypublishing.org/doi/10.1098/rspb.2015.1557): 
+
+```{r}
 # Select the low tide period for a particular tide as specified by tideID
 data_subset <- atl_filter_covariates(
   data = data,
@@ -84,67 +125,19 @@ data_subset <- atl_filter_covariates(
   )
 )
 ```
+### Plot data movement data with bathymetry data
 
-### Save as example data for `tools4watlas`.
-	
-```{r, eval=FALSE}
-# reassign so data is data
-data_example <- data
-save(data_example, file = "../data/watlas_data_example.rda")
-```	
-
-
-A short example of how to add bathymetry data to WATLAS data. 
-
-Bathymetry data can be found in the "Birds, fish 'n chips" SharePoint folder: `Documents/data/GIS/rasters/`. To run the script set the file path (`wd`) to the local copy of the folder on your computer. The data can also be downloaded from the [Waddenregister](https://datahuiswadden.openearth.nl/geonetwork/srv/eng/catalog.search#/metadata/JkrvJXasRSGAWU1mJLHUzg).
-
-### Load packages and data
-
-```{r, message = FALSE}
-# Packages
-library(data.table)
-library(tools4watlas)
-library(terra)
+```{r, fig.cap = "Movement tracks colored with bathymetry data", message = FALSE}
+# additional packages
 library(ggplot2)
 library(viridis)
 library(scales)
 
-# Load bathymetry data
-wd <- "C:/Users/jkrietsch/OneDrive - NIOZ/Documents/MAP_DATA/"
-bat <- rast(paste0(wd, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
+# file path to WATLAS teams data folder
+fp <- atl_file_path("rasters")
 
-# Load example data
-data <- data_example
-```
-
-## Add bathymetry data to WATLAS data
-
-Extract bathymetry data for each location and coarsely classify time in the tide cycle. 
-
-```{r}
-# add bathymetry data
-data <- atl_add_raster_data(
-  data, raster_data = bat, new_name = "bathymetry", change_unit = 100 # m to cm
-)
-
-# classify in low, changing and high tide
-data[, tide := fcase(
-  waterlevel <= -50, "low tide",
-  waterlevel >= -50 & waterlevel <= 50, "changing",
-  waterlevel >= 50, "high tide"
-)]
-
-# factor with levels
-data[, tide := factor(tide, levels = c("low tide", "changing", "high tide"))]
-```
-
-## Plot data at low tide
-
-Subset data at low tide and plot on bathymetry base map.
-
-```{r, fig.cap = "Movement tracks colored with bathymetry data"}
-# subset low tide data
-data_subset <- data[tide == "low tide" | tide == "changing"]
+# load bathymetry data
+bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
 
 # create base map with bathymetry data
 bm <- atl_create_bm(
@@ -172,8 +165,3 @@ bm +
     legend.background = element_rect(fill = NA)
   )
 ```
-
-
-
-
-

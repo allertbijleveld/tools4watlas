@@ -18,9 +18,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-#### Load packages and data
+This article shows how to make different basemaps to plot the movement data on. Here we present three options: A simple basemap using polygons provided with the package (see also article: [Basemap data](https://allertbijleveld.github.io/tools4watlas/articles/package_development/basemap_data.html)), a simple basemap based on bathymetry data and flexible approach using the package `OpenStreetMap` (e.g. to plot on a satellite image).
 
-This vignette shows different ways on how to plot WATLAS data. Each chunk of code only requires this chunk with loading the data to be run before and is otherwise independent. 
+#### Load packages
 
 ```{r}
 # Packages
@@ -77,6 +77,7 @@ bm +
 Bathymetry data can be found in the "Birds, fish 'n chips" SharePoint folder: `Documents/data/GIS/rasters/`. To run the script set the file path (`wd`) to the local copy of the folder on your computer. The data can also be downloaded from the [Waddenregister](https://datahuiswadden.openearth.nl/geonetwork/srv/eng/catalog.search#/metadata/JkrvJXasRSGAWU1mJLHUzg).
 
 ```{r, fig.alt = "Static map with satellite image"}
+# additional packages
 library(terra)
 
 # Load bathymetry data
@@ -99,6 +100,7 @@ Provides a range of different basemap options. For this we first have to transfo
 Unfortunately, sometimes the `type = "bing"` does not work.
 
 ```{r, fig.alt = "Static map with satellite image", fig.width = 5, fig.height = 4.72}
+# additional packages
 library(OpenStreetMap)
 library(sf)
 
@@ -118,7 +120,7 @@ bbox <- atl_bbox(d_sf, asp = "16:9", buffer = 10000)
 map <- openmap(
   c(bbox["ymax"], bbox["xmin"]),
   c(bbox["ymin"], bbox["xmax"]),
-  type = "bing", mergeTiles = TRUE
+  type = "osm", mergeTiles = TRUE
 )
 
 bm <- autoplot.OpenStreetMap(map)

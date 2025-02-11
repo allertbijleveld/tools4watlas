@@ -106,7 +106,7 @@ Returns the average of all columns for each time step. The additional column `n_
 thinned_aggregated <- atl_thin_data(
   data = data,
   interval = 60,
-  id_columns = "tag",
+  id_columns = c("tag", "species"),
   method = "aggregate"
 )
 
@@ -124,7 +124,7 @@ Returns one random location for each time step. The additional column `n_subsamp
 thinned_subsampled <- atl_thin_data(
   data = data,
   interval = 60,
-  id_columns = "tag",
+  id_columns = c("tag", "species"),
   method = "subsample"
 )
 

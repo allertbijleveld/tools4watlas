@@ -18,9 +18,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-#### Load packages and data
-
 This article shows different ways on how to plot WATLAS data interactively using `mapview`. This is useful when manually checking specific data. Check for more details the [mapview website](https://r-spatial.github.io/mapview/index.html). Note that one can change the base map by clicking in the layer symbol, to for example a satellite image. Each chunk of code only requires this chunk with loading the data to be run before and is otherwise independent. 
+
+#### Load packages
 
 ```{r}
 # Packages

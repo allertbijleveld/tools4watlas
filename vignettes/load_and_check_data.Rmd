@@ -253,21 +253,22 @@ Now we want to see the data on a map. With large datasets it is convenient to pl
 
 ```{r, fig.cap = "Heatmap of all positions", fig.width = 7, fig.height = 4, fig.align = "center"}
 
-# Make a basemap with the extent of the data
-bm <- atl_create_bm(data, buffer = 1000)
+# create basemap
+bm <- atl_create_bm(data, buffer = 800)
 
-# Round data to 200 m grid cells
-data_heatmap <- copy(data)
-data_heatmap <- data_heatmap[, c("x_round", "y_round") := list(
+# round data to 200 m grid cells
+data[, c("x_round", "y_round") := list(
   plyr::round_any(x, 200),
   plyr::round_any(y, 200)
 )]
-data_heatmap <- data_heatmap[, .N, by = c("x_round", "y_round")]
 
-# Plot heatmap
+# N by location
+data_subset <- data[, .N, by = c("x_round", "y_round")]
+
+# plot heatmap
 bm +
   geom_tile(
-    data = data_heatmap, aes(x_round, y_round, fill = N),
+    data = data_subset, aes(x_round, y_round, fill = N),
     linewidth = 0.1, show.legend = TRUE
   ) +
   scale_fill_viridis(
