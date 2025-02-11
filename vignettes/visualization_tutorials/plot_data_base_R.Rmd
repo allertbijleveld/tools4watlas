@@ -18,20 +18,16 @@ knitr::opts_chunk$set(
 )
 ```
 
-#### Load packages and data
+#### Load packages
 
-This vignette shows different ways on how to plot WATLAS data. Each chunk of code only requires this chunk with loading the data to be run before and is otherwise independent. 
+This article shows how to plot WATLAS data with base R
 
 ```{r}
 # Packages
 library(tools4watlas)
-library(data.table)
-library(ggplot2)
-library(viridis)
-library(RColorBrewer)
 ```
 
-## Base R map 
+## Base R plotting
 
 #### Plot with simple base map
 
@@ -76,7 +72,7 @@ bbox <- atl_bbox(d_sf, buffer = 500)
 # "stamen-watercolor", "esri", "esri-topo", "nps", "apple-iphoto", "skobbler";
 map <- OpenStreetMap::openmap(c(bbox["ymax"], bbox["xmin"]),
   c(bbox["ymin"], bbox["xmax"]),
-  type = "osm", mergeTiles = TRUE
+  type = "bing", mergeTiles = TRUE
 )
 
 # Plot the tracking data on the satellite image

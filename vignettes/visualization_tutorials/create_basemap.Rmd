@@ -26,8 +26,6 @@ This vignette shows different ways on how to plot WATLAS data. Each chunk of cod
 # Packages
 library(tools4watlas)
 library(ggplot2)
-library(viridis)
-library(RColorBrewer)
 ```
 
 ## Using `ggplot2` and a basemap layer
@@ -98,7 +96,7 @@ bm
 
 Provides a range of different basemap options. For this we first have to transform the data to WGS 84 to extract the basemap with the bounding box and then transform our data to a Mercator projection to plot the data on top of the map.
 
-Unfortunately, sometimes the type = `"bing"` does not work.
+Unfortunately, sometimes the `type = "bing"` does not work.
 
 ```{r, fig.alt = "Static map with satellite image", fig.width = 5, fig.height = 4.72}
 library(OpenStreetMap)

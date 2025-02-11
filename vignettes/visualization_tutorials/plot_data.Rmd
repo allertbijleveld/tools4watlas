@@ -37,7 +37,7 @@ We can create simple base maps of the study area by using the function `atl_crea
 
 #### Map with points and tracks of one individual
 
-```{r, fig.cap = "Points and tracks on basemap"}
+```{r, fig.cap = "Points and tracks on a simple basemap", fig.align = "center"}
 # Load example data
 data <- data_example
 
@@ -62,7 +62,7 @@ bm +
 
 #### Map with points and tracks of multiple species
 
-```{r, fig.cap = "Points and tracks of multiple species on basemap"}
+```{r, fig.cap = "Points and tracks of multiple species on a basemap" , fig.align = "center"}
 
 # Create base map
 bm <- atl_create_bm(data, buffer = 800)
@@ -95,7 +95,7 @@ bm +
 
 #### Heatmap of all positions
 
-```{r, fig.cap = "Heatmap of all positions"}
+```{r, fig.cap = "Heatmap of all positions", fig.align = "center"}
 library(scales)
 
 # Round data to 200 m grid cells
@@ -118,138 +118,4 @@ bm +
     labels = trans_format("log10", math_format(10^.x)),
     direction = -1
   )
-```
-
-## Interactive leaflet map with `mapview`
-
-This is useful when manually checking specific data. Check for more details the [mapview website](https://r-spatial.github.io/mapview/index.html). Nopte that one can change the base map by clicking in the layer symbol, to for example a satellite image. 
-
-```{r, fig.height = 2, fig.cap = "Interactive map with mapview()"}
-library(mapview)
-library(sf)
-
-# make data spatial
-d_sf <- atl_as_sf(data, additional_cols = c("datetime", "species"))
-
-# add track
-d_sf_lines <- atl_as_sf(data,
-  additional_cols = c("species"),
-  option = "lines"
-)
-
-# Plot interactive map
-mapview(d_sf_lines, zcol = "species", legend = FALSE) +
-  mapview(d_sf, zcol = "species")
-```
-
-## Static map with `OpenStreetMap` 
-
-```{r, fig.cap = "Static map with satellite image"}
-library(OpenStreetMap)
-library(sf)
-
-# make data spatial and transform projection to WGS 84 (used in osm)
-d_sf <- atl_as_sf(data, additional_cols = c("tag", "datetime"))
-d_sf <- st_transform(d_sf, crs = st_crs(4326))
-
-# get bounding box
-bbox <- atl_bbox(d_sf, asp = "16:9", buffer = 500)
-
-# extract openstreetmap
-# other 'type' options are "osm", "maptoolkit-topo", "bing", "stamen-toner",
-# "stamen-watercolor", "esri", "esri-topo", "nps", "apple-iphoto", "skobbler";
-map <- openmap(
-  c(bbox["ymax"], bbox["xmin"]),
-  c(bbox["ymin"], bbox["xmax"]),
-  type = "osm", mergeTiles = TRUE
-)
-
-bm <- autoplot.OpenStreetMap(map)
-
-# transform points to Mercator and add transformed coordinates to data
-d_sf <- st_transform(d_sf, crs = sf::st_crs(3857))
-osm_coords <- st_coordinates(d_sf)
-data[, `:=`(x_osm = osm_coords[, 1], y_osm = osm_coords[, 2])]
-
-# plot
-bm +
-  geom_path(
-    data = data, aes(x_osm, y_osm, colour = species), alpha = 0.1,
-    show.legend = FALSE
-  ) +
-  geom_point(
-    data = data, aes(x_osm, y_osm, colour = species), size = 0.5,
-    show.legend = TRUE
-  ) +
-  scale_color_manual(
-    values = atl_spec_cols(),
-    labels = atl_spec_labs("multiline"),
-    name = ""
-  ) +
-  guides(colour = guide_legend(
-    nrow = 1, override.aes = list(size = 7, pch = 16, alpha = 1)
-  )) +
-  theme(
-    legend.position = "top",
-    legend.justification = "center",
-    legend.key = element_blank(),
-    legend.background = element_rect(fill = "transparent")
-  ) +
-  labs(x = "Longitude", y = "Latitude") +
-  coord_sf(crs = 3857)
-```
-
-## Base R map 
-
-#### Plot with simple base map
-
-The plotting region can be extended by specifiying buffer (in meters), and the scale of the scalebar (in kilometers) can be adjusted. To inspect the localizations, color_by can be specified to colour the localizations by time since first localization in plot (“time”), standard deviation of the x- and y-coordinate (“sd”), or the number of base stations used for calculating the localization (“nbs”). By specifiying the full path and file name (with extension) in fullname, it is possible to save the plot as a .png. If necesarry, the legend can also be located elsewhere on the plot with Legend.
-
-```{r, fig.cap = "Base R map"}
-# Load example data
-data <- data_example[tag == data_example[1, tag]]
-
-# Transform to sf
-d_sf <- atl_as_sf(data, additional_cols = names(data))
-
-# Plot the tracking data with a simple background
-atl_plot_tag(
-  data = d_sf, tag = NULL, fullname = NULL, buffer = 1,
-  color_by = "time"
-)
-
-# Note: function opens device and therefore the plot is not shown in markdown
-```
-
-#### Plot with `OpenStreetMap` 
-
-With the function `atl_plot_tag_osm()` it is possible to plot the track on a satellite image with the library OpenStreetMap. The region of the the satellite image can be extended by specifying a buffer (in meters) in the function atl_bbox The other options are similar to atl_plot_tag (see earlier).
-
-```{r, fig.cap = "Base R map with satellite image"}
-library(OpenStreetMap)
-library(sf)
-
-# Load example data
-data <- data_example[tag == data_example[1, tag]]
-
-# make data spatial and transform projection to WGS 84 (used in osm)
-d_sf <- atl_as_sf(data, additional_cols = names(data))
-d_sf <- sf::st_transform(d_sf, crs = sf::st_crs(4326))
-
-# get bounding box
-bbox <- atl_bbox(d_sf, buffer = 500)
-
-# extract openstreetmap
-# other 'type' options are "osm", "maptoolkit-topo", "bing", "stamen-toner",
-# "stamen-watercolor", "esri", "esri-topo", "nps", "apple-iphoto", "skobbler";
-map <- OpenStreetMap::openmap(c(bbox["ymax"], bbox["xmin"]),
-  c(bbox["ymin"], bbox["xmax"]),
-  type = "osm", mergeTiles = TRUE
-)
-
-# Plot the tracking data on the satellite image
-atl_plot_tag_osm(
-  data = d_sf, tag = NULL, mapID = map, color_by = "time",
-  fullname = NULL, scalebar = 3
-)
 ```

@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
  This vignette shows how to smooth and thin WATLAS data. 
 
-```{r}
+```{r, message = FALSE}
 # Packages
 library(tools4watlas)
 library(data.table)
@@ -60,7 +60,7 @@ data <- atl_get_speed(data, type = c("in", "out"))
 
 This plot just shows one example.
 
-```{r, fig.cap = "Smoothed track (black) on top of raw track (red)"}	
+```{r, fig.cap = "Smoothed track (black) on top of raw track (red)", fig.align = "center"}	
 # subset first tag
 data_subset <- data[tag == data[1]$tag]
 

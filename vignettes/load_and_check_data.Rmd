@@ -212,7 +212,7 @@ fwrite(data, file = "../inst/extdata/watlas_data_raw.csv", yaml = TRUE)
 
 Here we simply check for how many individuals we have data and how many positions by tag and date we have. 
 
-```{r, fig.cap = "Number of positions per day by tag", fig.width = 7, fig.height = 4}
+```{r, fig.cap = "Number of positions per day by tag", fig.width = 7, fig.height = 4, fig.align = "center"}
 # Load data
 data <- fread("../inst/extdata/watlas_data_raw.csv", yaml = TRUE)
 
@@ -251,7 +251,7 @@ ggplot(data_subset, aes(x = date, y = tag, fill = N)) +
 Now we want to see the data on a map. With large datasets it is convenient to plot heatmaps, as plotting for example 40 million points would result in a lot of over plotting and makes the plotting slow. If the dataset is small, one can obviously also plot the data by tag number or in other ways (see vignette plotting data).
 
 
-```{r, fig.cap = "Heatmap of all positions", fig.width = 7, fig.height = 4}
+```{r, fig.cap = "Heatmap of all positions", fig.width = 7, fig.height = 4, fig.align = "center"}
 
 # Make a basemap with the extent of the data
 bm <- atl_create_bm(data, buffer = 1000)

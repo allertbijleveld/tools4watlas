@@ -46,7 +46,7 @@ data <- fread(data_path, yaml = TRUE)
 
 Depending on the analysis, can make sense to use a spatial filter to exclude large outliers or subset only data from an area of interest. In this example we subset all data around Griend, Richel and Ballastplaat. Note that in this example all data are within the specified bounding box, so no data will be filtered out.
 
-```{r, fig.cap = "Heatmap of all positions", message = FALSE}
+```{r, fig.cap = "Heatmap of all positions with bounding box (red)", message = FALSE, fig.align = "center"}
 # location east of Griend
 griend_east <- st_sfc(st_point(c(5.275, 53.2523)), crs = st_crs(4326)) |>
   st_transform(crs = st_crs(32631))
@@ -156,7 +156,7 @@ data <- atl_filter_covariates(
 
 This will filter more unrealistic positions. 
 
-```{r, fig.cap = "Histogram of speed"}
+```{r, fig.cap = "Histogram of speed moved from all data", fig.align = "center"}
 # calculate speed
 data <- atl_get_speed(data,
   type = c("in", "out")

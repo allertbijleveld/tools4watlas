@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
  This vignette shows how to add tidal data to WATLAS data.
 
-```{r}
+```{r, message = FALSE}
 library(tools4watlas)
 library(data.table)
 library(ggplot2)
@@ -100,7 +100,7 @@ Bathymetry data can be found in the "Birds, fish 'n chips" SharePoint folder: `D
 
 ### Load packages and data
 
-```{r}
+```{r, message = FALSE}
 # Packages
 library(data.table)
 library(tools4watlas)
