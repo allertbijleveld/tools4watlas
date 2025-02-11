@@ -30,7 +30,7 @@ font_add_google("Merriweather", "merriweather")
 showtext_auto()
 
 # path to WATLAS logo
-watlas <- "../../man/figures/watlas_logo.png"
+watlas <- "../../man/figures/watlas_logo_clean.png"
 
 # make sticker
 sticker(watlas,

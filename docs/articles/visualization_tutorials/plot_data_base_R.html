@@ -41,9 +41,9 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
-    <li><a class="dropdown-item" href="../../articles/load_and_check_data.html">Step 1: Load and check data</a></li>
-    <li><a class="dropdown-item" href="../../articles/filter_data.html">Step 2: Filter data</a></li>
-    <li><a class="dropdown-item" href="../../articles/smooth_and_thin_data.html">Step 3: Smooth and thin data</a></li>
+    <li><a class="dropdown-item" href="../../articles/load_and_check_data.html">Load and check data</a></li>
+    <li><a class="dropdown-item" href="../../articles/filter_data.html">Filter data</a></li>
+    <li><a class="dropdown-item" href="../../articles/smooth_and_thin_data.html">Smooth and thin data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
@@ -165,7 +165,7 @@ atl_plot_tag (see earlier).</p>
 <span><span class="co"># "stamen-watercolor", "esri", "esri-topo", "nps", "apple-iphoto", "skobbler";</span></span>
 <span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu">OpenStreetMap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/OpenStreetMap/man/openmap.html" class="external-link">openmap</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">[</span><span class="st">"ymax"</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="st">"xmin"</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">[</span><span class="st">"ymin"</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="st">"xmax"</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"bing"</span>, mergeTiles <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  type <span class="op">=</span> <span class="st">"osm"</span>, mergeTiles <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Plot the tracking data on the satellite image</span></span>

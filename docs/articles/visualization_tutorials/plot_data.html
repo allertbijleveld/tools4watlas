@@ -41,9 +41,9 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
-    <li><a class="dropdown-item" href="../../articles/load_and_check_data.html">Step 1: Load and check data</a></li>
-    <li><a class="dropdown-item" href="../../articles/filter_data.html">Step 2: Filter data</a></li>
-    <li><a class="dropdown-item" href="../../articles/smooth_and_thin_data.html">Step 3: Smooth and thin data</a></li>
+    <li><a class="dropdown-item" href="../../articles/load_and_check_data.html">Load and check data</a></li>
+    <li><a class="dropdown-item" href="../../articles/filter_data.html">Filter data</a></li>
+    <li><a class="dropdown-item" href="../../articles/smooth_and_thin_data.html">Smooth and thin data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
@@ -94,67 +94,72 @@ Krietsch</h4>
 
     
     
+<p>This article shows different ways on how to plot WATLAS data. In this
+example we use a simple basemap with the extend of the data, but any
+other type could be used too (see article: <a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/create_basemap.html">Create
+a basemap</a>).</p>
+<p>It first presents some examples of how to plot data grouped by tag
+ID, then by species and then how to make single plots with different
+options to quickly check the data, and how to plot heatmaps of the data.
+These examples can be customized as desired and should jsut give a quick
+starting point.</p>
 <div class="section level4">
-<h4 id="load-packages-and-data">Load packages and data<a class="anchor" aria-label="anchor" href="#load-packages-and-data"></a>
+<h4 id="load-packages">Load packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
 </h4>
-<p>This vignette shows different ways on how to plot WATLAS data. Each
-chunk of code only requires this chunk with loading the data to be run
-before and is otherwise independent.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sjmgarnier.github.io/viridis/" class="external-link">viridis</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RColorBrewer</span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org" class="external-link">scales</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="using-ggplot2-and-a-basemap-layer">Using <code>ggplot2</code> and a basemap layer<a class="anchor" aria-label="anchor" href="#using-ggplot2-and-a-basemap-layer"></a>
+<h2 id="plot-grouped-by-tag-id">Plot grouped by tag ID<a class="anchor" aria-label="anchor" href="#plot-grouped-by-tag-id"></a>
 </h2>
-<p>We can create simple base maps of the study area by using the
-function <code><a href="../../reference/atl_create_bm.html">atl_create_bm()</a></code>. This function uses a data.table
-with x- and y-coordinates to check the required bounding box (which can
-be extended with a buffer in meters) and spatial features (polygons) of
-land, lakes, mudflats and rivers. Without adding costmized data, it will
-default to the data provided in the package. By changing
-<code>asp</code> the desired aspect ratio can be chosen (default is
-“16:9”). If no data are provided the function creates a map around
-Griend with a specified buffer.</p>
-<div class="section level4">
-<h4 id="map-with-points-and-tracks-of-one-individual">Map with points and tracks of one individual<a class="anchor" aria-label="anchor" href="#map-with-points-and-tracks-of-one-individual"></a>
-</h4>
+<p>Simply colour points and the path with tag ID.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load example data</span></span>
+<code class="sourceCode R"><span><span class="co"># load example data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
 <span></span>
-<span><span class="co"># Subset bar-tailed godwit</span></span>
-<span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">species</span> <span class="op">==</span> <span class="st">"bar-tailed godwit"</span><span class="op">]</span></span>
+<span><span class="co"># create basemap</span></span>
+<span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data</span>, buffer <span class="op">=</span> <span class="fl">800</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Create base map</span></span>
-<span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data_subset</span>, buffer <span class="op">=</span> <span class="fl">800</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Plot points and tracks</span></span>
+<span><span class="co"># plot points and tracks with standard ggplot colours</span></span>
 <span><span class="va">bm</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">data_subset</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
 <span>    alpha <span class="op">=</span> <span class="fl">0.1</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">data_subset</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
+<span>    size <span class="op">=</span> <span class="fl">0.5</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<p><img src="plot_data_files/figure-html/unnamed-chunk-2-1.png" alt="Points and tracks on a simple basemap by tag ID" width="100%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># plot points and tracks with viridis colour scale</span></span>
+<span><span class="va">bm</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
+<span>    alpha <span class="op">=</span> <span class="fl">0.1</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
 <span>    size <span class="op">=</span> <span class="fl">0.5</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span> <span class="co"># for up to 8 categories</span></span></code></pre></div>
-<div class="figure" style="text-align: center">
-<img src="plot_data_files/figure-html/unnamed-chunk-2-1.png" alt="Points and tracks on a simple basemap" width="100%"><p class="caption">
-Points and tracks on a simple basemap
-</p>
+<span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html" class="external-link">scale_color_viridis</a></span><span class="op">(</span>discrete <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="plot_data_files/figure-html/unnamed-chunk-2-2.png" alt="Points and tracks on a simple basemap by tag ID" width="100%" style="display: block; margin: auto;"></p>
 </div>
-</div>
-<div class="section level4">
-<h4 id="map-with-points-and-tracks-of-multiple-species">Map with points and tracks of multiple species<a class="anchor" aria-label="anchor" href="#map-with-points-and-tracks-of-multiple-species"></a>
-</h4>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Create base map</span></span>
+<div class="section level2">
+<h2 id="plot-grouped-by-species">Plot grouped by species<a class="anchor" aria-label="anchor" href="#plot-grouped-by-species"></a>
+</h2>
+<p><code>tools4watlas</code> includes specific species colours in the
+atl_spec_cols() function and species labels in the atl_spec_labs()
+function.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># load example data</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
+<span></span>
+<span><span class="co"># create basemap</span></span>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data</span>, buffer <span class="op">=</span> <span class="fl">800</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Plot points and tracks</span></span>
@@ -181,30 +186,70 @@ Points and tracks on a simple basemap
 <span>    legend.key <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    legend.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"transparent"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
+<p><img src="plot_data_files/figure-html/unnamed-chunk-3-1.png" alt="Points and tracks of multiple species on a basemap" width="100%" style="display: block; margin: auto;"></p>
+</div>
+<div class="section level2">
+<h2 id="plot-single-plots-by-tag-id">Plot single plots by tag ID<a class="anchor" aria-label="anchor" href="#plot-single-plots-by-tag-id"></a>
+</h2>
+<p>Work in progress! Add function to plot data with tag ID and date
+range as title, by number of base stations, var, and time, plus last N
+locations.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load example data</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
+<span></span>
+<span><span class="co"># Subset bar-tailed godwit</span></span>
+<span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">species</span> <span class="op">==</span> <span class="st">"bar-tailed godwit"</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># create basemap</span></span>
+<span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data_subset</span>, buffer <span class="op">=</span> <span class="fl">800</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot points and tracks</span></span>
+<span><span class="va">bm</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">data_subset</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
+<span>    alpha <span class="op">=</span> <span class="fl">0.1</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">data_subset</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
+<span>    size <span class="op">=</span> <span class="fl">0.5</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span> <span class="co"># for up to 8 categories</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="plot_data_files/figure-html/unnamed-chunk-3-1.png" alt="Points and tracks of multiple species on a basemap" width="100%"><p class="caption">
-Points and tracks of multiple species on a basemap
+<img src="plot_data_files/figure-html/unnamed-chunk-4-1.png" alt="Points and tracks on a simple basemap" width="100%"><p class="caption">
+Points and tracks on a simple basemap
 </p>
 </div>
 </div>
-<div class="section level4">
-<h4 id="heatmap-of-all-positions">Heatmap of all positions<a class="anchor" aria-label="anchor" href="#heatmap-of-all-positions"></a>
-</h4>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org" class="external-link">scales</a></span><span class="op">)</span></span>
+<div class="section level2">
+<h2 id="plot-heatmaps">Plot heatmaps<a class="anchor" aria-label="anchor" href="#plot-heatmaps"></a>
+</h2>
+<p>Here we round the data (e.g. to 200 m) and then plot the number of
+positions per location.</p>
+<div class="section level3">
+<h3 id="all-positions">All positions<a class="anchor" aria-label="anchor" href="#all-positions"></a>
+</h3>
+<p>This is a quick way to get an overview of the data.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># load example data</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
 <span></span>
-<span><span class="co"># Round data to 200 m grid cells</span></span>
-<span><span class="va">data_heatmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/copy.html" class="external-link">copy</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
-<span><span class="va">data_heatmap</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x_round"</span>, <span class="st">"y_round"</span><span class="op">)</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span><span class="co"># create basemap</span></span>
+<span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data</span>, buffer <span class="op">=</span> <span class="fl">800</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># round data to 200 m grid cells</span></span>
+<span><span class="va">data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x_round"</span>, <span class="st">"y_round"</span><span class="op">)</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="fu">plyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/round_any.html" class="external-link">round_any</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">200</span><span class="op">)</span>,</span>
 <span>  <span class="fu">plyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/round_any.html" class="external-link">round_any</a></span><span class="op">(</span><span class="va">y</span>, <span class="fl">200</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">data_heatmap</span> <span class="op">&lt;-</span> <span class="va">data_heatmap</span><span class="op">[</span>, <span class="va">.N</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x_round"</span>, <span class="st">"y_round"</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
-<span><span class="co"># Plot heatmap</span></span>
+<span><span class="co"># N by location</span></span>
+<span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span>, <span class="va">.N</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x_round"</span>, <span class="st">"y_round"</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># plot heatmap</span></span>
 <span><span class="va">bm</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_tile</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">data_heatmap</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x_round</span>, <span class="va">y_round</span>, fill <span class="op">=</span> <span class="va">N</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">data_subset</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x_round</span>, <span class="va">y_round</span>, fill <span class="op">=</span> <span class="va">N</span><span class="op">)</span>,</span>
 <span>    linewidth <span class="op">=</span> <span class="fl">0.1</span>, show.legend <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html" class="external-link">scale_fill_viridis</a></span><span class="op">(</span></span>
@@ -213,11 +258,31 @@ Points and tracks of multiple species on a basemap
 <span>    labels <span class="op">=</span> <span class="fu"><a href="https://scales.r-lib.org/reference/trans_format.html" class="external-link">trans_format</a></span><span class="op">(</span><span class="st">"log10"</span>, <span class="fu"><a href="https://scales.r-lib.org/reference/parse_format.html" class="external-link">math_format</a></span><span class="op">(</span><span class="fl">10</span><span class="op">^</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<div class="figure" style="text-align: center">
-<img src="plot_data_files/figure-html/unnamed-chunk-4-1.png" alt="Heatmap of all positions" width="100%"><p class="caption">
-Heatmap of all positions
-</p>
+<p><img src="plot_data_files/figure-html/unnamed-chunk-5-1.png" alt="Heatmap of all positions" width="100%" style="display: block; margin: auto;"></p>
 </div>
+<div class="section level3">
+<h3 id="positions-by-species">Positions by species<a class="anchor" aria-label="anchor" href="#positions-by-species"></a>
+</h3>
+<p>We group the data by species (or whatever group we desire) and then
+make a plot for each of those groups.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># N by location and species</span></span>
+<span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span>, <span class="va">.N</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x_round"</span>, <span class="st">"y_round"</span>, <span class="st">"species"</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># plot heatmap by species</span></span>
+<span><span class="va">bm</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_tile</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">data_subset</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x_round</span>, <span class="va">y_round</span>, fill <span class="op">=</span> <span class="va">N</span><span class="op">)</span>,</span>
+<span>    linewidth <span class="op">=</span> <span class="fl">0.1</span>, show.legend <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html" class="external-link">scale_fill_viridis</a></span><span class="op">(</span></span>
+<span>    option <span class="op">=</span> <span class="st">"A"</span>, discrete <span class="op">=</span> <span class="cn">FALSE</span>, trans <span class="op">=</span> <span class="st">"log10"</span>, name <span class="op">=</span> <span class="st">"N positions"</span>,</span>
+<span>    breaks <span class="op">=</span> <span class="fu"><a href="https://scales.r-lib.org/reference/trans_breaks.html" class="external-link">trans_breaks</a></span><span class="op">(</span><span class="st">"log10"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fl">10</span><span class="op">^</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="https://scales.r-lib.org/reference/trans_format.html" class="external-link">trans_format</a></span><span class="op">(</span><span class="st">"log10"</span>, <span class="fu"><a href="https://scales.r-lib.org/reference/parse_format.html" class="external-link">math_format</a></span><span class="op">(</span><span class="fl">10</span><span class="op">^</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">species</span>, labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span><span class="fu"><a href="../../reference/atl_spec_labs.html">atl_spec_labs</a></span><span class="op">(</span><span class="st">"singleline"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="plot_data_files/figure-html/unnamed-chunk-6-1.png" alt="Heatmap of all positions by species" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

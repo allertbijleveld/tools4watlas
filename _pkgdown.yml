@@ -61,6 +61,7 @@ reference:
      - atl_get_data
      - atl_check_data
      - atl_full_tag_id
+     - atl_file_path
   - title: "Filter data"
     desc: "Fuctions to filter data"
     contents:
