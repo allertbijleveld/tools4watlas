@@ -9,6 +9,9 @@
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/additional_tutorials/fast_plotting.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/additional_tutorials/test.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/add_tidal_data.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_SIBES_data.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/cluster_data_in_residency_patches.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/index.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/literature/literature.html</loc></url>
@@ -21,6 +24,13 @@
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/plot_data.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/process_data.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/animate_data.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/create_basemap.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/fast_plotting.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_base_R.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_faster.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_interactively.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/authors.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/index.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/atl_add_raster_data.html</loc></url>

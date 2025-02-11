@@ -14,11 +14,11 @@ navbar:
       text: Articles
       menu:
       - text: Basic workflow (Vignettes)
-      - text: "Step 1: Load and check data"
+      - text: "Load and check data"
         href: articles/load_and_check_data.html
-      - text: "Step 2: Filter data"
+      - text: "Filter data"
         href: articles/filter_data.html
-      - text: "Step 3: Smooth and thin data"
+      - text: "Smooth and thin data"
         href: articles/smooth_and_thin_data.html
       - text: "--------"
       - text: Extended workflow
@@ -26,12 +26,20 @@ navbar:
         href: articles/extended_workflow/add_tidal_and_bathymetry_data.html
       - text: "Clustering in residency patches"
         href: articles/extended_workflow/cluster_data_in_residency_patches.html
+      - text: "Add SIBES data"
+        href: articles/extended_workflow/add_SIBES_data.html
       - text: "--------"
       - text: Visualization tutorials
+      - text: "Create a basemap"
+        href: articles/visualization_tutorials/create_basemap.html   
       - text: "Plot data"
         href: articles/visualization_tutorials/plot_data.html   
-      - text: "Fast plotting"
-        href: articles/visualization_tutorials/fast_plotting.html
+      - text: "Plot data faster"
+        href: articles/visualization_tutorials/plot_data_faster.html
+      - text: "Plot data interactively"
+        href: articles/visualization_tutorials/plot_data_interactively.html
+      - text: "Plot data in base R - deprecated"
+        href: articles/visualization_tutorials/plot_data_base_R.html   
       - text: "Animate data"
         href: articles/visualization_tutorials/animate_data.html
       - text: "--------"

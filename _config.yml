@@ -1,0 +1,6 @@
+data_path: "data/my_data.csv"
+
+
+library(yaml)
+config <- yaml.load_file("config.yml")
+data <- read.csv(config$data_path)

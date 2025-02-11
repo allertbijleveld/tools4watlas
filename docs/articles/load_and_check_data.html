@@ -44,12 +44,19 @@
     <li><a class="dropdown-item" href="../articles/load_and_check_data.html">Step 1: Load and check data</a></li>
     <li><a class="dropdown-item" href="../articles/filter_data.html">Step 2: Filter data</a></li>
     <li><a class="dropdown-item" href="../articles/smooth_and_thin_data.html">Step 3: Smooth and thin data</a></li>
-    <li><a class="dropdown-item" href="../articles/add_tidal_data.html">Step 4: Add tidal data</a></li>
-    <li><a class="dropdown-item" href="../articles/plot_data.html">Plot data</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Additional tutorials</h6></li>
-    <li><a class="dropdown-item" href="../articles/additional_tutorials/fast_plotting.html">Fast plotting</a></li>
-    <li><a class="dropdown-item" href="../articles/additional_tutorials/add_and_plot_bathymetry_data.html">Add and plot bathymetry data</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/cluster_data_in_residency_patches.html">Clustering in residency patches</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/add_SIBES_data.html">Add SIBES data</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data.html">Plot data</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_faster.html">Plot data faster</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_interactively.html">Plot data interactively</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_base_R.html">Plot data in base R - deprecated</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/animate_data.html">Animate data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
     <li><a class="dropdown-item" href="../articles/package_development/package_maintenance.html">Package maintenance</a></li>
@@ -255,7 +262,7 @@ directly.</p>
 with the following columns:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Show head of the table</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="7%">
@@ -421,7 +428,7 @@ of the table.</p>
 <span><span class="va">data</span><span class="op">[</span><span class="va">all_tags</span>, on <span class="op">=</span> <span class="st">"tag"</span>, <span class="fu">`:=`</span><span class="op">(</span>species <span class="op">=</span> <span class="va">i.species</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># make species first column</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/setcolorder.html" class="external-link">setcolorder</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/setcolorder.html" class="external-link">setcolorder</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span>, <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>We can also add other metadata by merging whatever column we want
 (e.g. color rings and catch location). However, when working with large
 data sets, it is advised to only add columns that are necessary. This
@@ -431,7 +438,7 @@ Here we delete the columns again.</p>
 <code class="sourceCode R"><span><span class="co"># join with metal rings, color rings and catch location</span></span>
 <span><span class="va">all_tags</span><span class="op">[</span>, <span class="va">tag</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">tag</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">data</span><span class="op">[</span><span class="va">all_tags</span>, on <span class="op">=</span> <span class="st">"tag"</span>, <span class="fu">`:=`</span><span class="op">(</span></span>
-<span>  rings <span class="op">=</span> <span class="va">i.rings</span>, </span>
+<span>  rings <span class="op">=</span> <span class="va">i.rings</span>,</span>
 <span>  crc <span class="op">=</span> <span class="va">i.crc</span>,</span>
 <span>  catch_location <span class="op">=</span> <span class="va">i.catch_location</span></span>
 <span><span class="op">)</span><span class="op">]</span></span>
@@ -466,7 +473,7 @@ many positions by tag and date we have.</p>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="st">"../inst/extdata/watlas_data_raw.csv"</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># N individuals with tagging data</span></span>
-<span><span class="va">data</span><span class="op">[</span>, <span class="va">.N</span>, <span class="va">tag</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">data</span><span class="op">[</span>, <span class="va">.N</span>, <span class="va">tag</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 8</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># N positions, first and last data by tag ID</span></span>
@@ -503,7 +510,7 @@ many positions by tag and date we have.</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Date"</span>, y <span class="op">=</span> <span class="st">"Tag"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_classic</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="figure">
+<div class="figure" style="text-align: center">
 <img src="load_and_check_data_files/figure-html/unnamed-chunk-10-1.png" alt="Number of positions per day by tag" width="100%"><p class="caption">
 Number of positions per day by tag
 </p>
@@ -541,7 +548,7 @@ or in other ways (see vignette plotting data).</p>
 <span>    labels <span class="op">=</span> <span class="fu"><a href="https://scales.r-lib.org/reference/trans_format.html" class="external-link">trans_format</a></span><span class="op">(</span><span class="st">"log10"</span>, <span class="fu"><a href="https://scales.r-lib.org/reference/parse_format.html" class="external-link">math_format</a></span><span class="op">(</span><span class="fl">10</span><span class="op">^</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<div class="figure">
+<div class="figure" style="text-align: center">
 <img src="load_and_check_data_files/figure-html/unnamed-chunk-11-1.png" alt="Heatmap of all positions" width="100%"><p class="caption">
 Heatmap of all positions
 </p>

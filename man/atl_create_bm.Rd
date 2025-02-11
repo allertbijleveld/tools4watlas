@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_create_bm.R
 \name{atl_create_bm}
 \alias{atl_create_bm}
-\title{Create a base map with customised bounding box}
+\title{Create a basemap with customised bounding box}
 \usage{
 atl_create_bm(
   data = NULL,
@@ -80,7 +80,7 @@ A \code{ggplot2} object representing the base map with the specified
 settings.
 }
 \description{
-This function creates a base map using spatial data layers, allowing for
+This function creates a basemap using spatial data layers, allowing for
 custom bounding boxes, aspect ratios, and scale bar adjustments.
 }
 \examples{

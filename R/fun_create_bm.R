@@ -1,6 +1,6 @@
-#' Create a base map with customised bounding box
+#' Create a basemap with customised bounding box
 #'
-#' This function creates a base map using spatial data layers, allowing for
+#' This function creates a basemap using spatial data layers, allowing for
 #' custom bounding boxes, aspect ratios, and scale bar adjustments.
 #'
 #' @author Johannes Krietsch

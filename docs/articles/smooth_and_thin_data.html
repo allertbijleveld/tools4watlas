@@ -41,15 +41,22 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
-    <li><a class="dropdown-item" href="../articles/load_and_check_data.html">Step 1: Load and check data</a></li>
-    <li><a class="dropdown-item" href="../articles/filter_data.html">Step 2: Filter data</a></li>
-    <li><a class="dropdown-item" href="../articles/smooth_and_thin_data.html">Step 3: Smooth and thin data</a></li>
-    <li><a class="dropdown-item" href="../articles/add_tidal_data.html">Step 4: Add tidal data</a></li>
-    <li><a class="dropdown-item" href="../articles/plot_data.html">Plot data</a></li>
+    <li><a class="dropdown-item" href="../articles/load_and_check_data.html">Load and check data</a></li>
+    <li><a class="dropdown-item" href="../articles/filter_data.html">Filter data</a></li>
+    <li><a class="dropdown-item" href="../articles/smooth_and_thin_data.html">Smooth and thin data</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Additional tutorials</h6></li>
-    <li><a class="dropdown-item" href="../articles/additional_tutorials/fast_plotting.html">Fast plotting</a></li>
-    <li><a class="dropdown-item" href="../articles/additional_tutorials/add_and_plot_bathymetry_data.html">Add and plot bathymetry data</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/cluster_data_in_residency_patches.html">Clustering in residency patches</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/add_SIBES_data.html">Add SIBES data</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data.html">Plot data</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_faster.html">Plot data faster</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_interactively.html">Plot data interactively</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_base_R.html">Plot data in base R - deprecated</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/animate_data.html">Animate data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
     <li><a class="dropdown-item" href="../articles/package_development/package_maintenance.html">Package maintenance</a></li>
@@ -156,7 +163,7 @@ positions can be 0 and therefore will produce NAs and a warning</p>
 <span>    data <span class="op">=</span> <span class="va">data_subset</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>,</span>
 <span>    color <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">1</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<div class="figure">
+<div class="figure" style="text-align: center">
 <img src="smooth_and_thin_data_files/figure-html/unnamed-chunk-4-1.png" alt="Smoothed track (black) on top of raw track (red)" width="100%"><p class="caption">
 Smoothed track (black) on top of raw track (red)
 </p>
@@ -187,7 +194,7 @@ the interval.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Show head of selected data</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">thinned_aggregated</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">time</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">n_aggregated</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">thinned_aggregated</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">time</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">n_aggregated</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -274,7 +281,7 @@ was sampled.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Show head of selected data</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">thinned_subsampled</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">time</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">n_subsampled</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">thinned_subsampled</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">time</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">n_subsampled</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>

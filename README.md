@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# tools4watlas <a href="https://allertbijleveld.github.io/tools4watlas/g"><img src="man/figures/logo.png" align="right" height="300" alt="tools4watlas website" /></a>
+# tools4watlas <a href="https://allertbijleveld.github.io/tools4watlas"><img src="man/figures/logo.png" align="right" height="300" alt="tools4watlas website" /></a>
 
 <!-- badges: start -->
 
@@ -39,25 +39,28 @@ tutorials on how to visualize movement data.
 
 ### **Documentation**
 
-`tools4watlas` is documented in detail on the [**package
-website**](https://allertbijleveld.github.io/tools4watlas/). The package
-vignettes describe the basic workflow when working with WATLAS data.
-‘Additional articles’ provide tutorials for specific analyses, and
-‘Package development’ provides insight into maintenance and contributing
-to `tools4watlas`). Some articles (indicated by an asterisk) require
-access to the local NIOZ file server.
+The `tools4watlas` package is thoroughly documented on the [**offical
+package website**](https://allertbijleveld.github.io/tools4watlas/). The
+package vignettes outline the **basic workflow** for working with WATLAS
+data, while **extended workflows** guide through more specialized
+analyses. Additionally, we provide **visualization tutorials** that
+demonstrate various methods for plotting and animating the movement
+data. The **package development** section offers insights into package
+maintenance and how to contribute to the `tools4watlas` package. To
+completely run some articles (marked with an asterisk) access to the
+local NIOZ file server is required.
 
 **Basic workflow (Vignettes)**:
 
-- Step 1: [**Load and check
+- [**Load and check
   data**](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html)
 
-- Step 2: [**Filter
+- [**Filter
   data**](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html) -
   based on spatial boundaries, temporal specifications, error estimates
   and speed.
 
-- Step 3: [**Smooth and thin
+- [**Smooth and thin
   data**](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html)
 
 **Extended workflow**:
@@ -69,17 +72,24 @@ access to the local NIOZ file server.
   patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/cluster_data_in_residency_patches.html) -
   work in progress.
 
+- [**Add SIBES
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_SIBES_data.html) -
+  work in progress.
+
 **Visualization tutorials**:
 
-- [**Plot movement
+- [**Create a
+  basemap**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/create_basemap.html) -
+  (Bathymetry basemap option\*)
+
+- [**Plot
   data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html) -
-  an important step between all stages to check the data. (Bathymetry
-  basemap option\*)
+  an important step between all stages to check the data.
 
 - [**Fast plotting with
   ggplot2**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/fast_plotting.html)
 
-- [**Animate movement
+- [**Animate
   data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/animate_data.html) -
   work in progress.
 
@@ -114,11 +124,6 @@ install_github("allertbijleveld/tools4watlas")
 
 ``` r
 library(tools4watlas)
-```
-
-    ## Loading required package: data.table
-
-``` r
 library(ggplot2)
 
 # Load example data
@@ -173,6 +178,7 @@ We are working on the following articles at the moment:
 
 - Animate movement data
 - Residency patch analysis
+- Connect WATLAS with SIBES data
 
 ### **Contribute**
 
