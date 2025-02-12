@@ -23,8 +23,3 @@ This function returns a predefined file path based on the user's system
 username and the selected data type.
 Users must be predefined in the function.
 }
-\examples{
-atl_file_path("watlas_teams")
-atl_file_path("rasters")
-atl_file_path("shapefiles")
-}

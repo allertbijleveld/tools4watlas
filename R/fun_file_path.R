@@ -12,14 +12,9 @@
 #' @return A character string representing the full file path to the selected
 #'   data type for the current user.
 #' @export
-#'
-#' @examples
-#' atl_file_path("watlas_teams")
-#' atl_file_path("rasters")
-#' atl_file_path("shapefiles")
 atl_file_path <- function(data_type = c("watlas_teams",
-                                          "rasters",
-                                          "shapefiles")) {
+                                        "rasters",
+                                        "shapefiles")) {
   # get the username
   user_name <- Sys.info()[["user"]]
 
@@ -42,7 +37,7 @@ atl_file_path <- function(data_type = c("watlas_teams",
         "Birds, fish 'n chips - Documenten/data/GIS/shapefiles/"
       )
     ),
-    "jkrietsch" = switch(data_type,
+    "jkrietsc" = switch(data_type,
       "watlas_teams" = paste0(
         "C:/Users/jkrietsch/OneDrive - NIOZ/",
         "WATLAS_data/"
