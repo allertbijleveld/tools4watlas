@@ -4,8 +4,24 @@
 #' username and the selected data type.
 #' Users must be predefined in the function.
 #'
+#' For local users with access to the NIOZ network, I would recommend to add a
+#' shortcut to your OneDrive of the “WATLAS” SharePoint folder: Documents/data/.
+#' The path in the function then refers to this copy on your OneDrive. Files in
+#' this folder (e.g. tags_watlas_all.xlsx and tide data) are often updated and
+#' changes are then automatically updated on your computer.
+#'
+#' The second source of data is the “Birds, fish ’n chips” SharePoint folder:
+#' Documents/data/GIS/ which has the subfolders rasters and shapefiles. One can
+#' also create a OneDrive shortcut for this folder, however it contains many
+#' large files and files usually don't change. I would therefore recommend to
+#' only copy necessary data in a local folder on your computer and then link
+#' the path to this folder.
+#'
+#' To build all articles for the package website, you need to specify your user
+#' paths here.
+#'
 #' @param data_type A character string indicating the type of data. Options are:
-#'   - `"watlas_teams"`: Path to WATLAS team data.
+#'   - `"watlas_teams"`: Path to “WATLAS” SharePoint folder: Documents/data/
 #'   - `"rasters"`: Path to raster GIS data.
 #'   - `"shapefiles"`: Path to shapefile GIS data.
 #'
@@ -37,7 +53,7 @@ atl_file_path <- function(data_type = c("watlas_teams",
         "Birds, fish 'n chips - Documenten/data/GIS/shapefiles/"
       )
     ),
-    "jkrietsc" = switch(data_type,
+    "jkrietsch" = switch(data_type,
       "watlas_teams" = paste0(
         "C:/Users/jkrietsch/OneDrive - NIOZ/",
         "WATLAS_data/"

@@ -144,3 +144,101 @@ bm +
     panel.grid.minor = element_blank()
   )
 ```
+
+## Additional features
+
+How to add a WATLAS logo or receivers to a base map.
+
+### Add WATLAS logo to the basemap
+
+```{r, fig.alt = "basemap with logo"}
+# additional packages
+library(ggimage)
+
+# load example data
+data <- data_example
+
+# create basemap
+bm <- atl_create_bm(data, buffer = 1000)
+
+# path to WATLAS logo
+logo_path <- system.file(
+  "extdata", "watlas_logo.png",
+  package = "tools4watlas"
+)
+
+# define position based on data (here upper left corner)
+# adjust as desired
+x_pos <- min(data$x) - 2500
+y_pos <- max(data$y)
+
+# create table with image of the logo
+di <- data.table(x = x_pos, y = y_pos, image = logo_path)
+
+# plot basemap with logo
+bm +
+  geom_image(data = di, aes(x, y, image = image), size = 0.2)
+```
+
+### Add WATLAS receivers to a basemap
+
+Receiver data are managed by Allert. They are located in the "WATLAS" SharePoint folder: `Documents/data/`. Either specify the path to your local copy of this folder or add the path for your user in the `atl_file_path()` function.
+
+```{r, fig.alt = "basemap with receivers"}
+# load example data
+data <- data_example
+
+# create basemap
+bm <- atl_create_bm(data, buffer = 20000)
+
+# file path to WATLAS teams data folder
+fp <- atl_file_path("watlas_teams")
+
+# load receivers data
+dr <- readxl::read_excel(
+  paste0(fp, "receivers/receiver specifications.xlsx"),
+  sheet = "receivers"
+) |>
+  data.table()
+
+# rename and select wanted columns
+setnames(dr, tolower(names(dr)))
+dr <- dr[, .(
+  bs = kast_nr, location = locatie, year = jaar, x, y,
+  date_placed = datum_plaatsen, date_removed = datum_afbreken,
+  permanent = vast, active = actief, mudflats, height_bs = hoogte
+)]
+
+# end date for active receivers as system date
+dr[active == "ja", date_removed := as.POSIXct(Sys.time(), tz = "UTC")]
+
+# subset all active in period of tracking data
+start <- min(data$datetime)
+end <- max(data$datetime)
+
+# Check if each row includes period of tracking data
+dr[, includes_data := (date_placed <= end & date_removed >= start)]
+dr <- dr[includes_data == TRUE]
+
+# plot basemap with receivers active during tracking period
+bm +
+  geom_point(data = dr, aes(x, y), pch = 17)
+```
+
+One can also add the name of the receiver.
+
+```{r, fig.alt = "basemap with receivers and label"}
+# additional packages
+library(ggrepel)
+
+# plot basemap with receivers and label
+bm +
+  geom_point(data = dr, aes(x, y), pch = 17, size = 1.5) +
+  geom_text_repel(
+    data = dr, aes(x, y, label = location),
+    max.overlaps = Inf,
+    size = 3,
+    point.padding = 0.5,
+    segment.color = "grey50"
+  )
+```
