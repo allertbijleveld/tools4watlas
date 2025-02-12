@@ -1,10 +1,21 @@
 url: https://allertbijleveld.github.io/tools4watlas/
+
+authors:
+  Allert Bijleveld:
+    href: https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld
+  Pratik Gupte:
+    href: https://github.com/pratikunterwegs
+  Christine Beardsworth :
+    href: https://github.com/CBeardsworth
+  Johannes Krietsch:
+    href: https://github.com/krietsch
+
 template:
   bootstrap: 5
   bootswatch: flatly
   bslib:
     primary: "#303c54"
-  
+
 navbar:
   structure:
     left:  [home, reference, articles, literature]

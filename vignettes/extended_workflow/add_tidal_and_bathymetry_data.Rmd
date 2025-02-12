@@ -127,7 +127,7 @@ data_subset <- atl_filter_covariates(
 ```
 ### Plot data movement data with bathymetry data
 
-```{r, fig.cap = "Movement tracks colored with bathymetry data", message = FALSE}
+```{r, fig.alt = "Movement tracks colored with bathymetry data", message = FALSE}
 # additional packages
 library(ggplot2)
 library(viridis)

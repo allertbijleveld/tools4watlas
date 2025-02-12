@@ -215,7 +215,7 @@ points).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run time</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Time difference of 6.08 secs</span></span></code></pre>
+<pre><code><span><span class="co">## Time difference of 6.58 secs</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="ggplot2-with-points-as-pch---and-tracks">
@@ -240,7 +240,7 @@ points).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run time</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Time difference of 2.17 secs</span></span></code></pre>
+<pre><code><span><span class="co">## Time difference of 3.87 secs</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="ggplot2-with-points-as-geom_scattermore-and-tracks">
@@ -266,7 +266,7 @@ tracks<a class="anchor" aria-label="anchor" href="#ggplot2-with-points-as-geom_s
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run time</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Time difference of 1.81 secs</span></span></code></pre>
+<pre><code><span><span class="co">## Time difference of 2.95 secs</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="ggplot2-summarized-points-in-heat-map">
@@ -274,13 +274,14 @@ tracks<a class="anchor" aria-label="anchor" href="#ggplot2-with-points-as-geom_s
 </h2>
 <p>The larger the grid cell size, the faster.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Round data to 200 m grid cells</span></span>
-<span><span class="va">data_heatmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/copy.html" class="external-link">copy</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
-<span><span class="va">data_heatmap</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x_round"</span>, <span class="st">"y_round"</span><span class="op">)</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="co"># round data to 200 m grid cells</span></span>
+<span><span class="va">data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x_round"</span>, <span class="st">"y_round"</span><span class="op">)</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="fu">plyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/round_any.html" class="external-link">round_any</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">200</span><span class="op">)</span>,</span>
 <span>  <span class="fu">plyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/round_any.html" class="external-link">round_any</a></span><span class="op">(</span><span class="va">y</span>, <span class="fl">200</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">data_heatmap</span> <span class="op">&lt;-</span> <span class="va">data_heatmap</span><span class="op">[</span>, <span class="va">.N</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x_round"</span>, <span class="st">"y_round"</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># N by location</span></span>
+<span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span>, <span class="va">.N</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x_round"</span>, <span class="st">"y_round"</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># start time</span></span>
 <span><span class="va">st</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -288,7 +289,7 @@ tracks<a class="anchor" aria-label="anchor" href="#ggplot2-with-points-as-geom_s
 <span><span class="co"># Plot heat map</span></span>
 <span><span class="va">bm</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_tile</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">data_heatmap</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x_round</span>, <span class="va">y_round</span>, fill <span class="op">=</span> <span class="va">N</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">data_subset</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x_round</span>, <span class="va">y_round</span>, fill <span class="op">=</span> <span class="va">N</span><span class="op">)</span>,</span>
 <span>    linewidth <span class="op">=</span> <span class="fl">0.1</span>, show.legend <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html" class="external-link">scale_fill_viridis</a></span><span class="op">(</span></span>
@@ -301,7 +302,7 @@ tracks<a class="anchor" aria-label="anchor" href="#ggplot2-with-points-as-geom_s
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run time</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Time difference of 0.26 secs</span></span></code></pre>
+<pre><code><span><span class="co">## Time difference of 0.43 secs</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -310,7 +311,7 @@ tracks<a class="anchor" aria-label="anchor" href="#ggplot2-with-points-as-geom_s
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Allert Bijleveld, Pratik Gupte, Christine Beardsworth, Johannes Krietsch.</p>
+  <p>Developed by <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>, <a href="https://github.com/pratikunterwegs" class="external-link">Pratik Gupte</a>, <a href="https://github.com/CBeardsworth" class="external-link">Christine Beardsworth</a>, <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
