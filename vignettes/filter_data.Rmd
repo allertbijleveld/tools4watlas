@@ -25,7 +25,6 @@ This vignette shows how to filter WATLAS data based on spatial boundaries, tempo
 ```{r, message = FALSE}
 # Packages
 library(tools4watlas)
-library(data.table)
 library(lubridate)
 library(sf)
 library(ggplot2)

@@ -26,7 +26,6 @@ knitr::opts_chunk$set(
 ```{r}
 # Packages
 library(tools4watlas)
-library(data.table)
 library(ggplot2)
 library(scales)
 library(viridis)

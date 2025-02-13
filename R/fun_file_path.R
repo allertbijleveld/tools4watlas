@@ -22,8 +22,10 @@
 #'
 #' @param data_type A character string indicating the type of data. Options are:
 #'   - `"watlas_teams"`: Path to “WATLAS” SharePoint folder: Documents/data/
-#'   - `"rasters"`: Path to raster GIS data.
-#'   - `"shapefiles"`: Path to shapefile GIS data.
+#'   - `"rasters"`: Path to “Birds, fish ’n chips” SharePoint folder:
+#'   Documents/data/GIS/rasters/
+#'   - `"shapefiles"`: Path to “Birds, fish ’n chips” SharePoint folder:
+#'   Documents/data/GIS/shapefiles/
 #'
 #' @return A character string representing the full file path to the selected
 #'   data type for the current user.

@@ -48,7 +48,7 @@ bm
 Alternatively, one can provide a table with one or multiple locations, which will then be used to buffer the map. This can for example be a location in EPSG:4326 (WGS 84 in degrees) that can be exacted from [Google Maps](https://www.google.com/maps/@53.1892078,5.5670405,68619m/data=!3m1!1e3?entry=ttu&g_ep=EgoyMDI1MDIwNS4xIKXMDSoASAFQAw%3D%3D) by a right click on a specific location. Here I choose a point a bit east of Griend, to include Richel and Ballastplaat in the map.
 
 ```{r, fig.alt = "Basemap around Griend"}
-# create base map
+# define location
 location <- data.table(x = c(5.275), y = c(53.2523))
 
 # create basemap
@@ -76,7 +76,7 @@ bm +
 
 Bathymetry data can be found in the "Birds, fish 'n chips" SharePoint folder: `Documents/data/GIS/rasters/`. To run the script set the file path (`wd`) to the local copy of the folder on your computer. The data can also be downloaded from the [Waddenregister](https://datahuiswadden.openearth.nl/geonetwork/srv/eng/catalog.search#/metadata/JkrvJXasRSGAWU1mJLHUzg).
 
-```{r, fig.alt = "Static map with satellite image"}
+```{r, fig.alt = "Static map with satellite image", warning=FALSE}
 # additional packages
 library(terra)
 
@@ -97,7 +97,7 @@ bm
 
 Provides a range of different basemap options. For this we first have to transform the data to WGS 84 to extract the basemap with the bounding box and then transform our data to a Mercator projection to plot the data on top of the map.
 
-Unfortunately, sometimes the `type = "bing"` does not work.
+Unfortunately, sometimes the `type = "bing"` (satellite image) does not work.
 
 ```{r, fig.alt = "Static map with satellite image", fig.width = 5, fig.height = 4.72}
 # additional packages
@@ -149,7 +149,7 @@ bm +
 
 How to add a WATLAS logo or receivers to a base map.
 
-### Add WATLAS logo to the basemap
+### Add WATLAS logo to a basemap
 
 ```{r, fig.alt = "basemap with logo"}
 # additional packages

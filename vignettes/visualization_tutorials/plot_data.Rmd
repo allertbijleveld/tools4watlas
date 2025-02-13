@@ -110,7 +110,7 @@ bm +
 Work in progress! Add function to plot data with tag ID and date range as title,
 by number of base stations, var, and time, plus last N locations.
 
-```{r, fig.cap = "Points and tracks on a simple basemap", fig.align = "center"}
+```{r, fig.alt = "Points and tracks on a simple basemap", fig.align = "center"}
 # Load example data
 data <- data_example
 
@@ -123,14 +123,13 @@ bm <- atl_create_bm(data_subset, buffer = 800)
 # Plot points and tracks
 bm +
   geom_path(
-    data = data_subset, aes(x, y, colour = tag),
+    data = data_subset, aes(x, y, colour = datetime),
     alpha = 0.1, show.legend = FALSE
   ) +
   geom_point(
-    data = data_subset, aes(x, y, colour = tag),
+    data = data_subset, aes(x, y, colour = datetime),
     size = 0.5, show.legend = FALSE
-  ) +
-  scale_color_brewer(palette = "Dark2") # for up to 8 categories
+  )
 ```
 
 ## Plot heatmaps

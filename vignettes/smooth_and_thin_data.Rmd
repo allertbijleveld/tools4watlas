@@ -22,10 +22,9 @@ knitr::opts_chunk$set(
 ```{r, message = FALSE}
 # Packages
 library(tools4watlas)
-library(data.table)
 library(ggplot2)
 
-# Path to csv with raw data
+# Path to csv with filtered data
 data_path <- system.file(
   "extdata", "watlas_data_filtered.csv",
   package = "tools4watlas"
