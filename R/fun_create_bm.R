@@ -24,6 +24,7 @@
 #' @param lakes_data An `sf` object for lake polygons. Defaults to `lakes`.
 #' @param raster_data An `SpatRaster` (tif opened with `terra::rast()` of
 #' bathymetry data.
+#' @param scalebar TRUE or FALSE for adding a scalebar to the plot.
 #' @param sc_dist Scale bar distance. Optional; calculated automatically if
 #'   omitted.
 #' @param sc_location A character string specifying the location of the scale
@@ -58,6 +59,7 @@ atl_create_bm <- function(data = NULL,
                           mudflats_data = tools4watlas::mudflats,
                           lakes_data = tools4watlas::lakes,
                           raster_data,
+                          scalebar = TRUE,
                           sc_dist,
                           sc_location = "br",
                           sc_cex = 0.7,
@@ -138,15 +140,23 @@ atl_create_bm <- function(data = NULL,
       scale_fill_manual(values = cc, na.value = "#fdf2f3")
     )
   }
-  # add layers and plot modifications
-  bm <- bm + layers +
-    # Scale bar
-    ggspatial::annotation_scale(aes(location = "br"),
-      text_cex = 0.7,
-      height = unit(0.25, "cm"),
-      pad_x = unit(0.25, "cm"),
-      pad_y = unit(0.5, "cm")
-    ) +
+  # add layers
+  bm <- bm + layers
+
+  # add scalbar if TRUE
+  if (scalebar == TRUE) {
+    bm <- bm +
+      ggspatial::annotation_scale(
+        aes(location = "br"),
+        text_cex = 0.7,
+        height = unit(0.25, "cm"),
+        pad_x = unit(0.25, "cm"),
+        pad_y = unit(0.5, "cm")
+      )
+  }
+
+  # add plot modifications
+  bm <- bm +
     # Crop to bounding box
     coord_sf(
       xlim = c(bbox["xmin"], bbox["xmax"]),

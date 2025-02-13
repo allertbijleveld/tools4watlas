@@ -15,6 +15,7 @@ atl_create_bm(
   mudflats_data = tools4watlas::mudflats,
   lakes_data = tools4watlas::lakes,
   raster_data,
+  scalebar = TRUE,
   sc_dist,
   sc_location = "br",
   sc_cex = 0.7,
@@ -54,6 +55,8 @@ bathymetry data in UTM31.}
 
 \item{raster_data}{An \code{SpatRaster} (tif opened with \code{terra::rast()} of
 bathymetry data.}
+
+\item{scalebar}{TRUE or FALSE for adding a scalebar to the plot.}
 
 \item{sc_dist}{Scale bar distance. Optional; calculated automatically if
 omitted.}
