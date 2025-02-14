@@ -106,11 +106,7 @@ reference:
     desc: "Functions to plot the data"
     contents:
      - atl_create_bm
-     - atl_plot_tag
-     - atl_plot_tag_osm
-     - atl_plot_map_osm
-     - atl_plot_rpatches
-     - atl_plot_add_track
+     - atl_check_tag
      - atl_t_col
      - atl_spec_cols
      - atl_spec_labs
@@ -126,3 +122,11 @@ reference:
      - land
      - mudflats
      - lakes
+  - title: "Deprecated"
+    desc: "Functions that a not further developed"
+    contents:
+     - atl_plot_tag
+     - atl_plot_tag_osm
+     - atl_plot_map_osm
+     - atl_plot_rpatches
+     - atl_plot_add_track
