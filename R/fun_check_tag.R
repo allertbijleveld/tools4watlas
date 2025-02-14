@@ -1,56 +1,138 @@
-
-
-# Packages
-library(tools4watlas)
-library(ggplot2)
-library(viridis)
-library(scales)
-library(ggtext)
-
-# Path to csv with filtered data
-data_path <- system.file(
-  "extdata", "watlas_data_filtered.csv",
-  package = "tools4watlas"
-)
-
-# Load data
-data <- fread(data_path, yaml = TRUE)
-
-# Subset bar-tailed godwit
-data <- data[species == "bar-tailed godwit"]
-
-
-
-
-atl_check_tag(data, option = "datetime")
-atl_check_tag(data, option = "nbs")
-atl_check_tag(data, option = "sd")
-atl_check_tag(data, option = "gap")
-
-
-
-
-
-
-
-
-atl_check_tag <- function(data = NULL,
+#' Check the data from one tag on a map
+#'
+#' This function processes tracking data for a specific tag and generates a
+#' visualization using `ggplot2`. It allows customization of colors, point
+#' sizes, and track styles, and supports various display options such as
+#' datetime, nbs (number of base stations / receivers), standard deviation,
+#' speed_in and gap. The function can either return the plot or save it as an
+#' png file.
+#'
+#' @param data A `data.table` containing tracking data. Must include the
+#'   columns: `"tag"`, `"x"`, `"y"`, `"time"`, and `"datetime"`.
+#' @param buffer Numeric. The buffer size in meters around the data points in
+#' the plot (default: 1000).
+#' @param asp Character. The aspect ratio of the plot (default: `"16:9"`).
+#' @param option Character. Determines the color mapping variable. Options are:
+#'   - `"datetime"`:
+#'   - `"nbs"`:
+#'   - `"sd"`:
+#'   - `"speed_in"`:
+#'   - `"gap"`:
+#' @param viridis_option Character. The color scheme option from `viridis`
+#'   (default: `"A"`). See
+#'    https://search.r-project.org/CRAN/refmans/viridisLite/html/viridis.html
+#'    for all options (A-H).
+#' @param viridis_direction Numeric. Direction of the viridis color scale
+#'   (-1 reverses, default: -1).
+#' @param first_n Numeric (or NULL). If provided, only the first `n` locations
+#'   are shown.
+#' @param last_n Numeric (or NULL). If provided, only the last `n` locations
+#'   are shown.
+#' @param highlight_first Logical. If `TRUE`, highlights the first point in the
+#'   track (default: `FALSE`).
+#' @param highlight_last Logical. If `TRUE`, highlights the last point in the
+#'   track (default: `FALSE`).
+#' @param point_size Numeric. The size of the data points (default: 0.5).
+#' @param point_alpha Numeric. Transparency of the data points (default: 1).
+#' @param path_linewidth Numeric. The width of the connecting track lines
+#'   (default: 0.5).
+#' @param path_alpha Numeric. Transparency of the track lines (default: 0.1).
+#' @param filename Character (or NULL). If provided, the plot is saved as a
+#'   `.png` file to this path and with this name; otherwise, the function
+#'   returns the plot.
+#'
+#' @return A `ggplot2` object with the specified option and adjustments. If
+#'   `filename` is provided, the plot is saved as a `.png` file instead of
+#'   being returned.
+#' @import ggplot2
+#' @import ggspatial
+#' @import scales
+#' @importFrom viridis scale_colour_viridis
+#' @importFrom ggtext element_markdown
+#' @importFrom ragg agg_png
+#'
+#' @examples
+#' # packages
+#' library(tools4watlas)
+#'
+#' # path to csv with filtered data
+#' data_path <- system.file(
+#'   "extdata", "watlas_data_filtered.csv",
+#'   package = "tools4watlas"
+#' )
+#'
+#' # load data
+#' data <- fread(data_path, yaml = TRUE)
+#'
+#' # subset bar-tailed godwit
+#' data <- data[species == "bar-tailed godwit"]
+#'
+#' # plot different options
+#' atl_check_tag(
+#'   data,
+#'   option = "datetime",
+#'   highlight_first = TRUE, highlight_last = TRUE
+#' )
+#' atl_check_tag(data, option = "nbs")
+#' atl_check_tag(data, option = "sd")
+#' atl_check_tag(data, option = "speed_in")
+#' atl_check_tag(data, option = "gap")
+#' @export
+atl_check_tag <- function(data,
                           buffer = 1000,
                           asp = "16:9",
                           option = "datetime",
+                          viridis_option = "A",
+                          viridis_direction = -1,
+                          first_n = NULL,
+                          last_n = NULL,
+                          highlight_first = FALSE,
+                          highlight_last = FALSE,
                           point_size = 0.5,
                           point_alpha = 1,
                           path_linewidth = 0.5,
                           path_alpha = 0.1,
-                          viridis_option = "A",
-                          viridis_direction = -1) {
-  # warning if more than one tag
-  if (data$tag |> unique() |> length() > 1) {
-    warning("Data includes multiple tag ID's, only the first is plotted")
+                          filename = NULL) {
+  # global variables
+  tag <- first_n_pos <- last_n_pos <- is_first <- is_last <- gap <- NULL
+  datetime <- gap_in <- sd <- varx <- vary <- x <- y <- nbs <- speed_in <- NULL
+
+  # check data structure
+  required_columns <- c("tag", "x", "y", "time", "datetime")
+  option_columns <- list(
+    datetime = c(),
+    nbs = c("nbs"),
+    sd = c( "varx", "vary"),
+    speed_in = c("speed_in"),
+    gap = c()
+  )
+  atl_check_data(data, names_expected = c(
+    required_columns, option_columns[[option]]
+  ))
+
+  # convert to DT if not
+  if (data.table::is.data.table(data) != TRUE) {
+    data.table::setDT(data)
   }
 
   # subset first if more than one tag
   ds <- data[tag == data[1]$tag]
+
+  # Subset first n positions
+  if (!is.null(first_n)) {
+    ds[, first_n_pos := seq_len(.N) <= first_n]
+    ds <- ds[first_n_pos == TRUE]
+  }
+
+  # subset last n positions
+  if (!is.null(last_n)) {
+    ds[, last_n_pos := seq_len(.N) > (.N - last_n)]
+    ds <- ds[last_n_pos == TRUE]
+  }
+
+  # identify first and last point
+  ds[, is_first := seq_len(.N) == 1]
+  ds[, is_last := seq_len(.N) > (.N - 1)]
 
   # collect relevant data for plot
   tag_id <- ds[1]$tag
@@ -85,7 +167,9 @@ atl_check_tag <- function(data = NULL,
   }
 
   # sd
-  ds[, sd := log10(pmax(varx, vary))]
+  if (option == "sd") {
+    ds[, sd := log10(pmax(varx, vary))]
+  }
 
   # create basemap
   bm <- atl_create_bm(ds, asp = asp, buffer = buffer)
@@ -142,87 +226,135 @@ atl_check_tag <- function(data = NULL,
     )
 
   # add points and tracks with different options
-  p <- switch(option,
-    datetime = {
-      # add tracks by datetime
-      p +
-        geom_path(
-          data = ds, aes(x, y, colour = datetime),
-          size = path_linewidth, alpha = path_alpha, show.legend = TRUE
-        ) +
-        geom_point(
-          data = ds, aes(x, y, colour = datetime),
-          size = point_size, alpha = point_alpha, show.legend = TRUE
-        ) +
-        scale_colour_viridis_c(
-          option = viridis_option, direction = viridis_direction,
-          trans = "time", labels = date_format("%d %b"),
-          name = "Datetime"
-        )
-    },
-    nbs = {
-      # add tracks by nbs
-      p +
-        geom_path(
-          data = ds, aes(x, y, colour = nbs),
-          size = path_linewidth, alpha = path_alpha, show.legend = TRUE
-        ) +
-        geom_point(
-          data = ds, aes(x, y, colour = nbs),
-          size = point_size, alpha = point_alpha, show.legend = TRUE
-        ) +
-        scale_colour_viridis(
-          option = viridis_option, direction = viridis_direction,
-          name = "NBS"
-        )
-    },
-    sd = {
-      # add tracks by sd
-      p +
-        geom_path(
-          data = ds, aes(x, y, colour = sd),
-          size = path_linewidth, alpha = path_alpha, show.legend = TRUE
-        ) +
-        geom_point(
-          data = ds, aes(x, y, colour = sd),
-          size = point_size, alpha = point_alpha, show.legend = TRUE
-        ) +
-        scale_colour_viridis(
-          option = viridis_option, direction = viridis_direction,
-          name = "SD"
-        )
-    },
-    gap = {
-      # add tracks by gap
-      p <- p +
-        geom_path(
-          data = ds, aes(x, y, colour = gap_in),
-          size = path_linewidth, alpha = path_alpha, show.legend = TRUE
-        ) +
-        geom_point(
-          data = ds[gap > 3600],
-          aes(x, y, colour = gap_in, size = gap_in),
-          alpha = point_alpha, show.legend = FALSE
-        ) +
-        geom_point(
-          data = ds[gap < 3600],
-          aes(x, y, colour = gap_in, size = gap_in),
-          alpha = point_alpha, show.legend = FALSE
-        ) +
-        scale_size_continuous(
-          range = c(0.5, 30), guide = "none",
-          limits = c(NA, 86400)
-        ) +
-        scale_colour_viridis(
-          option = viridis_option, direction = viridis_direction,
-          name = "Gap", trans = "log",
-          breaks = c(10, 60, 600, 3600, 86400),
-          labels = c("10 sec", "1 min", "10 min", "1 hr", "1 day"),
-          limits = c(NA, 86400)
-        )
-    },
-    stop("Invalid option")
-  )
+  # add tracks by datetime
+  if (option == "datetime") {
+    # check for right date format
+    if (days_data < 1) {
+      datetime_format <- date_format("%H:%M")
+    } else {
+      datetime_format <- date_format("%d %b")
+    }
+
+    p <- p +
+      geom_path(
+        data = ds, aes(x, y, colour = datetime),
+        linewidth = path_linewidth, alpha = path_alpha, show.legend = TRUE
+      ) +
+      geom_point(
+        data = ds, aes(x, y, colour = datetime),
+        size = point_size, alpha = point_alpha, show.legend = TRUE
+      ) +
+      scale_colour_viridis_c(
+        option = viridis_option, direction = viridis_direction,
+        trans = "time", labels = datetime_format,
+        name = "Datetime"
+      )
+  }
+
+  # add tracks by nbs
+  if (option == "nbs") {
+    p <- p +
+      geom_path(
+        data = ds, aes(x, y, colour = nbs),
+        linewidth = path_linewidth, alpha = path_alpha, show.legend = TRUE
+      ) +
+      geom_point(
+        data = ds, aes(x, y, colour = nbs),
+        size = point_size, alpha = point_alpha, show.legend = TRUE
+      ) +
+      scale_colour_viridis(
+        option = viridis_option, direction = viridis_direction,
+        name = "NBS"
+      )
+  }
+
+  # add tracks by sd
+  if (option == "sd") {
+    p <- p +
+      geom_path(
+        data = ds, aes(x, y, colour = sd),
+        linewidth = path_linewidth, alpha = path_alpha, show.legend = TRUE
+      ) +
+      geom_point(
+        data = ds, aes(x, y, colour = sd),
+        size = point_size, alpha = point_alpha, show.legend = TRUE
+      ) +
+      scale_colour_viridis(
+        option = viridis_option, direction = viridis_direction,
+        name = "SD"
+      )
+  }
+
+  # add tracks by speed_in
+  if (option == "speed_in") {
+    p <- p +
+      geom_path(
+        data = ds, aes(x, y, colour = speed_in),
+        linewidth = path_linewidth, alpha = path_alpha, show.legend = TRUE
+      ) +
+      geom_point(
+        data = ds, aes(x, y, colour = speed_in),
+        size = point_size, alpha = point_alpha, show.legend = TRUE
+      ) +
+      scale_colour_viridis(
+        option = viridis_option, direction = viridis_direction,
+        name = "Speed (m/s)"
+      )
+  }
+
+  # add tracks by gap
+  if (option == "gap") {
+    ds[gap_in > 86400, gap_in := 86400]
+
+    p <- p +
+      geom_path(
+        data = ds, aes(x, y, colour = gap_in),
+        linewidth = path_linewidth, alpha = path_alpha, show.legend = TRUE
+      ) +
+      geom_point(
+        data = ds[gap > 3600],
+        aes(x, y, colour = gap_in, size = gap_in),
+        alpha = point_alpha, show.legend = FALSE
+      ) +
+      geom_point(
+        data = ds[gap < 3600],
+        aes(x, y, colour = gap_in, size = gap_in),
+        alpha = point_alpha, show.legend = FALSE
+      ) +
+      scale_size_continuous(
+        range = c(0.5, 30), guide = "none",
+        limits = c(NA, 86400)
+      ) +
+      scale_colour_viridis(
+        option = viridis_option, direction = viridis_direction,
+        name = "Gap", trans = "log",
+        breaks = c(10, 60, 600, 3600, 86400),
+        labels = c("10 sec", "1 min", "10 min", "1 hr", "1 day"),
+        limits = c(NA, 86400)
+      )
+  }
+
+  # highlight first point if TRUE
+  if (highlight_last == TRUE) {
+    p <- p +
+      geom_point(
+        data = ds[is_first == TRUE],
+        aes(x, y), color = "darkgreen",
+        pch = 5, size = 10,
+        show.legend = FALSE
+      )
+  }
+
+  # highlight last point if TRUE
+  if (highlight_last == TRUE) {
+    p <- p +
+      geom_point(
+        data = ds[is_last == TRUE],
+        aes(x, y), color = "firebrick",
+        pch = 4, size = 10,
+        show.legend = FALSE
+      )
+  }
 
   # add theme
   p <- p +
@@ -235,10 +367,17 @@ atl_check_tag <- function(data = NULL,
       plot.title = element_markdown(hjust = 0.5)
     )
 
-  return(p)
+  # return or save
+  if (is.null(filename)) {
+    # return if no filename provided
+    return(p)
+  } else {
+    # save the plot if filename provided
+    agg_png(
+      filename = paste0(filename, ".png"),
+      width = 3840, height = 2160, units = "px", res = 300
+    )
+    print(p)
+    dev.off()
+  }
 }
-# ggsave("./test_check_plot.png",
-#        plot = last_plot(), width = 3840, height = 2160, units = c("px"), dpi = 300
-# )
-
-
