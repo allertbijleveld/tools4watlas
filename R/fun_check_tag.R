@@ -37,9 +37,12 @@
 #' @param path_linewidth Numeric. The width of the connecting track lines
 #'   (default: 0.5).
 #' @param path_alpha Numeric. Transparency of the track lines (default: 0.1).
+#' @param element_text_size Numeric. Adjust size of the text.
 #' @param filename Character (or NULL). If provided, the plot is saved as a
 #'   `.png` file to this path and with this name; otherwise, the function
 #'   returns the plot.
+#' @param png_width The width of the device.
+#' @param png_height The height of the device.
 #'
 #' @return A `ggplot2` object with the specified option and adjustments. If
 #'   `filename` is provided, the plot is saved as a `.png` file instead of
@@ -92,7 +95,10 @@ atl_check_tag <- function(data,
                           point_alpha = 1,
                           path_linewidth = 0.5,
                           path_alpha = 0.1,
-                          filename = NULL) {
+                          element_text_size = 11,
+                          filename = NULL,
+                          png_width = 3840,
+                          png_height = 2160) {
   # global variables
   tag <- first_n_pos <- last_n_pos <- is_first <- is_last <- gap <- NULL
   datetime <- gap_in <- sd <- varx <- vary <- x <- y <- nbs <- speed_in <- NULL
@@ -102,7 +108,7 @@ atl_check_tag <- function(data,
   option_columns <- list(
     datetime = c(),
     nbs = c("nbs"),
-    sd = c( "varx", "vary"),
+    sd = c("varx", "vary"),
     speed_in = c("speed_in"),
     gap = c()
   )
@@ -359,7 +365,8 @@ atl_check_tag <- function(data,
   # add theme
   p <- p +
     theme(
-      legend.key.height = unit(2, "cm"),
+      text = element_text(size = element_text_size),
+      legend.key.height = unit(1.5, "cm"),
       legend.position = "right",
       plot.background = element_rect(fill = "white"),
       plot.margin = unit(c(0.5, 0, 0, 0), "lines"),
@@ -375,7 +382,7 @@ atl_check_tag <- function(data,
     # save the plot if filename provided
     agg_png(
       filename = paste0(filename, ".png"),
-      width = 3840, height = 2160, units = "px", res = 300
+      width = png_width, height = png_height, units = "px", res = 300
     )
     print(p)
     dev.off()

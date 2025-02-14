@@ -47,22 +47,22 @@ bm <- atl_create_bm(data, buffer = 800)
 bm +
   geom_path(
     data = data, aes(x, y, colour = tag),
-    alpha = 0.1, show.legend = FALSE
+    linewidth = 0.5, alpha = 0.1, show.legend = FALSE
   ) +
   geom_point(
     data = data, aes(x, y, colour = tag),
-    size = 0.5, show.legend = FALSE
+    size = 0.5, alpha = 1, show.legend = FALSE
   )
 
 # plot points and tracks with viridis colour scale
 bm +
   geom_path(
     data = data, aes(x, y, colour = tag),
-    alpha = 0.1, show.legend = FALSE
+    linewidth = 0.5, alpha = 0.1, show.legend = FALSE
   ) +
   geom_point(
     data = data, aes(x, y, colour = tag),
-    size = 0.5, show.legend = FALSE
+    size = 0.5, alpha = 1, show.legend = FALSE
   ) +
   scale_color_viridis(discrete = TRUE)
 ```
@@ -82,11 +82,11 @@ bm <- atl_create_bm(data, buffer = 800)
 bm +
   geom_path(
     data = data, aes(x, y, colour = species),
-    alpha = 0.5, show.legend = FALSE
+    linewidth = 0.5, alpha = 0.5, show.legend = FALSE
   ) +
   geom_point(
     data = data, aes(x, y, color = species),
-    size = 1, show.legend = TRUE
+    size = 1, alpha = 1, show.legend = FALSE
   ) +
   scale_color_manual(
     values = atl_spec_cols(),
@@ -107,8 +107,9 @@ bm +
 
 ## Plot single plots by tag ID
 
-Work in progress! Add function to plot data with tag ID and date range as title,
-by number of base stations, var, and time, plus last N locations.
+### Template for a customizable plot of one tag
+
+Example of one tag coloured with 
 
 ```{r, fig.alt = "Points and tracks on a simple basemap", fig.align = "center"}
 # Load example data
@@ -123,13 +124,50 @@ bm <- atl_create_bm(data_subset, buffer = 800)
 # Plot points and tracks
 bm +
   geom_path(
-    data = data_subset, aes(x, y, colour = datetime),
-    alpha = 0.1, show.legend = FALSE
+    data = data_subset, aes(x, y),
+    linewidth = 0.5, alpha = 0.1, show.legend = FALSE
   ) +
   geom_point(
-    data = data_subset, aes(x, y, colour = datetime),
-    size = 0.5, show.legend = FALSE
+    data = data_subset, aes(x, y),
+    size = 0.5, alpha = 1, show.legend = FALSE
   )
+```
+
+### Simple preset plots to check the data
+
+Todo: describe options in more detail.
+
+```{r, fig.alt = "Plots of single tag to check data", fig.align = "center", fig.width = 10, fig.height = 6}
+# path to csv with filtered data
+data_path <- system.file(
+  "extdata", "watlas_data_filtered.csv",
+  package = "tools4watlas"
+)
+
+# load data
+data <- fread(data_path, yaml = TRUE)
+
+# subset bar-tailed godwit
+data <- data[species == "bar-tailed godwit"]
+
+# plot option datetime
+atl_check_tag(
+  data,
+  option = "datetime",
+  highlight_first = TRUE, highlight_last = TRUE
+)
+
+# plot option speed_in
+atl_check_tag(data, option = "speed_in")
+
+# plot option nbs
+atl_check_tag(data, option = "nbs")
+
+# plot option sd
+atl_check_tag(data, option = "sd")
+
+# plot option gap
+atl_check_tag(data, option = "gap")
 ```
 
 ## Plot heatmaps
