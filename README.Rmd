@@ -100,11 +100,11 @@ bm <- atl_create_bm(data, buffer = 800)
 bm +
   geom_path(
     data = data, aes(x, y, colour = species),
-    alpha = 0.5, show.legend = FALSE
+    linewidth = 0.5, alpha = 0.5, show.legend = FALSE
   ) +
   geom_point(
     data = data, aes(x, y, color = species),
-    size = 1, show.legend = TRUE
+    size = 1, alpha = 1, show.legend = FALSE
   ) +
   scale_color_manual(
     values = atl_spec_cols(),

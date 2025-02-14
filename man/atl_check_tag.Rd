@@ -19,7 +19,10 @@ atl_check_tag(
   point_alpha = 1,
   path_linewidth = 0.5,
   path_alpha = 0.1,
-  filename = NULL
+  element_text_size = 11,
+  filename = NULL,
+  png_width = 3840,
+  png_height = 2160
 )
 }
 \arguments{
@@ -69,9 +72,15 @@ track (default: \code{FALSE}).}
 
 \item{path_alpha}{Numeric. Transparency of the track lines (default: 0.1).}
 
+\item{element_text_size}{Numeric. Adjust size of the text.}
+
 \item{filename}{Character (or NULL). If provided, the plot is saved as a
 \code{.png} file to this path and with this name; otherwise, the function
 returns the plot.}
+
+\item{png_width}{The width of the device.}
+
+\item{png_height}{The height of the device.}
 }
 \value{
 A \code{ggplot2} object with the specified option and adjustments. If

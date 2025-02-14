@@ -109,8 +109,6 @@ bm +
 
 ### Template for a customizable plot of one tag
 
-Example of one tag coloured with 
-
 ```{r, fig.alt = "Points and tracks on a simple basemap", fig.align = "center"}
 # Load example data
 data <- data_example
