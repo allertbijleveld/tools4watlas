@@ -25,34 +25,35 @@ Imports:
     dplyr,
     ggplot2,
     ggspatial,
+    ggtext,
     glue,
     grDevices,
     lubridate,
     magrittr,
-    OpenStreetMap,
     purrr,
-    raster,
+    ragg,
     rlang,
     RMySQL,
     RSQLite,
+    scales,
     sf,
     stats,
     stringr,
     terra,
-    tidyterra
+    tidyterra,
+    viridis
 Suggests:
     knitr,
     mapview,
     mockery,
+    OpenStreetMap,
     plyr,
-    ragg,
+    raster,
     RColorBrewer,
     readxl,
     rmarkdown,
-    scales,
     scattermore,
-    testthat (>= 3.0.0),
-    viridis
+    testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3

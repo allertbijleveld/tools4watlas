@@ -19,13 +19,12 @@ knitr::opts_chunk$set(
 
  This vignette shows how to smooth and thin WATLAS data. 
 
-```{r}
+```{r, message = FALSE}
 # Packages
 library(tools4watlas)
-library(data.table)
 library(ggplot2)
 
-# Path to csv with raw data
+# Path to csv with filtered data
 data_path <- system.file(
   "extdata", "watlas_data_filtered.csv",
   package = "tools4watlas"
@@ -60,7 +59,7 @@ data <- atl_get_speed(data, type = c("in", "out"))
 
 This plot just shows one example.
 
-```{r, fig.cap = "Smoothed track (black) on top of raw track (red)"}	
+```{r, fig.cap = "Smoothed track (black) on top of raw track (red)", fig.align = "center"}	
 # subset first tag
 data_subset <- data[tag == data[1]$tag]
 
@@ -106,7 +105,7 @@ Returns the average of all columns for each time step. The additional column `n_
 thinned_aggregated <- atl_thin_data(
   data = data,
   interval = 60,
-  id_columns = "tag",
+  id_columns = c("tag", "species"),
   method = "aggregate"
 )
 
@@ -124,7 +123,7 @@ Returns one random location for each time step. The additional column `n_subsamp
 thinned_subsampled <- atl_thin_data(
   data = data,
   interval = 60,
-  id_columns = "tag",
+  id_columns = c("tag", "species"),
   method = "subsample"
 )
 

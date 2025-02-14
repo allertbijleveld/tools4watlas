@@ -1,4 +1,4 @@
-linters: linters_with_defaults() # see vignette("lintr")
+linters: linters_with_defaults(cyclocomp_linter(complexity_limit = 25L))
 encoding: "UTF-8"
 exclusions: list(
     "R/fun_auxiliary.r",

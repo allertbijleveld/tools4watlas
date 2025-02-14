@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# tools4watlas <a href="https://allertbijleveld.github.io/tools4watlas/g"><img src="man/figures/logo.png" align="right" height="300" alt="tools4watlas website" /></a>
+# tools4watlas <a href="https://allertbijleveld.github.io/tools4watlas"><img src="man/figures/logo.png" align="right" height="300" alt="tools4watlas website" /></a>
 
 <!-- badges: start -->
 
@@ -17,59 +17,81 @@ coverage](https://codecov.io/gh/allertbijleveld/tools4watlas/graph/badge.svg)](h
 
 The goal of `tools4watlas` is to provide tools for getting, processing
 and plotting WATLAS tracking data. More information on the WATLAS
-tracking system can be found in this article published in *Animal
-Biotelemetry*: [WATLAS: high-throughput and real-time tracking of many
-small birds in the Dutch Wadden
-Sea](https://doi.org/10.1186/s40317-022-00307-w).
+tracking system can be found in [Bijleveld et al. 2022. WATLAS:
+high-throughput and real-time tracking of many small birds in the Dutch
+Wadden Sea.](https://doi.org/10.1186/s40317-022-00307-w).
 
 Visit <https://www.nioz.nl/watlas> to follow tracked birds in real time
-and to read the latest project news. You can also access the news
-[archive](https://www.nioz.nl/en/about/cos/coastal-movement-ecology/shorebird-tracking/watlas-tracking-regional-movements/watlas-news-archive).
+and to read the latest project news.
 
 The package `tools4watlas` builds on the package
-[`atlastools`](https://github.com/pratikunterwegs/atlastools). A
-pipeline with coding examples for cleaning high-throughput tracking data
-with `atlastools` is presented in this article in the *Journal of Animal
-Ecology*: [A Guide to Pre-processing High-throughput Animal Tracking
-Data](https://doi.org/10.1111/1365-2656.13610).
+[`atlastools`](https://github.com/pratikunterwegs/atlastools) ([Gupte et
+al. 2021. A Guide to Pre-processing High-throughput Animal Tracking
+Data.](https://doi.org/10.1111/1365-2656.13610)). In `tools4watlas`, we
+have improved the data processing functions of
+[`atlastools`](https://github.com/pratikunterwegs/atlastools) with a
+more efficient approach using
+[`data.table`](https://rdatatable.gitlab.io/data.table/) by tag ID. This
+change enhances memory efficiency and significantly speeds up processing
+for large datasets. Additionally, `tools4watlas` includes functions to
+integrate tidal and raster data (e.g. bathymetry), and functions and
+tutorials on how to visualize movement data.
 
 ### **Documentation**
 
-`tools4watlas` is documented in detail on the [**package
-website**](https://allertbijleveld.github.io/tools4watlas/). The package
-vignettes describe the basic workflow when working with WATLAS data.
-‘Additional articles’ provide tutorials for specific analyses, and
-‘Package development’ provides insight into maintenance and contributing
-to `tools4watlas`). Some articles (indicated by an asterisk) require
-access to the local NIOZ file server.
+The `tools4watlas` package is thoroughly documented on the [**offical
+package website**](https://allertbijleveld.github.io/tools4watlas/). The
+package vignettes outline the **basic workflow** for working with WATLAS
+data, while **extended workflows** guide through more specialized
+analyses. Additionally, we provide **visualization tutorials** that
+demonstrate various methods for plotting and animating the movement
+data. The **package development** section offers insights into package
+maintenance and how to contribute to the `tools4watlas` package. To
+completely run some articles (marked with an asterisk) access to the
+local NIOZ file server is required.
 
 **Basic workflow (Vignettes)**:
 
-- Step 1: [**Load and check
+- [**Load and check
   data**](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html)
 
-- Step 2: [**Filter
+- [**Filter
   data**](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html) -
   based on spatial boundaries, temporal specifications, error estimates
   and speed.
 
-- Step 3: [**Smooth and thin
+- [**Smooth and thin
   data**](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html)
 
-- Step 4: [**Add tidal
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/add_tidal_data.html)
+**Extended workflow**:
+
+- [**Add tidal and bathymetry
+  data**\*](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html)
+
+- [**Cluster data in residency
+  patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/cluster_data_in_residency_patches.html) -
+  work in progress.
+
+- [**Add SIBES
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_SIBES_data.html) -
+  work in progress.
+
+**Visualization tutorials**:
+
+- [**Create a
+  basemap**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/create_basemap.html) -
+  (Bathymetry basemap option\*)
 
 - [**Plot
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/plot_data.html) -
-  important in between all steps to check the data.
-
-**Additional tutorials**:
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html) -
+  an important step between all stages to check the data.
 
 - [**Fast plotting with
-  ggplot2**](https://allertbijleveld.github.io/tools4watlas/articles/additional_tutorials/fast_plotting.html)
+  ggplot2**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/fast_plotting.html)
 
-- [**Add and plot bathymetry
-  data**\*](https://allertbijleveld.github.io/tools4watlas/articles/additional_tutorials/add_and_plot_bathymetry_data.html)
+- [**Animate
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/animate_data.html) -
+  work in progress.
 
 **Package development**:
 
@@ -79,12 +101,12 @@ access to the local NIOZ file server.
 
 - [**Basemap
   data**\*](https://allertbijleveld.github.io/tools4watlas/articles/package_development/basemap_data.html) -
-  describes how the base map data were extracted. Can guide user to make
-  customised base maps.
+  describes how the basemap data were extracted and can guide the user
+  in creating customized base maps.
 
 - [**tools4watlas
   logo**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_logo.html) -
-  describes how a logo is made.
+  describes how the `tools4watlas` logo is made.
 
 \**requires access to the local NIOZ file server*
 
@@ -102,11 +124,6 @@ install_github("allertbijleveld/tools4watlas")
 
 ``` r
 library(tools4watlas)
-```
-
-    ## Loading required package: data.table
-
-``` r
 library(ggplot2)
 
 # Load example data
@@ -119,11 +136,11 @@ bm <- atl_create_bm(data, buffer = 800)
 bm +
   geom_path(
     data = data, aes(x, y, colour = species),
-    alpha = 0.5, show.legend = FALSE
+    linewidth = 0.5, alpha = 0.5, show.legend = FALSE
   ) +
   geom_point(
     data = data, aes(x, y, color = species),
-    size = 1, show.legend = TRUE
+    size = 1, alpha = 1, show.legend = FALSE
   ) +
   scale_color_manual(
     values = atl_spec_cols(),
@@ -161,6 +178,7 @@ We are working on the following articles at the moment:
 
 - Animate movement data
 - Residency patch analysis
+- Connect WATLAS with SIBES data
 
 ### **Contribute**
 

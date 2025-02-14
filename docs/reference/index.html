@@ -19,15 +19,22 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
-    <li><a class="dropdown-item" href="../articles/load_and_check_data.html">Step 1: Load and check data</a></li>
-    <li><a class="dropdown-item" href="../articles/filter_data.html">Step 2: Filter data</a></li>
-    <li><a class="dropdown-item" href="../articles/smooth_and_thin_data.html">Step 3: Smooth and thin data</a></li>
-    <li><a class="dropdown-item" href="../articles/add_tidal_data.html">Step 4: Add tidal data</a></li>
-    <li><a class="dropdown-item" href="../articles/plot_data.html">Plot data</a></li>
+    <li><a class="dropdown-item" href="../articles/load_and_check_data.html">Load and check data</a></li>
+    <li><a class="dropdown-item" href="../articles/filter_data.html">Filter data</a></li>
+    <li><a class="dropdown-item" href="../articles/smooth_and_thin_data.html">Smooth and thin data</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Additional tutorials</h6></li>
-    <li><a class="dropdown-item" href="../articles/additional_tutorials/fast_plotting.html">Fast plotting</a></li>
-    <li><a class="dropdown-item" href="../articles/additional_tutorials/add_and_plot_bathymetry_data.html">Add and plot bathymetry data</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/cluster_data_in_residency_patches.html">Clustering in residency patches</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/add_SIBES_data.html">Add SIBES data</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data.html">Plot data</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_faster.html">Plot data faster</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_interactively.html">Plot data interactively</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_base_R.html">Plot data in base R - deprecated</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/animate_data.html">Animate data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
     <li><a class="dropdown-item" href="../articles/package_development/package_maintenance.html">Package maintenance</a></li>
@@ -77,6 +84,12 @@
 
         </dt>
         <dd>Create full tag ID or tag ID with specific length</dd>
+      </dl><dl><dt>
+
+          <code><a href="atl_file_path.html">atl_file_path()</a></code>
+
+        </dt>
+        <dd>Get the file path for WATLAS or GIS data based on the user's name.</dd>
       </dl></div><div class="section level2">
       <h2 id="filter-data">Filter data<a class="anchor" aria-label="anchor" href="#filter-data"></a></h2>
 
@@ -232,37 +245,13 @@
           <code><a href="atl_create_bm.html">atl_create_bm()</a></code>
 
         </dt>
-        <dd>Create a base map with customised bounding box</dd>
+        <dd>Create a basemap with customised bounding box</dd>
       </dl><dl><dt>
 
-          <code><a href="atl_plot_tag.html">atl_plot_tag()</a></code>
+          <code><a href="atl_check_tag.html">atl_check_tag()</a></code>
 
         </dt>
-        <dd>Plot track for one individual on a simple background</dd>
-      </dl><dl><dt>
-
-          <code><a href="atl_plot_tag_osm.html">atl_plot_tag_osm()</a></code>
-
-        </dt>
-        <dd>Plot track for one individual on a OpenStreetMap satellite map</dd>
-      </dl><dl><dt>
-
-          <code><a href="atl_plot_map_osm.html">atl_plot_map_osm()</a></code>
-
-        </dt>
-        <dd>Plot a map downloaded with OpenStreetMap</dd>
-      </dl><dl><dt>
-
-          <code><a href="atl_plot_rpatches.html">atl_plot_rpatches()</a></code>
-
-        </dt>
-        <dd>Add residence patches to a plot</dd>
-      </dl><dl><dt>
-
-          <code><a href="atl_plot_add_track.html">atl_plot_add_track()</a></code>
-
-        </dt>
-        <dd>Add tracks to plot from list</dd>
+        <dd>Check the data from one tag on a map</dd>
       </dl><dl><dt>
 
           <code><a href="atl_t_col.html">atl_t_col()</a></code>
@@ -339,13 +328,54 @@
 
         </dt>
         <dd>Lake on Griend</dd>
+      </dl></div><div class="section level2">
+      <h2 id="deprecated">Deprecated<a class="anchor" aria-label="anchor" href="#deprecated"></a></h2>
+
+      <div class="section-desc"><p>Functions that a not further developed</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="atl_plot_tag.html">atl_plot_tag()</a></code>
+
+        </dt>
+        <dd>Plot track for one individual on a simple background</dd>
+      </dl><dl><dt>
+
+          <code><a href="atl_plot_tag_osm.html">atl_plot_tag_osm()</a></code>
+
+        </dt>
+        <dd>Plot track for one individual on a OpenStreetMap satellite map</dd>
+      </dl><dl><dt>
+
+          <code><a href="atl_plot_map_osm.html">atl_plot_map_osm()</a></code>
+
+        </dt>
+        <dd>Plot a map downloaded with OpenStreetMap</dd>
+      </dl><dl><dt>
+
+          <code><a href="atl_plot_rpatches.html">atl_plot_rpatches()</a></code>
+
+        </dt>
+        <dd>Add residence patches to a plot</dd>
+      </dl><dl><dt>
+
+          <code><a href="atl_plot_add_track.html">atl_plot_add_track()</a></code>
+
+        </dt>
+        <dd>Add tracks to plot from list</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Allert Bijleveld, Pratik Gupte, Christine Beardsworth, Johannes Krietsch.</p>
+  <p>Developed by <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>, <a href="https://github.com/pratikunterwegs" class="external-link">Pratik Gupte</a>, <a href="https://github.com/CBeardsworth" class="external-link">Christine Beardsworth</a>, <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

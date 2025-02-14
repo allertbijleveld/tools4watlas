@@ -41,15 +41,22 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
-    <li><a class="dropdown-item" href="../../articles/load_and_check_data.html">Step 1: Load and check data</a></li>
-    <li><a class="dropdown-item" href="../../articles/filter_data.html">Step 2: Filter data</a></li>
-    <li><a class="dropdown-item" href="../../articles/smooth_and_thin_data.html">Step 3: Smooth and thin data</a></li>
-    <li><a class="dropdown-item" href="../../articles/add_tidal_data.html">Step 4: Add tidal data</a></li>
-    <li><a class="dropdown-item" href="../../articles/plot_data.html">Plot data</a></li>
+    <li><a class="dropdown-item" href="../../articles/load_and_check_data.html">Load and check data</a></li>
+    <li><a class="dropdown-item" href="../../articles/filter_data.html">Filter data</a></li>
+    <li><a class="dropdown-item" href="../../articles/smooth_and_thin_data.html">Smooth and thin data</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Additional tutorials</h6></li>
-    <li><a class="dropdown-item" href="../../articles/additional_tutorials/fast_plotting.html">Fast plotting</a></li>
-    <li><a class="dropdown-item" href="../../articles/additional_tutorials/add_and_plot_bathymetry_data.html">Add and plot bathymetry data</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
+    <li><a class="dropdown-item" href="../../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
+    <li><a class="dropdown-item" href="../../articles/extended_workflow/cluster_data_in_residency_patches.html">Clustering in residency patches</a></li>
+    <li><a class="dropdown-item" href="../../articles/extended_workflow/add_SIBES_data.html">Add SIBES data</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
+    <li><a class="dropdown-item" href="../../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
+    <li><a class="dropdown-item" href="../../articles/visualization_tutorials/plot_data.html">Plot data</a></li>
+    <li><a class="dropdown-item" href="../../articles/visualization_tutorials/plot_data_faster.html">Plot data faster</a></li>
+    <li><a class="dropdown-item" href="../../articles/visualization_tutorials/plot_data_interactively.html">Plot data interactively</a></li>
+    <li><a class="dropdown-item" href="../../articles/visualization_tutorials/plot_data_base_R.html">Plot data in base R - deprecated</a></li>
+    <li><a class="dropdown-item" href="../../articles/visualization_tutorials/animate_data.html">Animate data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
     <li><a class="dropdown-item" href="../../articles/package_development/package_maintenance.html">Package maintenance</a></li>
@@ -95,7 +102,7 @@ allowing fast plotting. Customized basemap data could be created in a
 similar way and could additional contain buildings, roads, lakes, rivers
 etc. All data can be found in the “Birds, fish ’n chips” SharePoint
 folder: <code>Documents/data/GIS/shapefiles/</code>. To run the script
-set the file path (<code>wd</code>) to the local copy of the folder on
+set the file path (<code>fp</code>) to the local copy of the folder on
 your computer.</p>
 <p>The <code>OpenStreetMap</code> land polygon can also be downloaded
 from <a href="https://osmdata.openstreetmap.de/data/land-polygons.html" class="external-link"><code>osmdata</code></a>
@@ -113,8 +120,8 @@ and Friesland) can be downloaded from <a href="https://download.geofabrik.de/eur
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/rnaturalearth/" class="external-link">rnaturalearth</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/rnaturalearthdata/" class="external-link">rnaturalearthdata</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># path to folder with local shapefiles</span></span>
-<span><span class="va">wd</span> <span class="op">&lt;-</span> <span class="st">"C:/Users/jkrietsch/OneDrive - NIOZ/Documents/map_data/"</span></span></code></pre></div>
+<span><span class="co"># file path to Birds, fish 'n chips GIS/shapefiles folder</span></span>
+<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_file_path.html">atl_file_path</a></span><span class="op">(</span><span class="st">"shapefiles"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="define-a-bounding-box-of-the-dutch-wadden-sea">Define a bounding box of the Dutch Wadden Sea<a class="anchor" aria-label="anchor" href="#define-a-bounding-box-of-the-dutch-wadden-sea"></a>
@@ -156,7 +163,7 @@ Bounding box around the Dutch Wadden Sea
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load osm land polygon</span></span>
 <span><span class="va">land_</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
-<span>  <span class="va">wd</span>, <span class="st">"open_street_map/land-polygons-complete-4326/land_polygons.shp"</span></span>
+<span>  <span class="va">fp</span>, <span class="st">"open_street_map/land-polygons-complete-4326/land_polygons.shp"</span></span>
 <span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="fl">32631</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -200,7 +207,7 @@ Wadden Sea, otherwise <em>fclass</em> also includes other wetlands.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load polygon of Wadden sea</span></span>
 <span><span class="va">wadden_sea</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
-<span>  <span class="va">wd</span>, <span class="st">"wadden_area_legally/pkb_gebied_derde_nota_waddenzee.shp"</span></span>
+<span>  <span class="va">fp</span>, <span class="st">"wadden_area_legally/pkb_gebied_derde_nota_waddenzee.shp"</span></span>
 <span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="fl">32631</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -228,12 +235,12 @@ Polygon of the Dutch Wadden Sea
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Friesland</span></span>
 <span><span class="va">lakes_fr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
-<span>  <span class="va">wd</span>, <span class="st">"open_street_map/friesland-latest-free.shp/gis_osm_water_a_free_1.shp"</span></span>
+<span>  <span class="va">fp</span>, <span class="st">"open_street_map/friesland-latest-free.shp/gis_osm_water_a_free_1.shp"</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># North Holland</span></span>
 <span><span class="va">lakes_nh</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
-<span>  <span class="va">wd</span>, <span class="st">"open_street_map/noord-holland-latest-free.shp/gis_osm_water_a_free_1.shp"</span></span>
+<span>  <span class="va">fp</span>, <span class="st">"open_street_map/noord-holland-latest-free.shp/gis_osm_water_a_free_1.shp"</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># merge both and change projection</span></span>
@@ -306,7 +313,7 @@ as project.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Allert Bijleveld, Pratik Gupte, Christine Beardsworth, Johannes Krietsch.</p>
+  <p>Developed by <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>, <a href="https://github.com/pratikunterwegs" class="external-link">Pratik Gupte</a>, <a href="https://github.com/CBeardsworth" class="external-link">Christine Beardsworth</a>, <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

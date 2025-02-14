@@ -1,0 +1,230 @@
+---
+title: "Plot data"
+author: "Johannes Krietsch"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Plot data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  out.width = "100%",
+  fig.width = 8.89, fig.height = 5,
+  dpi = 300,
+  dev = "ragg_png",
+  message = FALSE
+)
+```
+
+This article shows different ways on how to plot WATLAS data. In this example we use a simple basemap with the extend of the data, but any other type could be used too (see article: [Create a basemap](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/create_basemap.html)).
+
+It first presents some examples of how to plot data grouped by tag ID, then by species and then how to make single plots with different options to quickly check the data, and how to plot heatmaps of the data. These examples can be customized as desired and should jsut give a quick starting point.
+
+#### Load packages
+
+```{r}
+# Packages
+library(tools4watlas)
+library(ggplot2)
+library(viridis)
+library(scales)
+```
+
+## Plot grouped by tag ID
+
+Simply colour points and the path with tag ID.
+
+```{r, fig.alt = "Points and tracks on a simple basemap by tag ID", fig.align = "center"}
+# load example data
+data <- data_example
+
+# create basemap
+bm <- atl_create_bm(data, buffer = 800)
+
+# plot points and tracks with standard ggplot colours
+bm +
+  geom_path(
+    data = data, aes(x, y, colour = tag),
+    linewidth = 0.5, alpha = 0.1, show.legend = FALSE
+  ) +
+  geom_point(
+    data = data, aes(x, y, colour = tag),
+    size = 0.5, alpha = 1, show.legend = FALSE
+  )
+
+# plot points and tracks with viridis colour scale
+bm +
+  geom_path(
+    data = data, aes(x, y, colour = tag),
+    linewidth = 0.5, alpha = 0.1, show.legend = FALSE
+  ) +
+  geom_point(
+    data = data, aes(x, y, colour = tag),
+    size = 0.5, alpha = 1, show.legend = FALSE
+  ) +
+  scale_color_viridis(discrete = TRUE)
+```
+
+## Plot grouped by species
+
+`tools4watlas` includes specific species colours in the atl_spec_cols() function and species labels in the atl_spec_labs() function.
+
+```{r, fig.alt = "Points and tracks of multiple species on a basemap", fig.align = "center", fig.width = 7.87, fig.height = 5}
+# load example data
+data <- data_example
+
+# create basemap
+bm <- atl_create_bm(data, buffer = 800)
+
+# Plot points and tracks
+bm +
+  geom_path(
+    data = data, aes(x, y, colour = species),
+    linewidth = 0.5, alpha = 0.5, show.legend = FALSE
+  ) +
+  geom_point(
+    data = data, aes(x, y, color = species),
+    size = 1, alpha = 1, show.legend = FALSE
+  ) +
+  scale_color_manual(
+    values = atl_spec_cols(),
+    labels = atl_spec_labs("multiline"),
+    name = ""
+  ) +
+  guides(colour = guide_legend(
+    nrow = 1, override.aes = list(size = 7, pch = 16, alpha = 1)
+  )) +
+  theme(
+    legend.position = "top",
+    legend.justification = "center",
+    legend.key = element_blank(),
+    legend.background = element_rect(fill = "transparent")
+  )
+```
+
+
+## Plot single plots by tag ID
+
+### Template for a customizable plot of one tag
+
+```{r, fig.alt = "Points and tracks on a simple basemap", fig.align = "center"}
+# Load example data
+data <- data_example
+
+# Subset bar-tailed godwit
+data_subset <- data[species == "bar-tailed godwit"]
+
+# create basemap
+bm <- atl_create_bm(data_subset, buffer = 800)
+
+# Plot points and tracks
+bm +
+  geom_path(
+    data = data_subset, aes(x, y),
+    linewidth = 0.5, alpha = 0.1, show.legend = FALSE
+  ) +
+  geom_point(
+    data = data_subset, aes(x, y),
+    size = 0.5, alpha = 1, show.legend = FALSE
+  )
+```
+
+### Simple preset plots to check the data
+
+Todo: describe options in more detail.
+
+```{r, fig.alt = "Plots of single tag to check data", fig.align = "center", fig.width = 10, fig.height = 6}
+# path to csv with filtered data
+data_path <- system.file(
+  "extdata", "watlas_data_filtered.csv",
+  package = "tools4watlas"
+)
+
+# load data
+data <- fread(data_path, yaml = TRUE)
+
+# subset bar-tailed godwit
+data <- data[species == "bar-tailed godwit"]
+
+# plot option datetime
+atl_check_tag(
+  data,
+  option = "datetime",
+  highlight_first = TRUE, highlight_last = TRUE
+)
+
+# plot option speed_in
+atl_check_tag(data, option = "speed_in")
+
+# plot option nbs
+atl_check_tag(data, option = "nbs")
+
+# plot option sd
+atl_check_tag(data, option = "sd")
+
+# plot option gap
+atl_check_tag(data, option = "gap")
+```
+
+## Plot heatmaps
+
+Here we round the data (e.g. to 200 m) and then plot the number of positions per location. 
+
+### All positions
+
+This is a quick way to get an overview of the data.
+
+```{r, fig.alt = "Heatmap of all positions", fig.align = "center", fig.width = 8.89, fig.height = 4.5}
+# load example data
+data <- data_example
+
+# create basemap
+bm <- atl_create_bm(data, buffer = 800)
+
+# round data to 200 m grid cells
+data[, c("x_round", "y_round") := list(
+  plyr::round_any(x, 200),
+  plyr::round_any(y, 200)
+)]
+
+# N by location
+data_subset <- data[, .N, by = c("x_round", "y_round")]
+
+# plot heatmap
+bm +
+  geom_tile(
+    data = data_subset, aes(x_round, y_round, fill = N),
+    linewidth = 0.1, show.legend = TRUE
+  ) +
+  scale_fill_viridis(
+    option = "A", discrete = FALSE, trans = "log10", name = "N positions",
+    breaks = trans_breaks("log10", function(x) 10^x),
+    labels = trans_format("log10", math_format(10^.x)),
+    direction = -1
+  )
+```
+
+### Positions by species
+
+We group the data by species (or whatever group we desire) and then make a plot for each of those groups.
+
+```{r, fig.alt = "Heatmap of all positions by species", fig.align = "center", warning=FALSE}
+# N by location and species
+data_subset <- data[, .N, by = c("x_round", "y_round", "species")]
+
+# plot heatmap by species
+bm +
+  geom_tile(
+    data = data_subset, aes(x_round, y_round, fill = N),
+    linewidth = 0.1, show.legend = TRUE
+  ) +
+  scale_fill_viridis(
+    option = "A", discrete = FALSE, trans = "log10", name = "N positions",
+    breaks = trans_breaks("log10", function(x) 10^x),
+    labels = trans_format("log10", math_format(10^.x)),
+    direction = -1
+  ) +
+  facet_wrap(~species, labeller = as_labeller(atl_spec_labs("singleline")))
+```

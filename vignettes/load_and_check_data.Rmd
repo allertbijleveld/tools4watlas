@@ -26,7 +26,6 @@ knitr::opts_chunk$set(
 ```{r}
 # Packages
 library(tools4watlas)
-library(data.table)
 library(ggplot2)
 library(scales)
 library(viridis)
@@ -188,7 +187,7 @@ We can also add other metadata by merging whatever column we want (e.g. color ri
 # join with metal rings, color rings and catch location
 all_tags[, tag := as.character(tag)]
 data[all_tags, on = "tag", `:=`(
-  rings = i.rings, 
+  rings = i.rings,
   crc = i.crc,
   catch_location = i.catch_location
 )]
@@ -212,7 +211,7 @@ fwrite(data, file = "../inst/extdata/watlas_data_raw.csv", yaml = TRUE)
 
 Here we simply check for how many individuals we have data and how many positions by tag and date we have. 
 
-```{r, fig.cap = "Number of positions per day by tag", fig.width = 7, fig.height = 4}
+```{r, fig.cap = "Number of positions per day by tag", fig.width = 7, fig.height = 4, fig.align = "center"}
 # Load data
 data <- fread("../inst/extdata/watlas_data_raw.csv", yaml = TRUE)
 
@@ -251,23 +250,24 @@ ggplot(data_subset, aes(x = date, y = tag, fill = N)) +
 Now we want to see the data on a map. With large datasets it is convenient to plot heatmaps, as plotting for example 40 million points would result in a lot of over plotting and makes the plotting slow. If the dataset is small, one can obviously also plot the data by tag number or in other ways (see vignette plotting data).
 
 
-```{r, fig.cap = "Heatmap of all positions", fig.width = 7, fig.height = 4}
+```{r, fig.cap = "Heatmap of all positions", fig.width = 7, fig.height = 4, fig.align = "center"}
 
-# Make a basemap with the extent of the data
-bm <- atl_create_bm(data, buffer = 1000)
+# create basemap
+bm <- atl_create_bm(data, buffer = 800)
 
-# Round data to 200 m grid cells
-data_heatmap <- copy(data)
-data_heatmap <- data_heatmap[, c("x_round", "y_round") := list(
+# round data to 200 m grid cells
+data[, c("x_round", "y_round") := list(
   plyr::round_any(x, 200),
   plyr::round_any(y, 200)
 )]
-data_heatmap <- data_heatmap[, .N, by = c("x_round", "y_round")]
 
-# Plot heatmap
+# N by location
+data_subset <- data[, .N, by = c("x_round", "y_round")]
+
+# plot heatmap
 bm +
   geom_tile(
-    data = data_heatmap, aes(x_round, y_round, fill = N),
+    data = data_subset, aes(x_round, y_round, fill = N),
     linewidth = 0.1, show.legend = TRUE
   ) +
   scale_fill_viridis(
