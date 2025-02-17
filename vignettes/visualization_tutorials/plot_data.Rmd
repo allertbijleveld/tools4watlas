@@ -162,10 +162,10 @@ atl_check_tag(data, option = "speed_in")
 atl_check_tag(data, option = "nbs")
 
 # plot option sd
-atl_check_tag(data, option = "sd")
+atl_check_tag(data, option = "var")
 
 # plot option gap
-atl_check_tag(data, option = "gap")
+atl_check_tag(data, option = "gap", scale_trans = "log")
 ```
 
 ## Plot heatmaps

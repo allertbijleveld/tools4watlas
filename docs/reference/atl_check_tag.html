@@ -83,8 +83,10 @@ png file.</p>
 <span>  buffer <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  asp <span class="op">=</span> <span class="st">"16:9"</span>,</span>
 <span>  option <span class="op">=</span> <span class="st">"datetime"</span>,</span>
-<span>  viridis_option <span class="op">=</span> <span class="st">"A"</span>,</span>
-<span>  viridis_direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
+<span>  scale_option <span class="op">=</span> <span class="st">"A"</span>,</span>
+<span>  scale_direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
+<span>  scale_trans <span class="op">=</span> <span class="st">"identity"</span>,</span>
+<span>  scale_max <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  first_n <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  last_n <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  highlight_first <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -115,28 +117,41 @@ the plot (default: 1000).</p></dd>
 
 
 <dt id="arg-asp">asp<a class="anchor" aria-label="anchor" href="#arg-asp"></a></dt>
-<dd><p>Character. The aspect ratio of the plot (default: <code>"16:9"</code>).</p></dd>
+<dd><p>The aspect ratio of the plot (default: <code>"16:9"</code>).</p></dd>
 
 
 <dt id="arg-option">option<a class="anchor" aria-label="anchor" href="#arg-option"></a></dt>
-<dd><p>Character. Determines the color mapping variable. Options are:</p><ul><li><p><code>"datetime"</code>:</p></li>
-<li><p><code>"nbs"</code>:</p></li>
-<li><p><code>"sd"</code>:</p></li>
-<li><p><code>"speed_in"</code>:</p></li>
-<li><p><code>"gap"</code>:</p></li>
+<dd><p>Determines the color mapping variable. Options are:</p><ul><li><p><code>"datetime"</code>: Datetime along the track</p></li>
+<li><p><code>"nbs"</code>: Number of receiver (base) stations that contributed to the
+localization</p></li>
+<li><p><code>"var"</code>: Error as maximal variance of varx and vary</p></li>
+<li><p><code>"speed_in"</code>: Speed in m/s</p></li>
+<li><p><code>"gap"</code>: Gaps coloured by time and as point size</p></li>
 </ul></dd>
 
 
-<dt id="arg-viridis-option">viridis_option<a class="anchor" aria-label="anchor" href="#arg-viridis-option"></a></dt>
+<dt id="arg-scale-option">scale_option<a class="anchor" aria-label="anchor" href="#arg-scale-option"></a></dt>
 <dd><p>Character. The color scheme option from <code>viridis</code>
 (default: <code>"A"</code>). See
 https://search.r-project.org/CRAN/refmans/viridisLite/html/viridis.html
 for all options (A-H).</p></dd>
 
 
-<dt id="arg-viridis-direction">viridis_direction<a class="anchor" aria-label="anchor" href="#arg-viridis-direction"></a></dt>
-<dd><p>Numeric. Direction of the viridis color scale
+<dt id="arg-scale-direction">scale_direction<a class="anchor" aria-label="anchor" href="#arg-scale-direction"></a></dt>
+<dd><p>Numeric. Direction of the color scale
 (-1 reverses, default: -1).</p></dd>
+
+
+<dt id="arg-scale-trans">scale_trans<a class="anchor" aria-label="anchor" href="#arg-scale-trans"></a></dt>
+<dd><p>Transformation of the scale. Default is "identity",
+(no transformation), could be e.g. "log", "log10" or "sqrt".
+See scale_*_trans() for all options.</p></dd>
+
+
+<dt id="arg-scale-max">scale_max<a class="anchor" aria-label="anchor" href="#arg-scale-max"></a></dt>
+<dd><p>If set, determines the max value of the scale for options:
+nbs (numeric), var (numberic), speed_in (numeric m/s), gap
+(numeric in seconds). Everything above the max value will get the max color.</p></dd>
 
 
 <dt id="arg-first-n">first_n<a class="anchor" aria-label="anchor" href="#arg-first-n"></a></dt>
@@ -160,7 +175,7 @@ track (default: <code>FALSE</code>).</p></dd>
 
 
 <dt id="arg-point-size">point_size<a class="anchor" aria-label="anchor" href="#arg-point-size"></a></dt>
-<dd><p>Numeric. The size of the data points (default: 0.5).</p></dd>
+<dd><p>The size of the data points (default: 0.5).</p></dd>
 
 
 <dt id="arg-point-alpha">point_alpha<a class="anchor" aria-label="anchor" href="#arg-point-alpha"></a></dt>
@@ -173,11 +188,11 @@ track (default: <code>FALSE</code>).</p></dd>
 
 
 <dt id="arg-path-alpha">path_alpha<a class="anchor" aria-label="anchor" href="#arg-path-alpha"></a></dt>
-<dd><p>Numeric. Transparency of the track lines (default: 0.1).</p></dd>
+<dd><p>Transparency of the track lines (default: 0.1).</p></dd>
 
 
 <dt id="arg-element-text-size">element_text_size<a class="anchor" aria-label="anchor" href="#arg-element-text-size"></a></dt>
-<dd><p>Numeric. Adjust size of the text.</p></dd>
+<dd><p>Adjust size of the text.</p></dd>
 
 
 <dt id="arg-filename">filename<a class="anchor" aria-label="anchor" href="#arg-filename"></a></dt>
@@ -227,7 +242,7 @@ being returned.</p>
 <span class="r-plt img"><img src="atl_check_tag-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">atl_check_tag</span><span class="op">(</span><span class="va">data</span>, option <span class="op">=</span> <span class="st">"nbs"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="atl_check_tag-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">atl_check_tag</span><span class="op">(</span><span class="va">data</span>, option <span class="op">=</span> <span class="st">"sd"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">atl_check_tag</span><span class="op">(</span><span class="va">data</span>, option <span class="op">=</span> <span class="st">"var"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="atl_check_tag-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">atl_check_tag</span><span class="op">(</span><span class="va">data</span>, option <span class="op">=</span> <span class="st">"speed_in"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="atl_check_tag-4.png" alt="" width="700" height="433"></span>

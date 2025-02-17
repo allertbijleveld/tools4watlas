@@ -75,9 +75,9 @@ atl_as_sf <- function(data,
   }
 
   # Ensure x and y are character strings
-  x_col <- as.character(substitute(x))
-  y_col <- as.character(substitute(y))
-  tag_col <- as.character(substitute(tag))
+  x_col <- as.character(x)
+  y_col <- as.character(y)
+  tag_col <- as.character(tag)
   tag_col_group <- rlang::ensym(tag)
 
   # Check if columns exist in the data

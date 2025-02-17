@@ -9,8 +9,10 @@ atl_check_tag(
   buffer = 1000,
   asp = "16:9",
   option = "datetime",
-  viridis_option = "A",
-  viridis_direction = -1,
+  scale_option = "A",
+  scale_direction = -1,
+  scale_trans = "identity",
+  scale_max = NULL,
   first_n = NULL,
   last_n = NULL,
   highlight_first = FALSE,
@@ -32,24 +34,33 @@ columns: \code{"tag"}, \code{"x"}, \code{"y"}, \code{"time"}, and \code{"datetim
 \item{buffer}{Numeric. The buffer size in meters around the data points in
 the plot (default: 1000).}
 
-\item{asp}{Character. The aspect ratio of the plot (default: \code{"16:9"}).}
+\item{asp}{The aspect ratio of the plot (default: \code{"16:9"}).}
 
-\item{option}{Character. Determines the color mapping variable. Options are:
+\item{option}{Determines the color mapping variable. Options are:
 \itemize{
-\item \code{"datetime"}:
-\item \code{"nbs"}:
-\item \code{"sd"}:
-\item \code{"speed_in"}:
-\item \code{"gap"}:
+\item \code{"datetime"}: Datetime along the track
+\item \code{"nbs"}: Number of receiver (base) stations that contributed to the
+localization
+\item \code{"var"}: Error as maximal variance of varx and vary
+\item \code{"speed_in"}: Speed in m/s
+\item \code{"gap"}: Gaps coloured by time and as point size
 }}
 
-\item{viridis_option}{Character. The color scheme option from \code{viridis}
+\item{scale_option}{Character. The color scheme option from \code{viridis}
 (default: \code{"A"}). See
 https://search.r-project.org/CRAN/refmans/viridisLite/html/viridis.html
 for all options (A-H).}
 
-\item{viridis_direction}{Numeric. Direction of the viridis color scale
+\item{scale_direction}{Numeric. Direction of the color scale
 (-1 reverses, default: -1).}
+
+\item{scale_trans}{Transformation of the scale. Default is "identity",
+(no transformation), could be e.g. "log", "log10" or "sqrt".
+See scale_*_trans() for all options.}
+
+\item{scale_max}{If set, determines the max value of the scale for options:
+nbs (numeric), var (numberic), speed_in (numeric m/s), gap
+(numeric in seconds). Everything above the max value will get the max color.}
 
 \item{first_n}{Numeric (or NULL). If provided, only the first \code{n} locations
 are shown.}
@@ -63,16 +74,16 @@ track (default: \code{FALSE}).}
 \item{highlight_last}{Logical. If \code{TRUE}, highlights the last point in the
 track (default: \code{FALSE}).}
 
-\item{point_size}{Numeric. The size of the data points (default: 0.5).}
+\item{point_size}{The size of the data points (default: 0.5).}
 
 \item{point_alpha}{Numeric. Transparency of the data points (default: 1).}
 
 \item{path_linewidth}{Numeric. The width of the connecting track lines
 (default: 0.5).}
 
-\item{path_alpha}{Numeric. Transparency of the track lines (default: 0.1).}
+\item{path_alpha}{Transparency of the track lines (default: 0.1).}
 
-\item{element_text_size}{Numeric. Adjust size of the text.}
+\item{element_text_size}{Adjust size of the text.}
 
 \item{filename}{Character (or NULL). If provided, the plot is saved as a
 \code{.png} file to this path and with this name; otherwise, the function
@@ -118,7 +129,7 @@ atl_check_tag(
   highlight_first = TRUE, highlight_last = TRUE
 )
 atl_check_tag(data, option = "nbs")
-atl_check_tag(data, option = "sd")
+atl_check_tag(data, option = "var")
 atl_check_tag(data, option = "speed_in")
 atl_check_tag(data, option = "gap")
 }

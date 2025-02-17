@@ -140,7 +140,7 @@ bm +
   ) +
   geom_point(
     data = data, aes(x, y, color = species),
-    size = 1, alpha = 1, show.legend = FALSE
+    size = 1, alpha = 1, show.legend = TRUE
   ) +
   scale_color_manual(
     values = atl_spec_cols(),
