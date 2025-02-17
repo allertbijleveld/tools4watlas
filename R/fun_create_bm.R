@@ -83,12 +83,12 @@ atl_create_bm <- function(data = NULL,
 
   # Create bounding box
   if (projection == sf::st_crs(32631)) {
-    bbox <- atl_bbox(data, asp = asp, buffer = buffer)
+    bbox <- atl_bbox(data, x = x, y = y, asp = asp, buffer = buffer)
   } else {
     # Create sf and change projection if data were not UTM31
-    d_sf <- atl_as_sf(data, tag = NULL, x, y, projection = projection)
+    d_sf <- atl_as_sf(data, tag = NULL, x = x, y = y, projection = projection)
     d_sf <- sf::st_transform(d_sf, crs = sf::st_crs(32631))
-    bbox <- atl_bbox(d_sf, asp = asp, buffer = buffer)
+    bbox <- atl_bbox(d_sf, x = x, y = y, asp = asp, buffer = buffer)
   }
 
   if (option == "batymetry") {
