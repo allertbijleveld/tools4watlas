@@ -112,6 +112,15 @@ atl_check_tag <- function(data,
   tag <- first_n_pos <- last_n_pos <- is_first <- is_last <- gap <- NULL
   datetime <- gap_in <- var <- varx <- vary <- x <- y <- nbs <- speed_in <- NULL
 
+  # check valid option
+  valid_options <- c("datetime", "nbs", "var", "speed_in", "gap")
+  if (!(option %in% valid_options)) {
+    stop(paste(
+      "Invalid option. Choose one of:",
+      paste(valid_options, collapse = ", ")
+    ))
+  }
+
   # check data structure
   required_columns <- c("tag", "x", "y", "time", "datetime")
   option_columns <- list(
