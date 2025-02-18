@@ -100,6 +100,32 @@ atl_spec_labs <- function(option = "multiline") {
   }
 }
 
+#' Format time in easy readable interval
+#'
+#' This function converts a given time (in seconds) into a easy readable format
+#' with days, hours, minutes, or seconds.
+#'
+#' @author Johannes Krietsch
+#' @param time Time in seconds (numeric or vector of numeric values).
+#'
+#' @returns A character vector with the formatted time intervals.
+#' @export
+#'
+#' @examples
+#' library(tools4watlas)
+#' atl_format_time(3600)
+#' atl_format_time(c(120, 3600, 86400))
+atl_format_time <- function(time) {
+  vapply(time, function(t) {
+    dplyr::case_when(
+      t >= 86400 ~ paste(round(t / 86400, 1), "days"), # more than 1 day
+      t >= 3600 ~ paste(round(t / 3600, 1), "hours"),  # more than 1 hour
+      t >= 60 ~ paste(round(t / 60, 1), "min"),        # more than 1 minute
+      TRUE ~ paste(round(t, 1), "sec")                 # less than 1 minute
+    )
+  }, character(1))
+}
+
 #' Make a colour transparent
 #'
 #' A functionm that will make the provided colour transparent.
