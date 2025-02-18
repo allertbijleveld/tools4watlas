@@ -25,8 +25,6 @@
 #' @param raster_data An `SpatRaster` (tif opened with `terra::rast()` of
 #' bathymetry data.
 #' @param scalebar TRUE or FALSE for adding a scalebar to the plot.
-#' @param sc_dist Scale bar distance. Optional; calculated automatically if
-#'   omitted.
 #' @param sc_location A character string specifying the location of the scale
 #'   bar. Default is `"br"` (bottom right).
 #' @param sc_cex Numeric value for the scale bar text size. Default is `0.7`.
@@ -60,12 +58,11 @@ atl_create_bm <- function(data = NULL,
                           lakes_data = tools4watlas::lakes,
                           raster_data,
                           scalebar = TRUE,
-                          sc_dist,
                           sc_location = "br",
                           sc_cex = 0.7,
-                          sc_height = unit(0.25, "cm"),
-                          sc_pad_x = unit(0.25, "cm"),
-                          sc_pad_y = unit(0.5, "cm"),
+                          sc_height = 0.25,
+                          sc_pad_x = 0.25,
+                          sc_pad_y = 0.5,
                           projection = sf::st_crs(32631)) {
   if (is.null(data) || nrow(data) == 0) {
     # If no data make map around Griend
@@ -148,10 +145,10 @@ atl_create_bm <- function(data = NULL,
     bm <- bm +
       ggspatial::annotation_scale(
         aes(location = "br"),
-        text_cex = 0.7,
-        height = unit(0.25, "cm"),
-        pad_x = unit(0.25, "cm"),
-        pad_y = unit(0.5, "cm")
+        text_cex = sc_cex,
+        height = unit(sc_height, "cm"),
+        pad_x = unit(sc_pad_x, "cm"),
+        pad_y = unit(sc_pad_y, "cm")
       )
   }
 
