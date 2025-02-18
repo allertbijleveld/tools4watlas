@@ -11,19 +11,26 @@
 #'   columns: `"tag"`, `"x"`, `"y"`, `"time"`, and `"datetime"`.
 #' @param buffer Numeric. The buffer size in meters around the data points in
 #' the plot (default: 1000).
-#' @param asp Character. The aspect ratio of the plot (default: `"16:9"`).
-#' @param option Character. Determines the color mapping variable. Options are:
-#'   - `"datetime"`:
-#'   - `"nbs"`:
-#'   - `"sd"`:
-#'   - `"speed_in"`:
-#'   - `"gap"`:
-#' @param viridis_option Character. The color scheme option from `viridis`
+#' @param asp The aspect ratio of the plot (default: `"16:9"`).
+#' @param option Determines the color mapping variable. Options are:
+#'   - `"datetime"`: Datetime along the track
+#'   - `"nbs"`: Number of receiver (base) stations that contributed to the
+#'   localization
+#'   - `"var"`: Error as maximal variance of varx and vary
+#'   - `"speed_in"`: Speed in m/s
+#'   - `"gap"`: Gaps coloured by time and as point size
+#' @param scale_option Character. The color scheme option from `viridis`
 #'   (default: `"A"`). See
 #'    https://search.r-project.org/CRAN/refmans/viridisLite/html/viridis.html
 #'    for all options (A-H).
-#' @param viridis_direction Numeric. Direction of the viridis color scale
+#' @param scale_direction Numeric. Direction of the color scale
 #'   (-1 reverses, default: -1).
+#' @param scale_trans Transformation of the scale. Default is "identity",
+#' (no transformation), could be e.g. "log", "log10" or "sqrt".
+#' See scale_*_trans() for all options.
+#' @param scale_max If set, determines the max value of the scale for options:
+#' nbs (numeric), var (numberic), speed_in (numeric m/s), gap
+#' (numeric in seconds). Everything above the max value will get the max color.
 #' @param first_n Numeric (or NULL). If provided, only the first `n` locations
 #'   are shown.
 #' @param last_n Numeric (or NULL). If provided, only the last `n` locations
@@ -32,12 +39,12 @@
 #'   track (default: `FALSE`).
 #' @param highlight_last Logical. If `TRUE`, highlights the last point in the
 #'   track (default: `FALSE`).
-#' @param point_size Numeric. The size of the data points (default: 0.5).
+#' @param point_size The size of the data points (default: 0.5).
 #' @param point_alpha Numeric. Transparency of the data points (default: 1).
 #' @param path_linewidth Numeric. The width of the connecting track lines
 #'   (default: 0.5).
-#' @param path_alpha Numeric. Transparency of the track lines (default: 0.1).
-#' @param element_text_size Numeric. Adjust size of the text.
+#' @param path_alpha Transparency of the track lines (default: 0.1).
+#' @param element_text_size Adjust size of the text.
 #' @param filename Character (or NULL). If provided, the plot is saved as a
 #'   `.png` file to this path and with this name; otherwise, the function
 #'   returns the plot.
@@ -77,7 +84,7 @@
 #'   highlight_first = TRUE, highlight_last = TRUE
 #' )
 #' atl_check_tag(data, option = "nbs")
-#' atl_check_tag(data, option = "sd")
+#' atl_check_tag(data, option = "var")
 #' atl_check_tag(data, option = "speed_in")
 #' atl_check_tag(data, option = "gap")
 #' @export
@@ -85,8 +92,10 @@ atl_check_tag <- function(data,
                           buffer = 1000,
                           asp = "16:9",
                           option = "datetime",
-                          viridis_option = "A",
-                          viridis_direction = -1,
+                          scale_option = "A",
+                          scale_direction = -1,
+                          scale_trans = "identity",
+                          scale_max = NULL,
                           first_n = NULL,
                           last_n = NULL,
                           highlight_first = FALSE,
@@ -101,14 +110,23 @@ atl_check_tag <- function(data,
                           png_height = 2160) {
   # global variables
   tag <- first_n_pos <- last_n_pos <- is_first <- is_last <- gap <- NULL
-  datetime <- gap_in <- sd <- varx <- vary <- x <- y <- nbs <- speed_in <- NULL
+  datetime <- gap_in <- var <- varx <- vary <- x <- y <- nbs <- speed_in <- NULL
+
+  # check valid option
+  valid_options <- c("datetime", "nbs", "var", "speed_in", "gap")
+  if (!(option %in% valid_options)) {
+    stop(paste(
+      "Invalid option. Choose one of:",
+      paste(valid_options, collapse = ", ")
+    ))
+  }
 
   # check data structure
   required_columns <- c("tag", "x", "y", "time", "datetime")
   option_columns <- list(
     datetime = c(),
     nbs = c("nbs"),
-    sd = c("varx", "vary"),
+    var = c("varx", "vary"),
     speed_in = c("speed_in"),
     gap = c()
   )
@@ -173,8 +191,8 @@ atl_check_tag <- function(data,
   }
 
   # sd
-  if (option == "sd") {
-    ds[, sd := log10(pmax(varx, vary))]
+  if (option == "var") {
+    ds[, var := pmax(varx, vary, na.rm = TRUE)]
   }
 
   # create basemap
@@ -251,7 +269,7 @@ atl_check_tag <- function(data,
         size = point_size, alpha = point_alpha, show.legend = TRUE
       ) +
       scale_colour_viridis_c(
-        option = viridis_option, direction = viridis_direction,
+        option = scale_option, direction = scale_direction,
         trans = "time", labels = datetime_format,
         name = "Datetime"
       )
@@ -259,6 +277,12 @@ atl_check_tag <- function(data,
 
   # add tracks by nbs
   if (option == "nbs") {
+    if (is.null(scale_max)) {
+      scale_max <- max(ds$nbs, na.rm = TRUE)
+    } else {
+      ds[nbs > scale_max, nbs := scale_max]
+    }
+
     p <- p +
       geom_path(
         data = ds, aes(x, y, colour = nbs),
@@ -269,30 +293,42 @@ atl_check_tag <- function(data,
         size = point_size, alpha = point_alpha, show.legend = TRUE
       ) +
       scale_colour_viridis(
-        option = viridis_option, direction = viridis_direction,
-        name = "NBS"
+        option = scale_option, direction = scale_direction,
+        name = "NBS", trans = scale_trans, limits = c(3, scale_max)
       )
   }
 
-  # add tracks by sd
-  if (option == "sd") {
+  # add tracks by var
+  if (option == "var") {
+    if (is.null(scale_max)) {
+      scale_max <- max(ds$var, na.rm = TRUE)
+    } else {
+      ds[var > scale_max, var := scale_max]
+    }
+
     p <- p +
       geom_path(
-        data = ds, aes(x, y, colour = sd),
+        data = ds, aes(x, y, colour = var),
         linewidth = path_linewidth, alpha = path_alpha, show.legend = TRUE
       ) +
       geom_point(
-        data = ds, aes(x, y, colour = sd),
+        data = ds, aes(x, y, colour = var),
         size = point_size, alpha = point_alpha, show.legend = TRUE
       ) +
       scale_colour_viridis(
-        option = viridis_option, direction = viridis_direction,
-        name = "SD"
+        option = scale_option, direction = scale_direction,
+        name = "Variance", trans = scale_trans, limits = c(0.01, scale_max)
       )
   }
 
   # add tracks by speed_in
   if (option == "speed_in") {
+    if (is.null(scale_max)) {
+      scale_max <- max(ds$speed_in, na.rm = TRUE)
+    } else {
+      ds[speed_in > scale_max, speed_in := scale_max]
+    }
+
     p <- p +
       geom_path(
         data = ds, aes(x, y, colour = speed_in),
@@ -303,14 +339,18 @@ atl_check_tag <- function(data,
         size = point_size, alpha = point_alpha, show.legend = TRUE
       ) +
       scale_colour_viridis(
-        option = viridis_option, direction = viridis_direction,
-        name = "Speed (m/s)"
+        option = scale_option, direction = scale_direction,
+        name = "Speed (m/s)", trans = scale_trans, limits = c(0.0001, scale_max)
       )
   }
 
   # add tracks by gap
   if (option == "gap") {
-    ds[gap_in > 86400, gap_in := 86400]
+    if (is.null(scale_max)) {
+      scale_max <- max(ds$gap_in, na.rm = TRUE)
+    } else {
+      ds[gap_in > scale_max, gap_in := scale_max]
+    }
 
     p <- p +
       geom_path(
@@ -328,15 +368,15 @@ atl_check_tag <- function(data,
         alpha = point_alpha, show.legend = FALSE
       ) +
       scale_size_continuous(
-        range = c(0.5, 30), guide = "none",
-        limits = c(NA, 86400)
+        range = c(0.5, 15), guide = "none",
+        limits = c(NA, scale_max)
       ) +
       scale_colour_viridis(
-        option = viridis_option, direction = viridis_direction,
-        name = "Gap", trans = "log",
+        option = scale_option, direction = scale_direction,
+        name = "Gap", trans = scale_trans,
         breaks = c(10, 60, 600, 3600, 86400),
         labels = c("10 sec", "1 min", "10 min", "1 hr", "1 day"),
-        limits = c(NA, 86400)
+        limits = c(NA, scale_max)
       )
   }
 

@@ -16,12 +16,11 @@ atl_create_bm(
   lakes_data = tools4watlas::lakes,
   raster_data,
   scalebar = TRUE,
-  sc_dist,
   sc_location = "br",
   sc_cex = 0.7,
-  sc_height = unit(0.25, "cm"),
-  sc_pad_x = unit(0.25, "cm"),
-  sc_pad_y = unit(0.5, "cm"),
+  sc_height = 0.25,
+  sc_pad_x = 0.25,
+  sc_pad_y = 0.5,
   projection = sf::st_crs(32631)
 )
 }
@@ -57,9 +56,6 @@ bathymetry data in UTM31.}
 bathymetry data.}
 
 \item{scalebar}{TRUE or FALSE for adding a scalebar to the plot.}
-
-\item{sc_dist}{Scale bar distance. Optional; calculated automatically if
-omitted.}
 
 \item{sc_location}{A character string specifying the location of the scale
 bar. Default is \code{"br"} (bottom right).}

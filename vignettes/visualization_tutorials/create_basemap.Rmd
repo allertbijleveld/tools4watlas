@@ -201,14 +201,6 @@ dr <- readxl::read_excel(
 ) |>
   data.table()
 
-# rename and select wanted columns
-setnames(dr, tolower(names(dr)))
-dr <- dr[, .(
-  bs = kast_nr, location = locatie, year = jaar, x, y,
-  date_placed = datum_plaatsen, date_removed = datum_afbreken,
-  permanent = vast, active = actief, mudflats, height_bs = hoogte
-)]
-
 # end date for active receivers as system date
 dr[active == "ja", date_removed := as.POSIXct(Sys.time(), tz = "UTC")]
 
