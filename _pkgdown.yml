@@ -70,6 +70,8 @@ reference:
     desc: "Functions to load data from SQLlite or remote SQL database"
     contents:
      - atl_get_data
+     - atl_summary
+     - atl_format_time
      - atl_check_data
      - atl_full_tag_id
      - atl_file_path

@@ -211,20 +211,39 @@ fwrite(data, file = "../inst/extdata/watlas_data_raw.csv", yaml = TRUE)
 
 Here we simply check for how many individuals we have data and how many positions by tag and date we have. 
 
-```{r, fig.cap = "Number of positions per day by tag", fig.width = 7, fig.height = 4, fig.align = "center"}
+```{r}
 # Load data
 data <- fread("../inst/extdata/watlas_data_raw.csv", yaml = TRUE)
 
+# data summary
+data_summary <- atl_summary(data, id_columns = c("species", "tag"))
+
 # N individuals with tagging data
-data[, .N, tag] |> nrow()
+data_summary |> nrow()
 
-# N positions, first and last data by tag ID
-data[, .(
-  N_positions = .N,
-  fist_data = min(datetime),
-  last_data = max(datetime)
-), tag]
+# N by species
+data_summary[, .N, by = species]
 
+# Show head of the table
+data_summary |> knitr::kable(digits = 2)
+```
+
+| Column         | Description |
+| ----           | --------------------- |
+|**species**     |	Species  |
+|**tag**	       |	Tag number |
+|**n_positions** |	Number of positions  |
+|**first_data**	 |  Datetime first localization (UTC)  |
+|**last_data**   |	Datetime last localization (UTC)  |
+|**days_data**	 |	Days of data  |
+|**min_gap**	   |	Minimum time interval between localizations (interval of the tag in seconds) |
+|**max_gap**	   |	Maximum time interval between localizations (largest gap in seconds) |
+|**max_gap_f**	 |	Maximum time interval between localizations (in seconds, minutes, hours, or days)  |
+|**coverage**	   |	Coverage (=1 if every `min_gap` has a localization between `first_data` and `last_data`)  |
+
+Plot the number of positions by day.
+
+```{r, fig.cap = "Number of positions per day by tag", fig.width = 7, fig.height = 4, fig.align = "center"}
 # add date
 data[, date := as.Date(datetime)] |> invisible()
 
