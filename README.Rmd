@@ -58,6 +58,9 @@ The `tools4watlas` package is thoroughly documented on the [**offical package we
 
    - [**Plot data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html) -
    an important step between all stages to check the data.
+   
+   - [**Plot data in loop**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_in_loop.html) -
+   quick way to make plots by tagID.
 
   - [**Fast plotting with ggplot2**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/fast_plotting.html)
 

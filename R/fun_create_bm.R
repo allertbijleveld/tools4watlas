@@ -59,10 +59,10 @@ atl_create_bm <- function(data = NULL,
                           raster_data,
                           scalebar = TRUE,
                           sc_location = "br",
-                          sc_cex = 0.7,
-                          sc_height = 0.25,
-                          sc_pad_x = 0.25,
-                          sc_pad_y = 0.5,
+                          sc_cex = 1,
+                          sc_height = 0.3,
+                          sc_pad_x = 0.4,
+                          sc_pad_y = 0.6,
                           projection = sf::st_crs(32631)) {
   if (is.null(data) || nrow(data) == 0) {
     # If no data make map around Griend

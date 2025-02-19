@@ -44,7 +44,9 @@ navbar:
       - text: "Create a basemap"
         href: articles/visualization_tutorials/create_basemap.html   
       - text: "Plot data"
-        href: articles/visualization_tutorials/plot_data.html   
+        href: articles/visualization_tutorials/plot_data.html
+      - text: "Plot data in loop"
+        href: articles/visualization_tutorials/plot_data_in_loop.html   
       - text: "Plot data faster"
         href: articles/visualization_tutorials/plot_data_faster.html
       - text: "Plot data interactively"
