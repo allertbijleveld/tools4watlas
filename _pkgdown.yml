@@ -112,6 +112,12 @@ reference:
      - atl_t_col
      - atl_spec_cols
      - atl_spec_labs
+  - title: "Animation functions"
+    desc: "Functions to animate the data"
+    contents:
+     - atl_time_steps
+     - atl_alpha_along
+     - atl_size_along
   - title: "Add enviromental data"
     desc: "Functions to add tidal data and other SpatRaster data"
     contents:
