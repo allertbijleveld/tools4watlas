@@ -16,6 +16,135 @@ knitr::opts_chunk$set(
   dev = "ragg_png",
   message = FALSE
 )
+``` 
+
+This article gives a simple workflow on how to animate movement data. It works with any type of basemap and allows to adjust everything as wanted. 
+
+#### Load packages
+
+```{r}
+# packages
+library(tools4watlas)
+library(ggplot2)
+library(viridis)
+library(foreach)
+library(doFuture)
+library(ragg)
+require(mapmate)
 ```
 
-# Work in progress
+## Prepare data
+
+Set the folder path where the png's are created, load the data, create time steps with a desired interval (e.g. 10 min), delete existing files, make a basemap as desired and plot with all data to check the outcome, scalebar and time stamp. Adjust everything as desired (check with saving png in the choosen size).
+
+```{r, fig.alt = "Check the basemap", fig.align = "center"}
+# file path
+path <- "C:/Users/jkrietsch/temp/animation"
+
+# load example data
+data <- data_example
+
+# create time steps
+ts <- atl_time_steps(
+  datetime_vector = data$datetime,
+  time_interval = "10 min",
+  output_path = path
+)
+
+# delete existing files (if any)
+unlink(paste0(path, "/*"), recursive = TRUE)
+
+# create basemap
+bm <- atl_create_bm(data, buffer = 800)
+
+# plot points and tracks to check
+bm +
+  geom_path(
+    data = data, aes(x, y, colour = tag),
+    linewidth = 0.5, alpha = 0.1, show.legend = FALSE
+  ) +
+  geom_point(
+    data = data, aes(x, y, colour = tag),
+    size = 0.5, alpha = 1, show.legend = FALSE
+  ) +
+  # add time stamp
+  annotate(
+    "text",
+    x = -Inf, y = -Inf, hjust = -0.1, vjust = -2.4,
+    label = paste0(format(data[1]$datetime, "%Y-%m-%d %H:%M")), size = 4
+  )
+```
+
+## Loop to create png's for each step
+
+Create a png for each step (check steps - that is how many png's are created). Run first with an example step to check (e.g. `step <- 50`) outcome for one png. Depending on the number of png's, run first on a subset to check if everything is as desired, once everything is fine, run for all steps. A desired color scale can be simply added to `p`.
+
+In the subset step the maximal tail length can be choosen (here 6 h). Then we use `atl_alpha_along()` to create an fading alpha and `atl_size_along()` to make a comet shape - adjust parameters as desired (see function description for more details). Afterwards we add this path to the basemap and add the time stamp. 
+
+```{r, eval = FALSE}
+# register cores and backend for parallel processing
+registerDoFuture()
+plan(multisession)
+
+# steps
+steps <- seq_len(nrow(ts))
+
+# loop to create pngs for each time step
+foreach(i = steps) %dofuture% {
+
+  # define time step
+  time_step <- ts[i]$datetime # current date
+
+  # subset data
+  ds <- data[datetime %between% c(time_step - 3600 * 6, time_step)]
+
+  # create alpha and size
+  if (nrow(ds) > 0) {
+    ds[, a := atl_alpha_along(
+      datetime,
+      head = 30, skew = -2
+    ), by = tag]
+  }
+  if (nrow(ds) > 0) {
+    ds[, s := atl_size_along(
+      datetime,
+      head = 70, to = c(0.3, 2.5)
+    ), by = tag]
+  }
+
+  # add tracks to basemap
+  p <- bm +
+    geom_path(
+      data = ds, aes(x, y, color = tag), alpha = ds$a, linewidth = ds$s,
+      lineend = "round", show.legend = FALSE
+    ) +
+
+    # add time stamp
+    annotate(
+      "text",
+      x = -Inf, y = -Inf, hjust = -0.1, vjust = -2.4,
+      label = paste0(format(time_step, "%Y-%m-%d %H:%M")), size = 4
+    )
+
+  # save png
+  agg_png(
+    filename = ts[i, path],
+    width = 3840, height = 2160, units = "px", res = 300
+  )
+  print(p)
+  dev.off()
+
+}
+```
+
+## Make a animation using `ffmpeg` via `mapmate`
+
+Adjust the frame rate (`rate`) as desired (depending on the time step interval). File is created in the same path, but this can also be changed as desired.
+
+```{r, eval = FALSE}
+# make animation
+ffmpeg(
+  dir = path, output_dir = path, pattern = atl_ffmpeg_pattern(ts[1]$path),
+  output = "Animation.mp4", rate = 8, details = TRUE, overwrite = TRUE
+)
+```
