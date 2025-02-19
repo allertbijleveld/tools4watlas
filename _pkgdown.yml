@@ -118,6 +118,7 @@ reference:
      - atl_time_steps
      - atl_alpha_along
      - atl_size_along
+     - atl_ffmpeg_pattern
   - title: "Add enviromental data"
     desc: "Functions to add tidal data and other SpatRaster data"
     contents:

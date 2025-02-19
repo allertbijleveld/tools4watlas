@@ -141,3 +141,29 @@ atl_size_along <- function(x, head = 20, to = c(0.1, 2.5)) {
   ta <- rep(min(he), length.out = length(x) - head - 1)
   c(ta, he)
 }
+
+#' Generate ffmpeg filename pattern
+#'
+#' This function generates a filename pattern for FFmpeg based on the number of
+#' digits in the numeric part of the input file path (without the `.png`
+#' extension).
+#'
+#' @param x A character vector of file paths, where each path should include a
+#'        filename with a `.png` extension.
+#'
+#' @returns A character string representing the FFmpeg-compatible filename
+#'          pattern (e.g., "%03d.png" for filenames like "001.png").
+#' @export
+#'
+#' @examples
+#' atl_ffmpeg_pattern("path/to/file/001.png")
+#' # Returns: "%03d.png"
+atl_ffmpeg_pattern <- function(x) {
+  # extract number of digits in filename
+  x <- nchar(sub("\\.png$", "", basename(x)))
+
+  # create the pattern needed for ffmpeg
+  pattern <- paste0("%0", x, "d.png")
+
+  return(pattern)
+}
