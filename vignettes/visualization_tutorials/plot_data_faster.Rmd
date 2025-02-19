@@ -191,3 +191,20 @@ bm +
 # run time
 round(Sys.time() - st, 2)
 ```
+
+## Fast saving with `ragg`
+
+Example to save a png in 16:9 and 4 k.
+
+```{r, eval = FALSE}
+# example plot
+p <- atl_create_bm(buffer = 5000)
+
+# save png
+agg_png(
+  filename = "path/to/file/name.png",
+  width = 3840, height = 2160, units = "px", res = 300
+)
+print(p)
+dev.off()
+```
