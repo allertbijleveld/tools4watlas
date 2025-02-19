@@ -46,7 +46,6 @@ Suggests:
     doFuture,
     foreach,
     knitr,
-    mapmate,
     mapview,
     mockery,
     OpenStreetMap,

@@ -30,7 +30,7 @@ library(viridis)
 library(foreach)
 library(doFuture)
 library(ragg)
-require(mapmate)
+require(mapmate) # remotes::install_github("leonawicz/mapmate")
 ```
 
 ## Prepare data
