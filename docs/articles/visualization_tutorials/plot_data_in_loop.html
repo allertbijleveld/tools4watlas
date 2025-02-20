@@ -150,10 +150,10 @@ checking the data by tag ID using <code><a href="../../reference/atl_check_tag.h
 <div class="section level2">
 <h2 id="plot-and-save-data-in-parallel-loop">Plot and save data in parallel loop<a class="anchor" aria-label="anchor" href="#plot-and-save-data-in-parallel-loop"></a>
 </h2>
-<p>We can use the exact same structure and just replace
-<code>%do%</code> with <code>%dofuture%</code>, which is the benefit for
-using <code>foreach</code> and just have to prepare the parallel
-processing using <code><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture()</a></code> and
+<p>We can use the same structure, simply replacing <code>%do%</code>
+with <code>%dofuture%</code>, which is the key advantage of using
+<code>foreach.</code> The only additional step is setting up parallel
+processing with <code><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture()</a></code> and
 <code>plan(multisession)</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load example data</span></span>
