@@ -16,9 +16,10 @@ articles:
   visualization_tutorials/plot_data: visualization_tutorials/plot_data.html
   visualization_tutorials/plot_data_base_R: visualization_tutorials/plot_data_base_R.html
   visualization_tutorials/plot_data_faster: visualization_tutorials/plot_data_faster.html
+  visualization_tutorials/plot_data_in_loop: visualization_tutorials/plot_data_in_loop.html
   visualization_tutorials/plot_data_interactively: visualization_tutorials/plot_data_interactively.html
   smooth_and_thin_data: smooth_and_thin_data.html
-last_built: 2025-02-17T17:26Z
+last_built: 2025-02-19T14:38Z
 urls:
   reference: https://allertbijleveld.github.io/tools4watlas/reference
   article: https://allertbijleveld.github.io/tools4watlas/articles

@@ -86,12 +86,15 @@ local NIOZ file server is required.
   data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html) -
   an important step between all stages to check the data.
 
+- [**Plot data in
+  loop**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_in_loop.html) -
+  quick way to make plots by tag ID.
+
 - [**Fast plotting with
   ggplot2**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/fast_plotting.html)
 
 - [**Animate
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/animate_data.html) -
-  work in progress.
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/animate_data.html)
 
 **Package development**:
 
@@ -176,7 +179,6 @@ Bijleveld](mailto:allert.bijleveld@nioz.nl).
 
 We are working on the following articles at the moment:
 
-- Animate movement data
 - Residency patch analysis
 - Connect WATLAS with SIBES data
 

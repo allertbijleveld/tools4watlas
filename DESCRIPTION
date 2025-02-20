@@ -43,6 +43,8 @@ Imports:
     tidyterra,
     viridis
 Suggests:
+    doFuture,
+    foreach,
     knitr,
     mapview,
     mockery,

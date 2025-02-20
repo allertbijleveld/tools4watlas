@@ -7,6 +7,7 @@
 #' speed_in and gap. The function can either return the plot or save it as an
 #' png file.
 #'
+#' @author Johannes Krietsch
 #' @param data A `data.table` containing tracking data. Must include the
 #'   columns: `"tag"`, `"x"`, `"y"`, `"time"`, and `"datetime"`.
 #' @param buffer Numeric. The buffer size in meters around the data points in
@@ -109,7 +110,7 @@ atl_check_tag <- function(data,
                           png_width = 3840,
                           png_height = 2160) {
   # global variables
-  tag <- first_n_pos <- last_n_pos <- is_first <- is_last <- gap <- NULL
+  tag <- time <- first_n_pos <- last_n_pos <- is_first <- is_last <- gap <- NULL
   datetime <- gap_in <- var <- varx <- vary <- x <- y <- nbs <- speed_in <- NULL
 
   # check valid option
@@ -128,7 +129,7 @@ atl_check_tag <- function(data,
     nbs = c("nbs"),
     var = c("varx", "vary"),
     speed_in = c("speed_in"),
-    gap = c()
+    gap = c("time")
   )
   atl_check_data(data, names_expected = c(
     required_columns, option_columns[[option]]
@@ -177,18 +178,12 @@ atl_check_tag <- function(data,
   n <- nrow(ds)
 
   # longest gap
-  ds[, gap := c(NA, diff(datetime))]
+  ds[, gap := c(NA, diff(time))]
   ds[, gap_in := shift(gap, type = "lead")]
   min_gap <- min(ds$gap, na.rm = TRUE)
   ds[is.na(gap_in), gap_in := min_gap]
   max_gap <- max(ds$gap, na.rm = TRUE)
-  max_gap_format <- if (max_gap > 86400) { # more than 1 day
-    paste(round(max_gap / 86400, 2), "days")
-  } else if (max_gap > 3600) { # more than 1 hour
-    paste(round(max_gap / 3600, 2), "hours")
-  } else { # less than 1 hour
-    paste(round(max_gap / 60, 2), "min")
-  }
+  max_gap_format <- atl_format_time(max_gap)
 
   # sd
   if (option == "var") {

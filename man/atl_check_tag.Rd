@@ -133,3 +133,6 @@ atl_check_tag(data, option = "var")
 atl_check_tag(data, option = "speed_in")
 atl_check_tag(data, option = "gap")
 }
+\author{
+Johannes Krietsch
+}

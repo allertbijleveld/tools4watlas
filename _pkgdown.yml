@@ -44,7 +44,9 @@ navbar:
       - text: "Create a basemap"
         href: articles/visualization_tutorials/create_basemap.html   
       - text: "Plot data"
-        href: articles/visualization_tutorials/plot_data.html   
+        href: articles/visualization_tutorials/plot_data.html
+      - text: "Plot data in loop"
+        href: articles/visualization_tutorials/plot_data_in_loop.html   
       - text: "Plot data faster"
         href: articles/visualization_tutorials/plot_data_faster.html
       - text: "Plot data interactively"
@@ -70,6 +72,8 @@ reference:
     desc: "Functions to load data from SQLlite or remote SQL database"
     contents:
      - atl_get_data
+     - atl_summary
+     - atl_format_time
      - atl_check_data
      - atl_full_tag_id
      - atl_file_path
@@ -110,6 +114,13 @@ reference:
      - atl_t_col
      - atl_spec_cols
      - atl_spec_labs
+  - title: "Animation functions"
+    desc: "Functions to animate the data"
+    contents:
+     - atl_time_steps
+     - atl_alpha_along
+     - atl_size_along
+     - atl_ffmpeg_pattern
   - title: "Add enviromental data"
     desc: "Functions to add tidal data and other SpatRaster data"
     contents:
