@@ -184,11 +184,11 @@ created). Run first with an example step to check
 number of png’s, run first on a subset to check if everything is as
 desired, once everything is fine, run for all steps. A desired color
 scale can be simply added to <code>p</code>.</p>
-<p>In the subset step the maximal tail length can be choosen (here 6 h).
-Then we use <code><a href="../../reference/atl_alpha_along.html">atl_alpha_along()</a></code> to create an fading alpha and
-<code><a href="../../reference/atl_size_along.html">atl_size_along()</a></code> to make a comet shape - adjust parameters
-as desired (see function description for more details). Afterwards we
-add this path to the basemap and add the time stamp.</p>
+<p>In the subset step, the maximal tail length can be chosen (here, 6
+h). Then we use <code><a href="../../reference/atl_alpha_along.html">atl_alpha_along()</a></code> to create an fading alpha
+and <code><a href="../../reference/atl_size_along.html">atl_size_along()</a></code> to make a comet shape - adjust
+parameters as desired (see function description for more details).
+Afterwards we add this path to the basemap and add the time stamp.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># register cores and backend for parallel processing</span></span>
 <span><span class="fu"><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -288,7 +288,7 @@ same buffer as for basemap).</p>
 <span><span class="co"># load bathymetry data</span></span>
 <span><span class="va">bat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">fp</span>, <span class="st">"bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># bbox (shoukd be buffer used for basemap)</span></span>
+<span><span class="co"># bbox (should be buffer used for basemap)</span></span>
 <span><span class="va">bbox</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_bbox.html">atl_bbox</a></span><span class="op">(</span><span class="va">data</span>, buffer <span class="op">=</span> <span class="fl">800</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># crop the raster using the bounding box</span></span>
