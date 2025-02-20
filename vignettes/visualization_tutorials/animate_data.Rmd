@@ -94,7 +94,7 @@ bm +
 
 Create a png for each step (check steps - that is how many png's are created). Run first with an example step to check (e.g. `step <- 50`) outcome for one png. Depending on the number of png's, run first on a subset to check if everything is as desired, once everything is fine, run for all steps. A desired color scale can be simply added to `p`.
 
-In the subset step the maximal tail length can be choosen (here 6 h). Then we use `atl_alpha_along()` to create an fading alpha and `atl_size_along()` to make a comet shape - adjust parameters as desired (see function description for more details). Afterwards we add this path to the basemap and add the time stamp. 
+In the subset step, the maximal tail length can be chosen (here, 6 h). Then we use `atl_alpha_along()` to create an fading alpha and `atl_size_along()` to make a comet shape - adjust parameters as desired (see function description for more details). Afterwards we add this path to the basemap and add the time stamp. 
 
 ```{r, eval = FALSE}
 # register cores and backend for parallel processing
@@ -192,7 +192,7 @@ fp <- atl_file_path("rasters")
 # load bathymetry data
 bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
 
-# bbox (shoukd be buffer used for basemap)
+# bbox (should be buffer used for basemap)
 bbox <- atl_bbox(data, buffer = 800)
 
 # crop the raster using the bounding box
