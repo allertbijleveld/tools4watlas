@@ -64,8 +64,7 @@ The `tools4watlas` package is thoroughly documented on the [**offical package we
 
   - [**Fast plotting with ggplot2**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/fast_plotting.html)
 
-  - [**Animate data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/animate_data.html) -
-   work in progress.
+  - [**Animate data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/animate_data.html)
 
 **Package development**:
 
@@ -131,7 +130,6 @@ More examples of workflows aimed at processing, plotting and adding environmenta
 
 We are working on the following articles at the moment:
 
-- Animate movement data
 - Residency patch analysis
 - Connect WATLAS with SIBES data
 
