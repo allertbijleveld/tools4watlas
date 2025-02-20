@@ -71,7 +71,7 @@ foreach(i = id) %do% {
 
 ## Plot and save data in parallel loop
 
-We can use the exact same structure and just replace `%do%` with `%dofuture%`, which is the benefit for using `foreach` and just have to prepare the parallel processing using `registerDoFuture()` and `plan(multisession)`. 
+We can use the same structure, simply replacing `%do%` with `%dofuture%`, which is the key advantage of using `foreach.` The only additional step is setting up parallel processing with `registerDoFuture()` and `plan(multisession)`.
 
 ```{r, eval = FALSE}
 # load example data

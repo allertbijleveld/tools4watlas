@@ -18,7 +18,9 @@ knitr::opts_chunk$set(
 )
 ``` 
 
-This article gives a simple workflow on how to animate movement data. It works with any type of basemap and allows to adjust everything as wanted. 
+This article gives a simple workflow on how to animate movement data. It works with any type of basemap and allows to adjust everything as wanted. It first shows how to animate data with a simple basemap and then how to do it with a bathymetry data basemap and the water level. The first two steps and the last are the same (load packages, prepare movement data, make animation).
+
+Install `mapmate` from GitHub: `remotes::install_github("leonawicz/mapmate")`.
 
 #### Load packages
 
@@ -30,14 +32,19 @@ library(viridis)
 library(foreach)
 library(doFuture)
 library(ragg)
-require(mapmate) # remotes::install_github("leonawicz/mapmate")
+library(mapmate)
+
+# additional to add water data
+library(terra)
+library(tidyterra)
+library(sf)
 ```
 
-## Prepare data
+## Prepare movement data
 
-Set the folder path where the png's are created, load the data, create time steps with a desired interval (e.g. 10 min), delete existing files, make a basemap as desired and plot with all data to check the outcome, scalebar and time stamp. Adjust everything as desired (check with saving png in the choosen size).
+Set the folder path where the png's are created, load the data, create time steps with a desired interval (e.g. 10 min), delete existing files.
 
-```{r, fig.alt = "Check the basemap", fig.align = "center"}
+```{r}
 # file path
 path <- "C:/Users/jkrietsch/temp/animation"
 
@@ -53,7 +60,15 @@ ts <- atl_time_steps(
 
 # delete existing files (if any)
 unlink(paste0(path, "/*"), recursive = TRUE)
+```
 
+# Simple animation of movements
+
+## Check plot
+
+Make a basemap as desired and plot with all data to check the outcome, scalebar and time stamp. Adjust everything as desired (check with saving png in the defined size).
+
+```{r, fig.alt = "Check the basemap", fig.align = "center"}
 # create basemap
 bm <- atl_create_bm(data, buffer = 800)
 
@@ -124,6 +139,193 @@ foreach(i = steps) %dofuture% {
       "text",
       x = -Inf, y = -Inf, hjust = -0.1, vjust = -2.4,
       label = paste0(format(time_step, "%Y-%m-%d %H:%M")), size = 4
+    )
+
+  # save png
+  agg_png(
+    filename = ts[i, path],
+    width = 3840, height = 2160, units = "px", res = 300
+  )
+  print(p)
+  dev.off()
+
+}
+```
+
+# Animation of movements with water level
+
+## Add tide and bathymetry data
+
+We add water level data to `ts` to know the waterlevel at each step and crop the bathymetry data to the extend of the map (use same buffer as for basemap).  
+
+```{r}
+# file path to WATLAS teams data folder
+fp <- atl_file_path("watlas_teams")
+
+# sub path to tide data
+tidal_pattern_fp <- paste0(
+  fp, "waterdata/allYears-tidalPattern-west_terschelling-UTC.csv"
+)
+measured_water_height_fp <- paste0(
+  fp, "waterdata/allYears-gemeten_waterhoogte-west_terschelling-clean-UTC.csv"
+)
+
+# load tide data
+tidal_pattern <- fread(tidal_pattern_fp)
+measured_water_height <- fread(measured_water_height_fp)
+
+# add unix time
+ts[, time := as.numeric(datetime)]
+
+# add tide data to movement data
+ts <- atl_add_tidal_data(
+  data = ts,
+  tide_data = tidal_pattern,
+  tide_data_highres = measured_water_height,
+  waterdata_resolution = "10 minute",
+  offset = 30
+)
+
+# file path to Birds, fish 'n chips GIS/rasters folder
+fp <- atl_file_path("rasters")
+
+# load bathymetry data
+bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
+
+# bbox (shoukd be buffer used for basemap)
+bbox <- atl_bbox(data, buffer = 800)
+
+# crop the raster using the bounding box
+bat_c <- crop(bat, bbox)
+
+# wrap to use in parallel loop
+bat_w <- wrap(bat_c)
+```
+
+## Check plot
+
+Make a basemap as desired and plot with all data to check the outcome, scalebar and time stamp. Adjust everything as desired (check with saving png in the defined size).
+
+```{r, fig.alt = "Check the basemap with bathymetry data", fig.align = "center"}
+# create basemap
+bm <- atl_create_bm(
+  data,
+  buffer = 800, raster_data = bat_c, option = "batymetry", scalebar = FALSE
+)
+
+# extract example water level
+threshold <- 0 / 100 # water level at the time (/100 to scale to m)
+bat_m <- bat_c < threshold # mask below threshold (TRUE = 1)
+bat_m[bat_m == 0] <- NA # remove land
+waterline <- as.polygons(bat_m, values = TRUE, dissolve = TRUE) |>
+  st_as_sf() # extract polygon with water level
+
+# check plot with all data
+bm +
+  # add water level
+  geom_sf(
+    data = waterline, fill = "lightblue", alpha = 0.4,
+    color = scales::alpha("white", 0.1), linewidth = 3
+  ) +
+  # add points and tracks
+  geom_path(
+    data = data, aes(x, y, colour = tag),
+    linewidth = 0.5, alpha = 0.1, show.legend = FALSE
+  ) +
+  geom_point(
+    data = data, aes(x, y, colour = tag),
+    size = 0.5, alpha = 1, show.legend = FALSE
+  ) +
+  # add time stamp
+  annotate(
+    "text",
+    x = -Inf, y = -Inf, hjust = -0.1, vjust = -2.4,
+    label = paste0(format(data[1]$datetime, "%Y-%m-%d %H:%M")), size = 4
+  ) +
+  # add scale bar
+  ggspatial::annotation_scale(
+    aes(location = "br"),
+    text_cex = 1, height = unit(0.3, "cm"),
+    pad_x = unit(0.4, "cm"), pad_y = unit(0.6, "cm")
+  ) +
+  # set extend again (overwritten by geom_sf)
+  coord_sf(
+    xlim = c(bbox["xmin"], bbox["xmax"]),
+    ylim = c(bbox["ymin"], bbox["ymax"]), expand = FALSE
+  )
+```
+
+## Loop to create png's for each step
+
+Same as above just with added water level polygon and scale bar (needs to be added above water).
+
+```{r, eval = FALSE}
+# register cores and backend for parallel processing
+registerDoFuture()
+plan(multisession)
+
+# steps
+steps <- seq_len(nrow(ts))
+
+# loop to create pngs for each time step
+foreach(i = steps) %dofuture% {
+
+  # define time step
+  time_step <- ts[i]$datetime # current date
+
+  # subset data
+  ds <- data[datetime %between% c(time_step - 3600 * 6, time_step)]
+
+  # create alpha and size
+  if (nrow(ds) > 0) {
+    ds[, a := atl_alpha_along(
+      datetime,
+      head = 30, skew = -2
+    ), by = tag]
+  }
+  if (nrow(ds) > 0) {
+    ds[, s := atl_size_along(
+      datetime,
+      head = 70, to = c(0.3, 2.5)
+    ), by = tag]
+  }
+
+  # extract water level
+  bat_c <- unwrap(bat_w)
+  threshold <- ts[i]$waterlevel / 100 # water level at the time (scale to m)
+  bat_m <- bat_c < threshold # mask below threshold (TRUE = 1)
+  bat_m[bat_m == 0] <- NA # remove land
+  waterline <- as.polygons(bat_m, values = TRUE, dissolve = TRUE) |>
+    st_as_sf() # extract polygon with water level
+
+  # add everything to the basemap
+  p <- bm +
+    # add water level
+    geom_sf(
+      data = waterline, fill = "lightblue", alpha = 0.4,
+      color = scales::alpha("white", 0.1), linewidth = 3
+    ) +
+    # add track
+    geom_path(
+      data = ds, aes(x, y, color = tag), alpha = ds$a, linewidth = ds$s,
+      lineend = "round", show.legend = FALSE
+    ) +
+    # add time stamp
+    annotate(
+      "text",
+      x = -Inf, y = -Inf, hjust = -0.1, vjust = -2.4,
+      label = paste0(format(time_step, "%Y-%m-%d %H:%M")), size = 4
+    ) +
+    # add scale bar
+    ggspatial::annotation_scale(
+      aes(location = "br"),
+      text_cex = 1, height = unit(0.3, "cm"),
+      pad_x = unit(0.4, "cm"), pad_y = unit(0.6, "cm")
+    ) +
+    # set extend again (overwritten by geom_sf)
+    coord_sf(
+      xlim = c(bbox["xmin"], bbox["xmax"]),
+      ylim = c(bbox["ymin"], bbox["ymax"]), expand = FALSE
     )
 
   # save png
