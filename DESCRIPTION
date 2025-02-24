@@ -23,11 +23,11 @@ Imports:
     assertthat,
     DBI,
     dplyr,
+    ggnewscale,
     ggplot2,
     ggspatial,
     ggtext,
     glue,
-    grDevices,
     lubridate,
     magrittr,
     purrr,
@@ -43,6 +43,8 @@ Imports:
     tidyterra,
     viridis
 Suggests:
+    doFuture,
+    foreach,
     knitr,
     mapview,
     mockery,

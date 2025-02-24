@@ -33,6 +33,7 @@ custom bounding boxes, aspect ratios, and scale bar adjustments."><meta property
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
     <li><a class="dropdown-item" href="../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
     <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data.html">Plot data</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_in_loop.html">Plot data in loop</a></li>
     <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_faster.html">Plot data faster</a></li>
     <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_interactively.html">Plot data interactively</a></li>
     <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_base_R.html">Plot data in base R - deprecated</a></li>
@@ -77,13 +78,13 @@ custom bounding boxes, aspect ratios, and scale bar adjustments.</p>
 <span>  mudflats_data <span class="op">=</span> <span class="fu">tools4watlas</span><span class="fu">::</span><span class="va"><a href="mudflats.html">mudflats</a></span>,</span>
 <span>  lakes_data <span class="op">=</span> <span class="fu">tools4watlas</span><span class="fu">::</span><span class="va"><a href="lakes.html">lakes</a></span>,</span>
 <span>  <span class="va">raster_data</span>,</span>
+<span>  shade <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  scalebar <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  <span class="va">sc_dist</span>,</span>
 <span>  sc_location <span class="op">=</span> <span class="st">"br"</span>,</span>
-<span>  sc_cex <span class="op">=</span> <span class="fl">0.7</span>,</span>
-<span>  sc_height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="st">"cm"</span><span class="op">)</span>,</span>
-<span>  sc_pad_x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="st">"cm"</span><span class="op">)</span>,</span>
-<span>  sc_pad_y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="st">"cm"</span><span class="op">)</span>,</span>
+<span>  sc_cex <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  sc_height <span class="op">=</span> <span class="fl">0.3</span>,</span>
+<span>  sc_pad_x <span class="op">=</span> <span class="fl">0.4</span>,</span>
+<span>  sc_pad_y <span class="op">=</span> <span class="fl">0.6</span>,</span>
 <span>  projection <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="fl">32631</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -142,13 +143,13 @@ bathymetry data in UTM31.</p></dd>
 bathymetry data.</p></dd>
 
 
+<dt id="arg-shade">shade<a class="anchor" aria-label="anchor" href="#arg-shade"></a></dt>
+<dd><p>If TRUE a shade will be added to the bathymetry data. (This
+can take a while for large maps)</p></dd>
+
+
 <dt id="arg-scalebar">scalebar<a class="anchor" aria-label="anchor" href="#arg-scalebar"></a></dt>
 <dd><p>TRUE or FALSE for adding a scalebar to the plot.</p></dd>
-
-
-<dt id="arg-sc-dist">sc_dist<a class="anchor" aria-label="anchor" href="#arg-sc-dist"></a></dt>
-<dd><p>Scale bar distance. Optional; calculated automatically if
-omitted.</p></dd>
 
 
 <dt id="arg-sc-location">sc_location<a class="anchor" aria-label="anchor" href="#arg-sc-location"></a></dt>

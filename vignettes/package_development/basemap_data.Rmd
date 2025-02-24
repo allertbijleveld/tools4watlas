@@ -50,11 +50,11 @@ netherlands <- ne_countries(
   st_transform(crs = st_crs(32631))
 
 # point of Griend (and a bit east)
-griend <- st_sfc(st_point(c(5.2525 + 0.3, 53.2523)), crs = st_crs(4326)) |>
+griend <- st_sfc(st_point(c(5.2525 + 0.6, 53.2523)), crs = st_crs(4326)) |>
   st_transform(crs = st_crs(32631))
 
 # bounding box around Griend
-bbox <- atl_bbox(griend, asp = "16:9", buffer = 45000)
+bbox <- atl_bbox(griend, asp = "16:9", buffer = 50000)
 bbox_sf <- bbox |> st_as_sfc()
 
 # plot
@@ -143,8 +143,14 @@ lakes_nh <- st_read(quiet = TRUE, paste0(
   fp, "open_street_map/noord-holland-latest-free.shp/gis_osm_water_a_free_1.shp"
 ))
 
+# North Groningen
+lakes_g <- st_read(quiet = TRUE, paste0(
+  fp, "open_street_map/groningen-latest-free.shp/gis_osm_water_a_free_1.shp"
+))
+
+
 # merge both and change projection
-lakes_ <- rbind(lakes_fr, lakes_nh) |>
+lakes_ <- rbind(lakes_fr, lakes_nh, lakes_g) |>
   unique(by = "osm_id") |>
   st_transform(crs = st_crs(32631))
 

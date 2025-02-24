@@ -74,19 +74,42 @@ bm +
 
 ## Basemap with bathymetry data
 
-Bathymetry data can be found in the "Birds, fish 'n chips" SharePoint folder: `Documents/data/GIS/rasters/`. To run the script set the file path (`wd`) to the local copy of the folder on your computer. The data can also be downloaded from the [Waddenregister](https://datahuiswadden.openearth.nl/geonetwork/srv/eng/catalog.search#/metadata/JkrvJXasRSGAWU1mJLHUzg).
+Bathymetry data can be found in the "Birds, fish 'n chips" SharePoint folder: `Documents/data/GIS/rasters/`. To run the script set the file path (`fp`) to the local copy of the folder on your computer. The data can also be downloaded from the [Waddenregister](https://datahuiswadden.openearth.nl/geonetwork/srv/eng/catalog.search#/metadata/JkrvJXasRSGAWU1mJLHUzg).
 
-```{r, fig.alt = "Static map with satellite image", warning=FALSE}
+```{r, fig.alt = "Bathymetry map", warning=FALSE}
 # additional packages
 library(terra)
 
-# Load bathymetry data
-wd <- "C:/Users/jkrietsch/OneDrive - NIOZ/Documents/MAP_DATA/"
-bat <- rast(paste0(wd, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
+# file path to Birds, fish 'n chips GIS/rasters folder
+fp <- atl_file_path("rasters")
+
+# load bathymetry data
+bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
 
 # create base map with bathymetry data
 bm <- atl_create_bm(
-  buffer = 8000, raster_data = bat, option = "batymetry"
+  buffer = 5000, raster_data = bat, option = "bathymetry"
+)
+
+# plot
+bm
+```
+
+We can also add some shading (`shade = TRUE`) to the bathymetry data to highlight the water depth better. Note that calculating the shade can take a while, especially for large maps. So, only use this option for polished maps.
+
+```{r, fig.alt = "Bathymetry map with shade", warning=FALSE}
+# additional packages
+library(terra)
+
+# file path to Birds, fish 'n chips GIS/rasters folder
+fp <- atl_file_path("rasters")
+
+# load bathymetry data
+bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
+
+# create base map with bathymetry data
+bm <- atl_create_bm(
+  buffer = 5000, raster_data = bat, option = "bathymetry", shade = TRUE
 )
 
 # plot

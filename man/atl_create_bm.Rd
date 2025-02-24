@@ -15,12 +15,13 @@ atl_create_bm(
   mudflats_data = tools4watlas::mudflats,
   lakes_data = tools4watlas::lakes,
   raster_data,
+  shade = FALSE,
   scalebar = TRUE,
   sc_location = "br",
-  sc_cex = 0.7,
-  sc_height = 0.25,
-  sc_pad_x = 0.25,
-  sc_pad_y = 0.5,
+  sc_cex = 1,
+  sc_height = 0.3,
+  sc_pad_x = 0.4,
+  sc_pad_y = 0.6,
   projection = sf::st_crs(32631)
 )
 }
@@ -54,6 +55,9 @@ bathymetry data in UTM31.}
 
 \item{raster_data}{An \code{SpatRaster} (tif opened with \code{terra::rast()} of
 bathymetry data.}
+
+\item{shade}{If TRUE a shade will be added to the bathymetry data. (This
+can take a while for large maps)}
 
 \item{scalebar}{TRUE or FALSE for adding a scalebar to the plot.}
 
