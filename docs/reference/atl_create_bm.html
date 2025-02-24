@@ -78,6 +78,7 @@ custom bounding boxes, aspect ratios, and scale bar adjustments.</p>
 <span>  mudflats_data <span class="op">=</span> <span class="fu">tools4watlas</span><span class="fu">::</span><span class="va"><a href="mudflats.html">mudflats</a></span>,</span>
 <span>  lakes_data <span class="op">=</span> <span class="fu">tools4watlas</span><span class="fu">::</span><span class="va"><a href="lakes.html">lakes</a></span>,</span>
 <span>  <span class="va">raster_data</span>,</span>
+<span>  shade <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  scalebar <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  sc_location <span class="op">=</span> <span class="st">"br"</span>,</span>
 <span>  sc_cex <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -140,6 +141,11 @@ bathymetry data in UTM31.</p></dd>
 <dt id="arg-raster-data">raster_data<a class="anchor" aria-label="anchor" href="#arg-raster-data"></a></dt>
 <dd><p>An <code>SpatRaster</code> (tif opened with <code><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">terra::rast()</a></code> of
 bathymetry data.</p></dd>
+
+
+<dt id="arg-shade">shade<a class="anchor" aria-label="anchor" href="#arg-shade"></a></dt>
+<dd><p>If TRUE a shade will be added to the bathymetry data. (This
+can take a while for large maps)</p></dd>
 
 
 <dt id="arg-scalebar">scalebar<a class="anchor" aria-label="anchor" href="#arg-scalebar"></a></dt>
