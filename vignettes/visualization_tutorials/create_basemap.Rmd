@@ -80,9 +80,11 @@ Bathymetry data can be found in the "Birds, fish 'n chips" SharePoint folder: `D
 # additional packages
 library(terra)
 
-# Load bathymetry data
-wd <- "C:/Users/jkrietsch/OneDrive - NIOZ/Documents/MAP_DATA/"
-bat <- rast(paste0(wd, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
+# file path to Birds, fish 'n chips GIS/rasters folder
+fp <- atl_file_path("rasters")
+
+# load bathymetry data
+bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
 
 # create base map with bathymetry data
 bm <- atl_create_bm(
