@@ -8,13 +8,14 @@ atl_add_tidal_data(
   data,
   tide_data,
   tide_data_highres,
-  waterdata_resolution = "10 minute",
+  waterdata_resolution = "10 min",
+  waterdata_interpolation = NULL,
   offset = 0
 )
 }
 \arguments{
 \item{data}{A dataframe with the tracking data with the timestamp column
-'time' in UTC.}
+'datetime' in UTC.}
 
 \item{tide_data}{Data on the timing (in UTC) of low and high tides as output
 from the function \code{fread} of the package \code{data.table}.}
@@ -26,6 +27,10 @@ output from the function \code{fread} of the package \code{data.table}.}
 \item{waterdata_resolution}{The resolution of the high resolution waterlevel
 data. This is used for matching the high resolution tidal data to the
 tracking data. Defaults to 10 minutes but can be set differently.}
+
+\item{waterdata_interpolation}{Time interval to which the water level data
+will be interpolated (e.g. 1 min). If NULL will keep the original water data
+resolution.}
 
 \item{offset}{The offset in minutes between the location of the tidal gauge
 and the tracking area. This value will be added to the timing of the
