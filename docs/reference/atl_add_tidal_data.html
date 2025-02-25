@@ -71,7 +71,8 @@ low tide for tracking data (both in minutes).</p>
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">tide_data</span>,</span>
 <span>  <span class="va">tide_data_highres</span>,</span>
-<span>  waterdata_resolution <span class="op">=</span> <span class="st">"10 minute"</span>,</span>
+<span>  waterdata_resolution <span class="op">=</span> <span class="st">"10 min"</span>,</span>
+<span>  waterdata_interpolation <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  offset <span class="op">=</span> <span class="fl">0</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -82,7 +83,7 @@ low tide for tracking data (both in minutes).</p>
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>A dataframe with the tracking data with the timestamp column
-'time' in UTC.</p></dd>
+'datetime' in UTC.</p></dd>
 
 
 <dt id="arg-tide-data">tide_data<a class="anchor" aria-label="anchor" href="#arg-tide-data"></a></dt>
@@ -100,6 +101,12 @@ output from the function <code>fread</code> of the package <code>data.table</cod
 <dd><p>The resolution of the high resolution waterlevel
 data. This is used for matching the high resolution tidal data to the
 tracking data. Defaults to 10 minutes but can be set differently.</p></dd>
+
+
+<dt id="arg-waterdata-interpolation">waterdata_interpolation<a class="anchor" aria-label="anchor" href="#arg-waterdata-interpolation"></a></dt>
+<dd><p>Time interval to which the water level data
+will be interpolated (e.g. 1 min). If NULL will keep the original water data
+resolution.</p></dd>
 
 
 <dt id="arg-offset">offset<a class="anchor" aria-label="anchor" href="#arg-offset"></a></dt>

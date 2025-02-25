@@ -104,7 +104,7 @@ modification in place, where data is changed without making a copy. To
 prevent this (whenever it is not desired) use the function
 <code><a href="https://rdrr.io/pkg/data.table/man/copy.html" class="external-link">copy()</a></code> to make a true copy of the data set.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Packages</span></span>
+<code class="sourceCode R"><span><span class="co"># packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org" class="external-link">scales</a></span><span class="op">)</span></span>
@@ -162,18 +162,18 @@ with the following columns:</p>
 <h4 id="select-the-desired-tags-and-time-period">Select the desired tags and time period<a class="anchor" aria-label="anchor" href="#select-the-desired-tags-and-time-period"></a>
 </h4>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load meta data</span></span>
+<code class="sourceCode R"><span><span class="co"># load meta data</span></span>
 <span><span class="va">all_tags_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
 <span>  <span class="st">"extdata"</span>, <span class="st">"tags_watlas_subset.xlsx"</span>, package <span class="op">=</span> <span class="st">"tools4watlas"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">all_tags</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span><span class="va">all_tags_path</span>, sheet <span class="op">=</span> <span class="st">"tags_watlas_all"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Subset desired tags using data.table</span></span>
-<span><span class="co"># (For example all tags from season 2023)</span></span>
+<span><span class="co"># subset desired tags using data.table</span></span>
+<span><span class="co"># (for example all tags from season 2023)</span></span>
 <span><span class="va">tags</span> <span class="op">&lt;-</span> <span class="va">all_tags</span><span class="op">[</span><span class="va">season</span> <span class="op">==</span> <span class="fl">2023</span><span class="op">]</span><span class="op">$</span><span class="va">tag</span></span>
 <span></span>
-<span><span class="co"># Time period for which data should be extracted form the database (in CET)</span></span>
+<span><span class="co"># time period for which data should be extracted form the database (in CET)</span></span>
 <span><span class="va">from</span> <span class="op">&lt;-</span> <span class="st">"2023-09-21 00:00:00"</span></span>
 <span><span class="va">to</span> <span class="op">&lt;-</span> <span class="st">"2023-09-25 00:00:00"</span></span></code></pre></div>
 </div>
@@ -185,13 +185,13 @@ provided. Then, with the established connection, the database can be
 queried for the selected tags and period. Here we will load the tagging
 data in one data.table.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Database connection</span></span>
+<code class="sourceCode R"><span><span class="co"># database connection</span></span>
 <span><span class="va">sqlite_db</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
 <span>  <span class="st">"extdata"</span>, <span class="st">"watlas_example.SQLite"</span>, package <span class="op">=</span> <span class="st">"tools4watlas"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">RSQLite</span><span class="fu">::</span><span class="fu">dbConnect</span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">sqlite_db</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Load data from database</span></span>
+<span><span class="co"># load data from database</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_get_data.html">atl_get_data</a></span><span class="op">(</span></span>
 <span>  <span class="va">tags</span>,</span>
 <span>  tracking_time_start <span class="op">=</span> <span class="va">from</span>,</span>
@@ -200,7 +200,7 @@ data in one data.table.</p>
 <span>  use_connection <span class="op">=</span> <span class="va">con</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Close connection</span></span>
+<span><span class="co"># close connection</span></span>
 <span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu">dbDisconnect</span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
@@ -229,20 +229,20 @@ all tags of season 2024. Host, username and password are specified as
 environmental variables in this example, but can also be specified
 directly.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load meta data</span></span>
+<code class="sourceCode R"><span><span class="co"># load meta data</span></span>
 <span><span class="va">all_tags_path</span> <span class="op">&lt;-</span> <span class="st">"C:\\path\\tags_watlas_all.xlsx"</span></span>
 <span><span class="va">all_tags</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span><span class="va">all_tags_path</span>, sheet <span class="op">=</span> <span class="st">"tags_watlas_all"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Subset all tags from 2024</span></span>
+<span><span class="co"># subset all tags from 2024</span></span>
 <span><span class="va">tags</span> <span class="op">&lt;-</span> <span class="va">all_tags</span><span class="op">[</span><span class="va">season</span> <span class="op">==</span> <span class="fl">2024</span><span class="op">]</span><span class="op">$</span><span class="va">tag</span></span>
 <span></span>
-<span><span class="co"># Select N last days to get data from</span></span>
+<span><span class="co"># select N last days to get data from</span></span>
 <span><span class="va">days</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
 <span><span class="va">from</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="fl">86400</span> <span class="op">*</span> <span class="va">days</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">to</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fl">3600</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Load data from database</span></span>
+<span><span class="co"># load data from database</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_get_data.html">atl_get_data</a></span><span class="op">(</span></span>
 <span>  <span class="va">tags</span>,</span>
 <span>  tracking_time_start <span class="op">=</span> <span class="va">from</span>,</span>
@@ -261,7 +261,7 @@ directly.</p>
 <p>The resulting loaded WATLAS data will be a <code>data.table</code>
 with the following columns:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Show head of the table</span></span>
+<code class="sourceCode R"><span><span class="co"># show head of the table</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -457,7 +457,7 @@ convenient and fast way is to use <code>fwrite</code> from the
 we make sure the data stays in the same format when we load it again.
 Change the file path when running this example.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Save data</span></span>
+<code class="sourceCode R"><span><span class="co"># save data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span><span class="va">data</span>, file <span class="op">=</span> <span class="st">"../inst/extdata/watlas_data_raw.csv"</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -469,7 +469,7 @@ Change the file path when running this example.</p>
 <p>Here we simply check for how many individuals we have data and how
 many positions by tag and date we have.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load data</span></span>
+<code class="sourceCode R"><span><span class="co"># load data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="st">"../inst/extdata/watlas_data_raw.csv"</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># data summary</span></span>
@@ -492,7 +492,7 @@ many positions by tag and date we have.</p>
 <span><span class="co">## 7:            dunlin     1</span></span>
 <span><span class="co">## 8:        sanderling     1</span></span></code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Show head of the table</span></span>
+<code class="sourceCode R"><span><span class="co"># show head of the table</span></span>
 <span><span class="va">data_summary</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
@@ -682,7 +682,7 @@ between <code>first_data</code> and <code>last_data</code>)</td>
 <span><span class="co"># N positions by species and day</span></span>
 <span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span>, <span class="va">.N</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">date</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
-<span><span class="co"># Plot data</span></span>
+<span><span class="co"># plot data</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">data_subset</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">date</span>, y <span class="op">=</span> <span class="va">tag</span>, fill <span class="op">=</span> <span class="va">N</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_tile</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html" class="external-link">scale_fill_viridis</a></span><span class="op">(</span></span>
