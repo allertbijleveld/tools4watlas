@@ -137,6 +137,7 @@ atl_add_tidal_data <- function(data,
     )
     # interpolate missing values
     dw_int[, waterlevel := zoo::na.approx(waterlevel, dateTime, rule = 2)]
+    dw_int[, waterlevel := round(waterlevel, 1)]
     # merge with movement data
     temp_data <- data.table::merge.data.table(
       temp_data, dw_int[, .(dateTime, waterlevel)],
