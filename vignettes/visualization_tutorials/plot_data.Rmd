@@ -25,7 +25,7 @@ It first presents some examples of how to plot data grouped by tag ID, then by s
 #### Load packages
 
 ```{r}
-# Packages
+# packages
 library(tools4watlas)
 library(ggplot2)
 library(viridis)
@@ -78,7 +78,7 @@ data <- data_example
 # create basemap
 bm <- atl_create_bm(data, buffer = 800)
 
-# Plot points and tracks
+# plot points and tracks
 bm +
   geom_path(
     data = data, aes(x, y, colour = species),
@@ -86,7 +86,7 @@ bm +
   ) +
   geom_point(
     data = data, aes(x, y, color = species),
-    size = 1, alpha = 1, show.legend = FALSE
+    size = 1, alpha = 1, show.legend = TRUE
   ) +
   scale_color_manual(
     values = atl_spec_cols(),
@@ -110,16 +110,16 @@ bm +
 ### Template for a customizable plot of one tag
 
 ```{r, fig.alt = "Points and tracks on a simple basemap", fig.align = "center"}
-# Load example data
+# load example data
 data <- data_example
 
-# Subset bar-tailed godwit
+# subset bar-tailed godwit
 data_subset <- data[species == "bar-tailed godwit"]
 
 # create basemap
 bm <- atl_create_bm(data_subset, buffer = 800)
 
-# Plot points and tracks
+# plot points and tracks
 bm +
   geom_path(
     data = data_subset, aes(x, y),

@@ -26,13 +26,13 @@ library(tools4watlas)
 library(terra)
 library(ggplot2)
 
-# Path to csv with raw data
+# path to csv with aggregated data
 data_path <- system.file(
   "extdata", "watlas_data_aggregated.csv",
   package = "tools4watlas"
 )
 
-# Load data
+# load data
 data <- fread(data_path, yaml = TRUE)
 ```
 
@@ -67,7 +67,7 @@ data <- atl_add_tidal_data(
   offset = 30
 )
 
-# Show first 5 rows (subset of columns to show additional ones)
+# show first 5 rows (subset of columns to show additional ones)
 head(data[, .(tag, datetime, tideID, tidaltime, time2lowtide,
               waterlevel)]) |>
   knitr::kable(digits = 2)
@@ -94,7 +94,7 @@ data <- atl_add_raster_data(
   data, raster_data = bat, new_name = "bathymetry", change_unit = 100 # m to cm
 )
 
-# Show first 5 rows (subset of columns to show additional ones)
+# show first 5 rows (subset of columns to show additional ones)
 head(data[, .(tag, datetime, bathymetry)]) |>
   knitr::kable(digits = 2)
 ```
@@ -116,7 +116,7 @@ save(data_example, file = "../../data/watlas_data_example.rda")
 To select localizations when mudlfats are available for foraging, we can for example select a low tide period from -2.5 hours to +2.5 hours around low tide [(Bijleveld et al. 2016)](https://royalsocietypublishing.org/doi/10.1098/rspb.2015.1557): 
 
 ```{r}
-# Select the low tide period for a particular tide as specified by tideID
+# select the low tide period for a particular tide as specified by tideID
 data_subset <- atl_filter_covariates(
   data = data,
   filters = c(

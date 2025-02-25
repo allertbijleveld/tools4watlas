@@ -23,7 +23,7 @@ This vignette shows how to filter WATLAS data based on spatial boundaries, tempo
 ## Loading the data
 
 ```{r, message = FALSE}
-# Packages
+# packages
 library(tools4watlas)
 library(lubridate)
 library(sf)
@@ -31,13 +31,13 @@ library(ggplot2)
 library(scales)
 library(viridis)
 
-# Path to csv with raw data
+# path to csv with raw data
 data_path <- system.file(
   "extdata", "watlas_data_raw.csv",
   package = "tools4watlas"
 )
 
-# Load data
+# load data
 data <- fread(data_path, yaml = TRUE)
 ```
 
@@ -104,7 +104,7 @@ Some birds might have also directly left the area after release, so depending on
 
 
 ```{r, message=FALSE, results='hide'}
-# Load meta data
+# load meta data
 all_tags_path <- system.file(
   "extdata", "tags_watlas_subset.xlsx", package = "tools4watlas"
 )
@@ -191,7 +191,7 @@ data <- atl_get_speed(data,
 ## Save data
 
 ```{r, eval = FALSE}
-# Save data
+# save data
 fwrite(data, file = "../inst/extdata/watlas_data_filtered.csv", yaml = TRUE)
 ```
 

@@ -32,6 +32,7 @@ When contributing, please follow the existing structure of the repository and [R
 These are all R packages needed:
  
 ```{r, eval=FALSE}
+# packages
 library(devtools)
 library(roxygen2)
 library(usethis)
