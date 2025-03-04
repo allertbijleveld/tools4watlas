@@ -211,7 +211,7 @@ Make a basemap as desired and plot with all data to check the outcome, scalebar 
 # create basemap
 bm <- atl_create_bm(
   data,
-  buffer = 800, raster_data = bat_c, option = "batymetry", scalebar = FALSE
+  buffer = 800, raster_data = bat_c, option = "bathymetry", scalebar = FALSE
 )
 
 # extract example water level
