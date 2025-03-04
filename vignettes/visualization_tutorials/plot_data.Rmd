@@ -133,7 +133,15 @@ bm +
 
 ### Simple preset plots to check the data
 
-Todo: describe options in more detail.
+The `atl_check_tag()` function can be used to quickly check the data from one tag. It provides five different options for colouring the track:
+
+- `"datetime"`: Datetime along the track
+- `"nbs"`: Number of receiver (base) stations that contributed to the localization
+- `"var"`: Error as maximal variance of varx and vary
+- `"speed_in"`: Speed in m/s
+- `"gap"`: Gaps coloured by time and as point size
+
+The scale can be coloured with all options from [`viridis`](https://search.r-project.org/CRAN/refmans/viridisLite/html/viridis.html) (default: `"A"`) by specifying the `scale_option`. The scale can also be transformed with `scale_trans` for example using `"log"` or `"sqrt"`. First and last point can be highlighted (`highlight_first` and `highlight_last`) or just a specific number of points from the beginning or end of the track can be selected (`first_n` or `last_n`).
 
 ```{r, fig.alt = "Plots of single tag to check data", fig.align = "center", fig.width = 10, fig.height = 6}
 # path to csv with filtered data
