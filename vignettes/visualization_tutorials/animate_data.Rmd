@@ -123,7 +123,7 @@ foreach(i = steps) %dofuture% {
   if (nrow(ds) > 0) {
     ds[, s := atl_size_along(
       datetime,
-      head = 70, to = c(0.3, 2.5)
+      head = 70, to = c(0.3, 2)
     ), by = tag]
   }
 
@@ -182,7 +182,8 @@ ts <- atl_add_tidal_data(
   data = ts,
   tide_data = tidal_pattern,
   tide_data_highres = measured_water_height,
-  waterdata_resolution = "10 minute",
+  waterdata_resolution = "10 min",
+  waterdata_interpolation = "1 min",
   offset = 30
 )
 
@@ -224,8 +225,8 @@ waterline <- as.polygons(bat_m, values = TRUE, dissolve = TRUE) |>
 bm +
   # add water level
   geom_sf(
-    data = waterline, fill = "lightblue", alpha = 0.4,
-    color = scales::alpha("white", 0.1), linewidth = 3
+    data = waterline, fill = "dodgerblue3", alpha = 0.2,
+    color = scales::alpha("white", 0.2), linewidth = 2
   ) +
   # add points and tracks
   geom_path(
@@ -286,7 +287,7 @@ foreach(i = steps) %dofuture% {
   if (nrow(ds) > 0) {
     ds[, s := atl_size_along(
       datetime,
-      head = 70, to = c(0.3, 2.5)
+      head = 70, to = c(0.3, 2)
     ), by = tag]
   }
 
@@ -302,8 +303,8 @@ foreach(i = steps) %dofuture% {
   p <- bm +
     # add water level
     geom_sf(
-      data = waterline, fill = "lightblue", alpha = 0.4,
-      color = scales::alpha("white", 0.1), linewidth = 3
+      data = waterline, fill = "dodgerblue3", alpha = 0.2,
+      color = scales::alpha("white", 0.2), linewidth = 2
     ) +
     # add track
     geom_path(
