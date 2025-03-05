@@ -191,10 +191,10 @@ data <- data_example
 # create basemap
 bm <- atl_create_bm(data, buffer = 800)
 
-# round data to 200 m grid cells
+# round data to 1 ha (100x100 meter) grid cells
 data[, c("x_round", "y_round") := list(
-  plyr::round_any(x, 200),
-  plyr::round_any(y, 200)
+  plyr::round_any(x, 100),
+  plyr::round_any(y, 100)
 )]
 
 # N by location
