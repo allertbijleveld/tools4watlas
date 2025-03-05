@@ -167,14 +167,14 @@ points).</p>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html" class="external-link">st_coordinates</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># generate initial positions</span></span>
-<span><span class="va">initial_positions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span></span>
+<span><span class="va">initial_positions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span></span>
 <span>  tag <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">n_individuals</span>,</span>
 <span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n_individuals</span>, mean <span class="op">=</span> <span class="va">griend</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, sd <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>,</span>
 <span>  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n_individuals</span>, mean <span class="op">=</span> <span class="va">griend</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, sd <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># create tracking data</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">n_individuals</span>, <span class="kw">function</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">n_individuals</span>, <span class="kw">function</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># generate timestamps</span></span>
 <span>  <span class="va">timestamps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.POSIXt.html" class="external-link">seq.POSIXt</a></span><span class="op">(</span></span>
 <span>    from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>, by <span class="op">=</span> <span class="va">interval</span>, length.out <span class="op">=</span> <span class="va">n_steps</span></span>
@@ -188,7 +188,7 @@ points).</p>
 <span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">initial_positions</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="va">id</span>, <span class="va">x</span><span class="op">]</span> <span class="op">+</span> <span class="va">x_mov</span></span>
 <span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">initial_positions</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="va">id</span>, <span class="va">y</span><span class="op">]</span> <span class="op">+</span> <span class="va">y_mov</span></span>
 <span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>tag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span>, x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, datetime <span class="op">=</span> <span class="va">timestamps</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>tag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span>, x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, datetime <span class="op">=</span> <span class="va">timestamps</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># create basemap</span></span>
@@ -215,8 +215,8 @@ points).</p>
 <p><img src="plot_data_faster_files/figure-html/unnamed-chunk-3-1.png" alt="Standard ggplot2 with points and tracks" width="100%"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run time</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Time difference of 6.12 secs</span></span></code></pre>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Time difference of 6.16 secs</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="ggplot2-with-points-as-pch---and-tracks">
@@ -240,8 +240,8 @@ points).</p>
 <p><img src="plot_data_faster_files/figure-html/unnamed-chunk-4-1.png" alt="ggplot2 with points as dots and tracks" width="100%"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run time</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Time difference of 2.17 secs</span></span></code></pre>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Time difference of 2.19 secs</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="ggplot2-with-points-as-geom_scattermore-and-tracks">
@@ -266,7 +266,7 @@ tracks<a class="anchor" aria-label="anchor" href="#ggplot2-with-points-as-geom_s
 <p><img src="plot_data_faster_files/figure-html/unnamed-chunk-5-1.png" alt="ggplot2 with points as geom_scattermore() and tracks" width="100%"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run time</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Time difference of 1.62 secs</span></span></code></pre>
 </div>
 <div class="section level2">
@@ -275,10 +275,10 @@ tracks<a class="anchor" aria-label="anchor" href="#ggplot2-with-points-as-geom_s
 </h2>
 <p>The larger the grid cell size, the faster.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># round data to 200 m grid cells</span></span>
+<code class="sourceCode R"><span><span class="co"># round data to 1 ha (100x100 meter) grid cells</span></span>
 <span><span class="va">data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x_round"</span>, <span class="st">"y_round"</span><span class="op">)</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  <span class="fu">plyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/round_any.html" class="external-link">round_any</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">200</span><span class="op">)</span>,</span>
-<span>  <span class="fu">plyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/round_any.html" class="external-link">round_any</a></span><span class="op">(</span><span class="va">y</span>, <span class="fl">200</span><span class="op">)</span></span>
+<span>  <span class="fu">plyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/round_any.html" class="external-link">round_any</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">100</span><span class="op">)</span>,</span>
+<span>  <span class="fu">plyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/round_any.html" class="external-link">round_any</a></span><span class="op">(</span><span class="va">y</span>, <span class="fl">100</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># N by location</span></span>
@@ -302,8 +302,8 @@ tracks<a class="anchor" aria-label="anchor" href="#ggplot2-with-points-as-geom_s
 <p><img src="plot_data_faster_files/figure-html/unnamed-chunk-6-1.png" alt="ggplot2 summarized points in heat map" width="100%"></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run time</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Time difference of 0.35 secs</span></span></code></pre>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Time difference of 0.37 secs</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="fast-saving-with-ragg">Fast saving with <code>ragg</code><a class="anchor" aria-label="anchor" href="#fast-saving-with-ragg"></a>
