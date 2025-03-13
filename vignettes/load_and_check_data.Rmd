@@ -52,11 +52,13 @@ Loading the `tags_watlas_subset.xlsx` will provide a table with the following co
 #### Select the desired tags and time period
 
 ```{r}
-# load meta data
-all_tags_path <- system.file(
+# file path to the metadata
+fp <- system.file(
   "extdata", "tags_watlas_subset.xlsx", package = "tools4watlas"
 )
-all_tags <- readxl::read_excel(all_tags_path, sheet = "tags_watlas_all") |>
+
+# load meta data
+all_tags <- readxl::read_excel(fp, sheet = "tags_watlas_all") |>
   data.table()
 
 # subset desired tags using data.table
@@ -120,10 +122,17 @@ Sys.getenv("variable_name")
 
 `atl_get_data` does the same as when connecting to a local SQLite database when connecting to a remote database. In this example (chunk not run and only shown) we load the last three days of data from all tags of season 2024. Host, username and password are specified as environmental variables in this example, but can also be specified directly.
 
+Since we want the up to date metadata we load the "tags_watlas_all.xlsx" from the “WATLAS” SharePoint folder: `Documents/data/`. Either specify the path to your local copy of this folder or add the path for your user in the `atl_file_path()` function.
+
 ```{r, eval = FALSE}
+# file path to WATLAS teams data folder
+fp <- atl_file_path("watlas_teams")
+
 # load meta data
-all_tags_path <- "C:\\path\\tags_watlas_all.xlsx"
-all_tags <- readxl::read_excel(all_tags_path, sheet = "tags_watlas_all") |>
+all_tags <- readxl::read_excel(
+  paste0(fp, "tags/tags_watlas_all.xlsx"),
+  sheet = "tags_watlas_all"
+) |>
   data.table()
 
 # subset all tags from 2024
