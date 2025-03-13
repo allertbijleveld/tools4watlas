@@ -26,7 +26,7 @@ The `OpenStreetMap` land polygon can also be downloaded from [`osmdata`](https:/
 #### Load packages and specify path to local data
  
 ```{r}
-# Packages
+# packages
 library(data.table)
 library(tools4watlas)
 library(sf)

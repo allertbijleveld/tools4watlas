@@ -23,7 +23,7 @@ This article shows how to make different basemaps to plot the movement data on. 
 #### Load packages
 
 ```{r}
-# Packages
+# packages
 library(tools4watlas)
 library(ggplot2)
 ```

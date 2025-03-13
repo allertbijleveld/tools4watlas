@@ -23,7 +23,7 @@ This article shows different ways on how to plot WATLAS data interactively using
 #### Load packages
 
 ```{r}
-# Packages
+# packages
 library(tools4watlas)
 library(mapview)
 ```
@@ -33,7 +33,7 @@ library(mapview)
 Subset the individual of choice and transform it into a `sf` with the additional columns of your choice (can be seen when clicking on the point). Colour the track by selecting the desired parameter as `zcol`.
 
 ```{r, fig.height = 2, fig.cap = "Interactive map with mapview()"}
-# Load example data
+# load example data
 data <- data_example
 
 # subset data
@@ -51,7 +51,7 @@ d_sf_lines <- atl_as_sf(data_subset,
   option = "lines"
 )
 
-# Plot interactive map
+# plot interactive map
 mapview(d_sf_lines, zcol = "speed_in", legend = FALSE) +
   mapview(d_sf, zcol = "speed_in")
 ```
@@ -61,7 +61,7 @@ mapview(d_sf_lines, zcol = "speed_in", legend = FALSE) +
 ## Interactive plot for multiple individuals
 
 ```{r, fig.height = 2, fig.cap = "Interactive map with mapview()"}
-# Load example data
+# load example data
 data <- data_example
 
 # make data spatial
@@ -73,7 +73,7 @@ d_sf_lines <- atl_as_sf(data,
   option = "lines"
 )
 
-# Plot interactive map
+# plot interactive map
 mapview(d_sf_lines, zcol = "tag", legend = FALSE) +
   mapview(d_sf, zcol = "tag")
 ```
@@ -82,7 +82,7 @@ mapview(d_sf_lines, zcol = "tag", legend = FALSE) +
 
 
 ```{r, fig.height = 2, fig.cap = "Interactive map with mapview()"}
-# Load example data
+# load example data
 data <- data_example
 
 # make data spatial
@@ -94,7 +94,7 @@ d_sf_lines <- atl_as_sf(data,
   option = "lines"
 )
 
-# Plot interactive map
+# plot interactive map
 mapview(d_sf_lines, zcol = "species", legend = FALSE) +
   mapview(d_sf, zcol = "species")
 ```

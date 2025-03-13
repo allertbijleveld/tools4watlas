@@ -96,7 +96,7 @@ Krietsch</h4>
     
     
 <p>This article shows how to add tidal and bathymetry data to WATLAS
-data and provides an example of how to subset by specific times witin
+data and provides an example of how to subset by specific times within
 the tide and plot the data with bathymetry.</p>
 <div class="section level4">
 <h4 id="load-packages-and-movement-data">Load packages and movement data<a class="anchor" aria-label="anchor" href="#load-packages-and-movement-data"></a>
@@ -106,13 +106,13 @@ the tide and plot the data with bathymetry.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Path to csv with raw data</span></span>
+<span><span class="co"># path to csv with aggregated data</span></span>
 <span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
 <span>  <span class="st">"extdata"</span>, <span class="st">"watlas_data_aggregated.csv"</span>,</span>
 <span>  package <span class="op">=</span> <span class="st">"tools4watlas"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Load data</span></span>
+<span><span class="co"># load data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">data_path</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -122,7 +122,11 @@ the tide and plot the data with bathymetry.</p>
 located in the “WATLAS” SharePoint folder: <code>Documents/data/</code>.
 Either specify the path to your local copy of this folder or add the
 path for your user in the <code><a href="../../reference/atl_file_path.html">atl_file_path()</a></code> function.</p>
-<p>The offset of 30 minutes is set to match Griend.</p>
+<p>The offset of 30 minutes is set to match Griend. One can also
+interpolate the water level data with this function by setting for
+example <code>waterdata_interpolation = "1 min"</code>. This will keep
+the tidal pattern in the original time resolution, but interpolate the
+water level data to the specified resolution.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># file path to WATLAS teams data folder</span></span>
 <span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_file_path.html">atl_file_path</a></span><span class="op">(</span><span class="st">"watlas_teams"</span><span class="op">)</span></span>
@@ -144,11 +148,11 @@ path for your user in the <code><a href="../../reference/atl_file_path.html">atl
 <span>  data <span class="op">=</span> <span class="va">data</span>,</span>
 <span>  tide_data <span class="op">=</span> <span class="va">tidal_pattern</span>,</span>
 <span>  tide_data_highres <span class="op">=</span> <span class="va">measured_water_height</span>,</span>
-<span>  waterdata_resolution <span class="op">=</span> <span class="st">"10 minute"</span>,</span>
+<span>  waterdata_resolution <span class="op">=</span> <span class="st">"10 min"</span>,</span>
 <span>  offset <span class="op">=</span> <span class="fl">30</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Show first 5 rows (subset of columns to show additional ones)</span></span>
+<span><span class="co"># show first 5 rows (subset of columns to show additional ones)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">datetime</span>, <span class="va">tideID</span>, <span class="va">tidaltime</span>, <span class="va">time2lowtide</span>,</span>
 <span>              <span class="va">waterlevel</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
@@ -243,7 +247,7 @@ in the tide cycle.</p>
 <span>  <span class="va">data</span>, raster_data <span class="op">=</span> <span class="va">bat</span>, new_name <span class="op">=</span> <span class="st">"bathymetry"</span>, change_unit <span class="op">=</span> <span class="fl">100</span> <span class="co"># m to cm</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Show first 5 rows (subset of columns to show additional ones)</span></span>
+<span><span class="co"># show first 5 rows (subset of columns to show additional ones)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">datetime</span>, <span class="va">bathymetry</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -307,7 +311,7 @@ can for example select a low tide period from -2.5 hours to +2.5 hours
 around low tide <a href="https://royalsocietypublishing.org/doi/10.1098/rspb.2015.1557" class="external-link">(Bijleveld
 et al. 2016)</a>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Select the low tide period for a particular tide as specified by tideID</span></span>
+<code class="sourceCode R"><span><span class="co"># select the low tide period for a particular tide as specified by tideID</span></span>
 <span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_filter_covariates.html">atl_filter_covariates</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data</span>,</span>
 <span>  filters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -335,11 +339,10 @@ et al. 2016)</a>:</p>
 <span><span class="co"># create base map with bathymetry data</span></span>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span></span>
 <span>  <span class="va">data_subset</span>,</span>
-<span>  buffer <span class="op">=</span> <span class="fl">1000</span>, raster_data <span class="op">=</span> <span class="va">bat</span>, option <span class="op">=</span> <span class="st">"batymetry"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: [crop] CRS do not match</span></span></code></pre>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># plot data</span></span>
+<span>  buffer <span class="op">=</span> <span class="fl">1000</span>, raster_data <span class="op">=</span> <span class="va">bat</span>, option <span class="op">=</span> <span class="st">"bathymetry"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># plot data</span></span>
 <span><span class="va">bm</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">data_subset</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, group <span class="op">=</span> <span class="va">tag</span>, colour <span class="op">=</span> <span class="va">bathymetry</span><span class="op">)</span>,</span>

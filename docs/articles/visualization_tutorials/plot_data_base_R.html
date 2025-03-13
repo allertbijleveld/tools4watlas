@@ -100,7 +100,7 @@ Krietsch</h4>
 </h4>
 <p>This article shows how to plot WATLAS data with base R</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Packages</span></span>
+<code class="sourceCode R"><span><span class="co"># packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -119,13 +119,13 @@ specifiying the full path and file name (with extension) in fullname, it
 is possible to save the plot as a .png. If necesarry, the legend can
 also be located elsewhere on the plot with Legend.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load example data</span></span>
+<code class="sourceCode R"><span><span class="co"># load example data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="va">data_example</span><span class="op">[</span><span class="fl">1</span>, <span class="va">tag</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
-<span><span class="co"># Transform to sf</span></span>
+<span><span class="co"># transform to sf</span></span>
 <span><span class="va">d_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_as_sf.html">atl_as_sf</a></span><span class="op">(</span><span class="va">data</span>, additional_cols <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Plot the tracking data with a simple background</span></span>
+<span><span class="co"># plot the tracking data with a simple background</span></span>
 <span><span class="fu"><a href="../../reference/atl_plot_tag.html">atl_plot_tag</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">d_sf</span>, tag <span class="op">=</span> <span class="cn">NULL</span>, fullname <span class="op">=</span> <span class="cn">NULL</span>, buffer <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  color_by <span class="op">=</span> <span class="st">"time"</span></span>
@@ -137,7 +137,7 @@ Base R map
 </p>
 </div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Note: function opens device and therefore the plot is not shown in markdown</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># note: function opens device and therefore the plot is not shown in markdown</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="plot-with-openstreetmap">Plot with <code>OpenStreetMap</code><a class="anchor" aria-label="anchor" href="#plot-with-openstreetmap"></a>
@@ -151,7 +151,7 @@ atl_plot_tag (see earlier).</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ifellows/ROSM" class="external-link">OpenStreetMap</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Load example data</span></span>
+<span><span class="co"># load example data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="va">data_example</span><span class="op">[</span><span class="fl">1</span>, <span class="va">tag</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># make data spatial and transform projection to WGS 84 (used in osm)</span></span>
@@ -169,7 +169,7 @@ atl_plot_tag (see earlier).</p>
 <span>  type <span class="op">=</span> <span class="st">"osm"</span>, mergeTiles <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Plot the tracking data on the satellite image</span></span>
+<span><span class="co"># plot the tracking data on the satellite image</span></span>
 <span><span class="fu"><a href="../../reference/atl_plot_tag_osm.html">atl_plot_tag_osm</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">d_sf</span>, tag <span class="op">=</span> <span class="cn">NULL</span>, mapID <span class="op">=</span> <span class="va">map</span>, color_by <span class="op">=</span> <span class="st">"time"</span>,</span>
 <span>  fullname <span class="op">=</span> <span class="cn">NULL</span>, scalebar <span class="op">=</span> <span class="fl">3</span></span>

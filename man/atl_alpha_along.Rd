@@ -26,8 +26,8 @@ d <- data.frame(
   a = atl_alpha_along(1:100, head = 20, skew = -2)
 )
 bm <- ggplot(d, aes(x, y))
-bm + geom_path(size = 10)
-bm + geom_path(size = 10, alpha = d$a, lineend = "round")
+bm + geom_path(linewidth = 10)
+bm + geom_path(linewidth = 10, alpha = d$a, lineend = "round")
 }
 \author{
 Mihai Valcu & Johannes Krietsch

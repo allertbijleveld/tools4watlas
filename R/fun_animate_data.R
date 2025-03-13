@@ -102,8 +102,8 @@ atl_time_steps <- function(datetime_vector,
 #'   a = atl_alpha_along(1:100, head = 20, skew = -2)
 #' )
 #' bm <- ggplot(d, aes(x, y))
-#' bm + geom_path(size = 10)
-#' bm + geom_path(size = 10, alpha = d$a, lineend = "round")
+#' bm + geom_path(linewidth = 10)
+#' bm + geom_path(linewidth = 10, alpha = d$a, lineend = "round")
 atl_alpha_along <- function(x, head = 20, skew = -2) {
   if (head >= length(x)) head <- as.integer(length(x) * 0.5)
   x <- as.numeric(x)
@@ -132,8 +132,8 @@ atl_alpha_along <- function(x, head = 20, skew = -2) {
 #'   s = atl_size_along(1:100, head = 70, to = c(0.1, 5))
 #' )
 #' bm <- ggplot(d, aes(x, y))
-#' bm + geom_path(size = 1)
-#' bm + geom_path(size = d$s, lineend = "round")
+#' bm + geom_path(linewidth = 1)
+#' bm + geom_path(linewidth = d$s, lineend = "round")
 atl_size_along <- function(x, head = 20, to = c(0.1, 2.5)) {
   if (head >= length(x)) head <- as.integer(length(x) * 0.5)
   x <- as.numeric(x)
@@ -163,7 +163,6 @@ atl_ffmpeg_pattern <- function(x) {
   x <- nchar(sub("\\.png$", "", basename(x)))
 
   # create the pattern needed for ffmpeg
-  pattern <- paste0("%0", x, "d.png")
+  paste0("%0", x, "d.png")
 
-  return(pattern)
 }

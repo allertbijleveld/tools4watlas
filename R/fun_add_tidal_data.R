@@ -5,7 +5,7 @@
 #'
 #' @author Pratik Gupte & Allert Bijleveld & Johannes Krietsch
 #' @param data A dataframe with the tracking data with the timestamp column
-#' 'time' in UTC.
+#' 'datetime' in UTC.
 #' @param tide_data Data on the timing (in UTC) of low and high tides as output
 #'  from the function \code{fread} of the package \code{data.table}.
 #' @param tide_data_highres Data on the timing (in UTC) of the waterlevel in
@@ -14,11 +14,14 @@
 #' @param waterdata_resolution The resolution of the high resolution waterlevel
 #' data. This is used for matching the high resolution tidal data to the
 #' tracking data. Defaults to 10 minutes but can be set differently.
+#' @param waterdata_interpolation Time interval to which the water level data
+#' will be interpolated (should be smaller than water data resolution e.g.
+#' 1 min). If NULL will keep the original water data resolution.
 #' @param offset The offset in minutes between the location of the tidal gauge
 #' and the tracking area. This value will be added to the timing of the
-#' waterdata.
+#' water data.
 #' @return The input data but with three columns added: tideID (a unique number
-#' for the tidal periode between two consecutive high tides), tidaltime (time
+#' for the tidal period between two consecutive high tides), tidaltime (time
 #' since high tide in minutes), time2lowtide (time to low tide in minutes),
 #' and waterlevel with reference to NAP (cm).
 #' @import data.table
@@ -26,7 +29,8 @@
 atl_add_tidal_data <- function(data,
                                tide_data,
                                tide_data_highres,
-                               waterdata_resolution = "10 minute",
+                               waterdata_resolution = "10 min",
+                               waterdata_interpolation = NULL,
                                offset = 0) {
   # global variables
   row_id <- low_time <- . <- NULL
@@ -66,7 +70,7 @@ atl_add_tidal_data <- function(data,
   data[, row_id := .I]
 
   # order tracking data
-  data.table::setorder(data, time) # order data on time
+  data.table::setorder(data, datetime) # order data on time
 
   # process tidal data
   setattr(tide_data$high_start_time, "tzone", "UTC") # time zone to UTC
@@ -99,14 +103,47 @@ atl_add_tidal_data <- function(data,
   # add waterlevel to tracking data
   setattr(tide_data_highres$dateTime, "tzone", "UTC")
   tide_data_highres[, dateTime := dateTime + offset * 60]
-  temp_data[, temp_time := lubridate::round_date(
-    datetime,
-    unit = waterdata_resolution
-  )]
-  temp_data <- data.table::merge.data.table(
-    temp_data, tide_data_highres[, .(dateTime, waterlevel)],
-    by.x = "temp_time", by.y = "dateTime"
-  )
+
+  # merge with original waterdata_resolution or interpolate data
+  if (is.null(waterdata_interpolation)) {
+    # original water data resolution
+    temp_data[, temp_time := lubridate::round_date(
+      datetime,
+      unit = waterdata_resolution
+    )]
+    # merge with movement data
+    temp_data <- data.table::merge.data.table(
+      temp_data, tide_data_highres[, .(dateTime, waterlevel)],
+      by.x = "temp_time", by.y = "dateTime"
+    )
+  } else {
+    # interpolated resolution
+    temp_data[, temp_time := lubridate::round_date(
+      datetime,
+      unit = waterdata_interpolation
+    )]
+    # create sequence within the tracking data interval
+    dw_int <- data.table(
+      dateTime = seq(
+        min(temp_data$temp_time) - 3600,
+        max(temp_data$temp_time) + 3600,
+        by = waterdata_interpolation
+      )
+    )
+    # merge
+    dw_int <- merge(
+      dw_int, unique(tide_data_highres),
+      by = "dateTime", all.x = TRUE
+    )
+    # interpolate missing values
+    dw_int[, waterlevel := zoo::na.approx(waterlevel, dateTime, rule = 2)]
+    dw_int[, waterlevel := round(waterlevel, 1)]
+    # merge with movement data
+    temp_data <- data.table::merge.data.table(
+      temp_data, dw_int[, .(dateTime, waterlevel)],
+      by.x = "temp_time", by.y = "dateTime"
+    )
+  }
 
   # set order back
   data.table::setorder(temp_data, row_id) # order data on time

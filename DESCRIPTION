@@ -41,7 +41,8 @@ Imports:
     stringr,
     terra,
     tidyterra,
-    viridis
+    viridis,
+    zoo
 Suggests:
     doFuture,
     foreach,
