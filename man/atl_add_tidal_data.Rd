@@ -29,16 +29,16 @@ data. This is used for matching the high resolution tidal data to the
 tracking data. Defaults to 10 minutes but can be set differently.}
 
 \item{waterdata_interpolation}{Time interval to which the water level data
-will be interpolated (e.g. 1 min). If NULL will keep the original water data
-resolution.}
+will be interpolated (should be smaller than water data resolution e.g.
+1 min). If NULL will keep the original water data resolution.}
 
 \item{offset}{The offset in minutes between the location of the tidal gauge
 and the tracking area. This value will be added to the timing of the
-waterdata.}
+water data.}
 }
 \value{
 The input data but with three columns added: tideID (a unique number
-for the tidal periode between two consecutive high tides), tidaltime (time
+for the tidal period between two consecutive high tides), tidaltime (time
 since high tide in minutes), time2lowtide (time to low tide in minutes),
 and waterlevel with reference to NAP (cm).
 }

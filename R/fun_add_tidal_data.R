@@ -15,7 +15,7 @@
 #' data. This is used for matching the high resolution tidal data to the
 #' tracking data. Defaults to 10 minutes but can be set differently.
 #' @param waterdata_interpolation Time interval to which the water level data
-#' will be interpolated (should be smaller than water data resolution e.g. 
+#' will be interpolated (should be smaller than water data resolution e.g.
 #' 1 min). If NULL will keep the original water data resolution.
 #' @param offset The offset in minutes between the location of the tidal gauge
 #' and the tracking area. This value will be added to the timing of the
