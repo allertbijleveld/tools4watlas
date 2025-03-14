@@ -67,7 +67,7 @@ data <- atl_get_speed(data, type = c("in", "out"))
 id <- unique(data$tag)
 
 # loop by tag ID
-rp <- foreach(i = id, .combine = "rbind") %dopar% {
+rp <- foreach(i = id, .combine = "rbind") %do% {
   atl_res_patch_speed(
     data[tag == i],
     max_speed = 3, lim_spat_indep = 50, lim_time_indep = 180,
