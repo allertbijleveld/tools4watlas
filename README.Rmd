@@ -45,7 +45,7 @@ The `tools4watlas` package is thoroughly documented on the [**offical package we
 
    - [**Add tidal and bathymetry data***](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html)
   
-   - [**Cluster data in residency patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/cluster_data_in_residency_patches.html) -
+   - [**Cluster data in residency patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residency_patches.html) -
    work in progress.
 
    - [**Add SIBES data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_SIBES_data.html) -
