@@ -119,10 +119,10 @@ checking the data by tag ID using <code><a href="../../reference/atl_check_tag.h
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
 <span></span>
 <span><span class="co"># file path</span></span>
-<span><span class="va">path</span> <span class="op">&lt;-</span> <span class="st">"./outputs/maps_by_tag/name_tag_"</span></span>
+<span><span class="va">path</span> <span class="op">&lt;-</span> <span class="st">"./outputs/maps_by_tag/tag_"</span></span>
 <span></span>
 <span><span class="co"># unique ID (here by tag)</span></span>
-<span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">tag</span><span class="op">)</span></span>
+<span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">tag</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># loop to make plots for all</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></span><span class="op">(</span>i <span class="op">=</span> <span class="va">id</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">%do%</a></span> <span class="op">{</span></span>
@@ -160,10 +160,10 @@ processing with <code><a href="https://doFuture.futureverse.org/reference/regist
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
 <span></span>
 <span><span class="co"># file path</span></span>
-<span><span class="va">path</span> <span class="op">&lt;-</span> <span class="st">"./outputs/maps_by_tag/name_tag_"</span></span>
+<span><span class="va">path</span> <span class="op">&lt;-</span> <span class="st">"./outputs/maps_by_tag/tag_"</span></span>
 <span></span>
 <span><span class="co"># unique ID (here by tag)</span></span>
-<span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">tag</span><span class="op">)</span></span>
+<span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">tag</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># register cores and backend for parallel processing</span></span>
 <span><span class="fu"><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span></span>
