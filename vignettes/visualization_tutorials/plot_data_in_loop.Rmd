@@ -40,7 +40,7 @@ Example of a simple loop by tag ID and using `atl_check_tag()`.
 data <- data_example
 
 # file path
-path <- "./outputs/maps_by_tag/name_tag_"
+path <- "./outputs/maps_by_tag/tag_"
 
 # unique ID (here by tag)
 id <- unique(data$tag)
@@ -78,7 +78,7 @@ We can use the same structure, simply replacing `%do%` with `%dofuture%`, which 
 data <- data_example
 
 # file path
-path <- "./outputs/maps_by_tag/name_tag_"
+path <- "./outputs/maps_by_tag/tag_"
 
 # unique ID (here by tag)
 id <- unique(data$tag)

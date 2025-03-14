@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 #### Good to know
 
-`tools4watlas` is based on `data.table` to be fast and efficient. A key feature of `data.table` is modification in place, where data is changed without making a copy. To prevent this (whenever it is not desired) use the function `copy()` to make a true copy of the data set.
+`tools4watlas` is based on `data.table` to be fast and efficient. A key feature of `data.table` is modification in place, where data is changed without making a copy. To prevent this (whenever it is not desired) use the function `copy()` to make a true copy of the data set. Basic knowledge about [`data.table`](https://rdatatable.gitlab.io/data.table/index.html) is helpful, but not necessary, when working with `tools4watlas`.
 
 ```{r}
 # packages
@@ -33,7 +33,7 @@ library(viridis)
 
 ## Getting data
 
-WATLAS data can either be loaded from a local SQLite database or a rem remote SQL database server. To do so, first select the tags and time period for which to extract data.
+WATLAS data can either be loaded from a local SQLite database or a remote SQL database server. To do so, first select the tags and time period for which to extract data.
 
 Use the `tags_watlas_all.xlsx` file (including metadata of all tags) or for collaborators the `tags_watlas_subset.xlsx` (including a subset of metadata) to select the desired tags. Here shown with the example data in `tools4watlas`.
 
@@ -122,7 +122,7 @@ Sys.getenv("variable_name")
 
 `atl_get_data` does the same as when connecting to a local SQLite database when connecting to a remote database. In this example (chunk not run and only shown) we load the last three days of data from all tags of season 2024. Host, username and password are specified as environmental variables in this example, but can also be specified directly.
 
-Since we want the up to date metadata we load the "tags_watlas_all.xlsx" from the “WATLAS” SharePoint folder: `Documents/data/`. Either specify the path to your local copy of this folder or add the path for your user in the `atl_file_path()` function.
+Since we want the up to date metadata we load the `tags_watlas_all.xlsx` from the “WATLAS” SharePoint folder: `Documents/data/`. Either specify the path to your local copy of this folder or add the path for your user in the `atl_file_path()` function.
 
 ```{r, eval = FALSE}
 # file path to WATLAS teams data folder
