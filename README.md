@@ -68,8 +68,8 @@ local NIOZ file server is required.
 - [**Add tidal and bathymetry
   data**\*](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html)
 
-- [**Cluster data in residency
-  patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/cluster_data_in_residency_patches.html) -
+- [**Add residency
+  patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residency_patches.html) -
   work in progress.
 
 - [**Add SIBES
@@ -92,6 +92,9 @@ local NIOZ file server is required.
 
 - [**Fast plotting with
   ggplot2**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/fast_plotting.html)
+
+- [**Plot data
+  interactively**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_interactively.html)
 
 - [**Animate
   data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/animate_data.html)
