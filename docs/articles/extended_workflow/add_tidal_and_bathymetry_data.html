@@ -47,7 +47,7 @@
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
-    <li><a class="dropdown-item" href="../../articles/extended_workflow/cluster_data_in_residency_patches.html">Clustering in residency patches</a></li>
+    <li><a class="dropdown-item" href="../../articles/extended_workflow/add_residency_patches.html">Add residency patches</a></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_SIBES_data.html">Add SIBES data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
@@ -113,7 +113,7 @@ the tide and plot the data with bathymetry.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># load data</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">data_path</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">data_path</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="add-tidal-data">Add tidal data<a class="anchor" aria-label="anchor" href="#add-tidal-data"></a>
@@ -140,8 +140,8 @@ water level data to the specified resolution.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># load tide data</span></span>
-<span><span class="va">tidal_pattern</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">tidal_pattern_fp</span><span class="op">)</span></span>
-<span><span class="va">measured_water_height</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">measured_water_height_fp</span><span class="op">)</span></span>
+<span><span class="va">tidal_pattern</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">tidal_pattern_fp</span><span class="op">)</span></span>
+<span><span class="va">measured_water_height</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">measured_water_height_fp</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># add tide data to movement data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_add_tidal_data.html">atl_add_tidal_data</a></span><span class="op">(</span></span>
@@ -149,12 +149,12 @@ water level data to the specified resolution.</p>
 <span>  tide_data <span class="op">=</span> <span class="va">tidal_pattern</span>,</span>
 <span>  tide_data_highres <span class="op">=</span> <span class="va">measured_water_height</span>,</span>
 <span>  waterdata_resolution <span class="op">=</span> <span class="st">"10 min"</span>,</span>
+<span>  waterdata_interpolation <span class="op">=</span> <span class="st">"1 min"</span>,</span>
 <span>  offset <span class="op">=</span> <span class="fl">30</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># show first 5 rows (subset of columns to show additional ones)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">datetime</span>, <span class="va">tideID</span>, <span class="va">tidaltime</span>, <span class="va">time2lowtide</span>,</span>
-<span>              <span class="va">waterlevel</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">datetime</span>, <span class="va">tideID</span>, <span class="va">tidaltime</span>, <span class="va">time2lowtide</span>, <span class="va">waterlevel</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -180,7 +180,7 @@ water level data to the specified resolution.</p>
 <td align="right">2023513</td>
 <td align="right">133</td>
 <td align="right">-247</td>
-<td align="right">52</td>
+<td align="right">49.9</td>
 </tr>
 <tr class="even">
 <td align="left">3027</td>
@@ -188,7 +188,7 @@ water level data to the specified resolution.</p>
 <td align="right">2023513</td>
 <td align="right">139</td>
 <td align="right">-241</td>
-<td align="right">45</td>
+<td align="right">45.7</td>
 </tr>
 <tr class="odd">
 <td align="left">3027</td>
@@ -196,7 +196,7 @@ water level data to the specified resolution.</p>
 <td align="right">2023513</td>
 <td align="right">140</td>
 <td align="right">-240</td>
-<td align="right">45</td>
+<td align="right">45.0</td>
 </tr>
 <tr class="even">
 <td align="left">3027</td>
@@ -204,7 +204,7 @@ water level data to the specified resolution.</p>
 <td align="right">2023513</td>
 <td align="right">141</td>
 <td align="right">-239</td>
-<td align="right">45</td>
+<td align="right">44.4</td>
 </tr>
 <tr class="odd">
 <td align="left">3027</td>
@@ -212,7 +212,7 @@ water level data to the specified resolution.</p>
 <td align="right">2023513</td>
 <td align="right">144</td>
 <td align="right">-236</td>
-<td align="right">45</td>
+<td align="right">42.6</td>
 </tr>
 <tr class="even">
 <td align="left">3027</td>
@@ -220,7 +220,7 @@ water level data to the specified resolution.</p>
 <td align="right">2023513</td>
 <td align="right">145</td>
 <td align="right">-235</td>
-<td align="right">39</td>
+<td align="right">42.0</td>
 </tr>
 </tbody>
 </table>
