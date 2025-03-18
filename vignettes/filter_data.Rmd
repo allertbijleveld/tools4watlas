@@ -161,9 +161,7 @@ This will filter more unrealistic positions.
 
 ```{r, fig.cap = "Histogram of speed moved from all data", fig.align = "center"}
 # calculate speed
-data <- atl_get_speed(data,
-  type = c("in", "out")
-)
+data <- atl_get_speed(data, type = c("in", "out"))
 
 # plot speed (subset relevant range)
 ggplot(data = data[!is.na(speed_in) & speed_in > 5 & speed_in < 100]) +
@@ -183,9 +181,7 @@ data <- atl_filter_covariates(
 )
 
 # recalculate speed
-data <- atl_get_speed(data,
-  type = c("in", "out")
-)
+data <- atl_get_speed(data, type = c("in", "out"))
 ```
 
 ## Save data

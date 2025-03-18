@@ -137,7 +137,8 @@ head(thinned_subsampled[, .(tag, time, datetime, x, y, n_subsampled)]) |>
 
 ```{r, eval = FALSE}
 # Save data
-fwrite(thinned_aggregated,
+fwrite(
+  thinned_aggregated,
   file = "../inst/extdata/watlas_data_aggregated.csv", yaml = TRUE
 )
 ```

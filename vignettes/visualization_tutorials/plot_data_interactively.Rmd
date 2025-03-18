@@ -46,7 +46,8 @@ d_sf <- atl_as_sf(
 )
 
 # add track
-d_sf_lines <- atl_as_sf(data_subset,
+d_sf_lines <- atl_as_sf(
+  data_subset,
   additional_cols = c("species", "datetime", "speed_in", "nbs", "waterlevel"),
   option = "lines"
 )
@@ -68,7 +69,8 @@ data <- data_example
 d_sf <- atl_as_sf(data, additional_cols = c("datetime", "species"))
 
 # add track
-d_sf_lines <- atl_as_sf(data,
+d_sf_lines <- atl_as_sf(
+  data,
   additional_cols = c("species"),
   option = "lines"
 )
@@ -89,7 +91,8 @@ data <- data_example
 d_sf <- atl_as_sf(data, additional_cols = c("datetime", "species"))
 
 # add track
-d_sf_lines <- atl_as_sf(data,
+d_sf_lines <- atl_as_sf(
+  data,
   additional_cols = c("species"),
   option = "lines"
 )

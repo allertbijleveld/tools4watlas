@@ -64,12 +64,12 @@ data <- atl_add_tidal_data(
   tide_data = tidal_pattern,
   tide_data_highres = measured_water_height,
   waterdata_resolution = "10 min",
+  waterdata_interpolation = "1 min",
   offset = 30
 )
 
 # show first 5 rows (subset of columns to show additional ones)
-head(data[, .(tag, datetime, tideID, tidaltime, time2lowtide,
-              waterlevel)]) |>
+head(data[, .(tag, datetime, tideID, tidaltime, time2lowtide, waterlevel)]) |>
   knitr::kable(digits = 2)
 ```
 
