@@ -102,7 +102,10 @@ Krietsch</h4>
 fast and efficient. A key feature of <code>data.table</code> is
 modification in place, where data is changed without making a copy. To
 prevent this (whenever it is not desired) use the function
-<code><a href="https://rdatatable.gitlab.io/data.table/reference/copy.html" class="external-link">copy()</a></code> to make a true copy of the data set.</p>
+<code><a href="https://rdatatable.gitlab.io/data.table/reference/copy.html" class="external-link">copy()</a></code> to make a true copy of the data set. Basic knowledge
+about <a href="https://rdatatable.gitlab.io/data.table/index.html" class="external-link"><code>data.table</code></a>
+is helpful, but not necessary, when working with
+<code>tools4watlas</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span>
@@ -114,7 +117,7 @@ prevent this (whenever it is not desired) use the function
 <h2 id="getting-data">Getting data<a class="anchor" aria-label="anchor" href="#getting-data"></a>
 </h2>
 <p>WATLAS data can either be loaded from a local SQLite database or a
-rem remote SQL database server. To do so, first select the tags and time
+remote SQL database server. To do so, first select the tags and time
 period for which to extract data.</p>
 <p>Use the <code>tags_watlas_all.xlsx</code> file (including metadata of
 all tags) or for collaborators the <code>tags_watlas_subset.xlsx</code>
@@ -231,7 +234,7 @@ all tags of season 2024. Host, username and password are specified as
 environmental variables in this example, but can also be specified
 directly.</p>
 <p>Since we want the up to date metadata we load the
-“tags_watlas_all.xlsx” from the “WATLAS” SharePoint folder:
+<code>tags_watlas_all.xlsx</code> from the “WATLAS” SharePoint folder:
 <code>Documents/data/</code>. Either specify the path to your local copy
 of this folder or add the path for your user in the
 <code><a href="../reference/atl_file_path.html">atl_file_path()</a></code> function.</p>

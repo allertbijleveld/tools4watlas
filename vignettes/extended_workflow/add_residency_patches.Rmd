@@ -1,0 +1,160 @@
+---
+title: "Add residency patches"
+author: "Johannes Krietsch"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Add residency patches}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  out.width = "100%",
+  fig.width = 8.89, fig.height = 5,
+  dpi = 300,
+  dev = "ragg_png",
+  message = FALSE
+)
+```
+
+# Work in progress
+
+This vignette shows how to assign residency patches with WATLAS data. 
+
+```{r, message = FALSE}
+# Packages
+library(tools4watlas)
+library(ggplot2)
+library(viridis)
+library(foreach)
+
+# Path to csv with filtered data
+data_path <- system.file(
+  "extdata", "watlas_data_filtered.csv",
+  package = "tools4watlas"
+)
+
+# Load data
+data <- fread(data_path, yaml = TRUE)
+
+```
+
+
+## Median smooth data
+
+To further reduce error in the localization data, a basic smoother such as a median filter can be applied. The resulting table has the smoothed location stored in the `x` and `y` column and the original location stored in the `x_raw` and `y_raw` column. 
+
+```{r echo=T, results='hide'}		
+# Smooth the data
+data <- atl_median_smooth(data, moving_window = 5)
+```
+
+### Recalculate speed
+
+After smoothing the data, the speeds need to be recalculated. We now also calculate turning angles. 
+Note: the distance between smoothed positions can be 0 and therefore will produce NAs and a warning
+
+```{r echo=T}		
+# Recalculate speed
+data <- atl_get_speed(data, type = c("in", "out"))
+```
+
+## Calculate residency patches by tag
+
+```{r echo=T}		
+# unique tag ID
+id <- unique(data$tag)
+
+# loop by tag ID
+rp <- foreach(i = id, .combine = "rbind") %do% {
+  atl_res_patch_speed(
+    data[tag == i],
+    max_speed = 3, lim_spat_indep = 50, lim_time_indep = 180,
+    min_fixes = 3, min_duration = 180
+  )
+}
+
+# extract data from all residency patches
+drp <- rp[, rbindlist(lapply(
+  patchdata, function(x) cbind(x)
+)), by = .(tag, patch)]
+
+# merge back with data
+data <- merge(
+  data, drp[, .(tag, posID, patch)],
+  by = c("tag", "posID"), all.x = TRUE
+)
+```
+
+## Plot residency patches (Example red knot)
+
+```{r}
+# duration in minutes
+rp[, duration := duration / 60]
+
+# subset red knot
+data_subset <- data[tag == 3038]
+rp_subset <- rp[tag == 3038]
+
+# create basemap
+bm <- atl_create_bm(data_subset, buffer = 500)
+
+# track with residency patches coloured
+bm +
+  geom_path(data = data_subset, aes(x, y), alpha = 0.1) +
+  geom_point(
+    data = data_subset, aes(x, y), color = "grey",
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = data_subset[!is.na(patch)], aes(x, y, color = as.character(patch)),
+    size = 1.5, show.legend = FALSE
+  )
+
+# plot x against datetime
+ggplot() +
+  geom_line(
+    data = data_subset, aes(datetime, x), color = "grey",
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = data_subset[!is.na(patch)],
+    aes(datetime, x, color = as.character(patch)),
+    size = 1.5, show.legend = FALSE
+  ) +
+  theme_bw()
+
+# plot residency patches itself by duration
+bm +
+  geom_point(
+    data = rp_subset,
+    aes(x_median, y_median, color = duration, size = duration),
+    show.legend = TRUE, alpha = 0.5
+  ) +
+  scale_color_viridis()
+```
+
+## Plot residency patches (with species colours)
+
+```{r}
+# create basemap
+bm <- atl_create_bm(data, buffer = 500)
+
+# add species
+du <- unique(data, by = "tag")
+rp <- rp[du, on = "tag", `:=`(species = i.species)]
+
+# plot residency patches itself by duration and species
+bm +
+  geom_point(
+    data = rp,
+    aes(x_median, y_median, color = species, size = duration),
+    show.legend = TRUE, alpha = 0.5
+  ) +
+  scale_color_manual(
+    values = atl_spec_cols(),
+    labels = atl_spec_labs("multiline"),
+    name = ""
+  )
+```

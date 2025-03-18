@@ -35,8 +35,8 @@ navbar:
       - text: Extended workflow
       - text: "Add tidal and bathymetry data"
         href: articles/extended_workflow/add_tidal_and_bathymetry_data.html
-      - text: "Clustering in residency patches"
-        href: articles/extended_workflow/cluster_data_in_residency_patches.html
+      - text: "Add residency patches"
+        href: articles/extended_workflow/add_residency_patches.html
       - text: "Add SIBES data"
         href: articles/extended_workflow/add_SIBES_data.html
       - text: "--------"
@@ -97,7 +97,6 @@ reference:
   - title: "Residency patch functions"
     desc: "Functions to calculate residency patches"
     contents:
-     - atl_plot_rpatches
      - atl_res_patch_speed
      - atl_patch_dist
      - atl_patch_summary

@@ -47,7 +47,7 @@
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
-    <li><a class="dropdown-item" href="../articles/extended_workflow/cluster_data_in_residency_patches.html">Clustering in residency patches</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/add_residency_patches.html">Add residency patches</a></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_SIBES_data.html">Add SIBES data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
@@ -108,7 +108,7 @@ Krietsch</h4>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load data</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">data_path</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">data_path</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="median-smooth-data">Median smooth data<a class="anchor" aria-label="anchor" href="#median-smooth-data"></a>
 </h2>
@@ -140,7 +140,7 @@ positions can be 0 and therefore will produce NAs and a warning</p>
 <span><span class="co"># subset some data to look at</span></span>
 <span><span class="va">from</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">data_subset</span><span class="op">[</span>, <span class="va">datetime</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">*</span> <span class="fl">3600</span></span>
 <span><span class="va">to</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">data_subset</span><span class="op">[</span>, <span class="va">datetime</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">12</span> <span class="op">*</span> <span class="fl">3600</span></span>
-<span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data_subset</span><span class="op">[</span><span class="va">datetime</span> <span class="op"><a href="https://rdrr.io/pkg/data.table/man/between.html" class="external-link">%between%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data_subset</span><span class="op">[</span><span class="va">datetime</span> <span class="op"><a href="https://rdatatable.gitlab.io/data.table/reference/between.html" class="external-link">%between%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># Create basemap</span></span>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data_subset</span><span class="op">)</span></span>
@@ -358,7 +358,8 @@ was sampled.</p>
 </h2>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Save data</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span><span class="va">thinned_aggregated</span>,</span>
+<span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span></span>
+<span>  <span class="va">thinned_aggregated</span>,</span>
 <span>  file <span class="op">=</span> <span class="st">"../inst/extdata/watlas_data_aggregated.csv"</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>

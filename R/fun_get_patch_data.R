@@ -67,7 +67,7 @@ atl_patch_summary <- function(patch_data,
       p1 <- sf::st_as_sf(df, coords = c("x", "y"))
       p2 <- sf::st_buffer(p1, dist = buffer_radius)
       p2 <- sf::st_union(p2)
-      return(p2)
+      p2
     })]
     data$patchdata <- NULL
 
