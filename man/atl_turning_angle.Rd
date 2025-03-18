@@ -4,11 +4,13 @@
 \alias{atl_turning_angle}
 \title{Get the turning angle between points}
 \usage{
-atl_turning_angle(data, x = "x", y = "y", time = "time")
+atl_turning_angle(data, tag = "tag", x = "x", y = "y", time = "time")
 }
 \arguments{
 \item{data}{A dataframe or similar which must have the columns
 specified by \code{x}, \code{y}, and \code{time}.}
+
+\item{tag}{The tag ID.}
 
 \item{x}{The x coordinate.}
 
@@ -17,7 +19,7 @@ specified by \code{x}, \code{y}, and \code{time}.}
 \item{time}{The timestamp in seconds since the UNIX epoch.}
 }
 \value{
-A vector of turning angles in degrees.
+A a data.table with added turning angles in degrees.
 Negative degrees indicate 'left' turns. There are two fewer
 angles than the number of rows in the dataframe.
 }
@@ -25,16 +27,18 @@ angles than the number of rows in the dataframe.
 Gets the relative heading between two track segments (three localizations)
 using the law of cosines.
 The turning angle is returned in degrees.
-Users should apply this function to \emph{one individual at a time}, ideally by
-splittng a dataframe with multiple individuals into a list of dataframes.
+Adds the column \code{angle} to a data.table with tracking data.
+Note that with smoothed data NaN values may occur (when subsequent
+localizations are at the same place).
 }
 \examples{
 \dontrun{
-data$angle <- atl_turning_angle(data,
-  x = "x", y = "y", time = "time"
+data <- atl_turning_angle(
+  data,
+  tag = "tag", x = "x", y = "y", time = "time"
 )
 }
 }
 \author{
-Pratik R. Gupte & Allert Bijleveld
+Pratik R. Gupte & Allert Bijleveld & Johannes Krietsch
 }

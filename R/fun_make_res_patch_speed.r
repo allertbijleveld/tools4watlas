@@ -124,7 +124,7 @@ atl_res_patch_speed <- function(data,
         )
       }), recursive = FALSE), .SDcols = c("x", "y", "time")]
       setnames(dt2, stringr::str_replace(colnames(dt2), "\\.", "_"))
-      return(dt2)
+      dt2
     }))]
 
     patch_summary <- data[, unlist(patch_summary, recursive = FALSE),
@@ -207,9 +207,9 @@ atl_res_patch_speed <- function(data,
           value.var = summary_variables
         )
         dt3[, `:=`(., NULL)]
-        return(cbind(dt2, dt3))
+        cbind(dt2, dt3)
       } else {
-        return(dt2)
+        dt2
       }
     }))]
 
@@ -248,7 +248,7 @@ atl_res_patch_speed <- function(data,
       p1 <- sf::st_as_sf(df, coords = c("x", "y"))
       p2 <- sf::st_buffer(p1, dist = lim_spat_indep)
       p2 <- sf::st_union(p2)
-      return(p2) ## output polygons
+      p2 ## output polygons
     }))]
 
     return(data)

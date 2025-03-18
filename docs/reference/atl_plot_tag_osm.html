@@ -19,15 +19,23 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
-    <li><a class="dropdown-item" href="../articles/load_and_check_data.html">Step 1: Load and check data</a></li>
-    <li><a class="dropdown-item" href="../articles/filter_data.html">Step 2: Filter data</a></li>
-    <li><a class="dropdown-item" href="../articles/smooth_and_thin_data.html">Step 3: Smooth and thin data</a></li>
-    <li><a class="dropdown-item" href="../articles/add_tidal_data.html">Step 4: Add tidal data</a></li>
-    <li><a class="dropdown-item" href="../articles/plot_data.html">Plot data</a></li>
+    <li><a class="dropdown-item" href="../articles/load_and_check_data.html">Load and check data</a></li>
+    <li><a class="dropdown-item" href="../articles/filter_data.html">Filter data</a></li>
+    <li><a class="dropdown-item" href="../articles/smooth_and_thin_data.html">Smooth and thin data</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Additional tutorials</h6></li>
-    <li><a class="dropdown-item" href="../articles/additional_tutorials/fast_plotting.html">Fast plotting</a></li>
-    <li><a class="dropdown-item" href="../articles/additional_tutorials/add_and_plot_bathymetry_data.html">Add and plot bathymetry data</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/cluster_data_in_residency_patches.html">Clustering in residency patches</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/add_SIBES_data.html">Add SIBES data</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data.html">Plot data</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_in_loop.html">Plot data in loop</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_faster.html">Plot data faster</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_interactively.html">Plot data interactively</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_base_R.html">Plot data in base R - deprecated</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/animate_data.html">Animate data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
     <li><a class="dropdown-item" href="../articles/package_development/package_maintenance.html">Package maintenance</a></li>
@@ -165,6 +173,7 @@ the legend in the plot.</p></dd>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">d_sf</span>, tag <span class="op">=</span> <span class="cn">NULL</span>, mapID <span class="op">=</span> <span class="va">map</span>,</span></span>
 <span class="r-in"><span>  color_by <span class="op">=</span> <span class="st">"time"</span>, fullname <span class="op">=</span> <span class="cn">NULL</span>, scalebar <span class="op">=</span> <span class="fl">3</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="atl_plot_tag_osm-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -172,7 +181,7 @@ the legend in the plot.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Allert Bijleveld, Pratik Gupte, Christine Beardsworth, Johannes Krietsch.</p>
+  <p>Developed by <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>, <a href="https://github.com/pratikunterwegs" class="external-link">Pratik Gupte</a>, <a href="https://github.com/CBeardsworth" class="external-link">Christine Beardsworth</a>, <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

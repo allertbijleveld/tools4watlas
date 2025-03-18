@@ -19,14 +19,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-This script shows how to create the basemap data of `tools4watlas`, which are a land polygon of the Dutch Wadden Sea, the mudflats of North Holland and Friesland and waterbodies on Griend. These data were choosen provide a simple map with relevant data allowing fast plotting. Customized basemap data could be created in a similar way and could additional contain buildings, roads, lakes, rivers etc. All data can be found in the "Birds, fish 'n chips" SharePoint folder: `Documents/data/GIS/shapefiles/`. To run the script set the file path (`wd`) to the local copy of the folder on your computer. 
+This script shows how to create the basemap data of `tools4watlas`, which are a land polygon of the Dutch Wadden Sea, the mudflats of North Holland and Friesland and waterbodies on Griend. These data were choosen provide a simple map with relevant data allowing fast plotting. Customized basemap data could be created in a similar way and could additional contain buildings, roads, lakes, rivers etc. All data can be found in the "Birds, fish 'n chips" SharePoint folder: `Documents/data/GIS/shapefiles/`. To run the script set the file path (`fp`) to the local copy of the folder on your computer. 
 
 The `OpenStreetMap` land polygon can also be downloaded from [`osmdata`](https://osmdata.openstreetmap.de/data/land-polygons.html) and the regional data of the Netherlands (here used are North Holland and Friesland) can be downloaded from [`Geofabrik`](https://download.geofabrik.de/europe/netherlands.html). 
 
 #### Load packages and specify path to local data
  
 ```{r}
-# Packages
+# packages
 library(data.table)
 library(tools4watlas)
 library(sf)
@@ -34,8 +34,8 @@ library(ggplot2)
 library(rnaturalearth)
 library(rnaturalearthdata)
 
-# path to folder with local shapefiles
-wd <- "C:/Users/jkrietsch/OneDrive - NIOZ/Documents/map_data/"
+# file path to Birds, fish 'n chips GIS/shapefiles folder
+fp <- atl_file_path("shapefiles")
 ```
 
 ## Define a bounding box of the Dutch Wadden Sea
@@ -50,11 +50,11 @@ netherlands <- ne_countries(
   st_transform(crs = st_crs(32631))
 
 # point of Griend (and a bit east)
-griend <- st_sfc(st_point(c(5.2525 + 0.3, 53.2523)), crs = st_crs(4326)) |>
+griend <- st_sfc(st_point(c(5.2525 + 0.6, 53.2523)), crs = st_crs(4326)) |>
   st_transform(crs = st_crs(32631))
 
 # bounding box around Griend
-bbox <- atl_bbox(griend, asp = "16:9", buffer = 45000)
+bbox <- atl_bbox(griend, asp = "16:9", buffer = 50000)
 bbox_sf <- bbox |> st_as_sfc()
 
 # plot
@@ -72,7 +72,7 @@ ggplot() +
 ```{r, fig.cap="Cropped land polygon around the Dutch Wadden Sea"}
 # load osm land polygon
 land_ <- st_read(quiet = TRUE, paste0(
-  wd, "open_street_map/land-polygons-complete-4326/land_polygons.shp"
+  fp, "open_street_map/land-polygons-complete-4326/land_polygons.shp"
 )) |>
   st_transform(crs = st_crs(32631))
 
@@ -111,7 +111,7 @@ To simplify the basemap we only want the mudflats from within the Wadden Sea, ot
 ```{r, fig.cap="Polygon of the Dutch Wadden Sea"}
 # load polygon of Wadden sea
 wadden_sea <- st_read(quiet = TRUE, paste0(
-  wd, "wadden_area_legally/pkb_gebied_derde_nota_waddenzee.shp"
+  fp, "wadden_area_legally/pkb_gebied_derde_nota_waddenzee.shp"
 )) |>
   st_transform(crs = st_crs(32631))
 
@@ -135,16 +135,22 @@ We only take the lakes from Griend to not blow up the data.
 ```{r, fig.cap="Final basemap data of the Dutch Wadden Sea"}
 # Friesland
 lakes_fr <- st_read(quiet = TRUE, paste0(
-  wd, "open_street_map/friesland-latest-free.shp/gis_osm_water_a_free_1.shp"
+  fp, "open_street_map/friesland-latest-free.shp/gis_osm_water_a_free_1.shp"
 ))
 
 # North Holland
 lakes_nh <- st_read(quiet = TRUE, paste0(
-  wd, "open_street_map/noord-holland-latest-free.shp/gis_osm_water_a_free_1.shp"
+  fp, "open_street_map/noord-holland-latest-free.shp/gis_osm_water_a_free_1.shp"
 ))
 
+# North Groningen
+lakes_g <- st_read(quiet = TRUE, paste0(
+  fp, "open_street_map/groningen-latest-free.shp/gis_osm_water_a_free_1.shp"
+))
+
+
 # merge both and change projection
-lakes_ <- rbind(lakes_fr, lakes_nh) |>
+lakes_ <- rbind(lakes_fr, lakes_nh, lakes_g) |>
   unique(by = "osm_id") |>
   st_transform(crs = st_crs(32631))
 

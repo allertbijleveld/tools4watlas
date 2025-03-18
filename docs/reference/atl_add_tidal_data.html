@@ -21,15 +21,23 @@ low tide for tracking data (both in minutes)."><meta property="og:image" content
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
-    <li><a class="dropdown-item" href="../articles/load_and_check_data.html">Step 1: Load and check data</a></li>
-    <li><a class="dropdown-item" href="../articles/filter_data.html">Step 2: Filter data</a></li>
-    <li><a class="dropdown-item" href="../articles/smooth_and_thin_data.html">Step 3: Smooth and thin data</a></li>
-    <li><a class="dropdown-item" href="../articles/add_tidal_data.html">Step 4: Add tidal data</a></li>
-    <li><a class="dropdown-item" href="../articles/plot_data.html">Plot data</a></li>
+    <li><a class="dropdown-item" href="../articles/load_and_check_data.html">Load and check data</a></li>
+    <li><a class="dropdown-item" href="../articles/filter_data.html">Filter data</a></li>
+    <li><a class="dropdown-item" href="../articles/smooth_and_thin_data.html">Smooth and thin data</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Additional tutorials</h6></li>
-    <li><a class="dropdown-item" href="../articles/additional_tutorials/fast_plotting.html">Fast plotting</a></li>
-    <li><a class="dropdown-item" href="../articles/additional_tutorials/add_and_plot_bathymetry_data.html">Add and plot bathymetry data</a></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/cluster_data_in_residency_patches.html">Clustering in residency patches</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/add_SIBES_data.html">Add SIBES data</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data.html">Plot data</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_in_loop.html">Plot data in loop</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_faster.html">Plot data faster</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_interactively.html">Plot data interactively</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/plot_data_base_R.html">Plot data in base R - deprecated</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization_tutorials/animate_data.html">Animate data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
     <li><a class="dropdown-item" href="../articles/package_development/package_maintenance.html">Package maintenance</a></li>
@@ -63,7 +71,8 @@ low tide for tracking data (both in minutes).</p>
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">tide_data</span>,</span>
 <span>  <span class="va">tide_data_highres</span>,</span>
-<span>  waterdata_resolution <span class="op">=</span> <span class="st">"10 minute"</span>,</span>
+<span>  waterdata_resolution <span class="op">=</span> <span class="st">"10 min"</span>,</span>
+<span>  waterdata_interpolation <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  offset <span class="op">=</span> <span class="fl">0</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -74,7 +83,7 @@ low tide for tracking data (both in minutes).</p>
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>A dataframe with the tracking data with the timestamp column
-'time' in UTC.</p></dd>
+'datetime' in UTC.</p></dd>
 
 
 <dt id="arg-tide-data">tide_data<a class="anchor" aria-label="anchor" href="#arg-tide-data"></a></dt>
@@ -94,16 +103,22 @@ data. This is used for matching the high resolution tidal data to the
 tracking data. Defaults to 10 minutes but can be set differently.</p></dd>
 
 
+<dt id="arg-waterdata-interpolation">waterdata_interpolation<a class="anchor" aria-label="anchor" href="#arg-waterdata-interpolation"></a></dt>
+<dd><p>Time interval to which the water level data
+will be interpolated (should be smaller than water data resolution e.g.
+1 min). If NULL will keep the original water data resolution.</p></dd>
+
+
 <dt id="arg-offset">offset<a class="anchor" aria-label="anchor" href="#arg-offset"></a></dt>
 <dd><p>The offset in minutes between the location of the tidal gauge
 and the tracking area. This value will be added to the timing of the
-waterdata.</p></dd>
+water data.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>The input data but with three columns added: tideID (a unique number
-for the tidal periode between two consecutive high tides), tidaltime (time
+for the tidal period between two consecutive high tides), tidaltime (time
 since high tide in minutes), time2lowtide (time to low tide in minutes),
 and waterlevel with reference to NAP (cm).</p>
     </div>
@@ -117,7 +132,7 @@ and waterlevel with reference to NAP (cm).</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Allert Bijleveld, Pratik Gupte, Christine Beardsworth, Johannes Krietsch.</p>
+  <p>Developed by <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>, <a href="https://github.com/pratikunterwegs" class="external-link">Pratik Gupte</a>, <a href="https://github.com/CBeardsworth" class="external-link">Christine Beardsworth</a>, <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

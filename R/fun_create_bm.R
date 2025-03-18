@@ -1,6 +1,6 @@
-#' Create a base map with customised bounding box
+#' Create a basemap with customised bounding box
 #'
-#' This function creates a base map using spatial data layers, allowing for
+#' This function creates a basemap using spatial data layers, allowing for
 #' custom bounding boxes, aspect ratios, and scale bar adjustments.
 #'
 #' @author Johannes Krietsch
@@ -24,8 +24,9 @@
 #' @param lakes_data An `sf` object for lake polygons. Defaults to `lakes`.
 #' @param raster_data An `SpatRaster` (tif opened with `terra::rast()` of
 #' bathymetry data.
-#' @param sc_dist Scale bar distance. Optional; calculated automatically if
-#'   omitted.
+#' @param shade If TRUE a shade will be added to the bathymetry data. (This
+#' can take a while for large maps)
+#' @param scalebar TRUE or FALSE for adding a scalebar to the plot.
 #' @param sc_location A character string specifying the location of the scale
 #'   bar. Default is `"br"` (bottom right).
 #' @param sc_cex Numeric value for the scale bar text size. Default is `0.7`.
@@ -58,13 +59,22 @@ atl_create_bm <- function(data = NULL,
                           mudflats_data = tools4watlas::mudflats,
                           lakes_data = tools4watlas::lakes,
                           raster_data,
-                          sc_dist,
+                          shade = FALSE,
+                          scalebar = TRUE,
                           sc_location = "br",
-                          sc_cex = 0.7,
-                          sc_height = unit(0.25, "cm"),
-                          sc_pad_x = unit(0.25, "cm"),
-                          sc_pad_y = unit(0.5, "cm"),
+                          sc_cex = 1,
+                          sc_height = 0.3,
+                          sc_pad_x = 0.4,
+                          sc_pad_y = 0.6,
                           projection = sf::st_crs(32631)) {
+  # global variables
+  hs_45_225 <- NULL
+
+  # check if valid option
+  if (!option %in% c("osm", "bathymetry")) {
+    stop("Error: The option must be either 'osm' or 'bathymetry'.")
+  }
+
   if (is.null(data) || nrow(data) == 0) {
     # If no data make map around Griend
     data <- data.table::data.table(tag = 1, x = 650272.5, y = 5902705)
@@ -81,19 +91,17 @@ atl_create_bm <- function(data = NULL,
 
   # Create bounding box
   if (projection == sf::st_crs(32631)) {
-    bbox <- atl_bbox(data, asp = asp, buffer = buffer)
+    bbox <- atl_bbox(data, x = x, y = y, asp = asp, buffer = buffer)
   } else {
     # Create sf and change projection if data were not UTM31
-    d_sf <- atl_as_sf(data, tag = NULL, x, y, projection = projection)
+    d_sf <- atl_as_sf(data, tag = NULL, x = x, y = y, projection = projection)
     d_sf <- sf::st_transform(d_sf, crs = sf::st_crs(32631))
-    bbox <- atl_bbox(d_sf, asp = asp, buffer = buffer)
+    bbox <- atl_bbox(d_sf, x = x, y = y, asp = asp, buffer = buffer)
   }
 
-  if (option == "batymetry") {
-    # bounding box as vector
-    bbox_vec <-  sf::st_as_sfc(bbox) |> terra::vect()
+  if (option == "bathymetry") {
     # crop bathymetry data
-    raster_data_c <- terra::crop(raster_data, bbox_vec, mask = TRUE)
+    raster_data_c <- terra::crop(raster_data, bbox)
     # discrete steps in color scale to highlight mudflats
     x <- c(
       -50,
@@ -116,9 +124,24 @@ atl_create_bm <- function(data = NULL,
     # variable name
     var_name <- names(raster_data)[1]
   }
-  # Create base map
+
+  if (option == "bathymetry" && shade == TRUE) {
+    alt <- terra::disagg(raster_data_c, 10, method = "bilinear")
+    slope <- terra::terrain(alt, "slope", unit = "radians")
+    aspect <- terra::terrain(alt, "aspect", unit = "radians")
+    h <- terra::shade(
+      slope, aspect,
+      angle = c(45, 45, 45, 80),
+      direction = c(225, 270, 315, 135)
+    )
+    h <- Reduce(mean, h)
+    # extract values to be able to get the median value
+    hv <- terra::values(h)
+  }
+
+  # create base map
   bm <- ggplot()
-  # Define layers conditionally
+  # define layers conditionally
   if (option == "osm") {
     layers <- list(
       geom_sf(
@@ -138,15 +161,39 @@ atl_create_bm <- function(data = NULL,
       scale_fill_manual(values = cc, na.value = "#fdf2f3")
     )
   }
-  # add layers and plot modifications
-  bm <- bm + layers +
-    # Scale bar
-    ggspatial::annotation_scale(aes(location = "br"),
-      text_cex = 0.7,
-      height = unit(0.25, "cm"),
-      pad_x = unit(0.25, "cm"),
-      pad_y = unit(0.5, "cm")
-    ) +
+  # add layers
+  bm <- bm + layers
+
+  # add shading if TRUE
+  if (option == "bathymetry" && shade == TRUE) {
+    bm <- bm +
+      ggnewscale::new_scale_fill() +
+      tidyterra::geom_spatraster(
+        data = h,
+        aes(fill = hs_45_225),
+        show.legend = FALSE
+      ) +
+      geom_sf(data = land_data, fill = "transparent", colour = "grey60") +
+      scale_fill_gradient2(
+        low = "dodgerblue4", mid = "transparent", high = "lightblue",
+        midpoint = stats::median(hv, na.rm = TRUE), na.value = "#fdf2f3"
+      )
+  }
+
+  # add scalbar if TRUE
+  if (scalebar == TRUE) {
+    bm <- bm +
+      ggspatial::annotation_scale(
+        aes(location = "br"),
+        text_cex = sc_cex,
+        height = unit(sc_height, "cm"),
+        pad_x = unit(sc_pad_x, "cm"),
+        pad_y = unit(sc_pad_y, "cm")
+      )
+  }
+
+  # add plot modifications
+  bm <- bm +
     # Crop to bounding box
     coord_sf(
       xlim = c(bbox["xmin"], bbox["xmax"]),

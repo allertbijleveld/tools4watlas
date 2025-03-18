@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_create_bm.R
 \name{atl_create_bm}
 \alias{atl_create_bm}
-\title{Create a base map with customised bounding box}
+\title{Create a basemap with customised bounding box}
 \usage{
 atl_create_bm(
   data = NULL,
@@ -15,12 +15,13 @@ atl_create_bm(
   mudflats_data = tools4watlas::mudflats,
   lakes_data = tools4watlas::lakes,
   raster_data,
-  sc_dist,
+  shade = FALSE,
+  scalebar = TRUE,
   sc_location = "br",
-  sc_cex = 0.7,
-  sc_height = unit(0.25, "cm"),
-  sc_pad_x = unit(0.25, "cm"),
-  sc_pad_y = unit(0.5, "cm"),
+  sc_cex = 1,
+  sc_height = 0.3,
+  sc_pad_x = 0.4,
+  sc_pad_y = 0.6,
   projection = sf::st_crs(32631)
 )
 }
@@ -55,8 +56,10 @@ bathymetry data in UTM31.}
 \item{raster_data}{An \code{SpatRaster} (tif opened with \code{terra::rast()} of
 bathymetry data.}
 
-\item{sc_dist}{Scale bar distance. Optional; calculated automatically if
-omitted.}
+\item{shade}{If TRUE a shade will be added to the bathymetry data. (This
+can take a while for large maps)}
+
+\item{scalebar}{TRUE or FALSE for adding a scalebar to the plot.}
 
 \item{sc_location}{A character string specifying the location of the scale
 bar. Default is \code{"br"} (bottom right).}
@@ -80,7 +83,7 @@ A \code{ggplot2} object representing the base map with the specified
 settings.
 }
 \description{
-This function creates a base map using spatial data layers, allowing for
+This function creates a basemap using spatial data layers, allowing for
 custom bounding boxes, aspect ratios, and scale bar adjustments.
 }
 \examples{

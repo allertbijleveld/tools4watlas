@@ -23,22 +23,21 @@ This vignette shows how to filter WATLAS data based on spatial boundaries, tempo
 ## Loading the data
 
 ```{r, message = FALSE}
-# Packages
+# packages
 library(tools4watlas)
-library(data.table)
 library(lubridate)
 library(sf)
 library(ggplot2)
 library(scales)
 library(viridis)
 
-# Path to csv with raw data
+# path to csv with raw data
 data_path <- system.file(
   "extdata", "watlas_data_raw.csv",
   package = "tools4watlas"
 )
 
-# Load data
+# load data
 data <- fread(data_path, yaml = TRUE)
 ```
 
@@ -46,7 +45,7 @@ data <- fread(data_path, yaml = TRUE)
 
 Depending on the analysis, can make sense to use a spatial filter to exclude large outliers or subset only data from an area of interest. In this example we subset all data around Griend, Richel and Ballastplaat. Note that in this example all data are within the specified bounding box, so no data will be filtered out.
 
-```{r, fig.cap = "Heatmap of all positions", message = FALSE}
+```{r, fig.cap = "Heatmap of all positions with bounding box (red)", message = FALSE, fig.align = "center"}
 # location east of Griend
 griend_east <- st_sfc(st_point(c(5.275, 53.2523)), crs = st_crs(4326)) |>
   st_transform(crs = st_crs(32631))
@@ -58,19 +57,20 @@ bbox_sf <- st_as_sfc(bbox)
 # create a base map
 bm <- atl_create_bm(buffer = 10000)
 
-# Round data to 200 m grid cells
-data_heatmap <- copy(data)
-data_heatmap <- data_heatmap[, c("x_round", "y_round") := list(
-  plyr::round_any(x, 200),
-  plyr::round_any(y, 200)
+# round data to 1 ha (100x100 meter) grid cells
+data[, c("x_round", "y_round") := list(
+  plyr::round_any(x, 100),
+  plyr::round_any(y, 100)
 )]
-data_heatmap <- data_heatmap[, .N, by = c("x_round", "y_round")]
+
+# N by location
+data_subset <- data[, .N, by = c("x_round", "y_round")]
 
 # plot data with bounding box
 bm +
   geom_tile(
-    data = data_heatmap, aes(x_round, y_round, fill = N),
-    linewidth = 0.1, show.legend = FALSE
+    data = data_subset, aes(x_round, y_round, fill = N),
+    linewidth = 0.1, show.legend = TRUE
   ) +
   geom_sf(data = bbox_sf, color = "firebrick", fill = NA) +
   scale_fill_viridis(
@@ -80,6 +80,9 @@ bm +
     direction = -1
   ) +
   coord_sf(expand = FALSE)
+
+# remove rounded coordinates columns
+data[, c("x_round", "y_round") := NULL]
 
 # filter data with bounding box
 # note: for large tables use range and not sf_polygon
@@ -101,7 +104,7 @@ Some birds might have also directly left the area after release, so depending on
 
 
 ```{r, message=FALSE, results='hide'}
-# Load meta data
+# load meta data
 all_tags_path <- system.file(
   "extdata", "tags_watlas_subset.xlsx", package = "tools4watlas"
 )
@@ -156,11 +159,9 @@ data <- atl_filter_covariates(
 
 This will filter more unrealistic positions. 
 
-```{r, fig.cap = "Histogram of speed"}
+```{r, fig.cap = "Histogram of speed moved from all data", fig.align = "center"}
 # calculate speed
-data <- atl_get_speed(data,
-  type = c("in", "out")
-)
+data <- atl_get_speed(data, type = c("in", "out"))
 
 # plot speed (subset relevant range)
 ggplot(data = data[!is.na(speed_in) & speed_in > 5 & speed_in < 100]) +
@@ -169,7 +170,7 @@ ggplot(data = data[!is.na(speed_in) & speed_in > 5 & speed_in < 100]) +
   theme_bw()
 
 # filter by speed
-speed_max <- 40 # m/s (144 km/h)
+speed_max <- 30 # m/s (108 km/h)
 
 data <- atl_filter_covariates(
   data = data,
@@ -180,15 +181,13 @@ data <- atl_filter_covariates(
 )
 
 # recalculate speed
-data <- atl_get_speed(data,
-  type = c("in", "out")
-)
+data <- atl_get_speed(data, type = c("in", "out"))
 ```
 
 ## Save data
 
 ```{r, eval = FALSE}
-# Save data
+# save data
 fwrite(data, file = "../inst/extdata/watlas_data_filtered.csv", yaml = TRUE)
 ```
 

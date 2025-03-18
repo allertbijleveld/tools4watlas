@@ -20,17 +20,17 @@ knitr::opts_chunk$set(
 This script uses the WATLAS logo to create the `tools4watlas` logo using the R package [`hexSticker`](https://github.com/GuangchuangYu/hexSticker). 
 
 ```{r, eval=FALSE}
-# Packages
+# packages
 library(hexSticker)
 library(showtext)
 
-# Loading Google fonts (http://www.google.com/fonts)
+# loading Google fonts (http://www.google.com/fonts)
 font_add_google("Merriweather", "merriweather")
-# Automatically use showtext to render text for future devices
+# automatically use showtext to render text for future devices
 showtext_auto()
 
 # path to WATLAS logo
-watlas <- "../../man/figures/watlas_logo.png"
+watlas <- "../../man/figures/watlas_logo_clean.png"
 
 # make sticker
 sticker(watlas,

@@ -2,18 +2,24 @@ pandoc: '3.2'
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
-  additional_tutorials/add_and_plot_bathymetry_data: additional_tutorials/add_and_plot_bathymetry_data.html
-  add_tidal_data: add_tidal_data.html
+  extended_workflow/add_SIBES_data: extended_workflow/add_SIBES_data.html
+  extended_workflow/add_tidal_and_bathymetry_data: extended_workflow/add_tidal_and_bathymetry_data.html
+  visualization_tutorials/animate_data: visualization_tutorials/animate_data.html
   package_development/basemap_data: package_development/basemap_data.html
-  additional_tutorials/fast_plotting: additional_tutorials/fast_plotting.html
+  extended_workflow/cluster_data_in_residency_patches: extended_workflow/cluster_data_in_residency_patches.html
+  visualization_tutorials/create_basemap: visualization_tutorials/create_basemap.html
   filter_data: filter_data.html
   literature/literature: literature/literature.html
   load_and_check_data: load_and_check_data.html
   package_development/package_logo: package_development/package_logo.html
   package_development/package_maintenance: package_development/package_maintenance.html
-  plot_data: plot_data.html
+  visualization_tutorials/plot_data: visualization_tutorials/plot_data.html
+  visualization_tutorials/plot_data_base_R: visualization_tutorials/plot_data_base_R.html
+  visualization_tutorials/plot_data_faster: visualization_tutorials/plot_data_faster.html
+  visualization_tutorials/plot_data_in_loop: visualization_tutorials/plot_data_in_loop.html
+  visualization_tutorials/plot_data_interactively: visualization_tutorials/plot_data_interactively.html
   smooth_and_thin_data: smooth_and_thin_data.html
-last_built: 2025-02-04T12:20Z
+last_built: 2025-02-19T14:38Z
 urls:
   reference: https://allertbijleveld.github.io/tools4watlas/reference
   article: https://allertbijleveld.github.io/tools4watlas/articles
