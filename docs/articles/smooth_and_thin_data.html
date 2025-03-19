@@ -180,7 +180,7 @@ steps (depending on the interval).</p>
 <div class="section level3">
 <h3 id="by-aggregation">By aggregation<a class="anchor" aria-label="anchor" href="#by-aggregation"></a>
 </h3>
-<p>Returns the average of all columns for each time step. The additional
+<p>Returns the mean of all columns for each time step. The additional
 column <code>n_aggregated</code> shows how many locations were
 aggregated for this location. Time and datetime are returned rounded to
 the interval.</p>
@@ -194,7 +194,7 @@ the interval.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Show head of selected data</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">thinned_aggregated</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">time</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">n_aggregated</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">thinned_aggregated</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">time</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">n_aggregated</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -268,7 +268,7 @@ the interval.</p>
 <div class="section level3">
 <h3 id="by-subsampling">By subsampling<a class="anchor" aria-label="anchor" href="#by-subsampling"></a>
 </h3>
-<p>Returns one random location for each time step. The additional column
+<p>Returns the first location for each time step. The additional column
 <code>n_subsampled</code> shows from how many locations this location
 was sampled.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -281,7 +281,7 @@ was sampled.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Show head of selected data</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">thinned_subsampled</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">time</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">n_subsampled</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">thinned_subsampled</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">time</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">n_subsampled</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
