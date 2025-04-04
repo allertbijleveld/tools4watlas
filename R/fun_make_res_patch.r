@@ -2,11 +2,11 @@
 #'
 #' A cleaned movement track of one individual at a time can be classified into
 #'  residence patches using the
-#' function \code{atl_res_patch_speed}.
+#' function \code{atl_res_patch}.
 #' The function expects a specific organisation of the data: there should be
-#' at least the following columns, \code{X}, \code{Y}, and \code{time},
+#' at least the following columns, \code{x}, \code{y}, and \code{time},
 #' corresponding to the coordinates, and the time as \code{POSIXct}.
-#' \code{atl_res_patch_speed} requires only three parameters: (1) the maximum
+#' \code{atl_res_patch} requires only three parameters: (1) the maximum
 #' speed threshold between localizations (called \code{max_speed}), (2) the
 #' distance threshold between clusters of positions (called
 #' \code{lim_spat_indep}), and (3) the time interval between clusters
@@ -19,10 +19,11 @@
 #'  character vectors to the \code{summary_variables} and
 #'  \code{summary_functions} arguments, respectively.
 #'
-#' @author Pratik R. Gupte, Christine E. Beardsworth & Allert I. Bijleveld
+#' @author Pratik R. Gupte, Christine E. Beardsworth & Allert I. Bijleveld &
+#' Johannes Krietsch
 #' @param data A dataframe of any class that is or extends data.frame of one
 #' individual only. The dataframe must contain at least two spatial coordinates,
-#' \code{X} and \code{Y}, and a temporal coordinate, \code{time}.
+#' \code{x} and \code{y}, and a temporal coordinate, \code{time}.
 #' @param max_speed A numeric value specifying the maximum speed (m/s) between
 #' two coordinates that would be considered non-transitory
 #' @param lim_spat_indep A numeric value of distance in metres of the spatial
@@ -40,7 +41,7 @@
 #' variables; must return only a single value, such as median, mean etc. To be
 #' passed as a character vector.
 #'
-#' @return A data.frame extension object. This dataframe has the added column
+#' @return A data.table that has the added column
 #' \code{patch}, \code{patchdata}, and \code{polygons}, indicating the patch
 #' identity, the localization data used to construct the patch, and the polygons
 #' of residence patches based on the \code{lim_spat_indep}. In addition, there
@@ -50,14 +51,14 @@
 #' summary variables.
 #' @import data.table
 #' @export
-atl_res_patch_speed <- function(data,
-                                max_speed = 3,
-                                lim_spat_indep = 75,
-                                lim_time_indep = 180,
-                                min_fixes = 3,
-                                min_duration = 120,
-                                summary_variables = c(),
-                                summary_functions = c()) {
+atl_res_patch <- function(data,
+                          max_speed = 3,
+                          lim_spat_indep = 75,
+                          lim_time_indep = 180,
+                          min_fixes = 3,
+                          min_duration = 120,
+                          summary_variables = c(),
+                          summary_functions = c()) {
   # Initialize necessary variables to avoid NSE (Non-Standard Evaluation) issues
   disp_in_patch <- dist_bw_patch <- dist_in_patch <- duration <- NULL
   newpatch <- nfixes <- patch <- speed <- tag <- . <- NULL
@@ -67,7 +68,7 @@ atl_res_patch_speed <- function(data,
 
   # Validate input
   assertthat::assert_that(is.data.frame(data),
-    msg = glue::glue("Input is not a data.frame, it has class
+    msg = glue::glue("Input is not a data.frame or data.table, it has class
                      {stringr::str_flatten(class(data), collapse = ' ')}")
   )
   assertthat::assert_that(

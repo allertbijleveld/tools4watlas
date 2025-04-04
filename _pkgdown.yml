@@ -97,7 +97,7 @@ reference:
   - title: "Residency patch functions"
     desc: "Functions to calculate residency patches"
     contents:
-     - atl_res_patch_speed
+     - atl_res_patch
      - atl_patch_dist
      - atl_patch_summary
   - title: "Spatial functions"
