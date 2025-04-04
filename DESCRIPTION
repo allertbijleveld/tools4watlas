@@ -2,14 +2,14 @@ Package: tools4watlas
 Title: Tools for Processing WATLAS Tracking Data
 Version: 2.0
 Authors@R: c(
-    person("Allert", "Bijleveld", , "allert.bijleveld@nioz.nl", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0002-3159-8944")),
+    person("Johannes", "Krietsch", role = "aut",
+           comment = c(ORCID = "0000-0002-8080-1734")),
     person("Pratik", "Gupte", role = "aut",
            comment = c(ORCID = "0000-0001-5294-7819")),
     person("Christine", "Beardsworth", role = "aut",
            comment = c(ORCID = "0000-0003-1308-1455")),
-    person("Johannes", "Krietsch", role = "aut",
-           comment = c(ORCID = "0000-0002-8080-1734"))
+    person("Allert", "Bijleveld", , "allert.bijleveld@nioz.nl", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-3159-8944"))
   )
 Description: Tools to process high-throughput tracking data obtained with
     WATLAS, and add tidal data.
