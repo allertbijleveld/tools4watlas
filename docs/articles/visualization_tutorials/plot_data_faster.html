@@ -47,7 +47,7 @@
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
-    <li><a class="dropdown-item" href="../../articles/extended_workflow/cluster_data_in_residency_patches.html">Clustering in residency patches</a></li>
+    <li><a class="dropdown-item" href="../../articles/extended_workflow/add_residency_patches.html">Add residency patches</a></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_SIBES_data.html">Add SIBES data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
@@ -215,8 +215,8 @@ points).</p>
 <p><img src="plot_data_faster_files/figure-html/unnamed-chunk-3-1.png" alt="Standard ggplot2 with points and tracks" width="100%"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run time</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Time difference of 6.16 secs</span></span></code></pre>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Time difference of 6.68 secs</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="ggplot2-with-points-as-pch---and-tracks">
@@ -240,8 +240,8 @@ points).</p>
 <p><img src="plot_data_faster_files/figure-html/unnamed-chunk-4-1.png" alt="ggplot2 with points as dots and tracks" width="100%"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run time</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Time difference of 2.19 secs</span></span></code></pre>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Time difference of 3.67 secs</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="ggplot2-with-points-as-geom_scattermore-and-tracks">
@@ -266,8 +266,8 @@ tracks<a class="anchor" aria-label="anchor" href="#ggplot2-with-points-as-geom_s
 <p><img src="plot_data_faster_files/figure-html/unnamed-chunk-5-1.png" alt="ggplot2 with points as geom_scattermore() and tracks" width="100%"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run time</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Time difference of 1.62 secs</span></span></code></pre>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Time difference of 2.5 secs</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="ggplot2-summarized-points-in-heat-map">
@@ -302,8 +302,8 @@ tracks<a class="anchor" aria-label="anchor" href="#ggplot2-with-points-as-geom_s
 <p><img src="plot_data_faster_files/figure-html/unnamed-chunk-6-1.png" alt="ggplot2 summarized points in heat map" width="100%"></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run time</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Time difference of 0.37 secs</span></span></code></pre>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/math-generics.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">st</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Time difference of 0.59 secs</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="fast-saving-with-ragg">Fast saving with <code>ragg</code><a class="anchor" aria-label="anchor" href="#fast-saving-with-ragg"></a>
@@ -314,7 +314,7 @@ tracks<a class="anchor" aria-label="anchor" href="#ggplot2-with-points-as-geom_s
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span>buffer <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># save png</span></span>
-<span><span class="fu">agg_png</span><span class="op">(</span></span>
+<span><span class="fu"><a href="https://ragg.r-lib.org/reference/agg_png.html" class="external-link">agg_png</a></span><span class="op">(</span></span>
 <span>  filename <span class="op">=</span> <span class="st">"path/to/file/name.png"</span>,</span>
 <span>  width <span class="op">=</span> <span class="fl">3840</span>, height <span class="op">=</span> <span class="fl">2160</span>, units <span class="op">=</span> <span class="st">"px"</span>, res <span class="op">=</span> <span class="fl">300</span></span>
 <span><span class="op">)</span></span>
@@ -328,7 +328,7 @@ tracks<a class="anchor" aria-label="anchor" href="#ggplot2-with-points-as-geom_s
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>, <a href="https://github.com/pratikunterwegs" class="external-link">Pratik Gupte</a>, <a href="https://github.com/CBeardsworth" class="external-link">Christine Beardsworth</a>, <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>.</p>
+  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, <a href="https://github.com/pratikunterwegs" class="external-link">Pratik Gupte</a>, <a href="https://github.com/CBeardsworth" class="external-link">Christine Beardsworth</a>, <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

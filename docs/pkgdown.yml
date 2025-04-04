@@ -2,11 +2,11 @@ pandoc: '3.2'
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
+  extended_workflow/add_residency_patches: extended_workflow/add_residency_patches.html
   extended_workflow/add_SIBES_data: extended_workflow/add_SIBES_data.html
   extended_workflow/add_tidal_and_bathymetry_data: extended_workflow/add_tidal_and_bathymetry_data.html
   visualization_tutorials/animate_data: visualization_tutorials/animate_data.html
   package_development/basemap_data: package_development/basemap_data.html
-  extended_workflow/cluster_data_in_residency_patches: extended_workflow/cluster_data_in_residency_patches.html
   visualization_tutorials/create_basemap: visualization_tutorials/create_basemap.html
   filter_data: filter_data.html
   literature/literature: literature/literature.html
@@ -19,7 +19,7 @@ articles:
   visualization_tutorials/plot_data_in_loop: visualization_tutorials/plot_data_in_loop.html
   visualization_tutorials/plot_data_interactively: visualization_tutorials/plot_data_interactively.html
   smooth_and_thin_data: smooth_and_thin_data.html
-last_built: 2025-02-19T14:38Z
+last_built: 2025-04-04T06:34Z
 urls:
   reference: https://allertbijleveld.github.io/tools4watlas/reference
   article: https://allertbijleveld.github.io/tools4watlas/articles

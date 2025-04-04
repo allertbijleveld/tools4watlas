@@ -31,7 +31,7 @@ are three options = c("points", "lines", "table").'><meta property="og:image" co
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
-    <li><a class="dropdown-item" href="../articles/extended_workflow/cluster_data_in_residency_patches.html">Clustering in residency patches</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/add_residency_patches.html">Add residency patches</a></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_SIBES_data.html">Add SIBES data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
@@ -141,7 +141,7 @@ any included attributes.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example data</span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  tag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"B"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">40</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">60</span>, <span class="fl">70</span>, <span class="fl">80</span><span class="op">)</span>,</span></span>
@@ -178,7 +178,7 @@ any included attributes.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>, <a href="https://github.com/pratikunterwegs" class="external-link">Pratik Gupte</a>, <a href="https://github.com/CBeardsworth" class="external-link">Christine Beardsworth</a>, <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>.</p>
+  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, <a href="https://github.com/pratikunterwegs" class="external-link">Pratik Gupte</a>, <a href="https://github.com/CBeardsworth" class="external-link">Christine Beardsworth</a>, <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
