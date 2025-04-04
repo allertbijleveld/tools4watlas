@@ -90,6 +90,15 @@ bm +
     color = "black", size = 1
   )
 ```
+## Save data
+
+```{r, eval = FALSE}
+# Save data
+fwrite(
+  data,
+  file = "../inst/extdata/watlas_data_smoothed.csv", yaml = TRUE
+)
+```
 
 
 ## Thin data
@@ -131,15 +140,3 @@ thinned_subsampled <- atl_thin_data(
 head(thinned_subsampled[, .(tag, time, datetime, x, y, n_subsampled)]) |>
   knitr::kable(digits = 2)
 ```
-
-
-## Save data
-
-```{r, eval = FALSE}
-# Save data
-fwrite(
-  thinned_aggregated,
-  file = "../inst/extdata/watlas_data_aggregated.csv", yaml = TRUE
-)
-```
-

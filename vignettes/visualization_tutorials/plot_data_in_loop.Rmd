@@ -28,10 +28,9 @@ library(tools4watlas)
 library(ggplot2)
 library(foreach)
 library(doFuture)
-library(ragg)
 ```
 
-## Plot and save data in loop
+## Plot and save data in loop by tag ID
 
 Example of a simple loop by tag ID and using `atl_check_tag()`.
 
@@ -51,25 +50,18 @@ foreach(i = id) %do% {
   # subset data
   data_subset <- data[tag == i]
 
-  # plot data
+  # plot and save data
   p <- atl_check_tag(
     data_subset,
     option = "datetime",
-    highlight_first = TRUE, highlight_last = TRUE
+    highlight_first = TRUE, highlight_last = TRUE,
+    filename = paste0(path, data_subset[1]$species, "_tag_", i)
   )
-
-  # save
-  agg_png(
-    filename = paste0(path, i, ".png"),
-    width = 3840, height = 2160, units = "px", res = 300
-  )
-  print(p)
-  dev.off()
 
 }
 ```
 
-## Plot and save data in parallel loop
+## Plot and save data in parallel loop by tag ID
 
 We can use the same structure, simply replacing `%do%` with `%dofuture%`, which is the key advantage of using `foreach.` The only additional step is setting up parallel processing with `registerDoFuture()` and `plan(multisession)`.
 
@@ -78,7 +70,7 @@ We can use the same structure, simply replacing `%do%` with `%dofuture%`, which 
 data <- data_example
 
 # file path
-path <- "./outputs/maps_by_tag/tag_"
+path <- "./outputs/maps_by_tag/"
 
 # unique ID (here by tag)
 id <- unique(data$tag)
@@ -93,23 +85,54 @@ foreach(i = id) %dofuture% {
   # subset data
   data_subset <- data[tag == i]
 
-  # plot data
+  # plot and save data
   p <- atl_check_tag(
     data_subset,
     option = "datetime",
-    highlight_first = TRUE, highlight_last = TRUE
+    highlight_first = TRUE, highlight_last = TRUE,
+    filename = paste0(path, data_subset[1]$species, "_tag_", i)
   )
-
-  # save
-  agg_png(
-    filename = paste0(path, i, ".png"),
-    width = 3840, height = 2160, units = "px", res = 300
-  )
-  print(p)
-  dev.off()
 
 }
 
 # close parallel workers
 plan(sequential)
 ```
+## Plot and save data in parallel loop by tag ID and tide ID
+
+```{r, eval = FALSE}
+# load example data
+data <- data_example
+
+# file path
+path <- "./outputs/maps_by_tag_and_tide/"
+
+# unique ID combinations
+idc <- unique(data[, c("species", "tag", "tideID")])
+
+# register cores and backend for parallel processing
+registerDoFuture()
+plan(multisession)
+
+# loop to make plots for all
+foreach(i = seq_len(nrow(tag_tide))) %dofuture% {
+
+  # subset data
+  data_subset <- data[tag == idc$tag[i] & tideID == idc$tideID[i]]
+
+  # plot and save data
+  p <- atl_check_tag(
+    data_subset,
+    option = "datetime",
+    highlight_first = TRUE, highlight_last = TRUE,
+    filename = paste0(
+      path, idc$species[i], "_tag_", idc$tideID[i], "_tide_", idc$tideID[i]
+    )
+  )
+
+}
+
+# close parallel workers
+plan(sequential)
+```
+

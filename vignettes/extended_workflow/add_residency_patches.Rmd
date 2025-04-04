@@ -22,80 +22,109 @@ knitr::opts_chunk$set(
 
 This vignette shows how to assign residency patches with WATLAS data. 
 
+Ignores different sampling interals and species specific residency patch parameters at the moment.
+
+### Load packages and required data
+
 ```{r, message = FALSE}
-# Packages
+# packages
 library(tools4watlas)
 library(ggplot2)
 library(viridis)
 library(foreach)
+library(doFuture)
 
-# Path to csv with filtered data
-data_path <- system.file(
-  "extdata", "watlas_data_filtered.csv",
-  package = "tools4watlas"
-)
+# load example data
+data <- data_example
 
-# Load data
-data <- fread(data_path, yaml = TRUE)
+# file path to WATLAS teams data folder
+fp <- atl_file_path("watlas_teams")
 
-```
-
-
-## Median smooth data
-
-To further reduce error in the localization data, a basic smoother such as a median filter can be applied. The resulting table has the smoothed location stored in the `x` and `y` column and the original location stored in the `x_raw` and `y_raw` column. 
-
-```{r echo=T, results='hide'}		
-# Smooth the data
-data <- atl_median_smooth(data, moving_window = 5)
-```
-
-### Recalculate speed
-
-After smoothing the data, the speeds need to be recalculated. We now also calculate turning angles. 
-Note: the distance between smoothed positions can be 0 and therefore will produce NAs and a warning
-
-```{r echo=T}		
-# Recalculate speed
-data <- atl_get_speed(data, type = c("in", "out"))
+# load tide pattern data
+tide_data <- fread(paste0(
+  fp, "waterdata/allYears-tidalPattern-west_terschelling-UTC.csv"
+))
 ```
 
 ## Calculate residency patches by tag
+
+Subset relevant columns only (otherwise slows down the process).
 
 ```{r echo=T}		
 # unique tag ID
 id <- unique(data$tag)
 
 # loop by tag ID
-rp <- foreach(i = id, .combine = "rbind") %do% {
-  atl_res_patch_speed(
-    data[tag == i],
-    max_speed = 3, lim_spat_indep = 50, lim_time_indep = 180,
-    min_fixes = 3, min_duration = 180
+patch_data <- foreach(i = id, .combine = "rbind") %do% {
+  atl_res_patch(
+    data[tag == i, .(tag, posID, time, datetime, x, y, speed_in)],
+    max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
+    min_fixes = 3, min_duration = 120
   )
 }
 
 # extract data from all residency patches
-drp <- rp[, rbindlist(lapply(
-  patchdata, function(x) cbind(x)
-)), by = .(tag, patch)]
+patch_data_ext <- patch_data[, cbind(
+  rbindlist(lapply(patchdata, function(x) cbind(x))), duration
+), by = .(tag, patch)]
 
 # merge back with data
 data <- merge(
-  data, drp[, .(tag, posID, patch)],
+  data, patch_data_ext[, .(tag, posID, patch, duration)],
   by = c("tag", "posID"), all.x = TRUE
 )
+```
+
+## Plot by tag and tide ID
+
+### Example for one tag and tide
+
+```{r, fig.width = 8.89, fig.height = 5.2}
+atl_check_res_patch(
+  tag = "3038", tide = "2023513",
+  data, patch_data, tide_data
+)
+```
+
+### Loop through all tags and tides
+
+
+```{r, eval = FALSE}
+# register cores and backend for parallel processing
+registerDoFuture()
+plan(multisession)
+
+# unique ID combinations
+idc <- unique(data[, c("species", "tag", "tideID")])
+
+# loop to make plots for all
+foreach(i = seq_len(nrow(tag_tide))) %dofuture% {
+
+  # plot and save for each combination
+  atl_check_res_patch(
+    tag = idc$tag[i], tide = idc$tideID[i],
+    data, patch_data, tide_data,
+    filename = paste0(
+      "./outputs/res_patch_check/",
+      idc$species[i], "_tag_", idc$tag[i], "_tide_", idc$tideID[i]
+    )
+  )
+
+}
+
+# close parallel workers
+plan(sequential)
 ```
 
 ## Plot residency patches (Example red knot)
 
 ```{r}
 # duration in minutes
-rp[, duration := duration / 60]
+patch_data[, duration := duration / 60]
 
 # subset red knot
 data_subset <- data[tag == 3038]
-rp_subset <- rp[tag == 3038]
+patch_data_subset <- patch_data[tag == 3038]
 
 # create basemap
 bm <- atl_create_bm(data_subset, buffer = 500)
@@ -112,23 +141,10 @@ bm +
     size = 1.5, show.legend = FALSE
   )
 
-# plot x against datetime
-ggplot() +
-  geom_line(
-    data = data_subset, aes(datetime, x), color = "grey",
-    show.legend = FALSE
-  ) +
-  geom_point(
-    data = data_subset[!is.na(patch)],
-    aes(datetime, x, color = as.character(patch)),
-    size = 1.5, show.legend = FALSE
-  ) +
-  theme_bw()
-
 # plot residency patches itself by duration
 bm +
   geom_point(
-    data = rp_subset,
+    data = patch_data_subset,
     aes(x_median, y_median, color = duration, size = duration),
     show.legend = TRUE, alpha = 0.5
   ) +
@@ -143,12 +159,12 @@ bm <- atl_create_bm(data, buffer = 500)
 
 # add species
 du <- unique(data, by = "tag")
-rp <- rp[du, on = "tag", `:=`(species = i.species)]
+patch_data <- patch_data[du, on = "tag", `:=`(species = i.species)]
 
 # plot residency patches itself by duration and species
 bm +
   geom_point(
-    data = rp,
+    data = patch_data,
     aes(x_median, y_median, color = species, size = duration),
     show.legend = TRUE, alpha = 0.5
   ) +
