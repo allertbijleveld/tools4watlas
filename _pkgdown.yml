@@ -100,6 +100,7 @@ reference:
      - atl_res_patch
      - atl_patch_dist
      - atl_patch_summary
+     - atl_check_res_patch
   - title: "Spatial functions"
     desc: "Transform data to sf object and get a bounding box"
     contents:
@@ -110,6 +111,7 @@ reference:
     contents:
      - atl_create_bm
      - atl_check_tag
+     - atl_check_res_patch
      - atl_t_col
      - atl_spec_cols
      - atl_spec_labs
