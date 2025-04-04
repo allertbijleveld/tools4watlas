@@ -89,9 +89,9 @@ track (default: \code{FALSE}).}
 \code{.png} file to this path and with this name; otherwise, the function
 returns the plot.}
 
-\item{png_width}{The width of the device.}
+\item{png_width}{Width of saved PNG (default: 3840).}
 
-\item{png_height}{The height of the device.}
+\item{png_height}{Height of saved PNG (default: 2160).}
 }
 \value{
 A \code{ggplot2} object with the specified option and adjustments. If

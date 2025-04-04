@@ -108,7 +108,7 @@ the tide and plot the data with bathymetry.</p>
 <span></span>
 <span><span class="co"># path to csv with aggregated data</span></span>
 <span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
-<span>  <span class="st">"extdata"</span>, <span class="st">"watlas_data_aggregated.csv"</span>,</span>
+<span>  <span class="st">"extdata"</span>, <span class="st">"watlas_data_smoothed.csv"</span>,</span>
 <span>  package <span class="op">=</span> <span class="st">"tools4watlas"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -176,51 +176,51 @@ water level data to the specified resolution.</p>
 <tbody>
 <tr class="odd">
 <td align="left">3027</td>
-<td align="left">2023-09-23 03:13:00</td>
+<td align="left">2023-09-23 03:13:25</td>
 <td align="right">2023513</td>
-<td align="right">133</td>
-<td align="right">-247</td>
+<td align="right">133.42</td>
+<td align="right">-246.58</td>
 <td align="right">49.9</td>
 </tr>
 <tr class="even">
 <td align="left">3027</td>
-<td align="left">2023-09-23 03:19:00</td>
+<td align="left">2023-09-23 03:13:28</td>
 <td align="right">2023513</td>
-<td align="right">139</td>
-<td align="right">-241</td>
-<td align="right">45.7</td>
+<td align="right">133.47</td>
+<td align="right">-246.53</td>
+<td align="right">49.9</td>
 </tr>
 <tr class="odd">
 <td align="left">3027</td>
-<td align="left">2023-09-23 03:20:00</td>
+<td align="left">2023-09-23 03:19:49</td>
 <td align="right">2023513</td>
-<td align="right">140</td>
-<td align="right">-240</td>
+<td align="right">139.82</td>
+<td align="right">-240.18</td>
 <td align="right">45.0</td>
 </tr>
 <tr class="even">
 <td align="left">3027</td>
-<td align="left">2023-09-23 03:21:00</td>
+<td align="left">2023-09-23 03:19:52</td>
 <td align="right">2023513</td>
-<td align="right">141</td>
-<td align="right">-239</td>
-<td align="right">44.4</td>
+<td align="right">139.87</td>
+<td align="right">-240.13</td>
+<td align="right">45.0</td>
 </tr>
 <tr class="odd">
 <td align="left">3027</td>
-<td align="left">2023-09-23 03:24:00</td>
+<td align="left">2023-09-23 03:19:55</td>
 <td align="right">2023513</td>
-<td align="right">144</td>
-<td align="right">-236</td>
-<td align="right">42.6</td>
+<td align="right">139.92</td>
+<td align="right">-240.08</td>
+<td align="right">45.0</td>
 </tr>
 <tr class="even">
 <td align="left">3027</td>
-<td align="left">2023-09-23 03:25:00</td>
+<td align="left">2023-09-23 03:19:58</td>
 <td align="right">2023513</td>
-<td align="right">145</td>
-<td align="right">-235</td>
-<td align="right">42.0</td>
+<td align="right">139.97</td>
+<td align="right">-240.03</td>
+<td align="right">45.0</td>
 </tr>
 </tbody>
 </table>
@@ -259,33 +259,33 @@ in the tide cycle.</p>
 <tbody>
 <tr class="odd">
 <td align="left">3027</td>
-<td align="left">2023-09-23 03:13:00</td>
+<td align="left">2023-09-23 03:13:25</td>
 <td align="right">84.29</td>
 </tr>
 <tr class="even">
 <td align="left">3027</td>
-<td align="left">2023-09-23 03:19:00</td>
-<td align="right">86.83</td>
-</tr>
-<tr class="odd">
-<td align="left">3027</td>
-<td align="left">2023-09-23 03:20:00</td>
-<td align="right">86.83</td>
-</tr>
-<tr class="even">
-<td align="left">3027</td>
-<td align="left">2023-09-23 03:21:00</td>
+<td align="left">2023-09-23 03:13:28</td>
 <td align="right">84.29</td>
 </tr>
 <tr class="odd">
 <td align="left">3027</td>
-<td align="left">2023-09-23 03:24:00</td>
-<td align="right">121.75</td>
+<td align="left">2023-09-23 03:19:49</td>
+<td align="right">86.83</td>
 </tr>
 <tr class="even">
 <td align="left">3027</td>
-<td align="left">2023-09-23 03:25:00</td>
-<td align="right">84.29</td>
+<td align="left">2023-09-23 03:19:52</td>
+<td align="right">86.83</td>
+</tr>
+<tr class="odd">
+<td align="left">3027</td>
+<td align="left">2023-09-23 03:19:55</td>
+<td align="right">86.83</td>
+</tr>
+<tr class="even">
+<td align="left">3027</td>
+<td align="left">2023-09-23 03:19:58</td>
+<td align="right">86.83</td>
 </tr>
 </tbody>
 </table>
@@ -319,7 +319,7 @@ et al. 2016)</a>:</p>
 <span>    <span class="st">"between(time2lowtide, -2.5 * 60, 2.5 * 60)"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Note: 51.24% of the dataset was filtered out, corresponding to 3531 positions.</span></span></code></pre>
+<pre><code><span><span class="co">## Note: 50.18% of the dataset was filtered out, corresponding to 43596 positions.</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="plot-data-movement-data-with-bathymetry-data">Plot data movement data with bathymetry data<a class="anchor" aria-label="anchor" href="#plot-data-movement-data-with-bathymetry-data"></a>

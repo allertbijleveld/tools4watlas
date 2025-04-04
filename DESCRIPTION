@@ -25,11 +25,13 @@ Imports:
     dplyr,
     ggnewscale,
     ggplot2,
+    ggrepel,
     ggspatial,
     ggtext,
     glue,
     lubridate,
     magrittr,
+    patchwork,
     purrr,
     ragg,
     rlang,
@@ -62,5 +64,6 @@ VignetteBuilder:
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
+LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2

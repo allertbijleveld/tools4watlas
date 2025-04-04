@@ -100,80 +100,111 @@ Krietsch</h4>
 </h2>
 <p>This vignette shows how to assign residency patches with WATLAS
 data.</p>
+<p>Ignores different sampling interals and species specific residency
+patch parameters at the moment.</p>
+<div class="section level4">
+<h4 id="load-packages-and-required-data">Load packages and required data<a class="anchor" aria-label="anchor" href="#load-packages-and-required-data"></a>
+</h4>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Packages</span></span>
+<code class="sourceCode R"><span><span class="co"># packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sjmgarnier.github.io/viridis/" class="external-link">viridis</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/foreach" class="external-link">foreach</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://doFuture.futureverse.org" class="external-link">doFuture</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Path to csv with filtered data</span></span>
-<span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
-<span>  <span class="st">"extdata"</span>, <span class="st">"watlas_data_filtered.csv"</span>,</span>
-<span>  package <span class="op">=</span> <span class="st">"tools4watlas"</span></span>
-<span><span class="op">)</span></span>
+<span><span class="co"># load example data</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
 <span></span>
-<span><span class="co"># Load data</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">data_path</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="median-smooth-data">Median smooth data<a class="anchor" aria-label="anchor" href="#median-smooth-data"></a>
-</h3>
-<p>To further reduce error in the localization data, a basic smoother
-such as a median filter can be applied. The resulting table has the
-smoothed location stored in the <code>x</code> and <code>y</code> column
-and the original location stored in the <code>x_raw</code> and
-<code>y_raw</code> column.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Smooth the data</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_median_smooth.html">atl_median_smooth</a></span><span class="op">(</span><span class="va">data</span>, moving_window <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
-<div class="section level4">
-<h4 id="recalculate-speed">Recalculate speed<a class="anchor" aria-label="anchor" href="#recalculate-speed"></a>
-</h4>
-<p>After smoothing the data, the speeds need to be recalculated. We now
-also calculate turning angles. Note: the distance between smoothed
-positions can be 0 and therefore will produce NAs and a warning</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Recalculate speed</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_get_speed.html">atl_get_speed</a></span><span class="op">(</span><span class="va">data</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"in"</span>, <span class="st">"out"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-</div>
+<span><span class="co"># file path to WATLAS teams data folder</span></span>
+<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_file_path.html">atl_file_path</a></span><span class="op">(</span><span class="st">"watlas_teams"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load tide pattern data</span></span>
+<span><span class="va">tide_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
+<span>  <span class="va">fp</span>, <span class="st">"waterdata/allYears-tidalPattern-west_terschelling-UTC.csv"</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="calculate-residency-patches-by-tag">Calculate residency patches by tag<a class="anchor" aria-label="anchor" href="#calculate-residency-patches-by-tag"></a>
 </h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<p>Subset relevant columns only (otherwise slows down the process).</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># unique tag ID</span></span>
 <span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">tag</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># loop by tag ID</span></span>
-<span><span class="va">rp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></span><span class="op">(</span>i <span class="op">=</span> <span class="va">id</span>, .combine <span class="op">=</span> <span class="st">"rbind"</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">%do%</a></span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://allertbijleveld.github.io/tools4watlas/reference/atl_res_patch_speed.html">atl_res_patch_speed</a></span><span class="op">(</span></span>
-<span>    <span class="va">data</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="va">i</span><span class="op">]</span>,</span>
-<span>    max_speed <span class="op">=</span> <span class="fl">3</span>, lim_spat_indep <span class="op">=</span> <span class="fl">50</span>, lim_time_indep <span class="op">=</span> <span class="fl">180</span>,</span>
-<span>    min_fixes <span class="op">=</span> <span class="fl">3</span>, min_duration <span class="op">=</span> <span class="fl">180</span></span>
+<span><span class="va">patch_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></span><span class="op">(</span>i <span class="op">=</span> <span class="va">id</span>, .combine <span class="op">=</span> <span class="st">"rbind"</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">%do%</a></span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../../reference/atl_res_patch.html">atl_res_patch</a></span><span class="op">(</span></span>
+<span>    <span class="va">data</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="va">i</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">posID</span>, <span class="va">time</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">speed_in</span><span class="op">)</span><span class="op">]</span>,</span>
+<span>    max_speed <span class="op">=</span> <span class="fl">3</span>, lim_spat_indep <span class="op">=</span> <span class="fl">75</span>, lim_time_indep <span class="op">=</span> <span class="fl">180</span>,</span>
+<span>    min_fixes <span class="op">=</span> <span class="fl">3</span>, min_duration <span class="op">=</span> <span class="fl">120</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># extract data from all residency patches</span></span>
-<span><span class="va">drp</span> <span class="op">&lt;-</span> <span class="va">rp</span><span class="op">[</span>, <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
-<span>  <span class="va">patchdata</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">patch</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">patch_data_ext</span> <span class="op">&lt;-</span> <span class="va">patch_data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">patchdata</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, <span class="va">duration</span></span>
+<span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">patch</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># merge back with data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span></span>
-<span>  <span class="va">data</span>, <span class="va">drp</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">posID</span>, <span class="va">patch</span><span class="op">)</span><span class="op">]</span>,</span>
+<span>  <span class="va">data</span>, <span class="va">patch_data_ext</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">posID</span>, <span class="va">patch</span>, <span class="va">duration</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>  by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tag"</span>, <span class="st">"posID"</span><span class="op">)</span>, all.x <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="plot-by-tag-and-tide-id">Plot by tag and tide ID<a class="anchor" aria-label="anchor" href="#plot-by-tag-and-tide-id"></a>
+</h3>
+<div class="section level4">
+<h4 id="example-for-one-tag-and-tide">Example for one tag and tide<a class="anchor" aria-label="anchor" href="#example-for-one-tag-and-tide"></a>
+</h4>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../../reference/atl_check_res_patch.html">atl_check_res_patch</a></span><span class="op">(</span></span>
+<span>  tag <span class="op">=</span> <span class="st">"3038"</span>, tide <span class="op">=</span> <span class="st">"2023513"</span>,</span>
+<span>  <span class="va">data</span>, <span class="va">patch_data</span>, <span class="va">tide_data</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="add_residency_patches_files/figure-html/unnamed-chunk-3-1.png" width="100%"></p>
+</div>
+<div class="section level4">
+<h4 id="loop-through-all-tags-and-tides">Loop through all tags and tides<a class="anchor" aria-label="anchor" href="#loop-through-all-tags-and-tides"></a>
+</h4>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># register cores and backend for parallel processing</span></span>
+<span><span class="fu"><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># unique ID combinations</span></span>
+<span><span class="va">idc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span>, <span class="st">"tag"</span>, <span class="st">"tideID"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># loop to make plots for all</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></span><span class="op">(</span>i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tag_tide</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://doFuture.futureverse.org/reference/grapes-dofuture-grapes.html" class="external-link">%dofuture%</a></span> <span class="op">{</span></span>
+<span></span>
+<span>  <span class="co"># plot and save for each combination</span></span>
+<span>  <span class="fu"><a href="../../reference/atl_check_res_patch.html">atl_check_res_patch</a></span><span class="op">(</span></span>
+<span>    tag <span class="op">=</span> <span class="va">idc</span><span class="op">$</span><span class="va">tag</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, tide <span class="op">=</span> <span class="va">idc</span><span class="op">$</span><span class="va">tideID</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,</span>
+<span>    <span class="va">data</span>, <span class="va">patch_data</span>, <span class="va">tide_data</span>,</span>
+<span>    filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
+<span>      <span class="st">"./outputs/res_patch_check/"</span>,</span>
+<span>      <span class="va">idc</span><span class="op">$</span><span class="va">species</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"_tag_"</span>, <span class="va">idc</span><span class="op">$</span><span class="va">tag</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"_tide_"</span>, <span class="va">idc</span><span class="op">$</span><span class="va">tideID</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># close parallel workers</span></span>
+<span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="plot-residency-patches-example-red-knot">Plot residency patches (Example red knot)<a class="anchor" aria-label="anchor" href="#plot-residency-patches-example-red-knot"></a>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># duration in minutes</span></span>
-<span><span class="va">rp</span><span class="op">[</span>, <span class="va">duration</span> <span class="op">:=</span> <span class="va">duration</span> <span class="op">/</span> <span class="fl">60</span><span class="op">]</span></span>
+<span><span class="va">patch_data</span><span class="op">[</span>, <span class="va">duration</span> <span class="op">:=</span> <span class="va">duration</span> <span class="op">/</span> <span class="fl">60</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># subset red knot</span></span>
 <span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="fl">3038</span><span class="op">]</span></span>
-<span><span class="va">rp_subset</span> <span class="op">&lt;-</span> <span class="va">rp</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="fl">3038</span><span class="op">]</span></span>
+<span><span class="va">patch_data_subset</span> <span class="op">&lt;-</span> <span class="va">patch_data</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="fl">3038</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># create basemap</span></span>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data_subset</span>, buffer <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
@@ -191,45 +222,31 @@ positions can be 0 and therefore will produce NAs and a warning</p>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="add_residency_patches_files/figure-html/unnamed-chunk-5-1.png" width="100%"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># plot x against datetime</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">data_subset</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">datetime</span>, <span class="va">x</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"grey"</span>,</span>
-<span>    show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">data_subset</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">patch</span><span class="op">)</span><span class="op">]</span>,</span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">datetime</span>, <span class="va">x</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">patch</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    size <span class="op">=</span> <span class="fl">1.5</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="add_residency_patches_files/figure-html/unnamed-chunk-5-2.png" width="100%"></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot residency patches itself by duration</span></span>
 <span><span class="va">bm</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">rp_subset</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">patch_data_subset</span>,</span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x_median</span>, <span class="va">y_median</span>, color <span class="op">=</span> <span class="va">duration</span>, size <span class="op">=</span> <span class="va">duration</span><span class="op">)</span>,</span>
 <span>    show.legend <span class="op">=</span> <span class="cn">TRUE</span>, alpha <span class="op">=</span> <span class="fl">0.5</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html" class="external-link">scale_color_viridis</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="add_residency_patches_files/figure-html/unnamed-chunk-5-3.png" width="100%"></p>
+<p><img src="add_residency_patches_files/figure-html/unnamed-chunk-5-2.png" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="plot-residency-patches-with-species-colours">Plot residency patches (with species colours)<a class="anchor" aria-label="anchor" href="#plot-residency-patches-with-species-colours"></a>
 </h3>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create basemap</span></span>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data</span>, buffer <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># add species</span></span>
 <span><span class="va">du</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span>, by <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></span>
-<span><span class="va">rp</span> <span class="op">&lt;-</span> <span class="va">rp</span><span class="op">[</span><span class="va">du</span>, on <span class="op">=</span> <span class="st">"tag"</span>, <span class="fu">`:=`</span><span class="op">(</span>species <span class="op">=</span> <span class="va">i.species</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">patch_data</span> <span class="op">&lt;-</span> <span class="va">patch_data</span><span class="op">[</span><span class="va">du</span>, on <span class="op">=</span> <span class="st">"tag"</span>, <span class="fu">`:=`</span><span class="op">(</span>species <span class="op">=</span> <span class="va">i.species</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># plot residency patches itself by duration and species</span></span>
 <span><span class="va">bm</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">rp</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">patch_data</span>,</span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x_median</span>, <span class="va">y_median</span>, color <span class="op">=</span> <span class="va">species</span>, size <span class="op">=</span> <span class="va">duration</span><span class="op">)</span>,</span>
 <span>    show.legend <span class="op">=</span> <span class="cn">TRUE</span>, alpha <span class="op">=</span> <span class="fl">0.5</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
