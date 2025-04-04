@@ -33,8 +33,8 @@ library(mapview)
 Subset the individual of choice and transform it into a `sf` with the additional columns of your choice (can be seen when clicking on the point). Colour the track by selecting the desired parameter as `zcol`.
 
 ```{r, fig.height = 2, fig.cap = "Interactive map with mapview()"}
-# load example data
-data <- data_example
+# load example data from one tide
+data <- data_example[tideID == "2023513"]
 
 # subset data
 data_subset <- data[tag == "3063"]
@@ -57,13 +57,21 @@ mapview(d_sf_lines, zcol = "speed_in", legend = FALSE) +
   mapview(d_sf, zcol = "speed_in")
 ```
 
-
-
 ## Interactive plot for multiple individuals
+
+If one wants to plot a lot of data, it is recommended to thin the data first.
 
 ```{r, fig.height = 2, fig.cap = "Interactive map with mapview()"}
 # load example data
 data <- data_example
+
+# thin the data by subsampling with a 60-second interval
+data <- atl_thin_data(
+  data = data,
+  interval = 60,
+  id_columns = c("tag", "species"),
+  method = "subsample"
+)
 
 # make data spatial
 d_sf <- atl_as_sf(data, additional_cols = c("datetime", "species"))
@@ -82,10 +90,17 @@ mapview(d_sf_lines, zcol = "tag", legend = FALSE) +
 
 ## Interactive plot for multiple species
 
-
 ```{r, fig.height = 2, fig.cap = "Interactive map with mapview()"}
-# load example data
-data <- data_example
+# load example data from one tide
+data <- data_example[tideID == "2023513"]
+
+# thin the data by subsampling with a 60-second interval
+data <- atl_thin_data(
+  data = data,
+  interval = 60,
+  id_columns = c("tag", "species"),
+  method = "subsample"
+)
 
 # make data spatial
 d_sf <- atl_as_sf(data, additional_cols = c("datetime", "species"))

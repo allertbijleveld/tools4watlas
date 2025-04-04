@@ -61,6 +61,39 @@ foreach(i = id) %do% {
 }
 ```
 
+Example to make any type of `ggplot` and save the data with `ragg`.
+
+```{r, eval = FALSE}
+# load example data
+data <- data_example
+
+# file path
+path <- "./outputs/maps_by_tag/tag_"
+
+# unique ID (here by tag)
+id <- unique(data$tag)
+
+# loop to make plots for all
+foreach(i = id) %do% {
+
+  # subset data
+  data_subset <- data[tag == i]
+
+  # plot data
+  p <- ggplot()
+
+  # save
+  agg_png(
+    filename = paste0(path, i, ".png"),
+    width = 3840, height = 2160, units = "px", res = 300
+  )
+  print(p)
+  dev.off()
+
+}
+```
+
+
 ## Plot and save data in parallel loop by tag ID
 
 We can use the same structure, simply replacing `%do%` with `%dofuture%`, which is the key advantage of using `foreach.` The only additional step is setting up parallel processing with `registerDoFuture()` and `plan(multisession)`.

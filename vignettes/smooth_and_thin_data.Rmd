@@ -100,7 +100,6 @@ fwrite(
 )
 ```
 
-
 ## Thin data
 
 Depending on the desired analysis, it might make sense to thin data, either by aggregation or by subsampling. Both methods return fixed time steps (depending on the interval). 
