@@ -6,11 +6,9 @@
 #' @author Pratik Gupte & Allert Bijleveld & Johannes Krietsch
 #' @param data A dataframe with the tracking data with the timestamp column
 #' 'datetime' in UTC.
-#' @param tide_data Data on the timing (in UTC) of low and high tides as output
-#'  from the function \code{fread} of the package \code{data.table}.
+#' @param tide_data Data on the timing (in UTC) of low and high tides.
 #' @param tide_data_highres Data on the timing (in UTC) of the waterlevel in
-#' small intervals (e.g. every 10 min) as provided from Rijkwaterstaat as
-#' output from the function \code{fread} of the package \code{data.table}.
+#' small intervals (e.g. every 10 min) as provided from Rijkwaterstaat.
 #' @param waterdata_resolution The resolution of the high resolution waterlevel
 #' data. This is used for matching the high resolution tidal data to the
 #' tracking data. Defaults to 10 minutes but can be set differently.

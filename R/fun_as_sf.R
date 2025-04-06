@@ -141,5 +141,10 @@ atl_as_sf <- function(data,
     stop("Invalid option")
   )
 
+  # Delete dummy tag column again
+  if (tag == "tag_dummy") {
+    data[, tag_dummy := NULL]
+  }
+
   return(return_data)
 }

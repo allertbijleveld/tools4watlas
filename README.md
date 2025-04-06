@@ -39,7 +39,7 @@ tutorials on how to visualize movement data.
 
 ### **Documentation**
 
-The `tools4watlas` package is thoroughly documented on the [**offical
+The `tools4watlas` package is thoroughly documented on the [**official
 package website**](https://allertbijleveld.github.io/tools4watlas/). The
 package vignettes outline the **basic workflow** for working with WATLAS
 data, while **extended workflows** guide through more specialized
@@ -146,7 +146,7 @@ bm +
   ) +
   geom_point(
     data = data, aes(x, y, color = species),
-    size = 1, alpha = 1, show.legend = TRUE
+    size = 0.5, alpha = 0.5, show.legend = TRUE
   ) +
   scale_color_manual(
     values = atl_spec_cols(),
@@ -197,7 +197,7 @@ Check the article [Package
 maintenance](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_maintenance.html)
 for more details.
 
-### **Acknowledgments**
+### **Acknowledgements**
 
 Many people and organisations are involved in developing and maintaining
 WATLAS. We particularly thank Sivan Toledo and Ran Nathan for the

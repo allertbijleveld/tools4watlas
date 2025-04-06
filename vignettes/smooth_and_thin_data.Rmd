@@ -90,7 +90,15 @@ bm +
     color = "black", size = 1
   )
 ```
+## Save data
 
+```{r, eval = FALSE}
+# Save data
+fwrite(
+  data,
+  file = "../inst/extdata/watlas_data_smoothed.csv", yaml = TRUE
+)
+```
 
 ## Thin data
 
@@ -98,7 +106,7 @@ Depending on the desired analysis, it might make sense to thin data, either by a
 
 ### By aggregation
 
-Returns the average of all columns for each time step. The additional column `n_aggregated` shows how many locations were aggregated for this location. Time and datetime are returned rounded to the interval.
+Returns the mean of all columns for each time step. The additional column `n_aggregated` shows how many locations were aggregated for this location. Time and datetime are returned rounded to the interval.
 
 ```{r echo=T}		
 # Thin the data by aggregation with a 60-second interval
@@ -116,7 +124,7 @@ head(thinned_aggregated[, .(tag, time, datetime, x, y, n_aggregated)]) |>
 
 ### By subsampling
 
-Returns one random location for each time step. The additional column `n_subsampled` shows from how many locations this location was sampled.
+Returns the first location for each time step. The additional column `n_subsampled` shows from how many locations this location was sampled.
 
 ```{r echo=T}		
 # Thin the data by subsampling with a 60-second interval
@@ -131,15 +139,3 @@ thinned_subsampled <- atl_thin_data(
 head(thinned_subsampled[, .(tag, time, datetime, x, y, n_subsampled)]) |>
   knitr::kable(digits = 2)
 ```
-
-
-## Save data
-
-```{r, eval = FALSE}
-# Save data
-fwrite(
-  thinned_aggregated,
-  file = "../inst/extdata/watlas_data_aggregated.csv", yaml = TRUE
-)
-```
-

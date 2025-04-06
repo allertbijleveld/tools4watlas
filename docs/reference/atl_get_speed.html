@@ -29,7 +29,7 @@ on the units of the column specified in TIME."><meta property="og:image" content
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
-    <li><a class="dropdown-item" href="../articles/extended_workflow/cluster_data_in_residency_patches.html">Clustering in residency patches</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/add_residency_patches.html">Add residency patches</a></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_SIBES_data.html">Add SIBES data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
@@ -127,7 +127,7 @@ by <code>type = "out"</code> or both c("in", "out").</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create example data with two tags</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  tag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1000"</span>, <span class="st">"2000"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">6</span>, <span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">7</span>, <span class="fl">11</span>, <span class="fl">16</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">9</span>, <span class="fl">14</span>, <span class="fl">20</span>, <span class="fl">3</span>, <span class="fl">6</span>, <span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">21</span><span class="op">)</span></span></span>
@@ -164,7 +164,7 @@ by <code>type = "out"</code> or both c("in", "out").</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>, <a href="https://github.com/pratikunterwegs" class="external-link">Pratik Gupte</a>, <a href="https://github.com/CBeardsworth" class="external-link">Christine Beardsworth</a>, <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>.</p>
+  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, <a href="https://github.com/pratikunterwegs" class="external-link">Pratik Gupte</a>, <a href="https://github.com/CBeardsworth" class="external-link">Christine Beardsworth</a>, <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
