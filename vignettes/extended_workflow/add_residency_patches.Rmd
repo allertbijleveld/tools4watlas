@@ -98,7 +98,7 @@ plan(multisession)
 idc <- unique(data[, c("species", "tag", "tideID")])
 
 # loop to make plots for all
-foreach(i = seq_len(nrow(tag_tide))) %dofuture% {
+foreach(i = seq_len(nrow(idc))) %dofuture% {
 
   # plot and save for each combination
   atl_check_res_patch(

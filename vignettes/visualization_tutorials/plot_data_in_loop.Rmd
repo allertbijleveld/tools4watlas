@@ -148,7 +148,7 @@ registerDoFuture()
 plan(multisession)
 
 # loop to make plots for all
-foreach(i = seq_len(nrow(tag_tide))) %dofuture% {
+foreach(i = seq_len(nrow(idc))) %dofuture% {
 
   # subset data
   data_subset <- data[tag == idc$tag[i] & tideID == idc$tideID[i]]
