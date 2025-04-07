@@ -40,6 +40,9 @@
 #'   track (default: `FALSE`).
 #' @param highlight_last Logical. If `TRUE`, highlights the last point in the
 #'   track (default: `FALSE`).
+#' @param highlight_outliers Logical. If `TRUE`, highlights all points that are
+#'   flagged as outliers (needs preassigned column with outlier TRUE or FALSE)
+#'   track (default: `FALSE`).
 #' @param point_size The size of the data points (default: 0.5).
 #' @param point_alpha Numeric. Transparency of the data points (default: 1).
 #' @param path_linewidth Numeric. The width of the connecting track lines
@@ -101,6 +104,7 @@ atl_check_tag <- function(data,
                           last_n = NULL,
                           highlight_first = FALSE,
                           highlight_last = FALSE,
+                          highlight_outliers = FALSE,
                           point_size = 0.5,
                           point_alpha = 1,
                           path_linewidth = 0.5,
@@ -134,6 +138,11 @@ atl_check_tag <- function(data,
   atl_check_data(data, names_expected = c(
     required_columns, option_columns[[option]]
   ))
+
+  # if if (highlight_outliers == TRUE) {
+  if (highlight_outliers == TRUE) {
+    atl_check_data(data, names_expected = c("outlier"))
+  }
 
   # convert to DT if not
   if (data.table::is.data.table(data) != TRUE) {
@@ -393,6 +402,17 @@ atl_check_tag <- function(data,
         data = ds[is_last == TRUE],
         aes(x, y), color = "firebrick",
         pch = 4, size = 10,
+        show.legend = FALSE
+      )
+  }
+
+  # highlight last point if TRUE
+  if (highlight_outliers == TRUE) {
+    p <- p +
+      geom_point(
+        data = ds[outlier == TRUE],
+        aes(x, y), color = "dodgerblue",
+        pch = 8, size = 10,
         show.legend = FALSE
       )
   }
