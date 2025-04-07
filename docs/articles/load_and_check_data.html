@@ -277,7 +277,7 @@ of this folder or add the path for your user in the
 with the following columns:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># show head of the table</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="7%">
@@ -438,12 +438,15 @@ number</td>
 from the metadata. In this case I want the species to be the first row
 of the table.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># join with data</span></span>
+<code class="sourceCode R"><span><span class="co"># join with species data</span></span>
 <span><span class="va">all_tags</span><span class="op">[</span>, <span class="va">tag</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">tag</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">data</span><span class="op">[</span><span class="va">all_tags</span>, on <span class="op">=</span> <span class="st">"tag"</span>, <span class="fu">`:=`</span><span class="op">(</span>species <span class="op">=</span> <span class="va">i.species</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># make species first column</span></span>
-<span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setcolorder.html" class="external-link">setcolorder</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span>, <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setcolorder.html" class="external-link">setcolorder</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span>, <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># order data.table</span></span>
+<span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setorder.html" class="external-link">setorder</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">species</span>, <span class="va">tag</span>, <span class="va">time</span><span class="op">)</span></span></code></pre></div>
 <p>We can also add other metadata by merging whatever column we want
 (e.g. color rings and catch location). However, when working with large
 data sets, it is advised to only add columns that are necessary. This
@@ -491,7 +494,7 @@ many positions by tag and date we have.</p>
 <span><span class="va">data_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_summary.html">atl_summary</a></span><span class="op">(</span><span class="va">data</span>, id_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span>, <span class="st">"tag"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># N individuals with tagging data</span></span>
-<span><span class="va">data_summary</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">data_summary</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 8</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># N by species</span></span>

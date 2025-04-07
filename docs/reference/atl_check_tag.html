@@ -92,6 +92,7 @@ png file.</p>
 <span>  last_n <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  highlight_first <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  highlight_last <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  highlight_outliers <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  point_size <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  point_alpha <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  path_linewidth <span class="op">=</span> <span class="fl">0.5</span>,</span>
@@ -172,6 +173,12 @@ track (default: <code>FALSE</code>).</p></dd>
 
 <dt id="arg-highlight-last">highlight_last<a class="anchor" aria-label="anchor" href="#arg-highlight-last"></a></dt>
 <dd><p>Logical. If <code>TRUE</code>, highlights the last point in the
+track (default: <code>FALSE</code>).</p></dd>
+
+
+<dt id="arg-highlight-outliers">highlight_outliers<a class="anchor" aria-label="anchor" href="#arg-highlight-outliers"></a></dt>
+<dd><p>Logical. If <code>TRUE</code>, highlights all points that are
+flagged as outliers (needs preassigned column with outlier TRUE or FALSE)
 track (default: <code>FALSE</code>).</p></dd>
 
 

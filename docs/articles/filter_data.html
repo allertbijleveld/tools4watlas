@@ -180,6 +180,30 @@ Heatmap of all positions with bounding box (red)
 <span>  y_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">[</span><span class="st">"ymin"</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="st">"ymax"</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>  remove_inside <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
+<p>If data are removed, one might want to look at what was removed. This
+can be done like shown here (code not run as nothing was removed in our
+example).</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># check what was removed</span></span>
+<span><span class="va">data_removed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_filter_bounds.html">atl_filter_bounds</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  x_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">[</span><span class="st">"xmin"</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="st">"xmax"</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>  y_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">[</span><span class="st">"ymin"</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="st">"ymax"</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>  remove_inside <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create a base map</span></span>
+<span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data_removed</span>, buffer <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check removed data</span></span>
+<span><span class="va">bm</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">data_removed</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"firebrick"</span>,</span>
+<span>    size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">1</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">bbox_sf</span>, color <span class="op">=</span> <span class="st">"firebrick"</span>, fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="temporal-filtering">Temporal filtering<a class="anchor" aria-label="anchor" href="#temporal-filtering"></a>
@@ -196,7 +220,7 @@ depending on the project it might be useful to already exclude birds
 with few data at this point (e.g. here with less than 100 positions -
 none of the birds is filtered out in this case using the example
 data).</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load meta data</span></span>
 <span><span class="va">all_tags_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
 <span>  <span class="st">"extdata"</span>, <span class="st">"tags_watlas_subset.xlsx"</span>, package <span class="op">=</span> <span class="st">"tools4watlas"</span></span>
@@ -221,7 +245,7 @@ data).</p>
 <span></span>
 <span><span class="co"># exclude tags with less than 100 positions</span></span>
 <span><span class="va">data</span><span class="op">[</span>, <span class="va">N</span> <span class="op">:=</span> <span class="va">.N</span>, <span class="va">tag</span><span class="op">]</span></span>
-<span><span class="va">data</span><span class="op">[</span><span class="va">N</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/unique.html" class="external-link">unique</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></span>
+<span><span class="va">data</span><span class="op">[</span><span class="va">N</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">N</span> <span class="op">&gt;</span> <span class="fl">100</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># remove unneeded columns</span></span>
@@ -235,7 +259,7 @@ data).</p>
 <h3 id="based-on-watlas-error-estimate">Based on WATLAS error estimate<a class="anchor" aria-label="anchor" href="#based-on-watlas-error-estimate"></a>
 </h3>
 <p>5000 is typically used by Allert.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># filter based on variance in the Easting and Northing</span></span>
 <span><span class="va">var_max</span> <span class="op">&lt;-</span> <span class="fl">5000</span> <span class="co"># in meters squared</span></span>
 <span></span>
@@ -252,7 +276,7 @@ data).</p>
 <h3 id="based-on-speed">Based on speed<a class="anchor" aria-label="anchor" href="#based-on-speed"></a>
 </h3>
 <p>This will filter more unrealistic positions.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># calculate speed</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_get_speed.html">atl_get_speed</a></span><span class="op">(</span><span class="va">data</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"in"</span>, <span class="st">"out"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -262,11 +286,11 @@ data).</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Speed in (m/s)"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="filter_data_files/figure-html/unnamed-chunk-5-1.png" alt="Histogram of speed moved from all data" width="100%"><p class="caption">
+<img src="filter_data_files/figure-html/unnamed-chunk-6-1.png" alt="Histogram of speed moved from all data" width="100%"><p class="caption">
 Histogram of speed moved from all data
 </p>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># filter by speed</span></span>
 <span><span class="va">speed_max</span> <span class="op">&lt;-</span> <span class="fl">30</span> <span class="co"># m/s (108 km/h)</span></span>
 <span></span>
@@ -278,7 +302,7 @@ Histogram of speed moved from all data
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Note: 0.56% of the dataset was filtered out, corresponding to 488 positions.</span></span></code></pre>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># recalculate speed</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_get_speed.html">atl_get_speed</a></span><span class="op">(</span><span class="va">data</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"in"</span>, <span class="st">"out"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -286,7 +310,7 @@ Histogram of speed moved from all data
 <div class="section level2">
 <h2 id="save-data">Save data<a class="anchor" aria-label="anchor" href="#save-data"></a>
 </h2>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># save data</span></span>
 <span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span><span class="va">data</span>, file <span class="op">=</span> <span class="st">"../inst/extdata/watlas_data_filtered.csv"</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>

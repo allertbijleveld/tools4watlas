@@ -130,7 +130,7 @@ checking the data by tag ID using <code><a href="../../reference/atl_check_tag.h
 <span>  <span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="va">i</span><span class="op">]</span></span>
 <span></span>
 <span>  <span class="co"># plot and save data</span></span>
-<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_check_tag.html">atl_check_tag</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../../reference/atl_check_tag.html">atl_check_tag</a></span><span class="op">(</span></span>
 <span>    <span class="va">data_subset</span>,</span>
 <span>    option <span class="op">=</span> <span class="st">"datetime"</span>,</span>
 <span>    highlight_first <span class="op">=</span> <span class="cn">TRUE</span>, highlight_last <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -177,38 +177,37 @@ with <code>%dofuture%</code>, which is the key advantage of using
 <code>foreach.</code> The only additional step is setting up parallel
 processing with <code><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture()</a></code> and
 <code>plan(multisession)</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># load example data</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
-<span></span>
-<span><span class="co"># file path</span></span>
-<span><span class="va">path</span> <span class="op">&lt;-</span> <span class="st">"./outputs/maps_by_tag/"</span></span>
-<span></span>
-<span><span class="co"># unique ID (here by tag)</span></span>
-<span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">tag</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># register cores and backend for parallel processing</span></span>
-<span><span class="fu"><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># loop to make plots for all</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></span><span class="op">(</span>i <span class="op">=</span> <span class="va">id</span><span class="op">)</span> <span class="op"><a href="https://doFuture.futureverse.org/reference/grapes-dofuture-grapes.html" class="external-link">%dofuture%</a></span> <span class="op">{</span></span>
-<span></span>
-<span>  <span class="co"># subset data</span></span>
-<span>  <span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="va">i</span><span class="op">]</span></span>
-<span></span>
-<span>  <span class="co"># plot and save data</span></span>
-<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_check_tag.html">atl_check_tag</a></span><span class="op">(</span></span>
-<span>    <span class="va">data_subset</span>,</span>
-<span>    option <span class="op">=</span> <span class="st">"datetime"</span>,</span>
-<span>    highlight_first <span class="op">=</span> <span class="cn">TRUE</span>, highlight_last <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path</span>, <span class="va">data_subset</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">$</span><span class="va">species</span>, <span class="st">"_tag_"</span>, <span class="va">i</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="co"># close parallel workers</span></span>
-<span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># load example data</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>data <span class="ot">&lt;-</span> data_example</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co"># file path</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>path <span class="ot">&lt;-</span> <span class="st">"./outputs/maps_by_tag/"</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co"># unique ID (here by tag)</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>id <span class="ot">&lt;-</span> <span class="fu">unique</span>(data<span class="sc">$</span>tag)</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co"># register cores and backend for parallel processing</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="fu">registerDoFuture</span>()</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co"># loop to make plots for all</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="fu">foreach</span>(<span class="at">i =</span> id) <span class="sc">%dofuture%</span> {</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>  <span class="co"># subset data</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>  data_subset <span class="ot">&lt;-</span> data[tag <span class="sc">==</span> i]</span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>  <span class="co"># plot and save data</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>  <span class="fu">atl_check_tag</span>(</span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>    data_subset,</span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a>    <span class="at">option =</span> <span class="st">"datetime"</span>,</span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>    <span class="at">highlight_first =</span> <span class="cn">TRUE</span>, <span class="at">highlight_last =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>    <span class="at">filename =</span> <span class="fu">paste0</span>(path, data_subset[<span class="dv">1</span>]<span class="sc">$</span>species, <span class="st">"_tag_"</span>, i)</span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>  )</span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>}</span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a><span class="co"># close parallel workers</span></span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a><span class="fu">plan</span>(sequential)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="plot-and-save-data-in-parallel-loop-by-tag-id-and-tide-id">Plot and save data in parallel loop by tag ID and tide ID<a class="anchor" aria-label="anchor" href="#plot-and-save-data-in-parallel-loop-by-tag-id-and-tide-id"></a>
@@ -234,12 +233,12 @@ processing with <code><a href="https://doFuture.futureverse.org/reference/regist
 <span>  <span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="va">idc</span><span class="op">$</span><span class="va">tag</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&amp;</span> <span class="va">tideID</span> <span class="op">==</span> <span class="va">idc</span><span class="op">$</span><span class="va">tideID</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
 <span>  <span class="co"># plot and save data</span></span>
-<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_check_tag.html">atl_check_tag</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../../reference/atl_check_tag.html">atl_check_tag</a></span><span class="op">(</span></span>
 <span>    <span class="va">data_subset</span>,</span>
 <span>    option <span class="op">=</span> <span class="st">"datetime"</span>,</span>
 <span>    highlight_first <span class="op">=</span> <span class="cn">TRUE</span>, highlight_last <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
-<span>      <span class="va">path</span>, <span class="va">idc</span><span class="op">$</span><span class="va">species</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"_tag_"</span>, <span class="va">idc</span><span class="op">$</span><span class="va">tideID</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"_tide_"</span>, <span class="va">idc</span><span class="op">$</span><span class="va">tideID</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
+<span>      <span class="va">path</span>, <span class="va">idc</span><span class="op">$</span><span class="va">species</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"_tag_"</span>, <span class="va">idc</span><span class="op">$</span><span class="va">tag</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"_tide_"</span>, <span class="va">idc</span><span class="op">$</span><span class="va">tideID</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
