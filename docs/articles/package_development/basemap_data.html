@@ -141,7 +141,7 @@ data.</p>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="fl">32631</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># bounding box around Griend</span></span>
-<span><span class="va">bbox</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_bbox.html">atl_bbox</a></span><span class="op">(</span><span class="va">griend</span>, asp <span class="op">=</span> <span class="st">"16:9"</span>, buffer <span class="op">=</span> <span class="fl">50000</span><span class="op">)</span></span>
+<span><span class="va">bbox</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_bbox.html">atl_bbox</a></span><span class="op">(</span><span class="va">griend</span>, asp <span class="op">=</span> <span class="st">"4:3"</span>, buffer <span class="op">=</span> <span class="fl">80000</span><span class="op">)</span></span>
 <span><span class="va">bbox_sf</span> <span class="op">&lt;-</span> <span class="va">bbox</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sfc.html" class="external-link">st_as_sfc</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># plot</span></span>
@@ -252,7 +252,7 @@ Polygon of the Dutch Wadden Sea
 <span></span>
 <span><span class="co"># merge both and change projection</span></span>
 <span><span class="va">lakes_</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">lakes_fr</span>, <span class="va">lakes_nh</span>, <span class="va">lakes_g</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/unique.html" class="external-link">unique</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"osm_id"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"osm_id"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="fl">32631</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># crop data</span></span>
