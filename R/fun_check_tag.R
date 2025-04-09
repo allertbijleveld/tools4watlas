@@ -390,7 +390,7 @@ atl_check_tag <- function(data,
       geom_point(
         data = ds[is_first == TRUE],
         aes(x, y), color = "darkgreen",
-        pch = 5, size = 10,
+        pch = 5, size = 10, stroke = 2,
         show.legend = FALSE
       )
   }
@@ -401,7 +401,7 @@ atl_check_tag <- function(data,
       geom_point(
         data = ds[is_last == TRUE],
         aes(x, y), color = "firebrick",
-        pch = 4, size = 10,
+        pch = 4, size = 10, stroke = 2,
         show.legend = FALSE
       )
   }
@@ -412,7 +412,7 @@ atl_check_tag <- function(data,
       geom_point(
         data = ds[outlier == TRUE],
         aes(x, y), color = "dodgerblue",
-        pch = 8, size = 10,
+        pch = 8, size = 10, stroke = 2,
         show.legend = FALSE
       )
   }
