@@ -183,12 +183,15 @@ head(data) |> knitr::kable(digits = 2)
 If we are working with multiple species, then we can join the species from the metadata. In this case I want the species to be the first row of the table. 
 
 ```{r}
-# join with data
+# join with species data
 all_tags[, tag := as.character(tag)]
 data[all_tags, on = "tag", `:=`(species = i.species)]
 
 # make species first column
 setcolorder(data, c("species", setdiff(names(data), c("species"))))
+
+# order data.table
+setorder(data, species, tag, time)
 ```
 We can also add other metadata by merging whatever column we want (e.g. color rings and catch location). However, when working with large data sets, it is advised to only add columns that are necessary. This can also always be done whenever needed. This is just an example and Here we delete the columns again.
 

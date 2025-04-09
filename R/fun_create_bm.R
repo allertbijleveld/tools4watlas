@@ -38,6 +38,13 @@
 #'   Default is `unit(0.5, "cm")`.
 #' @param projection The coordinate reference system (CRS) for the spatial data.
 #'   Defaults to EPSG:32631 (WGS 84 / UTM zone 31N). Output is always UTM 31N
+#' @param water_fill Water fill (default "#D7E7FF")
+#' @param water_colour Water coulour (default "grey80")
+#' @param land_fill Land fill (default "#faf5ef")
+#' @param land_colour Land colour (default "grey80")
+#' @param mudflat_colour Mudflat colour (default "#faf5ef")
+#' @param mudflat_fill Mudflat fill (default "#faf5ef")
+#' @param mudflat_alpha Mudflat alpha (default 0.6)
 #'
 #' @return A `ggplot2` object representing the base map with the specified
 #'   settings.
@@ -66,7 +73,14 @@ atl_create_bm <- function(data = NULL,
                           sc_height = 0.3,
                           sc_pad_x = 0.4,
                           sc_pad_y = 0.6,
-                          projection = sf::st_crs(32631)) {
+                          projection = sf::st_crs(32631),
+                          water_fill = "#D7E7FF",
+                          water_colour = "grey80",
+                          land_fill = "#faf5ef",
+                          land_colour = "grey80",
+                          mudflat_colour = "#faf5ef",
+                          mudflat_fill = "#faf5ef",
+                          mudflat_alpha = 0.6) {
   # global variables
   hs_45_225 <- NULL
 
@@ -145,11 +159,11 @@ atl_create_bm <- function(data = NULL,
   if (option == "osm") {
     layers <- list(
       geom_sf(
-        data = mudflats_data, fill = "#faf5ef", alpha = 0.6,
-        colour = "#faf5ef"
+        data = mudflats_data, fill = mudflat_fill, alpha = mudflat_alpha,
+        colour = mudflat_colour
       ),
-      geom_sf(data = land_data, fill = "#faf5ef", colour = "grey80"),
-      geom_sf(data = lakes_data, fill = "#D7E7FF", colour = "grey80")
+      geom_sf(data = land_data, fill = land_fill, colour = land_colour),
+      geom_sf(data = lakes_data, fill = water_fill, colour = water_colour)
     )
   } else {
     layers <- list(
@@ -203,7 +217,7 @@ atl_create_bm <- function(data = NULL,
     theme(
       panel.grid.major = element_line(colour = "transparent"),
       panel.grid.minor = element_line(colour = "transparent"),
-      panel.background = element_rect(fill = "#D7E7FF"),
+      panel.background = element_rect(fill = water_fill),
       plot.background = element_rect(fill = "transparent", colour = NA),
       panel.border = element_rect(fill = NA, colour = "grey20"),
       axis.text.x = element_blank(),

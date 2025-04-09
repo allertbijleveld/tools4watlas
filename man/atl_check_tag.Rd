@@ -17,6 +17,7 @@ atl_check_tag(
   last_n = NULL,
   highlight_first = FALSE,
   highlight_last = FALSE,
+  highlight_outliers = FALSE,
   point_size = 0.5,
   point_alpha = 1,
   path_linewidth = 0.5,
@@ -72,6 +73,10 @@ are shown.}
 track (default: \code{FALSE}).}
 
 \item{highlight_last}{Logical. If \code{TRUE}, highlights the last point in the
+track (default: \code{FALSE}).}
+
+\item{highlight_outliers}{Logical. If \code{TRUE}, highlights all points that are
+flagged as outliers (needs preassigned column with outlier TRUE or FALSE)
 track (default: \code{FALSE}).}
 
 \item{point_size}{The size of the data points (default: 0.5).}
