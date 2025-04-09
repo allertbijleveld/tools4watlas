@@ -22,7 +22,14 @@ atl_create_bm(
   sc_height = 0.3,
   sc_pad_x = 0.4,
   sc_pad_y = 0.6,
-  projection = sf::st_crs(32631)
+  projection = sf::st_crs(32631),
+  water_fill = "#D7E7FF",
+  water_colour = "grey80",
+  land_fill = "#faf5ef",
+  land_colour = "grey80",
+  mudflat_colour = "#faf5ef",
+  mudflat_fill = "#faf5ef",
+  mudflat_alpha = 0.6
 )
 }
 \arguments{
@@ -77,6 +84,20 @@ Default is \code{unit(0.5, "cm")}.}
 
 \item{projection}{The coordinate reference system (CRS) for the spatial data.
 Defaults to EPSG:32631 (WGS 84 / UTM zone 31N). Output is always UTM 31N}
+
+\item{water_fill}{Water fill (default "#D7E7FF")}
+
+\item{water_colour}{Water coulour (default "grey80")}
+
+\item{land_fill}{Land fill (default "#faf5ef")}
+
+\item{land_colour}{Land colour (default "grey80")}
+
+\item{mudflat_colour}{Mudflat colour (default "#faf5ef")}
+
+\item{mudflat_fill}{Mudflat fill (default "#faf5ef")}
+
+\item{mudflat_alpha}{Mudflat alpha (default 0.6)}
 }
 \value{
 A \code{ggplot2} object representing the base map with the specified
