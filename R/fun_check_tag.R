@@ -116,6 +116,7 @@ atl_check_tag <- function(data,
   # global variables
   tag <- time <- first_n_pos <- last_n_pos <- is_first <- is_last <- gap <- NULL
   datetime <- gap_in <- var <- varx <- vary <- x <- y <- nbs <- speed_in <- NULL
+  outlier <- NULL
 
   # check valid option
   valid_options <- c("datetime", "nbs", "var", "speed_in", "gap")
