@@ -54,7 +54,7 @@ griend <- st_sfc(st_point(c(5.2525 + 0.6, 53.2523)), crs = st_crs(4326)) |>
   st_transform(crs = st_crs(32631))
 
 # bounding box around Griend
-bbox <- atl_bbox(griend, asp = "16:9", buffer = 50000)
+bbox <- atl_bbox(griend, asp = "4:3", buffer = 80000)
 bbox_sf <- bbox |> st_as_sfc()
 
 # plot
