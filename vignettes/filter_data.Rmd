@@ -95,6 +95,30 @@ data <- atl_filter_bounds(
   remove_inside = FALSE
 )
 ```
+If data are removed, one might want to look at what was removed. This can be done like shown here (code not run as nothing was removed in our example).
+
+```{r, eval = FALSE}
+# check what was removed
+data_removed <- atl_filter_bounds(
+  data = data,
+  x = "x",
+  y = "y",
+  x_range = c(bbox["xmin"], bbox["xmax"]),
+  y_range = c(bbox["ymin"], bbox["ymax"]),
+  remove_inside = TRUE
+)
+
+# create a base map
+bm <- atl_create_bm(data_removed, buffer = 1000)
+
+# check removed data
+bm +
+  geom_point(
+    data = data_removed, aes(x, y), color = "firebrick",
+    size = 0.5, alpha = 1, show.legend = FALSE
+  ) +
+  geom_sf(data = bbox_sf, color = "firebrick", fill = NA)
+```
 
 ## Temporal filtering
 

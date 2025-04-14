@@ -51,7 +51,7 @@ foreach(i = id) %do% {
   data_subset <- data[tag == i]
 
   # plot and save data
-  p <- atl_check_tag(
+  atl_check_tag(
     data_subset,
     option = "datetime",
     highlight_first = TRUE, highlight_last = TRUE,
@@ -119,10 +119,10 @@ foreach(i = id) %dofuture% {
   data_subset <- data[tag == i]
 
   # plot and save data
-  p <- atl_check_tag(
+  atl_check_tag(
     data_subset,
     option = "datetime",
-    highlight_first = TRUE, highlight_last = TRUE,
+    highlight_first = TRUE, highlight_last = TRUE
     filename = paste0(path, data_subset[1]$species, "_tag_", i)
   )
 
@@ -148,18 +148,18 @@ registerDoFuture()
 plan(multisession)
 
 # loop to make plots for all
-foreach(i = seq_len(nrow(tag_tide))) %dofuture% {
+foreach(i = seq_len(nrow(idc))) %dofuture% {
 
   # subset data
   data_subset <- data[tag == idc$tag[i] & tideID == idc$tideID[i]]
 
   # plot and save data
-  p <- atl_check_tag(
+  atl_check_tag(
     data_subset,
     option = "datetime",
     highlight_first = TRUE, highlight_last = TRUE,
     filename = paste0(
-      path, idc$species[i], "_tag_", idc$tideID[i], "_tide_", idc$tideID[i]
+      path, idc$species[i], "_tag_", idc$tag[i], "_tide_", idc$tideID[i]
     )
   )
 
