@@ -46,7 +46,18 @@ In **@nathan2022** we discuss how big-data approaches, such as high-throughput t
 
 ### Prologue to WATLAS
 
-ATLAS builds on and is inspired by 'Time Of Arrival'-tracking developed by Rob MacCurdy **@maccurdy2009**. This tracking method is described in **@maccurdy2019** that also includes a pilot study in the Wadden Sea as a 'proof of concept'. After these initial tests in 2008-2009, this pre-WATLAS TOA-system was deployed in the Wadden Sea with 15 receivers studying red knot habitat use. After much trial and error, we could show in **@bijleveld2016** how red knots selected habitat to maximise their energy intake rates. They did, however, not select areas with the highest density of prey but trade-off prey quantity and quality. Moreover, individuals differed in how they leaned towards quantity or quality of prey in selecting mudflat habitat. 
+ATLAS builds on and is inspired by 'Time Of Arrival'-tracking developed by **@maccurdy2009**. This tracking method is described in **@maccurdy2019** that also includes a pilot study in the Wadden Sea as a 'proof of concept'. After these initial tests in 2008-2009, this pre-WATLAS TOA-system was deployed in the Wadden Sea with 15 receivers studying red knot habitat use. After much trial and error, we could show in **@bijleveld2016** how red knots selected habitat to maximise their energy intake rates. They did, however, not select areas with the highest density of prey but trade-off prey quantity and quality. Moreover, individuals differed in how they leaned towards quantity or quality of prey in selecting mudflat habitat. 
+
+After the success in the Wadden Sea, we also deployed TOA-tracking in Mauritania. Where we studied xx and showed habitat use was independent of gizzard mass. 
+
+Consistent with previous empirical studies, patch residence times in the field were positively correlated with gizzard mass. The slope of this correlation, as well as the observed range of patch residence times, was in accordance with the simulated values. The 12 birds with reduced gizzard masses did not decrease patch residence times in response to the reduction in gizzard mass. * These findings suggest that diet preferences can indeed cause the observed among-individual variation in gizzard mass and patch residence times.
+
+Compared with Banc d’Arguin, resource patches in the Wadden Sea were larger and the maximum local resource abundance was higher. However, because of constraints set by digestive capacity, the average potential intake rates by red knots were similar at the two study sites. Space-use patterns differed as predicted from these differences in resource landscapes. Whereas foraging red knots in the Wadden Sea roamed the mudflats in high aggregation without site fidelity (i.e. grouping nomads), at Banc d’Arguin they showed less aggregation but were strongly site-faithful (i.e. solitary residents).
+
+As part of a broader review on circadian rhythms, we reveal individual differences in tidal and circadian foraging rhythms of red knots REF.
+
+ 
+
 
 ### Validation
 

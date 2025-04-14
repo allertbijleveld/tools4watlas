@@ -44,7 +44,7 @@ atl_file_path <- function(data_type = c("watlas_teams",
     "allert" = switch(data_type,
       "watlas_teams" = paste0(
         "C:/Users/allert/NIOZ/",
-        "WATLAS_data/"
+        "WATLAS - Documenten/data/"
       ),
       "rasters" = paste0(
         "C:/Users/allert/NIOZ/",
