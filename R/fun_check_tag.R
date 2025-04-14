@@ -49,8 +49,8 @@
 #' @param filename Character (or NULL). If provided, the plot is saved as a
 #'   `.png` file to this path and with this name; otherwise, the function
 #'   returns the plot.
-#' @param png_width The width of the device.
-#' @param png_height The height of the device.
+#' @param png_width Width of saved PNG (default: 3840).
+#' @param png_height Height of saved PNG (default: 2160).
 #'
 #' @return A `ggplot2` object with the specified option and adjustments. If
 #'   `filename` is provided, the plot is saved as a `.png` file instead of

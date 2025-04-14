@@ -28,7 +28,7 @@ library(ggplot2)
 
 # path to csv with aggregated data
 data_path <- system.file(
-  "extdata", "watlas_data_aggregated.csv",
+  "extdata", "watlas_data_smoothed.csv",
   package = "tools4watlas"
 )
 

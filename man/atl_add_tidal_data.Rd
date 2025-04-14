@@ -17,12 +17,10 @@ atl_add_tidal_data(
 \item{data}{A dataframe with the tracking data with the timestamp column
 'datetime' in UTC.}
 
-\item{tide_data}{Data on the timing (in UTC) of low and high tides as output
-from the function \code{fread} of the package \code{data.table}.}
+\item{tide_data}{Data on the timing (in UTC) of low and high tides.}
 
 \item{tide_data_highres}{Data on the timing (in UTC) of the waterlevel in
-small intervals (e.g. every 10 min) as provided from Rijkwaterstaat as
-output from the function \code{fread} of the package \code{data.table}.}
+small intervals (e.g. every 10 min) as provided from Rijkwaterstaat.}
 
 \item{waterdata_resolution}{The resolution of the high resolution waterlevel
 data. This is used for matching the high resolution tidal data to the

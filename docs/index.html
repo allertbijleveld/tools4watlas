@@ -97,7 +97,7 @@
 <h3 id="documentation">
 <strong>Documentation</strong><a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h3>
-<p>The <code>tools4watlas</code> package is thoroughly documented on the <a href="https://allertbijleveld.github.io/tools4watlas/"><strong>offical package website</strong></a>. The package vignettes outline the <strong>basic workflow</strong> for working with WATLAS data, while <strong>extended workflows</strong> guide through more specialized analyses. Additionally, we provide <strong>visualization tutorials</strong> that demonstrate various methods for plotting and animating the movement data. The <strong>package development</strong> section offers insights into package maintenance and how to contribute to the <code>tools4watlas</code> package. To completely run some articles (marked with an asterisk) access to the local NIOZ file server is required.</p>
+<p>The <code>tools4watlas</code> package is thoroughly documented on the <a href="https://allertbijleveld.github.io/tools4watlas/"><strong>official package website</strong></a>. The package vignettes outline the <strong>basic workflow</strong> for working with WATLAS data, while <strong>extended workflows</strong> guide through more specialized analyses. Additionally, we provide <strong>visualization tutorials</strong> that demonstrate various methods for plotting and animating the movement data. The <strong>package development</strong> section offers insights into package maintenance and how to contribute to the <code>tools4watlas</code> package. To completely run some articles (marked with an asterisk) access to the local NIOZ file server is required.</p>
 <p><strong>Basic workflow (Vignettes)</strong>:</p>
 <ul>
 <li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html"><strong>Load and check data</strong></a></p></li>
@@ -107,7 +107,7 @@
 <p><strong>Extended workflow</strong>:</p>
 <ul>
 <li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html"><strong>Add tidal and bathymetry data</strong>*</a></p></li>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/cluster_data_in_residency_patches.html"><strong>Cluster data in residency patches</strong></a> - work in progress.</p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residency_patches.html"><strong>Add residency patches</strong></a> - work in progress.</p></li>
 <li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_SIBES_data.html"><strong>Add SIBES data</strong></a> - work in progress.</p></li>
 </ul>
 <p><strong>Visualization tutorials</strong>:</p>
@@ -116,6 +116,7 @@
 <li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html"><strong>Plot data</strong></a> - an important step between all stages to check the data.</p></li>
 <li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_in_loop.html"><strong>Plot data in loop</strong></a> - quick way to make plots by tag ID.</p></li>
 <li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/fast_plotting.html"><strong>Fast plotting with ggplot2</strong></a></p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_interactively.html"><strong>Plot data interactively</strong></a></p></li>
 <li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/animate_data.html"><strong>Animate data</strong></a></p></li>
 </ul>
 <p><strong>Package development</strong>:</p>
@@ -157,7 +158,7 @@
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, color <span class="op">=</span> <span class="va">species</span><span class="op">)</span>,</span>
-<span>    size <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">1</span>, show.legend <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>    size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>, show.legend <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span></span>
 <span>    values <span class="op">=</span> <span class="fu"><a href="reference/atl_spec_cols.html">atl_spec_cols</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -197,8 +198,8 @@ Example tracks with one individual by species for two tide cycles
 <p>If you want to contribute to <code>tools4watlas</code> <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo" class="external-link">fork</a> the repository on GitHub and then submit a <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests" class="external-link">pull request</a>. Besides clear bug fixes, it is best to discuss potential changes or additions with <a href="mailto:allert.bijleveld@nioz.nl">Allert Bijleveld</a>. Check the article <a href="https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_maintenance.html">Package maintenance</a> for more details.</p>
 </div>
 <div class="section level3">
-<h3 id="acknowledgments">
-<strong>Acknowledgments</strong><a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
+<h3 id="acknowledgements">
+<strong>Acknowledgements</strong><a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
 </h3>
 <p>Many people and organisations are involved in developing and maintaining WATLAS. We particularly thank Sivan Toledo and Ran Nathan for the initial development of ATLAS, and Frank van Maarseveen and Bas Denissen for the initial development of the Wadden Sea ATLAS (WATLAS). Additionally, we thank Remko de Haan, Aris van der Vis, Yetzo de Hoo, and NMF colleagues for further developments, assemblage and support. Anne Dekinga is crucial for the field deployment and logistical solutions. We thank our colleagues from COS for help catching birds, especially Job ten Horn, Anne Dekinga, and Luc de Monte. Also, we thank all partners and stakeholders for hosting equipment and for access to their sites. Lastly, we thank the crews of the RV Wim Wolff and Wim-Jan Boon of the RV Adriaen Coenen for their help in the field, Marten Tacoma for visualizing the tracking data in real time on <a href="https://www.nioz.nl/watlas" class="external-link uri">https://www.nioz.nl/watlas</a>, and the many other NIOZ staff and volunteers that facilitated this work.</p>
 <p align="middle">
@@ -233,13 +234,13 @@ Example tracks with one individual by species for two tide cycles
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-3159-8944" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-8080-1734" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>
 <a href="https://github.com/pratikunterwegs" class="external-link">Pratik Gupte</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-5294-7819" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>
 <a href="https://github.com/CBeardsworth" class="external-link">Christine Beardsworth</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-1308-1455" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>
-<a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-8080-1734" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-3159-8944" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
@@ -258,7 +259,7 @@ Example tracks with one individual by species for two tide cycles
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>, <a href="https://github.com/pratikunterwegs" class="external-link">Pratik Gupte</a>, <a href="https://github.com/CBeardsworth" class="external-link">Christine Beardsworth</a>, <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>.</p>
+  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, <a href="https://github.com/pratikunterwegs" class="external-link">Pratik Gupte</a>, <a href="https://github.com/CBeardsworth" class="external-link">Christine Beardsworth</a>, <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

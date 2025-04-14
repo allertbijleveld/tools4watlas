@@ -39,7 +39,7 @@ tutorials on how to visualize movement data.
 
 ### **Documentation**
 
-The `tools4watlas` package is thoroughly documented on the [**offical
+The `tools4watlas` package is thoroughly documented on the [**official
 package website**](https://allertbijleveld.github.io/tools4watlas/). The
 package vignettes outline the **basic workflow** for working with WATLAS
 data, while **extended workflows** guide through more specialized
@@ -68,8 +68,8 @@ local NIOZ file server is required.
 - [**Add tidal and bathymetry
   data**\*](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html)
 
-- [**Cluster data in residency
-  patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/cluster_data_in_residency_patches.html) -
+- [**Add residency
+  patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residency_patches.html) -
   work in progress.
 
 - [**Add SIBES
@@ -92,6 +92,9 @@ local NIOZ file server is required.
 
 - [**Fast plotting with
   ggplot2**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/fast_plotting.html)
+
+- [**Plot data
+  interactively**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_interactively.html)
 
 - [**Animate
   data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/animate_data.html)
@@ -143,7 +146,7 @@ bm +
   ) +
   geom_point(
     data = data, aes(x, y, color = species),
-    size = 1, alpha = 1, show.legend = TRUE
+    size = 0.5, alpha = 0.5, show.legend = TRUE
   ) +
   scale_color_manual(
     values = atl_spec_cols(),
@@ -194,7 +197,7 @@ Check the article [Package
 maintenance](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_maintenance.html)
 for more details.
 
-### **Acknowledgments**
+### **Acknowledgements**
 
 Many people and organisations are involved in developing and maintaining
 WATLAS. We particularly thank Sivan Toledo and Ran Nathan for the
