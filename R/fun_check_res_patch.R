@@ -20,6 +20,13 @@
 #' @param patch_label_size Font size for patch labels (default: 4).
 #' @param patch_label_padding Padding for patch labels (default: 1).
 #' @param element_text_size Font size for axis and legend text (default: 11).
+#' @param water_fill Water fill (default "#D7E7FF")
+#' @param water_colour Water coulour (default "grey80")
+#' @param land_fill Land fill (default "#faf5ef")
+#' @param land_colour Land colour (default "grey80")
+#' @param mudflat_colour Mudflat colour (default "#faf5ef")
+#' @param mudflat_fill Mudflat fill (default "#faf5ef")
+#' @param mudflat_alpha Mudflat alpha (default 0.6)
 #' @param filename Character (or NULL). If provided, the plot is saved as a
 #'   `.png` file to this path and with this name; otherwise, the function
 #'   returns the plot.
@@ -45,6 +52,13 @@ atl_check_res_patch <- function(tag,
                                 patch_label_size = 4,
                                 patch_label_padding = 1,
                                 element_text_size = 11,
+                                water_fill = "#D7E7FF",
+                                water_colour = "grey80",
+                                land_fill = "#faf5ef",
+                                land_colour = "grey80",
+                                mudflat_colour = "#faf5ef",
+                                mudflat_fill = "#faf5ef",
+                                mudflat_alpha = 0.6,
                                 filename = NULL,
                                 png_width = 3840,
                                 png_height = 2160) {
@@ -116,7 +130,18 @@ atl_check_res_patch <- function(tag,
   n <- nrow(ds)
 
   # create basemap and bounding box
-  bm <- atl_create_bm(ds, buffer = buffer, asp = "4:3")
+  bm <- atl_create_bm(
+    ds,
+    water_fill = water_fill,
+    water_colour = water_colour,
+    land_fill = land_fill,
+    land_colour = land_colour,
+    mudflat_colour = mudflat_colour,
+    mudflat_fill = mudflat_fill,
+    mudflat_alpha = mudflat_alpha,
+    asp = "4:3", 
+    buffer = buffer
+  )
   bbox <- atl_bbox(ds, buffer = buffer, asp = "4:3")
 
   # plot on map
