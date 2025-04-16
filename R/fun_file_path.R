@@ -27,7 +27,7 @@
 #'   - `"shapefiles"`: Path to “Birds, fish ’n chips” SharePoint folder:
 #'   Documents/data/GIS/shapefiles/
 #'   - `"sqlite_db"`: Path to ZEUS folder:
-#'   \\ZEUS\cos\birds\bijleveld\fieldwork\WATLAS\localizations
+#'   ZEUS/cos/birds/bijleveld/fieldwork/WATLAS/localizations
 #'
 #' @return A character string representing the full file path to the selected
 #'   data type for the current user.
