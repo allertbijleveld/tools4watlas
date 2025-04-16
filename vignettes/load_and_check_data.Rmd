@@ -240,18 +240,18 @@ data_summary[, .N, by = species]
 data_summary |> knitr::kable(digits = 2)
 ```
 
-| Column         | Description |
-| ----           | --------------------- |
-|**species**     |	Species  |
-|**tag**	       |	Tag number |
-|**n_positions** |	Number of positions  |
-|**first_data**	 |  Datetime first localization (UTC)  |
-|**last_data**   |	Datetime last localization (UTC)  |
-|**days_data**	 |	Days of data  |
-|**min_gap**	   |	Minimum time interval between localizations (interval of the tag in seconds) |
-|**max_gap**	   |	Maximum time interval between localizations (largest gap in seconds) |
-|**max_gap_f**	 |	Maximum time interval between localizations (in seconds, minutes, hours, or days)  |
-|**coverage**	   |	Coverage (=1 if every `min_gap` has a localization between `first_data` and `last_data`)  |
+| Column             | Description |
+| ----               | --------------------- |
+|**species**         |	Species  |
+|**tag**	           |	Tag number |
+|**n_positions**     |	Number of positions  |
+|**first_data**	     |  Datetime first localization (UTC)  |
+|**last_data**       |	Datetime last localization (UTC)  |
+|**days_data**	     |	Days of data  |
+|**min_gap**	       |	Minimum time interval between localizations (interval of the tag in seconds) |
+|**max_gap**    	   |	Maximum time interval between localizations (largest gap in seconds) |
+|**max_gap_factor**	 |	Maximum time interval between localizations as factor (in seconds, minutes, hours, or days)  |
+|**fix_rate**	       |	Fix rate (=1 if every `min_gap` has a localization between `first_data` and `last_data`)  |
 
 Plot the number of positions by day.
 

@@ -63,10 +63,10 @@ atl_summary <- function(data,
   ), by = c(id_columns)]
 
   # format gap easy readable
-  ds[, max_gap_f := atl_format_time(max_gap)]
+  ds[, max_gap_factor := atl_format_time(max_gap)]
 
   # calculate coverage (how complete the track is)
-  ds[, coverage := round(
+  ds[, fix_rate := round(
     n_positions / ((last_data_sec - first_data_sec) / min_gap), 2
   )]
 
