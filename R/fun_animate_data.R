@@ -15,6 +15,9 @@
 #' where the files will be saved.
 #' @param create_path A logical value. If TRUE, the function creates the
 #' directory if it does not exist.
+#' @param fps A numeric value specifying the frames per second (fps). Only used
+#' to calculate the duration of the final animation. The frame rate needs to be
+#' specified in ffmpeg.
 #'
 #' @returns A data.table with two columns:
 #' \itemize{
@@ -41,7 +44,8 @@
 atl_time_steps <- function(datetime_vector,
                            time_interval = "10 min",
                            output_path,
-                           create_path = FALSE) {
+                           create_path = FALSE,
+                           fps = 24) {
   # global variables
   path <- NULL
 
@@ -78,6 +82,16 @@ atl_time_steps <- function(datetime_vector,
       pad = "0"
     ), ".png"
   )]
+
+  # calculate animation duration
+  animation_duration <- nrow(ts) / fps
+
+  # print information
+  message(glue::glue(
+    "Number of frames: {nrow(ts)} - ",
+    "Animation duration: {round(animation_duration, 2)} sec ",
+    "({round(animation_duration_min / 60, 2)} min) with {fps} fps"
+  ))
 
   return(ts)
 }

@@ -8,7 +8,8 @@ atl_time_steps(
   datetime_vector,
   time_interval = "10 min",
   output_path,
-  create_path = FALSE
+  create_path = FALSE,
+  fps = 24
 )
 }
 \arguments{
@@ -23,6 +24,10 @@ where the files will be saved.}
 
 \item{create_path}{A logical value. If TRUE, the function creates the
 directory if it does not exist.}
+
+\item{fps}{A numeric value specifying the frames per second (fps). Only used
+to calculate the duration of the final animation. The frame rate needs to be
+specified in ffmpeg.}
 }
 \value{
 A data.table with two columns:
