@@ -4,7 +4,10 @@
 #'
 #' This function creates a sequence of time steps based on a given datetime
 #' vector and time interval. It also generates corresponding file names in a
-#' provided folder path for each time step.
+#' provided folder path for each time step. The function also gives a message
+#' showing the total number of frames (also saves this as text file, to be used
+#' when plotting a progress bar) and how long the animation would take, giving
+#' a set fps (frames per second).
 #'
 #' @author Johannes Krietsch
 #' @param datetime_vector A vector of datetime values (POSIXct or similar).
@@ -75,6 +78,10 @@ atl_time_steps <- function(datetime_vector,
     by = time_interval
   ))
 
+  # total and save as text file
+  total <- nrow(ts)
+  write(total, file = paste0(path, "/total_frames.txt"))
+
   # generate file paths with padded numbers
   ts[, path := paste0(
     output_path, "/", stringr::str_pad(
@@ -84,11 +91,11 @@ atl_time_steps <- function(datetime_vector,
   )]
 
   # calculate animation duration
-  animation_duration <- nrow(ts) / fps
+  animation_duration <- total / fps
 
   # print information
   message(glue::glue(
-    "Number of frames: {nrow(ts)} - ",
+    "Number of frames: {total} - ",
     "Animation duration: {round(animation_duration, 2)} sec ",
     "({round(animation_duration / 60, 2)} min) with {fps} fps"
   ))
