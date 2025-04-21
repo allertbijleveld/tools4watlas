@@ -90,7 +90,7 @@ atl_time_steps <- function(datetime_vector,
   message(glue::glue(
     "Number of frames: {nrow(ts)} - ",
     "Animation duration: {round(animation_duration, 2)} sec ",
-    "({round(animation_duration_min / 60, 2)} min) with {fps} fps"
+    "({round(animation_duration / 60, 2)} min) with {fps} fps"
   ))
 
   return(ts)
