@@ -105,6 +105,11 @@ atl_time_steps <- function(datetime_vector,
 
 #' Display a live progress bar for PNG file generation in a directory
 #'
+#' This function is meant to track the progress of PNG's created in a parallel
+#' loop. It will check the number of PNG files in a specified directory and
+#' make a progress bar in the console. To use the function, open a new R session
+#' and run the function there.
+#'
 #' @param file_path Path to the directory containing PNG files.
 #' @param total Optional. Total number of expected PNG files. If NULL, the
 #'   function reads from 'total_frames.txt' created by atl_time_steps() in the

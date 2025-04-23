@@ -119,6 +119,7 @@ reference:
     desc: "Functions to animate the data"
     contents:
      - atl_time_steps
+     - atl_progress_bar
      - atl_alpha_along
      - atl_size_along
      - atl_ffmpeg_pattern
