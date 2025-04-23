@@ -80,7 +80,7 @@ atl_time_steps <- function(datetime_vector,
 
   # total and save as text file
   total <- nrow(ts)
-  write(total, file = paste0(path, "/total_frames.txt"))
+  write(total, file = paste0(output_path, "/total_frames.txt"))
 
   # generate file paths with padded numbers
   ts[, path := paste0(
@@ -101,6 +101,55 @@ atl_time_steps <- function(datetime_vector,
   ))
 
   return(ts)
+}
+
+#' Display a live progress bar for PNG file generation in a directory
+#'
+#' @param file_path Path to the directory containing PNG files.
+#' @param total Optional. Total number of expected PNG files. If NULL, the
+#'   function reads from 'total_frames.txt' created by atl_time_steps() in the
+#'   same directory.
+#' @param refresh_rate Numeric value in seconds specifying how often the
+#' progress bar updates.
+#'
+#' @returns No return value. Prints progress bar to the console.
+#' @export
+atl_progress_bar <- function(file_path,
+                             total = NULL,
+                             refresh_rate = 1) {
+  # check if total is provided
+  if (is.null(total)) {
+    total_file <- file.path(file_path, "total_frames.txt")
+
+    if (!file.exists(total_file)) {
+      stop(paste0(
+        "Error: 'total' not provided and 'total_frames.txt'",
+        " not found in the specified path."
+      ))
+    }
+
+    total <- scan(total_file, quiet = TRUE)
+  }
+
+  # format progress bar
+  pb <- progress::progress_bar$new(
+    format = "  [:bar] :current/:total (:percent) ETA: :eta",
+    total = total,
+    clear = FALSE,
+    width = 60
+  )
+
+  # loop to scan how many files are in the directory
+  repeat {
+    current <- length(list.files(file_path, pattern = "\\.png$"))
+    pb$update(current / total)
+
+    if (current >= total) break
+
+    Sys.sleep(refresh_rate)
+  }
+
+  cat("\nDone!\n")
 }
 
 #' Creates different alpha values along a vector

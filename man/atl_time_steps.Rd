@@ -39,7 +39,10 @@ A data.table with two columns:
 \description{
 This function creates a sequence of time steps based on a given datetime
 vector and time interval. It also generates corresponding file names in a
-provided folder path for each time step.
+provided folder path for each time step. The function also gives a message
+showing the total number of frames (also saves this as text file, to be used
+when plotting a progress bar) and how long the animation would take, giving
+a set fps (frames per second).
 }
 \examples{
 library(tools4watlas)

@@ -53,6 +53,7 @@ Suggests:
     mockery,
     OpenStreetMap,
     plyr,
+    progress,
     raster,
     RColorBrewer,
     readxl,
