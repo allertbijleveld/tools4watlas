@@ -26,6 +26,7 @@ knitr::opts_chunk$set(
 ```{r}
 # packages
 library(tools4watlas)
+library(lubridate)
 library(ggplot2)
 library(scales)
 library(viridis)
@@ -177,6 +178,25 @@ head(data) |> knitr::kable(digits = 2)
 |**varx**	    |	Variance in estimating X-coordinates  |
 |**vary**	    |	Variance in estimating Y-coordinates  |
 |**covxy**	  |	Co-variance between X- and Y-coordinates  |
+
+### Remove data before release
+
+
+```{r}
+# correct time zone to CET and change to UTC
+all_tags[, release_ts := force_tz(as_datetime(release_ts), tzone = "CET")]
+all_tags[, release_ts := with_tz(release_ts, tzone = "UTC")]
+
+# join release_ts with data
+all_tags[, tag := as.character(tag)]
+data[all_tags, on = "tag", `:=`(release_ts = i.release_ts)]
+
+# exclude positions before the release
+data <- data[datetime > release_ts]
+
+# remove release_ts column
+data[, release_ts := NULL]
+```
 
 ### Add species column (or other relevant columns)
 
