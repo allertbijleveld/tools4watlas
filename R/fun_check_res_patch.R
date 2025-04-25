@@ -63,7 +63,7 @@ atl_check_res_patch <- function(tag,
                                 png_width = 3840,
                                 png_height = 2160) {
   # global variables
-  patch <- duration <- . <- time_median <- polygons <- NULL
+  patch <- duration <- . <- time_median <- polygons <- time <- NULL
   x <- y <- datetime <- x_median <- y_median <- tideID <- NULL # nolint
 
   # assign tag and tideID new to avoid confusion
@@ -139,7 +139,7 @@ atl_check_res_patch <- function(tag,
     mudflat_colour = mudflat_colour,
     mudflat_fill = mudflat_fill,
     mudflat_alpha = mudflat_alpha,
-    asp = "4:3", 
+    asp = "4:3",
     buffer = buffer
   )
   bbox <- atl_bbox(ds, buffer = buffer, asp = "4:3")
@@ -202,29 +202,40 @@ atl_check_res_patch <- function(tag,
   p1 <- p1 +
     patchwork::inset_element(bm2, left = 0.8, bottom = 0.8, right = 1, top = 1)
 
-  # add plot my time and duration
+  # add plot by time and duration
   p2 <- ggplot() +
     # low tide line
     geom_hline(
-      yintercept = dtp$low_time, color = "dodgerblue3", linetype = "dashed"
+      yintercept = as.numeric(dtp$low_time), color = "dodgerblue3",
+      linetype = "dashed"
     ) +
     # add line and points
     geom_path(
-      data = ds, aes(duration, datetime), color = "grey",
+      data = ds, aes(duration, time), color = "grey",
       show.legend = FALSE
     ) +
     geom_point(
-      data = ds, aes(duration, datetime, color = as.character(patch)),
+      data = ds, aes(duration, time, color = as.character(patch)),
       size = point_size, alpha = 0.5, show.legend = FALSE
     ) +
     # add labels for patches
     geom_text(
-      data = dp, aes(duration + 5, time_median, label = patch, colour = patch),
+      data = dp,
+      aes(duration + 5, as.numeric(time_median), label = patch, colour = patch),
       size = 4, fontface = "bold", show.legend = FALSE
+    ) +
+    # flip y axis
+    scale_y_reverse(
+      breaks = seq(
+        from = floor(min(ds$time) / 3600) * 3600,
+        to = ceiling(max(ds$time) / 3600) * 3600,
+        by = 3600 * 1
+      ),
+      labels = function(x) format(as.POSIXct(x, origin = "1970-01-01"), "%H")
     ) +
     labs(
       x = "Duration in patch (min)",
-      y = "Datetime (UTC)"
+      y = "Hour (UTC)"
     ) +
     theme_bw() +
     theme(
