@@ -4,7 +4,9 @@
 \alias{atl_file_path}
 \title{Get the file path for WATLAS or GIS data based on the user's name.}
 \usage{
-atl_file_path(data_type = c("watlas_teams", "rasters", "shapefiles"))
+atl_file_path(
+  data_type = c("watlas_teams", "rasters", "shapefiles", "sqlite_db")
+)
 }
 \arguments{
 \item{data_type}{A character string indicating the type of data. Options are:
@@ -14,6 +16,8 @@ atl_file_path(data_type = c("watlas_teams", "rasters", "shapefiles"))
 Documents/data/GIS/rasters/
 \item \code{"shapefiles"}: Path to “Birds, fish ’n chips” SharePoint folder:
 Documents/data/GIS/shapefiles/
+\item \code{"sqlite_db"}: Path to ZEUS folder:
+ZEUS/cos/birds/bijleveld/fieldwork/WATLAS/localizations
 }}
 }
 \value{

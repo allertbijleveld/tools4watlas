@@ -17,7 +17,7 @@ test_that("atl_summary returns correct structure", {
   
   expect_s3_class(summary, "data.table")
   expect_true(all(c("tag", "n_positions", "first_data", "last_data", "days_data", 
-                    "min_gap", "max_gap", "max_gap_f", "coverage") %in% names(summary)))
+                    "min_gap", "max_gap", "max_gap_factor", "fix_rate") %in% names(summary)))
 })
 
 

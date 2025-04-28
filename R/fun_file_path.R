@@ -26,13 +26,16 @@
 #'   Documents/data/GIS/rasters/
 #'   - `"shapefiles"`: Path to “Birds, fish ’n chips” SharePoint folder:
 #'   Documents/data/GIS/shapefiles/
+#'   - `"sqlite_db"`: Path to ZEUS folder:
+#'   ZEUS/cos/birds/bijleveld/fieldwork/WATLAS/localizations
 #'
 #' @return A character string representing the full file path to the selected
 #'   data type for the current user.
 #' @export
 atl_file_path <- function(data_type = c("watlas_teams",
                                         "rasters",
-                                        "shapefiles")) {
+                                        "shapefiles",
+                                        "sqlite_db")) {
   # get the username
   user_name <- Sys.info()[["user"]]
 
@@ -53,6 +56,10 @@ atl_file_path <- function(data_type = c("watlas_teams",
       "shapefiles" = paste0(
         "C:/Users/allert/NIOZ/",
         "Birds, fish 'n chips - Documenten/data/GIS/shapefiles/"
+      ),
+      "sqlite_db" = paste0(
+        "C:/Users/allert/NIOZ/",
+        "add_correct_path_here/"
       )
     ),
     "jkrietsch" = switch(data_type,
@@ -67,6 +74,10 @@ atl_file_path <- function(data_type = c("watlas_teams",
       "shapefiles" = paste0(
         "C:/Users/jkrietsch/OneDrive - NIOZ/",
         "Documents/map_data/"
+      ),
+      "sqlite_db" = paste0(
+        "C:/Users/jkrietsch/OneDrive - NIOZ/",
+        "Documents/watlas_data/localizations/"
       )
     ),
     stop(

@@ -20,6 +20,13 @@
 #' @param patch_label_size Font size for patch labels (default: 4).
 #' @param patch_label_padding Padding for patch labels (default: 1).
 #' @param element_text_size Font size for axis and legend text (default: 11).
+#' @param water_fill Water fill (default "#D7E7FF")
+#' @param water_colour Water coulour (default "grey80")
+#' @param land_fill Land fill (default "#faf5ef")
+#' @param land_colour Land colour (default "grey80")
+#' @param mudflat_colour Mudflat colour (default "#faf5ef")
+#' @param mudflat_fill Mudflat fill (default "#faf5ef")
+#' @param mudflat_alpha Mudflat alpha (default 0.6)
 #' @param filename Character (or NULL). If provided, the plot is saved as a
 #'   `.png` file to this path and with this name; otherwise, the function
 #'   returns the plot.
@@ -45,11 +52,18 @@ atl_check_res_patch <- function(tag,
                                 patch_label_size = 4,
                                 patch_label_padding = 1,
                                 element_text_size = 11,
+                                water_fill = "#D7E7FF",
+                                water_colour = "grey80",
+                                land_fill = "#faf5ef",
+                                land_colour = "grey80",
+                                mudflat_colour = "#faf5ef",
+                                mudflat_fill = "#faf5ef",
+                                mudflat_alpha = 0.6,
                                 filename = NULL,
                                 png_width = 3840,
                                 png_height = 2160) {
   # global variables
-  patch <- duration <- . <- time_median <- polygons <- NULL
+  patch <- duration <- . <- time_median <- polygons <- time <- NULL
   x <- y <- datetime <- x_median <- y_median <- tideID <- NULL # nolint
 
   # assign tag and tideID new to avoid confusion
@@ -116,7 +130,18 @@ atl_check_res_patch <- function(tag,
   n <- nrow(ds)
 
   # create basemap and bounding box
-  bm <- atl_create_bm(ds, buffer = buffer, asp = "4:3")
+  bm <- atl_create_bm(
+    ds,
+    water_fill = water_fill,
+    water_colour = water_colour,
+    land_fill = land_fill,
+    land_colour = land_colour,
+    mudflat_colour = mudflat_colour,
+    mudflat_fill = mudflat_fill,
+    mudflat_alpha = mudflat_alpha,
+    asp = "4:3",
+    buffer = buffer
+  )
   bbox <- atl_bbox(ds, buffer = buffer, asp = "4:3")
 
   # plot on map
@@ -177,29 +202,40 @@ atl_check_res_patch <- function(tag,
   p1 <- p1 +
     patchwork::inset_element(bm2, left = 0.8, bottom = 0.8, right = 1, top = 1)
 
-  # add plot my time and duration
+  # add plot by time and duration
   p2 <- ggplot() +
     # low tide line
     geom_hline(
-      yintercept = dtp$low_time, color = "dodgerblue3", linetype = "dashed"
+      yintercept = as.numeric(dtp$low_time), color = "dodgerblue3",
+      linetype = "dashed"
     ) +
     # add line and points
     geom_path(
-      data = ds, aes(duration, datetime), color = "grey",
+      data = ds, aes(duration, time), color = "grey",
       show.legend = FALSE
     ) +
     geom_point(
-      data = ds, aes(duration, datetime, color = as.character(patch)),
+      data = ds, aes(duration, time, color = as.character(patch)),
       size = point_size, alpha = 0.5, show.legend = FALSE
     ) +
     # add labels for patches
     geom_text(
-      data = dp, aes(duration + 5, time_median, label = patch, colour = patch),
+      data = dp,
+      aes(duration + 5, as.numeric(time_median), label = patch, colour = patch),
       size = 4, fontface = "bold", show.legend = FALSE
+    ) +
+    # flip y axis
+    scale_y_reverse(
+      breaks = seq(
+        from = floor(min(ds$time) / 3600) * 3600,
+        to = ceiling(max(ds$time) / 3600) * 3600,
+        by = 3600 * 1
+      ),
+      labels = function(x) format(as.POSIXct(x, origin = "1970-01-01"), "%H")
     ) +
     labs(
       x = "Duration in patch (min)",
-      y = "Datetime (UTC)"
+      y = "Hour (UTC)"
     ) +
     theme_bw() +
     theme(

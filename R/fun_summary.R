@@ -35,8 +35,8 @@
 atl_summary <- function(data,
                         id_columns = c("tag")) {
   # Global variables to suppress notes in data.table
-  gap_tmp <- . <- datetime <- max_gap <- min_gap <- max_gap_f <- NULL
-  n_positions <- first_data_sec <- last_data_sec <- coverage <- time <- NULL
+  gap_tmp <- . <- datetime <- max_gap <- min_gap <- max_gap_factor <- NULL
+  n_positions <- first_data_sec <- last_data_sec <- fix_rate <- time <- NULL
 
   # check data structure
   required_columns <- c("tag", "x", "y", "time", "datetime")
@@ -63,10 +63,10 @@ atl_summary <- function(data,
   ), by = c(id_columns)]
 
   # format gap easy readable
-  ds[, max_gap_f := atl_format_time(max_gap)]
+  ds[, max_gap_factor := atl_format_time(max_gap)]
 
   # calculate coverage (how complete the track is)
-  ds[, coverage := round(
+  ds[, fix_rate := round(
     n_positions / ((last_data_sec - first_data_sec) / min_gap), 2
   )]
 

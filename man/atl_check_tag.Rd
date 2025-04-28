@@ -23,6 +23,13 @@ atl_check_tag(
   path_linewidth = 0.5,
   path_alpha = 0.1,
   element_text_size = 11,
+  water_fill = "#D7E7FF",
+  water_colour = "grey80",
+  land_fill = "#faf5ef",
+  land_colour = "grey80",
+  mudflat_colour = "#faf5ef",
+  mudflat_fill = "#faf5ef",
+  mudflat_alpha = 0.6,
   filename = NULL,
   png_width = 3840,
   png_height = 2160
@@ -89,6 +96,20 @@ track (default: \code{FALSE}).}
 \item{path_alpha}{Transparency of the track lines (default: 0.1).}
 
 \item{element_text_size}{Adjust size of the text.}
+
+\item{water_fill}{Water fill (default "#D7E7FF")}
+
+\item{water_colour}{Water coulour (default "grey80")}
+
+\item{land_fill}{Land fill (default "#faf5ef")}
+
+\item{land_colour}{Land colour (default "grey80")}
+
+\item{mudflat_colour}{Mudflat colour (default "#faf5ef")}
+
+\item{mudflat_fill}{Mudflat fill (default "#faf5ef")}
+
+\item{mudflat_alpha}{Mudflat alpha (default 0.6)}
 
 \item{filename}{Character (or NULL). If provided, the plot is saved as a
 \code{.png} file to this path and with this name; otherwise, the function
