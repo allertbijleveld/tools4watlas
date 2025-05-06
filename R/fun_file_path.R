@@ -51,7 +51,7 @@ atl_file_path <- function(data_type = c("watlas_teams",
       ),
       "rasters" = paste0(
         "C:/Users/allert/NIOZ/",
-        "Birds, fish 'n chips - Documenten/data/GIS/raster/"
+        "Birds, fish 'n chips - Documenten/data/GIS/rasters/"
       ),
       "shapefiles" = paste0(
         "C:/Users/allert/NIOZ/",
