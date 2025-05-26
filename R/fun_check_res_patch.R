@@ -204,10 +204,17 @@ atl_check_res_patch <- function(tag,
 
   # add plot by time and duration
   p2 <- ggplot() +
-    # low tide line
+    # add low tide line
     geom_hline(
       yintercept = as.numeric(dtp$low_time), color = "dodgerblue3",
       linetype = "dashed"
+    ) +
+    # add high tide lines
+    geom_hline(
+      yintercept = as.numeric(dtp$high_start_time), color = "dodgerblue3"
+    ) +
+    geom_hline(
+      yintercept = as.numeric(dtp$high_end_time), color = "dodgerblue3"
     ) +
     # add line and points
     geom_path(
@@ -227,11 +234,13 @@ atl_check_res_patch <- function(tag,
     # flip y axis
     scale_y_reverse(
       breaks = seq(
-        from = floor(min(ds$time) / 3600) * 3600,
-        to = ceiling(max(ds$time) / 3600) * 3600,
+        from = floor(min(as.numeric(dtp$high_start_time)) / 3600) * 3600,
+        to = ceiling(max(as.numeric(dtp$high_end_time)) / 3600) * 3600,
         by = 3600 * 1
       ),
-      labels = function(x) format(as.POSIXct(x, origin = "1970-01-01"), "%H")
+      labels = function(x) {
+        format(as.POSIXct(x, origin = "1970-01-01"), "%H", tz = "UTC")
+      }
     ) +
     labs(
       x = "Duration in patch (min)",
