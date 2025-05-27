@@ -10,6 +10,7 @@ atl_check_res_patch(
   data,
   patch_data,
   tide_data,
+  offset = 0,
   buffer = 250,
   buffer_overview = 10000,
   point_size = 1,
@@ -43,6 +44,10 @@ columns: \code{"tag"}, \code{"x"}, \code{"y"}, \code{"time"},\code{"datetime"}, 
 created by \code{atl_res_patch()}.}
 
 \item{tide_data}{Data on the timing (in UTC) of low and high tides.}
+
+\item{offset}{The offset in minutes between the location of the tidal gauge
+and the tracking area. This value will be added to the timing of the
+water data.}
 
 \item{buffer}{Map buffer size (default: 250).}
 

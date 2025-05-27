@@ -11,6 +11,9 @@
 #' @param patch_data A `data.table` containing residency patch details as
 #' created by `atl_res_patch()`.
 #' @param tide_data Data on the timing (in UTC) of low and high tides.
+#' @param offset The offset in minutes between the location of the tidal gauge
+#' and the tracking area. This value will be added to the timing of the
+#' water data.
 #' @param buffer Map buffer size (default: 250).
 #' @param buffer_overview Overview map buffer size (default: 10000).
 #' @param point_size Size of plotted points (default: 1).
@@ -43,6 +46,7 @@ atl_check_res_patch <- function(tag,
                                 data,
                                 patch_data,
                                 tide_data,
+                                offset = 0,
                                 buffer = 250,
                                 buffer_overview = 10000,
                                 point_size = 1,
@@ -204,10 +208,19 @@ atl_check_res_patch <- function(tag,
 
   # add plot by time and duration
   p2 <- ggplot() +
-    # low tide line
+    # add low tide line
     geom_hline(
-      yintercept = as.numeric(dtp$low_time), color = "dodgerblue3",
-      linetype = "dashed"
+      yintercept = as.numeric(dtp$low_time)  + offset * 60,
+      color = "dodgerblue3", linetype = "dashed"
+    ) +
+    # add high tide lines
+    geom_hline(
+      yintercept = as.numeric(dtp$high_start_time) + offset * 60,
+      color = "dodgerblue3"
+    ) +
+    geom_hline(
+      yintercept = as.numeric(dtp$high_end_time) + offset * 60,
+      color = "dodgerblue3"
     ) +
     # add line and points
     geom_path(
@@ -227,11 +240,13 @@ atl_check_res_patch <- function(tag,
     # flip y axis
     scale_y_reverse(
       breaks = seq(
-        from = floor(min(ds$time) / 3600) * 3600,
-        to = ceiling(max(ds$time) / 3600) * 3600,
+        from = floor(min(as.numeric(dtp$high_start_time)) / 3600) * 3600,
+        to = ceiling(max(as.numeric(dtp$high_end_time)) / 3600) * 3600,
         by = 3600 * 1
       ),
-      labels = function(x) format(as.POSIXct(x, origin = "1970-01-01"), "%H")
+      labels = function(x) {
+        format(as.POSIXct(x, origin = "1970-01-01"), "%H", tz = "UTC")
+      }
     ) +
     labs(
       x = "Duration in patch (min)",

@@ -42,7 +42,7 @@ Loading the `tags_watlas_subset.xlsx` will provide a table with the following co
 
 | Column            | Description |
 | ----              | --------------------- |
-|**season**         |	Year in which the bird was caught |
+|**year**         |	Year in which the bird was caught |
 |**species**	      |	Species common name  |
 |**tag**	          |	Tag ID with 4 digits |
 |**rings**	        | Metal ring number |
@@ -63,8 +63,8 @@ all_tags <- readxl::read_excel(fp, sheet = "tags_watlas_all") |>
   data.table()
 
 # subset desired tags using data.table
-# (for example all tags from season 2023)
-tags <- all_tags[season == 2023]$tag
+# (for example all tags from 2023)
+tags <- all_tags[year == 2023]$tag
 
 # time period for which data should be extracted form the database (in CET)
 from <- "2023-09-21 00:00:00"
@@ -121,7 +121,7 @@ Sys.getenv("variable_name")
 # nolint end: assignment_linter.
 ```
 
-`atl_get_data` does the same as when connecting to a local SQLite database when connecting to a remote database. In this example (chunk not run and only shown) we load the last three days of data from all tags of season 2024. Host, username and password are specified as environmental variables in this example, but can also be specified directly.
+`atl_get_data` does the same as when connecting to a local SQLite database when connecting to a remote database. In this example (chunk not run and only shown) we load the last three days of data from all tags of 2024. Host, username and password are specified as environmental variables in this example, but can also be specified directly.
 
 Since we want the up to date metadata we load the `tags_watlas_all.xlsx` from the “WATLAS” SharePoint folder: `Documents/data/`. Either specify the path to your local copy of this folder or add the path for your user in the `atl_file_path()` function.
 
@@ -137,7 +137,7 @@ all_tags <- readxl::read_excel(
   data.table()
 
 # subset all tags from 2024
-tags <- all_tags[season == 2024]$tag
+tags <- all_tags[year == 2024]$tag
 
 # select N last days to get data from
 days <- 3

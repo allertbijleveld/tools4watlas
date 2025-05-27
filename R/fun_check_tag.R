@@ -224,7 +224,7 @@ atl_check_tag <- function(data,
     mudflat_colour = mudflat_colour,
     mudflat_fill = mudflat_fill,
     mudflat_alpha = mudflat_alpha,
-    asp = asp, 
+    asp = asp,
     buffer = buffer
   )
 

@@ -122,7 +122,7 @@ foreach(i = id) %dofuture% {
   atl_check_tag(
     data_subset,
     option = "datetime",
-    highlight_first = TRUE, highlight_last = TRUE
+    highlight_first = TRUE, highlight_last = TRUE,
     filename = paste0(path, data_subset[1]$species, "_tag_", i)
   )
 
