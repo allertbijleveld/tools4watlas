@@ -168,6 +168,7 @@ bm +
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" alt="Example tracks with one individual by species for two tide cycles" width="100%" />
 <p class="caption">
+
 Example tracks with one individual by species for two tide cycles
 </p>
 
@@ -216,6 +217,7 @@ for visualizing the tracking data in real time on
 volunteers that facilitated this work.
 
 <p align="middle">
+
 <a href="https://www.nioz.nl/en">
 <img src="man/figures/NIOZ_logo_ENG_RGB.png" align="middle" height="150" alt="nioz website" />
 </a>

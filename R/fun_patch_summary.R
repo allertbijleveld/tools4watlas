@@ -34,7 +34,7 @@ atl_patch_summary <- function(data,
   # Initialize necessary variables to avoid NSE (Non-Standard Evaluation) issues
   disp_in_patch <- dist_bw_patch <- dist_in_patch <- duration <- NULL
   nfixes <- patch <- tag <- . <- patchdata <- polygons <- NULL
-  time_end <- time_start <- NULL
+  time_end <- time_start <- patch_summary <- NULL
   x_end <- x_start <- y_end <- y_start <- time_bw_patch <- NULL
 
   # Validate input

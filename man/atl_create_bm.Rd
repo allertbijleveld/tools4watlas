@@ -43,8 +43,8 @@ Defaults to \code{"x"}.}
 \item{y}{A character string specifying the column with y-coordinates.
 Defaults to \code{"y"}.}
 
-\item{buffer}{A numeric value specifying the buffer distance for the bounding
-box. Default is \code{1000}.}
+\item{buffer}{A numeric value (in meters) specifying the buffer distance for
+the bounding box. Default is \code{1000}.}
 
 \item{asp}{A character string specifying the aspect ratio in \code{"width:height"}
 format. Default is \code{"16:9"}.}

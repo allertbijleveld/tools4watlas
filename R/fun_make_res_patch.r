@@ -46,7 +46,7 @@ atl_res_patch <- function(data,
                           summary_variables = c(),
                           summary_functions = c()) {
   # Initialize necessary variables to avoid NSE (Non-Standard Evaluation) issues
-  row_id <- newpatch <- nfixes <- patch <- speed <- tag <- NULL
+  row_id <- newpatch <- nfixes <- patch <- speed <- tag <- duration <- NULL
   patchdata <- spat_diff <- time_diff_end_start <- i.patch <- NULL # nolint
   time <- time_diff <- time_end <- time_start <- spat_diff_end_start <- NULL
 
