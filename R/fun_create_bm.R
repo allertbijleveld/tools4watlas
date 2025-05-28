@@ -11,8 +11,8 @@
 #'   Defaults to `"x"`.
 #' @param y A character string specifying the column with y-coordinates.
 #'   Defaults to `"y"`.
-#' @param buffer A numeric value specifying the buffer distance for the bounding
-#'   box. Default is `1000`.
+#' @param buffer A numeric value (in meters) specifying the buffer distance for
+#' the bounding box. Default is `1000`.
 #' @param asp A character string specifying the aspect ratio in `"width:height"`
 #'   format. Default is `"16:9"`.
 #' @param option Either "osm" for OpenStreetMap polygons or "bathymetry" for
