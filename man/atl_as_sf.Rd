@@ -44,10 +44,10 @@ which should be the same as \code{lim_spat_indep} of the residency patch
 calculation or larger. Otherwise some patches will be multiple polygons.
 Points outside patches are excluded when choosing option "res_patches".}
 
-\item{buffer}{A numeric value (in meters) specifying the buffer distance for
-the bounding box, which should be the same as \code{lim_spat_indep} of the
-residency patch calculation or larger. Otherwise some patches will be
-multiple polygons.
+\item{buffer}{A numeric value (in meters) specifying the buffer around the
+polygon of each residency patch, which should be the same as
+\code{lim_spat_indep} of the residency patch calculation or larger.
+Otherwise some patches will be multiple polygons.
 \code{lim_spat_indep} of the residency patch calculation.}
 }
 \value{

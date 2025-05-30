@@ -47,9 +47,9 @@
 #' @import data.table
 #' @export
 
-atl_patch_summary <- function(data,
-                              summary_variables = c(),
-                              summary_functions = c()) {
+atl_res_patch_summary <- function(data,
+                                  summary_variables = c(),
+                                  summary_functions = c()) {
 
   # Initialize necessary variables to avoid NSE (Non-Standard Evaluation) issues
   i.disp_in_patch <- dist_bw_patch <- dist_in_patch <- duration <- NULL # nolint

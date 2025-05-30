@@ -27,10 +27,10 @@
 #' which should be the same as \code{lim_spat_indep} of the residency patch
 #' calculation or larger. Otherwise some patches will be multiple polygons.
 #' Points outside patches are excluded when choosing option "res_patches".
-#' @param buffer A numeric value (in meters) specifying the buffer distance for
-#' the bounding box, which should be the same as \code{lim_spat_indep} of the
-#' residency patch calculation or larger. Otherwise some patches will be
-#' multiple polygons.
+#' @param buffer A numeric value (in meters) specifying the buffer around the
+#' polygon of each residency patch, which should be the same as
+#' \code{lim_spat_indep} of the residency patch calculation or larger.
+#' Otherwise some patches will be multiple polygons.
 #' \code{lim_spat_indep} of the residency patch calculation.
 #' @return An `sf` object containing the specified coordinates as geometry and
 #'  any included attributes.

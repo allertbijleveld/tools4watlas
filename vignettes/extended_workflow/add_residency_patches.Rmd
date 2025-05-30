@@ -54,25 +54,20 @@ Subset relevant columns only (otherwise slows down the process).
 # unique tag ID
 id <- unique(data$tag)
 
+# subset relevant data
+data <- data[, .(tag, posID, time, datetime, x, y, speed_in, tideID)]
+
 # loop by tag ID
-patch_data <- foreach(i = id, .combine = "rbind") %do% {
+data <- foreach(i = id, .combine = "rbind") %do% {
   atl_res_patch(
-    data[tag == i, .(tag, posID, time, datetime, x, y, speed_in)],
+    data[tag == i],
     max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
     min_fixes = 3, min_duration = 120
   )
 }
 
-# extract data from all residency patches
-patch_data_ext <- patch_data[, cbind(
-  rbindlist(lapply(patchdata, function(x) cbind(x))), duration
-), by = .(tag, patch)]
-
-# merge back with data
-data <- merge(
-  data, patch_data_ext[, .(tag, posID, patch, duration)],
-  by = c("tag", "posID"), all.x = TRUE
-)
+# summary of patch data
+data_summary <- atl_res_patch_summary(data)
 ```
 
 ## Plot by tag and tide ID
@@ -81,8 +76,8 @@ data <- merge(
 
 ```{r, fig.width = 8.89, fig.height = 5.2}
 atl_check_res_patch(
-  tag = "3038", tide = "2023513",
-  data, patch_data, tide_data
+  tag = "3038", tide = "2023513", buffer_res_patches = 50, offset = 30,
+  data, tide_data
 )
 ```
 
