@@ -42,9 +42,7 @@ atl_res_patch <- function(data,
                           lim_spat_indep = 75,
                           lim_time_indep = 180,
                           min_fixes = 3,
-                          min_duration = 120,
-                          summary_variables = c(),
-                          summary_functions = c()) {
+                          min_duration = 120) {
   # Initialize necessary variables to avoid NSE (Non-Standard Evaluation) issues
   row_id <- newpatch <- nfixes <- patch <- speed <- tag <- duration <- NULL
   patchdata <- spat_diff <- time_diff_end_start <- i.patch <- NULL # nolint
