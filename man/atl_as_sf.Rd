@@ -11,7 +11,8 @@ atl_as_sf(
   y = "y",
   projection = sf::st_crs(32631),
   additional_cols = NULL,
-  option = "points"
+  option = "points",
+  buffer
 )
 }
 \arguments{
@@ -37,7 +38,17 @@ columns included).}
 
 \item{option}{A character string with "points" (default) for returning sf
 points, "lines" to return sf lines and "table" to return a table with a sf
-coordinates column.}
+coordinates column or "res_patches" to return sf polygons with residency
+patches. For the latter, the please specify a buffer used around the points,
+which should be the same as \code{lim_spat_indep} of the residency patch
+calculation or larger. Otherwise some patches will be multiple polygons.
+Points outside patches are excluded when choosing option "res_patches".}
+
+\item{buffer}{A numeric value (in meters) specifying the buffer distance for
+the bounding box, which should be the same as \code{lim_spat_indep} of the
+residency patch calculation or larger. Otherwise some patches will be
+multiple polygons.
+\code{lim_spat_indep} of the residency patch calculation.}
 }
 \value{
 An \code{sf} object containing the specified coordinates as geometry and
@@ -47,7 +58,7 @@ any included attributes.
 This function converts a data.frame or data.table to a simple feature (sf)
 object, allowing flexible specification of the x and y coordinate columns.
 Additional attributes can also be retained in the resulting sf object. There
-are three options = c("points", "lines", "table").
+are four options = c("points", "lines", "table", "res_patches).
 }
 \examples{
 library(data.table)

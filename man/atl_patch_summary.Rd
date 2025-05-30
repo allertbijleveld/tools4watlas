@@ -4,40 +4,58 @@
 \alias{atl_patch_summary}
 \title{Summary of patch data}
 \usage{
-atl_patch_summary(
-  data,
-  buffer = 15,
-  summary_variables = c(),
-  summary_functions = c()
-)
+atl_patch_summary(data, summary_variables = c(), summary_functions = c())
 }
 \arguments{
-\item{buffer}{A numeric value (in meters) specifying the buffer distance for
-the bounding box. Default is 15 m, but could for example be
-\code{lim_spat_indep} of the residency patch calculation.}
+\item{data}{A data.frame or data.table containing movement data. Must include
+columns: \code{tag} (ID), \code{x}, \code{y} (coords),
+\code{time} (timestamp), and \code{patch} (patch ID).}
 
-\item{summary_variables}{Optional variables for which patch-wise summary
-values are required. To be passed as a character vector.}
+\item{summary_variables}{Character vector of variable names in \code{data}
+for additional summaries. Variables should be numeric or compatible with
+the summary functions.}
 
-\item{summary_functions}{The functions with which to summarise the summary
-variables; must return only a single value, such as median, mean etc. To be
-passed as a character vector.}
+\item{summary_functions}{Character vector of function name (as single string)
+to apply to each variable in \code{summary_variables}. Functions must work
+on numeric vectors (e.g., "mean" or "median").}
 }
 \value{
-A data.table that has the added column
-\code{patch}, \code{patchdata}, and \code{polygons}, indicating the patch
-identity, the localization data used to construct the patch, and the polygons
-of residence patches based on the \code{lim_spat_indep}. In addition, there
-are columns with patch summaries: nfixes, dist_in_patch, dist_bw_patch and
-statistics based on the \code{summary_variables} and \code{summary_functions}
-provided.
+A data.table with one row per \code{tag} and \code{patch} containing:
+\itemize{
+\item \code{nfixes}: Number of fixes in the patch.
+\item \code{x_mean}, \code{x_median}, \code{x_start}, \code{x_end}: Summary
+stats of x.
+\item \code{y_mean}, \code{y_median}, \code{y_start}, \code{y_end}: Summary
+stats of y.
+\item \code{time_mean}, \code{time_median}, \code{time_start},
+\code{time_end}: Summary stats of time.
+\item Additional summaries from \code{summary_variables} and
+\code{summary_functions}.
+\item \code{dist_in_patch}:
+Total distance (in m) traveled within thepatch.
+\item \code{dist_bw_patch}:
+Distance (in m) between end of previous and start of current patch.
+\item \code{time_bw_patch}:
+Time (in sec) elapsed between end of previous and start of current patch.
+\item \code{disp_in_patch}:
+Straight-line (in m) displacement between start and end of patch.
+\item \code{duration}: Duration spent (in sec) within the patch.
+}
 }
 \description{
-The function \code{atl_patch_summary} can be used to extract patch-specific
-summary data such as the median coordinates, the patch duration, the distance
-travelled within the patch, the displacement within the patch, and the patch
-area. Position covariates such as speed may also be
-summarised patch-wise by passing covariate names and  summary functions as
-character vectors to the \code{summary_variables} and
-\code{summary_functions} arguments, respectively.
+Computes summary statistics of movement data grouped by patches for each
+individual tag. Calculates spatial and temporal summaries within each patch,
+distances traveled inside patches, distances and time intervals between
+patches, displacement within patches, and patch duration. Additional
+user-specified summary variables and functions can also be applied
+dynamically.
+}
+\details{
+Converts input data to data.table if needed and filters out rows with missing
+patch assignments. All summaries are calculated by \code{tag} and
+\code{patch}.Distance calculations use Euclidean distance in x-y coordinate
+space.
+}
+\author{
+Johannes Krietsch
 }

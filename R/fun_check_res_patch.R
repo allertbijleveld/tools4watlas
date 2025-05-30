@@ -69,6 +69,7 @@ atl_check_res_patch <- function(tag,
   # global variables
   patch <- duration <- . <- time_median <- polygons <- time <- NULL
   x <- y <- datetime <- x_median <- y_median <- tideID <- NULL # nolint
+  i.duration <- NULL # nolint
 
   # assign tag and tideID new to avoid confusion
   tag_id <- tag
@@ -106,6 +107,9 @@ atl_check_res_patch <- function(tag,
   # patch as factor
   ds[, patch := as.factor(patch)]
   dp[, patch := as.factor(patch)]
+
+  # join duration to ds
+  ds[dp, on = .(tag, patch), `:=`(duration = i.duration)]
 
   # duration in mins
   ds[, duration := duration / 60]

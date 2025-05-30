@@ -10,9 +10,7 @@ atl_res_patch(
   lim_spat_indep = 75,
   lim_time_indep = 180,
   min_fixes = 3,
-  min_duration = 120,
-  summary_variables = c(),
-  summary_functions = c()
+  min_duration = 120
 )
 }
 \arguments{
