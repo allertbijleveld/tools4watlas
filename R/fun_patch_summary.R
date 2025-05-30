@@ -12,6 +12,8 @@
 #' @param buffer A numeric value (in meters) specifying the buffer distance for
 #' the bounding box. Default is 15 m, but could for example be
 #' \code{lim_spat_indep} of the residency patch calculation.
+#' @param data A data.table including .....
+#' \code{x} and \code{y}, and a temporal coordinate, \code{time}.
 #' @param summary_variables Optional variables for which patch-wise summary
 #' values are required. To be passed as a character vector.
 #' @param summary_functions The functions with which to summarise the summary
@@ -112,11 +114,20 @@ atl_patch_summary <- function(data,
 
   # add polygons with buffer around localizations per residency patch
   data[, `:=`(polygons, lapply(patchdata, function(df) {
-    p1 <- sf::st_as_sf(df, coords = c("x", "y"))
+    p1 <- sf::st_as_sf(df, coords = c("x", "y"), crs = 32631)
     p2 <- sf::st_buffer(p1, dist = buffer)
     p2 <- sf::st_union(p2)
     p2 ## output polygons
   }))]
+  
+  # # Check for multipolygons and throw error if any
+  # has_multipolygon <- any(sapply(data$polygons, function(poly) {
+  #   any(st_geometry_type(poly) == "MULTIPOLYGON")
+  # }))
+  # 
+  # if (has_multipolygon) {
+  #   stop("Error: Some polygons are MULTIPOLYGONs, expected only single polygons.")
+  # }
 
   return(data)
 
