@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 
 This vignette shows how to assign residency patches with WATLAS data. 
 
-Ignores different sampling interals and species specific residency patch parameters at the moment.
+Ignores different sampling intervals and species specific residency patch parameters at the moment.
 
 ### Load packages and required data
 

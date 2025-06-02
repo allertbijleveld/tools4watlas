@@ -28,7 +28,7 @@ distance between two patches for them to the considered independent.}
 difference between two patches for them to be considered independent.}
 
 \item{min_fixes}{The minimum number of fixes for a group of
-spatially-proximate number of ponts to be considered a preliminary residence
+spatially-proximate number of points to be considered a preliminary residence
 patch.}
 
 \item{min_duration}{The minimum duration (in seconds) for classifying

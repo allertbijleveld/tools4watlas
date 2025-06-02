@@ -28,7 +28,7 @@
 #' @param lim_time_indep A numeric value of time in minutes of the time
 #' difference between two patches for them to be considered independent.
 #' @param min_fixes The minimum number of fixes for a group of
-#' spatially-proximate number of ponts to be considered a preliminary residence
+#' spatially-proximate number of points to be considered a preliminary residence
 #' patch.
 #' @param min_duration The minimum duration (in seconds) for classifying
 #' residence patches.

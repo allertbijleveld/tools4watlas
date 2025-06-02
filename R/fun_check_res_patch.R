@@ -7,9 +7,8 @@
 #' @param tag Bird tag ID to subset.
 #' @param tide Tide ID to subset.
 #' @param data A `data.table` containing tracking data. Must include the
-#'   columns: `"tag"`, `"x"`, `"y"`, `"time"`,`"datetime"`, and `species`.
-#' @param patch_data A `data.table` containing residency patch details as
-#' created by `atl_res_patch()`.
+#'   columns: `tag`, `x`, `y`, `time`,`datetime`, and `species` and
+#'   `patch`,  as created by `atl_res_patch()`.
 #' @param tide_data Data on the timing (in UTC) of low and high tides.
 #' @param offset The offset in minutes between the location of the tidal gauge
 #' and the tracking area. This value will be added to the timing of the
@@ -81,10 +80,18 @@ atl_check_res_patch <- function(tag,
   tideID_id <- tide #nolint
 
   # check data structure
-  atl_check_data(data, names_expected = c("tag", "x", "y", "time", "datetime"))
+  atl_check_data(data, names_expected = c(
+    "tag", "x", "y", "time", "datetime", "patch"
+  ))
   atl_check_data(tide_data, names_expected = c(
     "tideID", "low_time", "high_start_level", "low_level", "high_end_level"
   ))
+  if (missing(buffer_res_patches) || is.null(buffer_res_patches)) {
+    stop(paste0(
+      "Function requiers to specify 'buffer_res_patches' value",
+      " (see description)."
+    ))
+  }
 
   # convert to DT if not
   if (data.table::is.data.table(data) != TRUE) {

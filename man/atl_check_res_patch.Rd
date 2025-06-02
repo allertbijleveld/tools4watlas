@@ -38,7 +38,8 @@ atl_check_res_patch(
 \item{tide}{Tide ID to subset.}
 
 \item{data}{A \code{data.table} containing tracking data. Must include the
-columns: \code{"tag"}, \code{"x"}, \code{"y"}, \code{"time"},\code{"datetime"}, and \code{species}.}
+columns: \code{tag}, \code{x}, \code{y}, \code{time},\code{datetime}, and \code{species} and
+\code{patch},  as created by \code{atl_res_patch()}.}
 
 \item{tide_data}{Data on the timing (in UTC) of low and high tides.}
 
@@ -90,9 +91,6 @@ returns the plot.}
 \item{png_width}{Width of saved PNG (default: 3840).}
 
 \item{png_height}{Height of saved PNG (default: 2160).}
-
-\item{patch_data}{A \code{data.table} containing residency patch details as
-created by \code{atl_res_patch()}.}
 }
 \value{
 A ggplot object or a saved PNG file.
