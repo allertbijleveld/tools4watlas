@@ -4,12 +4,11 @@
 #' movement paths, patch durations, and an inset overview map.
 #'
 #' @author Johannes Krietsch
-#' @param tag Bird tag ID to subset.
-#' @param tide Tide ID to subset.
-#' @param data A `data.table` containing tracking data. Must include the
-#'   columns: `tag`, `x`, `y`, `time`,`datetime`, and `species` and
+#' @param data A `data.table` containing tracking data of one tag. Must include
+#' the columns: `tag`, `x`, `y`, `time`,`datetime`, and `species` and
 #'   `patch`,  as created by `atl_res_patch()`.
 #' @param tide_data Data on the timing (in UTC) of low and high tides.
+#' @param tide Tide ID to subset.
 #' @param offset The offset in minutes between the location of the tidal gauge
 #' and the tracking area. This value will be added to the timing of the
 #' water data.
@@ -45,10 +44,9 @@
 #' @importFrom ragg agg_png
 #' @export
 
-atl_check_res_patch <- function(tag,
-                                tide,
-                                data,
+atl_check_res_patch <- function(data,
                                 tide_data,
+                                tide,
                                 offset = 0,
                                 buffer_res_patches,
                                 buffer_bm = 250,
@@ -75,10 +73,6 @@ atl_check_res_patch <- function(tag,
   x <- y <- datetime <- x_median <- y_median <- tideID <- NULL # nolint
   i.duration <- NULL # nolint
 
-  # assign tag and tideID new to avoid confusion
-  tag_id <- tag
-  tideID_id <- tide #nolint
-
   # check data structure
   atl_check_data(data, names_expected = c(
     "tag", "x", "y", "time", "datetime", "patch"
@@ -101,8 +95,12 @@ atl_check_res_patch <- function(tag,
     data.table::setDT(tide_data)
   }
 
-  # subset tag
-  ds <- data[tag == tag_id & tideID == tideID_id]
+  # subset first if more than one tag
+  ds <- data[tag == data[1]$tag]
+  
+  # assign tag and tideID new to avoid confusion
+  tag_id <- ds[1]$tag
+  tideID_id <- tide #nolint
 
   # create patch summary
   dp <- atl_res_patch_summary(ds)
@@ -110,6 +108,13 @@ atl_check_res_patch <- function(tag,
   # subset all data linked to this tide
   ds <- ds[tideID == tideID_id]
   dp <- dp[patch %in% unique(ds$patch)]
+  
+  # check if data for this period and tide
+  if (nrow(ds) == 0) {
+    stop(paste0(
+      "No data for this tag and tide."
+    ))
+  }
 
   # subset tide pattern data
   dtp <- tide_data[tideID == tideID_id]

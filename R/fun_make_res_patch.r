@@ -34,7 +34,7 @@
 #' residence patches.
 #'
 #' @return A data.table that has the added column
-#' \code{patch} indicating the patch.
+#' \code{patch} indicating the patch ID.
 #' @import data.table
 #' @export
 atl_res_patch <- function(data,
@@ -164,7 +164,7 @@ atl_res_patch <- function(data,
     patch_summary[1, "speed_between_patches_medianxy"] <- Inf
 
     ## create  residence patches on new criteria
-    ### new patch without speed filter & with spatial distance on end-strt
+    ### new patch without speed filter & with spatial distance on end-start
     patch_summary[, `:=`(newpatch, cumsum(
       (spat_diff > lim_spat_indep | time_diff_end_start > lim_time_indep) &
         (spat_diff_end_start > lim_spat_indep)
