@@ -68,12 +68,12 @@ movement paths, patch durations, and an inset overview map.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">atl_check_res_patch</span><span class="op">(</span></span>
-<span>  <span class="va">tag</span>,</span>
-<span>  <span class="va">tide</span>,</span>
 <span>  <span class="va">data</span>,</span>
-<span>  <span class="va">patch_data</span>,</span>
 <span>  <span class="va">tide_data</span>,</span>
-<span>  buffer <span class="op">=</span> <span class="fl">250</span>,</span>
+<span>  <span class="va">tide</span>,</span>
+<span>  offset <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  <span class="va">buffer_res_patches</span>,</span>
+<span>  buffer_bm <span class="op">=</span> <span class="fl">250</span>,</span>
 <span>  buffer_overview <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>  point_size <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  point_alpha <span class="op">=</span> <span class="fl">0.5</span>,</span>
@@ -99,29 +99,34 @@ movement paths, patch durations, and an inset overview map.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-tag">tag<a class="anchor" aria-label="anchor" href="#arg-tag"></a></dt>
-<dd><p>Bird tag ID to subset.</p></dd>
-
-
-<dt id="arg-tide">tide<a class="anchor" aria-label="anchor" href="#arg-tide"></a></dt>
-<dd><p>Tide ID to subset.</p></dd>
-
-
-<dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>A <code>data.table</code> containing tracking data. Must include the
-columns: <code>"tag"</code>, <code>"x"</code>, <code>"y"</code>, <code>"time"</code>,<code>"datetime"</code>, and <code>species</code>.</p></dd>
-
-
-<dt id="arg-patch-data">patch_data<a class="anchor" aria-label="anchor" href="#arg-patch-data"></a></dt>
-<dd><p>A <code>data.table</code> containing residency patch details as
-created by <code><a href="atl_res_patch.html">atl_res_patch()</a></code>.</p></dd>
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
+<dd><p>A <code>data.table</code> containing tracking data of one tag. Must include
+the columns: <code>tag</code>, <code>x</code>, <code>y</code>, <code>time</code>,<code>datetime</code>, and <code>species</code> and
+<code>patch</code>,  as created by <code><a href="atl_res_patch.html">atl_res_patch()</a></code>.</p></dd>
 
 
 <dt id="arg-tide-data">tide_data<a class="anchor" aria-label="anchor" href="#arg-tide-data"></a></dt>
 <dd><p>Data on the timing (in UTC) of low and high tides.</p></dd>
 
 
-<dt id="arg-buffer">buffer<a class="anchor" aria-label="anchor" href="#arg-buffer"></a></dt>
+<dt id="arg-tide">tide<a class="anchor" aria-label="anchor" href="#arg-tide"></a></dt>
+<dd><p>Tide ID to subset.</p></dd>
+
+
+<dt id="arg-offset">offset<a class="anchor" aria-label="anchor" href="#arg-offset"></a></dt>
+<dd><p>The offset in minutes between the location of the tidal gauge
+and the tracking area. This value will be added to the timing of the
+water data.</p></dd>
+
+
+<dt id="arg-buffer-res-patches">buffer_res_patches<a class="anchor" aria-label="anchor" href="#arg-buffer-res-patches"></a></dt>
+<dd><p>A numeric value (in meters) specifying the buffer
+around the polygon of each residency patch, which should be the same as
+<code>lim_spat_indep</code> of the residency patch calculation or larger.
+Otherwise some patches will be multiple polygons.</p></dd>
+
+
+<dt id="arg-buffer-bm">buffer_bm<a class="anchor" aria-label="anchor" href="#arg-buffer-bm"></a></dt>
 <dd><p>Map buffer size (default: 250).</p></dd>
 
 

@@ -29,7 +29,7 @@ Then the function calculates the median proto-patch position and the time betwee
 
 Lastly, the function assigns a unique patch ID for each residency patch from 1 to n, in order of the time.
 
-Note: Keep in mind that smoothing and thinning will influence the speed and thus the residence patches. The `atl_res_patch()` function is designed to work with data that has already been filtered (var_max < 5000) and smoothed (moving_window = 5), so it is recommended to run this function after these steps. With short position intervals (e.g. 3 sec), position error can lead to speed outliers, which influences (i.e. reduces) the creation of proto-patches. To avoid this, the speed can be set to a higher value, or the data can be thinned before. 
+Note: Keep in mind that smoothing and thinning will influence the speed and thus the residence patches. The `atl_res_patch()` function is designed to work with data that has already been filtered (`var_max < 5000`) and smoothed (`moving_window = 5`), so it is recommended to run this function after these steps. With short position intervals (e.g. 3 sec), position error can lead to speed outliers, which influences (i.e. reduces) the creation of proto-patches. To avoid this, the speed can be set to a higher value, or the data can be thinned before. 
 
 **Parameters overview:**
 
@@ -97,6 +97,9 @@ data <- foreach(i = id, .combine = "rbind") %dofuture% {
 
 # close parallel workers
 plan(sequential)
+
+# show head of the summary table
+head(data) |> knitr::kable(digits = 2)
 ```
 
 ## Evaluate residency patch classification and parameters
@@ -107,7 +110,7 @@ The function `atl_check_res_patch()` can be used to evaluate the residency patch
 
 We can select one tag and tide to plot the data. Additionally, we need to specify the offset of the tidal data we use (e.g. 30 min for Terschelling) and a buffer (in m) around the residency patch data to create a polygon. This buffer should best be  `lim_spat_indep`. 
 
-```{r, fig.width = 8.89, fig.height = 5.2}
+```{r, fig.align = "center", fig.width = 10, fig.height = 6}
 atl_check_res_patch(
   data[tag == "3038"], tide_data = tidal_pattern,
   tide = "2023513", offset = 30,
