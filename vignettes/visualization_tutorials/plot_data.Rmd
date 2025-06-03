@@ -34,7 +34,7 @@ library(scales)
 
 ## Plot grouped by tag ID
 
-Simply colour points and the path with tag ID. The When one needs individual consistent colours between plots, one can use `atl_tag_cols(data$tag)` to assign them (see second example). 
+Simply colour points and the path with tag ID. Add for example the number of tags as legend name if desired. When one needs individual consistent colours between plots, one can use `atl_tag_cols(data$tag)` to assign them (see second example). 
 
 ```{r, fig.alt = "Points and tracks on a simple basemap by tag ID", fig.align = "center"}
 # load example data
@@ -52,7 +52,7 @@ bm +
   geom_point(
     data = data, aes(x, y, colour = tag),
     size = 0.5, alpha = 1, show.legend = TRUE
-  ) + 
+  ) +
   scale_color_discrete(name = paste("N = ", length(unique(data$tag)))) +
   theme(legend.position = "top")
 
@@ -66,7 +66,7 @@ bm +
     data = data, aes(x, y, colour = tag),
     size = 0.5, alpha = 1, show.legend = FALSE
   ) +
-    scale_color_manual(
+  scale_color_manual(
     values = atl_tag_cols(data$tag)
   )
 
@@ -81,6 +81,49 @@ bm +
     size = 0.5, alpha = 1, show.legend = FALSE
   ) +
   scale_color_viridis(discrete = TRUE)
+```
+
+We can also add more information to the label by using the `atl_tag_labs()` function. This function can be used to create labels for the legend that include more information about the tag, such as metal rings, colour rings or name.
+
+```{r, fig.alt = "Points and tracks on a simple basemap by tag ID with labels", fig.align = "center"}
+# load example data
+data <- data_example
+
+# file path to the metadata
+fp <- system.file(
+  "extdata", "tags_watlas_subset.xlsx", package = "tools4watlas"
+)
+
+# load meta data
+all_tags <- readxl::read_excel(fp, sheet = "tags_watlas_all") |>
+  data.table()
+
+# join with metal rings and color rings
+all_tags[, tag := as.character(tag)]
+data[all_tags, on = "tag", `:=`(
+  rings = i.rings,
+  crc = i.crc
+)]
+
+# create basemap
+bm <- atl_create_bm(data, buffer = 800)
+
+# plot points and tracks with fixed assigned colours (e.g. in animations)
+bm +
+  geom_path(
+    data = data, aes(x, y, colour = tag),
+    linewidth = 0.5, alpha = 0.1, show.legend = TRUE
+  ) +
+  geom_point(
+    data = data, aes(x, y, colour = tag),
+    size = 0.5, alpha = 1, show.legend = TRUE
+  ) +
+  scale_color_manual(
+    values = atl_tag_cols(data$tag),
+    labels = atl_tag_labs(data, c("tag", "rings", "crc")),
+    name = paste("N = ", length(unique(data$tag)))
+  ) +
+  theme(legend.position = "top")
 ```
 
 ## Plot grouped by species
