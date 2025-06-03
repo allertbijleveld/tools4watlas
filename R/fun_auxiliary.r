@@ -100,6 +100,125 @@ atl_spec_labs <- function(option = "multiline") {
   }
 }
 
+
+#' Assign colours to tag ID's
+#'
+#' Generates distinct and visually distinct colours for a set of input tags
+#' using the default hue-based palette from ggplot2
+#' (via \code{scales::hue_pal()}).
+#' This is useful for assigning consistent colours to categorical labels in
+#' plots, for example in an animation, where not all individuals always have
+#' data in each frame.
+#'
+#' @param tags A character or numeric vector of tags. Duplicate values are
+#' ignored.
+#' @param option A string indicating the output format. Either \code{"vector"}
+#'   for a named character vector of hex colors, or \code{"table"} for a
+#'   \code{data.table} with columns \code{tag} and \code{colour}. Default is
+#'   \code{"vector"}.
+#'
+#' @return A named character vector of hex color codes if 
+#'  \code{option = "vector"}, or a \code{data.table} with two columns
+#'  (\code{tag}, \code{colour}) if
+#'   \code{option = "table"}.
+#'
+#' @examples
+#' # Default output (named vector)
+#' atl_tag_cols(c("1234", "2121", "9999"))
+#'
+#' # Output as a data.table
+#' atl_tag_cols(c("1234", "2121", "9999"), option = "table")
+#'
+#' @importFrom scales hue_pal
+#' @export
+atl_tag_cols <- function(tags, option = "vector") {
+  # ensure valid input
+  match.arg(option, choices = c("vector", "table"))
+  
+  # convert to character in case tags are numeric
+  tags <- as.character(unique(tags))
+  
+  # generate ggplot2-like colours using hue_pal
+  n_tags <- length(tags)
+  colours <- scales::hue_pal()(n_tags)
+  
+  tag_colours <- stats::setNames(colours, tags)
+  
+  # return selected format
+  if (option == "vector") {
+    return(tag_colours)
+  } else {
+    return(data.table::data.table(
+      tag = names(tag_colours),
+      colour = tag_colours
+    ))
+  }
+}
+
+
+#' Create unique labels for tags by combining specified columns
+#'
+#' Generates a named character vector of unique labels for each `tag` in the
+#' data. The labels are created by concatenating the values of specified columns
+#' for the first occurrence of each tag, using a user-defined separator.
+#'
+#' @param data A \code{data.table} or \code{data.frame} containing at least a
+#' \code{tag} column.
+#' @param columns A character vector specifying the names of columns to combine
+#' into the label. These columns must exist in \code{data}.
+#' @param sep A character string used to separate concatenated column values in
+#' the label. Defaults to an space \code{" "}.
+#'
+#' @return A named character vector where the names are unique \code{tag} values
+#' from the data, and the values are concatenated labels created from the
+#' specified columns.
+#'
+#' @details
+#' The function selects the first row for each unique \code{tag} to create the
+#' label. If the \code{tag} column or any of the specified columns are missing,
+#' the function will stop with an informative error message.
+#'
+#' @examples
+#' library(data.table)
+#' data <- data.table(
+#'   tag = c("1234", "2222", "1234"),
+#'   rings = c(123234442, 334234234, 123234442),
+#'   name = c("Allert", "Peter", "Karl")
+#' )
+#' atl_tag_labs(data, c("rings", "name"), sep = " ")
+#' 
+#' @export
+atl_tag_labs <- function(data, columns, sep = " ") {
+  # check data structure
+  if (!("tag" %in% names(data))) {
+    stop("Error: 'tag' column is missing from the data.")
+  }
+  if (!all(columns %in% names(data))) {
+    missing_cols <- columns[!columns %in% names(data)]
+    stop(paste(
+      "Error: The following columns are missing from the data:",
+      paste(missing_cols, collapse = ", ")
+    ))
+  }
+  
+  # select first row per tag to avoid duplicates
+  labels <- data[, .SD[1], by = tag, .SDcols = c("tag", columns)]
+  
+  # Replace NA with "" in the specified columns before pasting
+  labels[, (columns) := lapply(.SD, function(x) {
+    x[is.na(x)] <- ""
+    return(x)
+  }), .SDcols = columns]
+  
+  # paste only the specified columns together with the separator
+  labels[, label := do.call(
+    paste, c(.SD[, columns, with = FALSE], list(sep = sep))
+  )]
+  
+  # return named vector with tag as names and combined label as values
+  return(setNames(labels$label, labels$tag))
+}
+
 #' Format time in easy readable interval
 #'
 #' This function converts a given time (in seconds) into a easy readable format

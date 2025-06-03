@@ -115,6 +115,8 @@ reference:
      - atl_t_col
      - atl_spec_cols
      - atl_spec_labs
+     - atl_tag_cols
+     - atl_tag_labs
   - title: "Animation functions"
     desc: "Functions to animate the data"
     contents:

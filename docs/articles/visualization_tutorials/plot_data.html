@@ -117,7 +117,11 @@ starting point.</p>
 <div class="section level2">
 <h2 id="plot-grouped-by-tag-id">Plot grouped by tag ID<a class="anchor" aria-label="anchor" href="#plot-grouped-by-tag-id"></a>
 </h2>
-<p>Simply colour points and the path with tag ID.</p>
+<p>Simply colour points and the path with tag ID. Add for example the
+number of tags as legend name if desired. When one needs individual
+consistent colours between plots, one can use
+<code>atl_tag_cols(data$tag)</code> to assign them (see second
+example).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load example data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
@@ -129,14 +133,31 @@ starting point.</p>
 <span><span class="va">bm</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
+<span>    linewidth <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">0.1</span>, show.legend <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
+<span>    size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">1</span>, show.legend <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_colour_discrete.html" class="external-link">scale_color_discrete</a></span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"N = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">tag</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="plot_data_files/figure-html/unnamed-chunk-2-1.png" alt="Points and tracks on a simple basemap by tag ID" width="100%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># plot points and tracks with fixed assigned colours (e.g. in animations)</span></span>
+<span><span class="va">bm</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
 <span>    linewidth <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">0.1</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
 <span>    size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">1</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span></span>
+<span>    values <span class="op">=</span> <span class="fu"><a href="../../reference/atl_tag_cols.html">atl_tag_cols</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">tag</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="plot_data_files/figure-html/unnamed-chunk-2-1.png" alt="Points and tracks on a simple basemap by tag ID" width="100%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p><img src="plot_data_files/figure-html/unnamed-chunk-2-2.png" alt="Points and tracks on a simple basemap by tag ID" width="100%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot points and tracks with viridis colour scale</span></span>
 <span><span class="va">bm</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span></span>
@@ -148,7 +169,51 @@ starting point.</p>
 <span>    size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">1</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html" class="external-link">scale_color_viridis</a></span><span class="op">(</span>discrete <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plot_data_files/figure-html/unnamed-chunk-2-2.png" alt="Points and tracks on a simple basemap by tag ID" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="plot_data_files/figure-html/unnamed-chunk-2-3.png" alt="Points and tracks on a simple basemap by tag ID" width="100%" style="display: block; margin: auto;"></p>
+<p>We can also add more information to the label by using the
+<code><a href="../../reference/atl_tag_labs.html">atl_tag_labs()</a></code> function. This function can be used to
+create labels for the legend that include more information about the
+tag, such as metal rings, colour rings or name.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># load example data</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
+<span></span>
+<span><span class="co"># file path to the metadata</span></span>
+<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
+<span>  <span class="st">"extdata"</span>, <span class="st">"tags_watlas_subset.xlsx"</span>, package <span class="op">=</span> <span class="st">"tools4watlas"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load meta data</span></span>
+<span><span class="va">all_tags</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span><span class="va">fp</span>, sheet <span class="op">=</span> <span class="st">"tags_watlas_all"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># join with metal rings and color rings</span></span>
+<span><span class="va">all_tags</span><span class="op">[</span>, <span class="va">tag</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">tag</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">data</span><span class="op">[</span><span class="va">all_tags</span>, on <span class="op">=</span> <span class="st">"tag"</span>, <span class="fu">`:=`</span><span class="op">(</span></span>
+<span>  rings <span class="op">=</span> <span class="va">i.rings</span>,</span>
+<span>  crc <span class="op">=</span> <span class="va">i.crc</span></span>
+<span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># create basemap</span></span>
+<span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data</span>, buffer <span class="op">=</span> <span class="fl">800</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># plot points and tracks with fixed assigned colours (e.g. in animations)</span></span>
+<span><span class="va">bm</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
+<span>    linewidth <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">0.1</span>, show.legend <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
+<span>    size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">1</span>, show.legend <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span></span>
+<span>    values <span class="op">=</span> <span class="fu"><a href="../../reference/atl_tag_cols.html">atl_tag_cols</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">tag</span><span class="op">)</span>,</span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="../../reference/atl_tag_labs.html">atl_tag_labs</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tag"</span>, <span class="st">"rings"</span>, <span class="st">"crc"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"N = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">tag</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="plot_data_files/figure-html/unnamed-chunk-3-1.png" alt="Points and tracks on a simple basemap by tag ID with labels" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="plot-grouped-by-species">Plot grouped by species<a class="anchor" aria-label="anchor" href="#plot-grouped-by-species"></a>
@@ -156,7 +221,7 @@ starting point.</p>
 <p><code>tools4watlas</code> includes specific species colours in the
 atl_spec_cols() function and species labels in the atl_spec_labs()
 function.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load example data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
 <span></span>
@@ -166,7 +231,7 @@ function.</p>
 <span><span class="co"># plot points and tracks</span></span>
 <span><span class="va">bm</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">species</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, group <span class="op">=</span> <span class="va">tag</span>, colour <span class="op">=</span> <span class="va">species</span><span class="op">)</span>,</span>
 <span>    linewidth <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
@@ -187,7 +252,7 @@ function.</p>
 <span>    legend.key <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    legend.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"transparent"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="plot_data_files/figure-html/unnamed-chunk-3-1.png" alt="Points and tracks of multiple species on a basemap" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="plot_data_files/figure-html/unnamed-chunk-4-1.png" alt="Points and tracks of multiple species on a basemap" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="plot-single-plots-by-tag-id">Plot single plots by tag ID<a class="anchor" aria-label="anchor" href="#plot-single-plots-by-tag-id"></a>
@@ -195,7 +260,7 @@ function.</p>
 <div class="section level3">
 <h3 id="template-for-a-customizable-plot-of-one-tag">Template for a customizable plot of one tag<a class="anchor" aria-label="anchor" href="#template-for-a-customizable-plot-of-one-tag"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load example data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
 <span></span>
@@ -215,7 +280,7 @@ function.</p>
 <span>    data <span class="op">=</span> <span class="va">data_subset</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>,</span>
 <span>    size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">1</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="plot_data_files/figure-html/unnamed-chunk-4-1.png" alt="Points and tracks on a simple basemap" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="plot_data_files/figure-html/unnamed-chunk-5-1.png" alt="Points and tracks on a simple basemap" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="simple-preset-plots-to-check-the-data">Simple preset plots to check the data<a class="anchor" aria-label="anchor" href="#simple-preset-plots-to-check-the-data"></a>
@@ -244,7 +309,7 @@ point can be highlighted (<code>highlight_first</code> and
 <code>highlight_last</code>) or just a specific number of points from
 the beginning or end of the track can be selected (<code>first_n</code>
 or <code>last_n</code>).</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># path to csv with filtered data</span></span>
 <span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
 <span>  <span class="st">"extdata"</span>, <span class="st">"watlas_data_filtered.csv"</span>,</span>
@@ -263,23 +328,23 @@ or <code>last_n</code>).</p>
 <span>  option <span class="op">=</span> <span class="st">"datetime"</span>,</span>
 <span>  highlight_first <span class="op">=</span> <span class="cn">TRUE</span>, highlight_last <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="plot_data_files/figure-html/unnamed-chunk-5-1.png" alt="Plots of single tag to check data" width="100%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<p><img src="plot_data_files/figure-html/unnamed-chunk-6-1.png" alt="Plots of single tag to check data" width="100%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot option speed_in</span></span>
 <span><span class="fu"><a href="../../reference/atl_check_tag.html">atl_check_tag</a></span><span class="op">(</span><span class="va">data</span>, option <span class="op">=</span> <span class="st">"speed_in"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plot_data_files/figure-html/unnamed-chunk-5-2.png" alt="Plots of single tag to check data" width="100%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<p><img src="plot_data_files/figure-html/unnamed-chunk-6-2.png" alt="Plots of single tag to check data" width="100%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot option nbs</span></span>
 <span><span class="fu"><a href="../../reference/atl_check_tag.html">atl_check_tag</a></span><span class="op">(</span><span class="va">data</span>, option <span class="op">=</span> <span class="st">"nbs"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plot_data_files/figure-html/unnamed-chunk-5-3.png" alt="Plots of single tag to check data" width="100%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<p><img src="plot_data_files/figure-html/unnamed-chunk-6-3.png" alt="Plots of single tag to check data" width="100%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot option sd</span></span>
 <span><span class="fu"><a href="../../reference/atl_check_tag.html">atl_check_tag</a></span><span class="op">(</span><span class="va">data</span>, option <span class="op">=</span> <span class="st">"var"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plot_data_files/figure-html/unnamed-chunk-5-4.png" alt="Plots of single tag to check data" width="100%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<p><img src="plot_data_files/figure-html/unnamed-chunk-6-4.png" alt="Plots of single tag to check data" width="100%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot option gap</span></span>
 <span><span class="fu"><a href="../../reference/atl_check_tag.html">atl_check_tag</a></span><span class="op">(</span><span class="va">data</span>, option <span class="op">=</span> <span class="st">"gap"</span>, scale_trans <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plot_data_files/figure-html/unnamed-chunk-5-5.png" alt="Plots of single tag to check data" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="plot_data_files/figure-html/unnamed-chunk-6-5.png" alt="Plots of single tag to check data" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
@@ -291,7 +356,7 @@ positions per location.</p>
 <h3 id="all-positions">All positions<a class="anchor" aria-label="anchor" href="#all-positions"></a>
 </h3>
 <p>This is a quick way to get an overview of the data.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load example data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
 <span></span>
@@ -319,14 +384,14 @@ positions per location.</p>
 <span>    labels <span class="op">=</span> <span class="fu"><a href="https://scales.r-lib.org/reference/trans_format.html" class="external-link">trans_format</a></span><span class="op">(</span><span class="st">"log10"</span>, <span class="fu"><a href="https://scales.r-lib.org/reference/parse_format.html" class="external-link">math_format</a></span><span class="op">(</span><span class="fl">10</span><span class="op">^</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="plot_data_files/figure-html/unnamed-chunk-6-1.png" alt="Heatmap of all positions" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="plot_data_files/figure-html/unnamed-chunk-7-1.png" alt="Heatmap of all positions" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="positions-by-species">Positions by species<a class="anchor" aria-label="anchor" href="#positions-by-species"></a>
 </h3>
 <p>We group the data by species (or whatever group we desire) and then
 make a plot for each of those groups.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># N by location and species</span></span>
 <span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span>, <span class="va">.N</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x_round"</span>, <span class="st">"y_round"</span>, <span class="st">"species"</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
@@ -343,7 +408,7 @@ make a plot for each of those groups.</p>
 <span>    direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">species</span>, labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span><span class="fu"><a href="../../reference/atl_spec_labs.html">atl_spec_labs</a></span><span class="op">(</span><span class="st">"singleline"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plot_data_files/figure-html/unnamed-chunk-7-1.png" alt="Heatmap of all positions by species" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="plot_data_files/figure-html/unnamed-chunk-8-1.png" alt="Heatmap of all positions by species" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
