@@ -3,7 +3,7 @@
 #' This function converts a data.frame or data.table to a simple feature (sf)
 #' object, allowing flexible specification of the x and y coordinate columns.
 #' Additional attributes can also be retained in the resulting sf object. There
-#' are four options = c("points", "lines", "table", "res_patches).
+#' are four options = c("points", "lines", "table", "res_patches").
 #'
 #' @author Johannes Krietsch
 #' @param data A `data.table` or an object convertible to a `data.table`.

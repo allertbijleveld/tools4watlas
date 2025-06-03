@@ -13,9 +13,9 @@
 #'  y-coordinates. Defaults to "y".
 #' @param asp A character string specifying the desired aspect ratio in the
 #' format `"width:height"`. Default is `"16:9"`.
-#' @param buffer A numeric value specifying the buffer distance to be applied
-#' to the bounding box. Positive values expand the bounding box, while
-#' negative values shrink it. Default is `0`.
+#' @param buffer A numeric value (in meters) specifying the buffer distance to
+#' be applied to the bounding box. Positive values expand the bounding box,
+#' while negative values shrink it. Default is `0`.
 #'
 #' @return A bounding box (`bbox`), represented as a named vector with
 #' `xmin`, `ymin`, `xmax`, and `ymax` values.
