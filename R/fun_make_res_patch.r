@@ -14,10 +14,7 @@
 #' number of positions can be excluded.The exclusion of clusters with few
 #' positions can help in removing bias due to short stops, but if such short
 #'  stops are also of interest, they can be included by reducing the
-#'  \code{min_fixes} argument. Position covariates such as speed may also be
-#'  summarised patch-wise by passing covariate names and  summary functions as
-#'  character vectors to the \code{summary_variables} and
-#'  \code{summary_functions} arguments, respectively.
+#'  \code{min_fixes} argument.
 #'
 #' @author Pratik R. Gupte, Christine E. Beardsworth & Allert I. Bijleveld &
 #' Johannes Krietsch
@@ -31,24 +28,13 @@
 #' @param lim_time_indep A numeric value of time in minutes of the time
 #' difference between two patches for them to be considered independent.
 #' @param min_fixes The minimum number of fixes for a group of
-#' spatially-proximate number of ponts to be considered a preliminary residence
+#' spatially-proximate number of points to be considered a preliminary residence
 #' patch.
 #' @param min_duration The minimum duration (in seconds) for classifying
 #' residence patches.
-#' @param summary_variables Optional variables for which patch-wise summary
-#' values are required. To be passed as a character vector.
-#' @param summary_functions The functions with which to summarise the summary
-#' variables; must return only a single value, such as median, mean etc. To be
-#' passed as a character vector.
 #'
 #' @return A data.table that has the added column
-#' \code{patch}, \code{patchdata}, and \code{polygons}, indicating the patch
-#' identity, the localization data used to construct the patch, and the polygons
-#' of residence patches based on the \code{lim_spat_indep}. In addition, there
-#' are columns with patch summaries: nfixes, dist_in_patch, dist_bw_patch and
-#' statistics based on the \code{summary_variables} and \code{summary_functions}
-#' provided.
-#' summary variables.
+#' \code{patch} indicating the patch ID.
 #' @import data.table
 #' @export
 atl_res_patch <- function(data,
@@ -56,15 +42,11 @@ atl_res_patch <- function(data,
                           lim_spat_indep = 75,
                           lim_time_indep = 180,
                           min_fixes = 3,
-                          min_duration = 120,
-                          summary_variables = c(),
-                          summary_functions = c()) {
+                          min_duration = 120) {
   # Initialize necessary variables to avoid NSE (Non-Standard Evaluation) issues
-  disp_in_patch <- dist_bw_patch <- dist_in_patch <- duration <- NULL
-  newpatch <- nfixes <- patch <- speed <- tag <- . <- NULL
-  patchdata <- polygons <- spat_diff <- time_diff_end_start <- NULL
+  row_id <- newpatch <- nfixes <- patch <- speed <- tag <- duration <- NULL
+  patchdata <- spat_diff <- time_diff_end_start <- i.patch <- NULL # nolint
   time <- time_diff <- time_end <- time_start <- spat_diff_end_start <- NULL
-  x_end <- x_start <- y_end <- y_start <- time_bw_patch <- NULL
 
   # Validate input
   assertthat::assert_that(is.data.frame(data),
@@ -91,6 +73,12 @@ atl_res_patch <- function(data,
   assertthat::assert_that(min(diff(data$time)) >= 0,
     msg = "Data for segmentation is not ordered by time"
   )
+
+  # Create unique row ID
+  data[, row_id := seq_len(nrow(data))]
+
+  # Copy of original data
+  data_original <- copy(data)
 
   tryCatch(expr = {
     # Calculate spatial and time differences
@@ -176,7 +164,7 @@ atl_res_patch <- function(data,
     patch_summary[1, "speed_between_patches_medianxy"] <- Inf
 
     ## create  residence patches on new criteria
-    ### newpatch without speed filter & with spatial distance on end-strt
+    ### new patch without speed filter & with spatial distance on end-start
     patch_summary[, `:=`(newpatch, cumsum(
       (spat_diff > lim_spat_indep | time_diff_end_start > lim_time_indep) &
         (spat_diff_end_start > lim_spat_indep)
@@ -187,72 +175,22 @@ atl_res_patch <- function(data,
     data <- data[, unlist(patchdata, recursive = FALSE), by = list(tag, patch)]
     data <- data.table::merge.data.table(data, patch_summary, by = "patch")
     data[, `:=`(patch = newpatch, newpatch = NULL)]
-    data <- data[, list(list(.SD)), by = .(tag, patch)]
-    setnames(data, old = "V1", new = "patchdata")
-    data[, `:=`(nfixes, as.integer(lapply(patchdata, nrow)))]
 
-    # Summarize and create output
-    data[, `:=`(patch_summary, lapply(patchdata, function(dt) {
-      dt2 <- dt[, unlist(lapply(.SD, function(d) {
-        list(
-          mean = as.double(mean(d)),
-          median = as.double(stats::median(d)),
-          start = as.double(data.table::first(d)),
-          end = as.double(data.table::last(d))
-        )
-      }), recursive = FALSE), .SDcols = c("x", "y", "time")]
-      setnames(dt2, stringr::str_replace(colnames(dt2), "\\.", "_"))
-      if (length(summary_variables) > 0) {
-        dt3 <- data.table::dcast(dt, 1 ~ 1,
-          fun.aggregate = eval(lapply(summary_functions, as.symbol)),
-          value.var = summary_variables
-        )
-        dt3[, `:=`(., NULL)]
-        cbind(dt2, dt3)
-      } else {
-        dt2
-      }
-    }))]
+    # Add patch ID to original data
+    data_original[data, on = "row_id", `:=`(patch = i.patch)]
 
-    ## Create patch values
-    data[, `:=`(dist_in_patch, as.double(lapply(patchdata, function(df) {
-      sum(atl_simple_dist(data = df), na.rm = TRUE)
-    })))]
-    temp_data <- data[, unlist(patch_summary, recursive = FALSE),
-      by = list(tag, patch)
-    ]
-    data[, `:=`(patch_summary, NULL)]
-    data[, `:=`(dist_bw_patch, atl_patch_dist(
-      data = temp_data,
-      x1 = "x_end", x2 = "x_start",
-      y1 = "y_end", y2 = "y_start"
-    ))]
+    # Fill positions that where excluded from proto-patches
+    # Apply forward and backward fill
+    fwd <- zoo::na.locf(data_original$patch, na.rm = FALSE)
+    bwd <- zoo::na.locf(data_original$patch, fromLast = TRUE, na.rm = FALSE)
 
-    temp_data[, `:=`(
-      time_bw_patch,
-      c(NA, as.numeric(time_start[2:length(time_start)] -
-                         time_end[seq_len(length(time_end) - 1)]))
-    )]
-    temp_data[, `:=`(disp_in_patch, sqrt((x_end - x_start)^2 +
-                                           (y_end - y_start)^2))]
-    temp_data[, `:=`(duration, (time_end - time_start))]
-    data <- data.table::merge.data.table(data, temp_data,
-      by = c("tag", "patch")
-    )
-    assertthat::assert_that(
-      !is.null(data),
-      msg = "make_patch: patch has no data"
-    )
+    # Fill only where both directions agree
+    data_original[, patch := ifelse(is.na(patch) & fwd == bwd, fwd, patch)]
 
-    # add polygons with buffer around localizations per residency patch
-    data[, `:=`(polygons, lapply(patchdata, function(df) {
-      p1 <- sf::st_as_sf(df, coords = c("x", "y"))
-      p2 <- sf::st_buffer(p1, dist = lim_spat_indep)
-      p2 <- sf::st_union(p2)
-      p2 ## output polygons
-    }))]
+    # Remove row_id
+    data_original[, row_id := NULL]
 
-    return(data)
+    return(data_original)
   }, error = function(e) {
     message(glue::glue("there was an error in {unique(data$tag)}:\n
                        {as.character(e)}"))

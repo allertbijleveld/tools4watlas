@@ -17,11 +17,12 @@ x-coordinates. Defaults to "x".}
 y-coordinates. Defaults to "y".}
 
 \item{asp}{A character string specifying the desired aspect ratio in the
-format \code{"width:height"}. Default is \code{"16:9"}.}
+format \code{"width:height"}. Default is \code{"16:9"}, if \code{NULL} returns simple
+bounding box without modifying aspect ratio.}
 
-\item{buffer}{A numeric value specifying the buffer distance to be applied
-to the bounding box. Positive values expand the bounding box, while
-negative values shrink it. Default is \code{0}.}
+\item{buffer}{A numeric value (in meters) specifying the buffer distance to
+be applied to the bounding box. Positive values expand the bounding box,
+while negative values shrink it. Default is \code{0}.}
 }
 \value{
 A bounding box (\code{bbox}), represented as a named vector with

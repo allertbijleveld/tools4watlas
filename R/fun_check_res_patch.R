@@ -4,17 +4,19 @@
 #' movement paths, patch durations, and an inset overview map.
 #'
 #' @author Johannes Krietsch
-#' @param tag Bird tag ID to subset.
-#' @param tide Tide ID to subset.
-#' @param data A `data.table` containing tracking data. Must include the
-#'   columns: `"tag"`, `"x"`, `"y"`, `"time"`,`"datetime"`, and `species`.
-#' @param patch_data A `data.table` containing residency patch details as
-#' created by `atl_res_patch()`.
+#' @param data A `data.table` containing tracking data of one tag. Must include
+#' the columns: `tag`, `x`, `y`, `time`,`datetime`, and `species` and
+#'   `patch`,  as created by `atl_res_patch()`.
 #' @param tide_data Data on the timing (in UTC) of low and high tides.
+#' @param tide Tide ID to subset.
 #' @param offset The offset in minutes between the location of the tidal gauge
 #' and the tracking area. This value will be added to the timing of the
 #' water data.
-#' @param buffer Map buffer size (default: 250).
+#' @param buffer_res_patches A numeric value (in meters) specifying the buffer
+#' around the polygon of each residency patch, which should be the same as
+#' \code{lim_spat_indep} of the residency patch calculation or larger.
+#' Otherwise some patches will be multiple polygons.
+#' @param buffer_bm Map buffer size (default: 250).
 #' @param buffer_overview Overview map buffer size (default: 10000).
 #' @param point_size Size of plotted points (default: 1).
 #' @param point_alpha Transparency of points (default: 0.5).
@@ -41,13 +43,13 @@
 #' @importFrom ggtext element_markdown
 #' @importFrom ragg agg_png
 #' @export
-atl_check_res_patch <- function(tag,
-                                tide,
-                                data,
-                                patch_data,
+
+atl_check_res_patch <- function(data,
                                 tide_data,
+                                tide,
                                 offset = 0,
-                                buffer = 250,
+                                buffer_res_patches,
+                                buffer_bm = 250,
                                 buffer_overview = 10000,
                                 point_size = 1,
                                 point_alpha = 0.5,
@@ -67,38 +69,52 @@ atl_check_res_patch <- function(tag,
                                 png_width = 3840,
                                 png_height = 2160) {
   # global variables
-  patch <- duration <- . <- time_median <- polygons <- time <- NULL
+  patch <- duration <- . <- time_median <- time <- NULL
   x <- y <- datetime <- x_median <- y_median <- tideID <- NULL # nolint
-
-  # assign tag and tideID new to avoid confusion
-  tag_id <- tag
-  tideID_id <- tide #nolint
+  i.duration <- tag <- NULL # nolint
 
   # check data structure
-  atl_check_data(data, names_expected = c("tag", "x", "y", "time", "datetime"))
-  atl_check_data(patch_data, names_expected = c(
-    "tag", "patch", "x_median", "y_median", "duration"
+  atl_check_data(data, names_expected = c(
+    "tag", "x", "y", "time", "datetime", "patch"
   ))
   atl_check_data(tide_data, names_expected = c(
     "tideID", "low_time", "high_start_level", "low_level", "high_end_level"
   ))
+  if (missing(buffer_res_patches) || is.null(buffer_res_patches)) {
+    stop(paste0(
+      "Function requiers to specify 'buffer_res_patches' value",
+      " (see description)."
+    ))
+  }
 
   # convert to DT if not
   if (data.table::is.data.table(data) != TRUE) {
     data.table::setDT(data)
   }
-  if (data.table::is.data.table(patch_data) != TRUE) {
-    data.table::setDT(patch_data)
-  }
   if (data.table::is.data.table(tide_data) != TRUE) {
     data.table::setDT(tide_data)
   }
 
-  # subset first tag and tide if more than one tag
-  ds <- data[tag == tag_id & tideID == tideID_id]
+  # subset first if more than one tag
+  ds <- data[tag == data[1]$tag]
 
-  # subset all patches linked to this tag and tide
-  dp <- patch_data[tag == tag_id & patch %in% ds$patch]
+  # assign tag and tideID new to avoid confusion
+  tag_id <- ds[1]$tag
+  tideID_id <- tide #nolint
+
+  # create patch summary
+  dp <- atl_res_patch_summary(ds)
+
+  # subset all data linked to this tide
+  ds <- ds[tideID == tideID_id]
+  dp <- dp[patch %in% unique(ds$patch)]
+
+  # check if data for this period and tide
+  if (nrow(ds) == 0) {
+    stop(paste0(
+      "No data for this tag and tide."
+    ))
+  }
 
   # subset tide pattern data
   dtp <- tide_data[tideID == tideID_id]
@@ -107,15 +123,19 @@ atl_check_res_patch <- function(tag,
   ds[, patch := as.factor(patch)]
   dp[, patch := as.factor(patch)]
 
+  # join duration to ds
+  ds[dp, on = .(tag, patch), `:=`(duration = i.duration)]
+
   # duration in mins
   ds[, duration := duration / 60]
   dp[, duration := duration / 60]
 
   # transform into sf object
-  dp_sf <- dp[, .(
-    duration,
-    geometry = sf::st_sfc(unlist(polygons, recursive = FALSE))
-  ), by = .(tag, patch)] |> sf::st_as_sf(crs = 32631)
+  dp_sf <- atl_as_sf(ds, option = "res_patches", buffer = buffer_res_patches)
+
+  # add duration
+  dp_sf <- dp_sf %>%
+    dplyr::left_join(dp[, .(tag, patch, duration)], by = c("tag", "patch"))
 
   # set time without patch to 0
   ds[is.na(duration), duration := 0]
@@ -144,9 +164,9 @@ atl_check_res_patch <- function(tag,
     mudflat_fill = mudflat_fill,
     mudflat_alpha = mudflat_alpha,
     asp = "4:3",
-    buffer = buffer
+    buffer = buffer_bm
   )
-  bbox <- atl_bbox(ds, buffer = buffer, asp = "4:3")
+  bbox <- atl_bbox(ds, buffer = buffer_bm, asp = "4:3")
 
   # plot on map
   p1 <- bm +

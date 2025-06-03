@@ -10,9 +10,7 @@ atl_res_patch(
   lim_spat_indep = 75,
   lim_time_indep = 180,
   min_fixes = 3,
-  min_duration = 120,
-  summary_variables = c(),
-  summary_functions = c()
+  min_duration = 120
 )
 }
 \arguments{
@@ -30,28 +28,15 @@ distance between two patches for them to the considered independent.}
 difference between two patches for them to be considered independent.}
 
 \item{min_fixes}{The minimum number of fixes for a group of
-spatially-proximate number of ponts to be considered a preliminary residence
+spatially-proximate number of points to be considered a preliminary residence
 patch.}
 
 \item{min_duration}{The minimum duration (in seconds) for classifying
 residence patches.}
-
-\item{summary_variables}{Optional variables for which patch-wise summary
-values are required. To be passed as a character vector.}
-
-\item{summary_functions}{The functions with which to summarise the summary
-variables; must return only a single value, such as median, mean etc. To be
-passed as a character vector.}
 }
 \value{
 A data.table that has the added column
-\code{patch}, \code{patchdata}, and \code{polygons}, indicating the patch
-identity, the localization data used to construct the patch, and the polygons
-of residence patches based on the \code{lim_spat_indep}. In addition, there
-are columns with patch summaries: nfixes, dist_in_patch, dist_bw_patch and
-statistics based on the \code{summary_variables} and \code{summary_functions}
-provided.
-summary variables.
+\code{patch} indicating the patch ID.
 }
 \description{
 A cleaned movement track of one individual at a time can be classified into
@@ -68,10 +53,7 @@ distance threshold between clusters of positions (called
 number of positions can be excluded.The exclusion of clusters with few
 positions can help in removing bias due to short stops, but if such short
 stops are also of interest, they can be included by reducing the
-\code{min_fixes} argument. Position covariates such as speed may also be
-summarised patch-wise by passing covariate names and  summary functions as
-character vectors to the \code{summary_variables} and
-\code{summary_functions} arguments, respectively.
+\code{min_fixes} argument.
 }
 \author{
 Pratik R. Gupte, Christine E. Beardsworth & Allert I. Bijleveld &

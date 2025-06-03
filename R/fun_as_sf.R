@@ -3,7 +3,7 @@
 #' This function converts a data.frame or data.table to a simple feature (sf)
 #' object, allowing flexible specification of the x and y coordinate columns.
 #' Additional attributes can also be retained in the resulting sf object. There
-#' are three options = c("points", "lines", "table").
+#' are four options = c("points", "lines", "table", "res_patches").
 #'
 #' @author Johannes Krietsch
 #' @param data A `data.table` or an object convertible to a `data.table`.
@@ -22,7 +22,16 @@
 #'  columns included).
 #' @param option A character string with "points" (default) for returning sf
 #'  points, "lines" to return sf lines and "table" to return a table with a sf
-#' coordinates column.
+#' coordinates column or "res_patches" to return sf polygons with residency
+#' patches. For the latter, the please specify a buffer used around the points,
+#' which should be the same as \code{lim_spat_indep} of the residency patch
+#' calculation or larger. Otherwise some patches will be multiple polygons.
+#' Points outside patches are excluded when choosing option "res_patches".
+#' @param buffer A numeric value (in meters) specifying the buffer around the
+#' polygon of each residency patch, which should be the same as
+#' \code{lim_spat_indep} of the residency patch calculation or larger.
+#' Otherwise some patches will be multiple polygons.
+#' \code{lim_spat_indep} of the residency patch calculation.
 #' @return An `sf` object containing the specified coordinates as geometry and
 #'  any included attributes.
 #' @import data.table
@@ -59,9 +68,11 @@ atl_as_sf <- function(data,
                       y = "y",
                       projection = sf::st_crs(32631),
                       additional_cols = NULL,
-                      option = "points") {
+                      option = "points",
+                      buffer) {
+
   # Global variables to suppress notes in data.table
-  tag_dummy <- NULL
+  tag_dummy <- patch <- geometry <- NULL
 
   # Convert to data.table if not already
   if (!is.data.table(data)) {
@@ -88,6 +99,16 @@ atl_as_sf <- function(data,
     stop("Specified tag column do not exist in the data.")
   }
 
+  # Additional check for 'res_patches' option
+  if (option == "res_patches") {
+    if (!"patch" %in% names(data)) {
+      stop("Option 'res_patches' requires a 'patch' column in the data.")
+    }
+    if (missing(buffer) || is.null(buffer)) {
+      stop("Option 'res_patches' requires a specified 'buffer' value.")
+    }
+  }
+
   # Include additional columns if specified
   if (!is.null(additional_cols)) {
     # Ensure all specified additional columns exist in the data
@@ -103,6 +124,11 @@ atl_as_sf <- function(data,
   } else {
     # Default to only x and y columns
     cols_to_keep <- c(tag_col, x_col, y_col)
+  }
+
+  # If "res_patches" option, include 'patch'
+  if (option == "res_patches" && !"patch" %in% cols_to_keep) {
+    cols_to_keep <- c(cols_to_keep, "patch")
   }
 
   # Exclude rows where x or y are NA
@@ -137,6 +163,18 @@ atl_as_sf <- function(data,
     table = {
       # Return data.table with coordinates as column
       data.table::data.table(d_sf)
+    },
+    res_patches = {
+      # Return sf with residency patches and buffer
+      d_sf %>%
+        dplyr::filter(!is.na(patch)) %>% # remove NA patches (not part of patch)
+        dplyr::group_by(tag, patch) %>% # group by patch
+        # combine points
+        dplyr::summarise(geometry = sf::st_combine(geometry)) %>%
+        # polygon from points
+        dplyr::mutate(geometry = sf::st_convex_hull(geometry)) %>%
+        sf::st_as_sf() %>% # convert to sf object
+        sf::st_buffer(dist = buffer) # buffer in m
     },
     stop("Invalid option")
   )

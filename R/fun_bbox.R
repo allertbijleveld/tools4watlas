@@ -12,10 +12,11 @@
 #' @param y A character string representing the name of the column containing
 #'  y-coordinates. Defaults to "y".
 #' @param asp A character string specifying the desired aspect ratio in the
-#' format `"width:height"`. Default is `"16:9"`.
-#' @param buffer A numeric value specifying the buffer distance to be applied
-#' to the bounding box. Positive values expand the bounding box, while
-#' negative values shrink it. Default is `0`.
+#' format `"width:height"`. Default is `"16:9"`, if `NULL` returns simple
+#' bounding box without modifying aspect ratio.
+#' @param buffer A numeric value (in meters) specifying the buffer distance to
+#' be applied to the bounding box. Positive values expand the bounding box,
+#' while negative values shrink it. Default is `0`.
 #'
 #' @return A bounding box (`bbox`), represented as a named vector with
 #' `xmin`, `ymin`, `xmax`, and `ymax` values.
@@ -39,11 +40,13 @@ atl_bbox <- function(data,
                      asp = "16:9",
                      buffer = 0) {
   # Check input
-  assertthat::assert_that(
-    stringr::str_detect(asp, ":"),
-    length(as.numeric(unlist(strsplit(asp, ":")))) == 2,
-    msg = "Aspect ratio must be in the format 'width:height'."
-  )
+  if (!is.null(asp)) {
+    assertthat::assert_that(
+      stringr::str_detect(asp, ":"),
+      length(as.numeric(unlist(strsplit(asp, ":")))) == 2,
+      msg = "Aspect ratio must be in the format 'width:height'."
+    )
+  }
 
   if (inherits(data, c("sf", "sfc"))) {
     if (nrow(sf::st_coordinates(data)) == 1) {
@@ -60,9 +63,6 @@ atl_bbox <- function(data,
       )
     }
   }
-
-  # Parse the aspect ratio
-  ratio <- as.numeric(unlist(strsplit(asp, ":")))
 
   # Extract the original bounding box
   if (inherits(data, c("sf", "sfc"))) {
@@ -84,6 +84,14 @@ atl_bbox <- function(data,
     bbox <- sf::st_as_sfc(bbox) |> sf::st_buffer(dist = buffer) |> sf::st_bbox()
   }
 
+  # If asp is NULL, return the bbox without modifying aspect ratio
+  if (is.null(asp)) {
+    return(bbox)
+  } 
+  
+  # Parse the aspect ratio
+  ratio <- as.numeric(unlist(strsplit(asp, ":")))
+  
   # Extract range
   x_range <- bbox["xmax"] - bbox["xmin"]
   y_range <- bbox["ymax"] - bbox["ymin"]

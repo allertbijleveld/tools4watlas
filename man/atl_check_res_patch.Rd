@@ -5,13 +5,12 @@
 \title{Check the residency patches from one tag during one tide}
 \usage{
 atl_check_res_patch(
-  tag,
-  tide,
   data,
-  patch_data,
   tide_data,
+  tide,
   offset = 0,
-  buffer = 250,
+  buffer_res_patches,
+  buffer_bm = 250,
   buffer_overview = 10000,
   point_size = 1,
   point_alpha = 0.5,
@@ -33,23 +32,24 @@ atl_check_res_patch(
 )
 }
 \arguments{
-\item{tag}{Bird tag ID to subset.}
-
-\item{tide}{Tide ID to subset.}
-
-\item{data}{A \code{data.table} containing tracking data. Must include the
-columns: \code{"tag"}, \code{"x"}, \code{"y"}, \code{"time"},\code{"datetime"}, and \code{species}.}
-
-\item{patch_data}{A \code{data.table} containing residency patch details as
-created by \code{atl_res_patch()}.}
+\item{data}{A \code{data.table} containing tracking data of one tag. Must include
+the columns: \code{tag}, \code{x}, \code{y}, \code{time},\code{datetime}, and \code{species} and
+\code{patch},  as created by \code{atl_res_patch()}.}
 
 \item{tide_data}{Data on the timing (in UTC) of low and high tides.}
+
+\item{tide}{Tide ID to subset.}
 
 \item{offset}{The offset in minutes between the location of the tidal gauge
 and the tracking area. This value will be added to the timing of the
 water data.}
 
-\item{buffer}{Map buffer size (default: 250).}
+\item{buffer_res_patches}{A numeric value (in meters) specifying the buffer
+around the polygon of each residency patch, which should be the same as
+\code{lim_spat_indep} of the residency patch calculation or larger.
+Otherwise some patches will be multiple polygons.}
+
+\item{buffer_bm}{Map buffer size (default: 250).}
 
 \item{buffer_overview}{Overview map buffer size (default: 10000).}
 

@@ -94,13 +94,14 @@ y-coordinates. Defaults to "y".</p></dd>
 
 <dt id="arg-asp">asp<a class="anchor" aria-label="anchor" href="#arg-asp"></a></dt>
 <dd><p>A character string specifying the desired aspect ratio in the
-format <code>"width:height"</code>. Default is <code>"16:9"</code>.</p></dd>
+format <code>"width:height"</code>. Default is <code>"16:9"</code>, if <code>NULL</code> returns simple
+bounding box without modifying aspect ratio.</p></dd>
 
 
 <dt id="arg-buffer">buffer<a class="anchor" aria-label="anchor" href="#arg-buffer"></a></dt>
-<dd><p>A numeric value specifying the buffer distance to be applied
-to the bounding box. Positive values expand the bounding box, while
-negative values shrink it. Default is <code>0</code>.</p></dd>
+<dd><p>A numeric value (in meters) specifying the buffer distance to
+be applied to the bounding box. Positive values expand the bounding box,
+while negative values shrink it. Default is <code>0</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

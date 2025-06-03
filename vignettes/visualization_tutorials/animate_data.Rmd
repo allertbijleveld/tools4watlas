@@ -302,6 +302,12 @@ foreach(i = steps) %dofuture% {
   waterline <- as.polygons(bat_m, values = TRUE, dissolve = TRUE) |>
     st_as_sf() # extract polygon with water level
 
+  # create basemap
+  bm <- atl_create_bm(
+    buffer = 800, raster_data = bat_c, option = "bathymetry", shade = FALSE, 
+    scalebar = FALSE
+  )
+
   # add everything to the basemap
   p <- bm +
     # add water level

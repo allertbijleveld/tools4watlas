@@ -109,6 +109,7 @@ is helpful, but not necessary, when working with
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org" class="external-link">scales</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sjmgarnier.github.io/viridis/" class="external-link">viridis</a></span><span class="op">)</span></span></code></pre></div>
@@ -132,7 +133,7 @@ with the following columns:</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><strong>season</strong></td>
+<td><strong>year</strong></td>
 <td>Year in which the bird was caught</td>
 </tr>
 <tr class="even">
@@ -175,8 +176,8 @@ with the following columns:</p>
 <span>  <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># subset desired tags using data.table</span></span>
-<span><span class="co"># (for example all tags from season 2023)</span></span>
-<span><span class="va">tags</span> <span class="op">&lt;-</span> <span class="va">all_tags</span><span class="op">[</span><span class="va">season</span> <span class="op">==</span> <span class="fl">2023</span><span class="op">]</span><span class="op">$</span><span class="va">tag</span></span>
+<span><span class="co"># (for example all tags from 2023)</span></span>
+<span><span class="va">tags</span> <span class="op">&lt;-</span> <span class="va">all_tags</span><span class="op">[</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2023</span><span class="op">]</span><span class="op">$</span><span class="va">tag</span></span>
 <span></span>
 <span><span class="co"># time period for which data should be extracted form the database (in CET)</span></span>
 <span><span class="va">from</span> <span class="op">&lt;-</span> <span class="st">"2023-09-21 00:00:00"</span></span>
@@ -230,7 +231,7 @@ then add them in your environment like this:</p>
 <p><code>atl_get_data</code> does the same as when connecting to a local
 SQLite database when connecting to a remote database. In this example
 (chunk not run and only shown) we load the last three days of data from
-all tags of season 2024. Host, username and password are specified as
+all tags of 2024. Host, username and password are specified as
 environmental variables in this example, but can also be specified
 directly.</p>
 <p>Since we want the up to date metadata we load the
@@ -250,7 +251,7 @@ of this folder or add the path for your user in the
 <span>  <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># subset all tags from 2024</span></span>
-<span><span class="va">tags</span> <span class="op">&lt;-</span> <span class="va">all_tags</span><span class="op">[</span><span class="va">season</span> <span class="op">==</span> <span class="fl">2024</span><span class="op">]</span><span class="op">$</span><span class="va">tag</span></span>
+<span><span class="va">tags</span> <span class="op">&lt;-</span> <span class="va">all_tags</span><span class="op">[</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2024</span><span class="op">]</span><span class="op">$</span><span class="va">tag</span></span>
 <span></span>
 <span><span class="co"># select N last days to get data from</span></span>
 <span><span class="va">days</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
@@ -432,18 +433,36 @@ number</td>
 </tbody>
 </table>
 <div class="section level3">
+<h3 id="remove-data-before-release">Remove data before release<a class="anchor" aria-label="anchor" href="#remove-data-before-release"></a>
+</h3>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># correct time zone to CET and change to UTC</span></span>
+<span><span class="va">all_tags</span><span class="op">[</span>, <span class="va">release_ts</span> <span class="op">:=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/force_tz.html" class="external-link">force_tz</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/as_date.html" class="external-link">as_datetime</a></span><span class="op">(</span><span class="va">release_ts</span><span class="op">)</span>, tzone <span class="op">=</span> <span class="st">"CET"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">all_tags</span><span class="op">[</span>, <span class="va">release_ts</span> <span class="op">:=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/with_tz.html" class="external-link">with_tz</a></span><span class="op">(</span><span class="va">release_ts</span>, tzone <span class="op">=</span> <span class="st">"UTC"</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># join release_ts with data</span></span>
+<span><span class="va">all_tags</span><span class="op">[</span>, <span class="va">tag</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">tag</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">data</span><span class="op">[</span><span class="va">all_tags</span>, on <span class="op">=</span> <span class="st">"tag"</span>, <span class="fu">`:=`</span><span class="op">(</span>release_ts <span class="op">=</span> <span class="va">i.release_ts</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># exclude positions before the release</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">datetime</span> <span class="op">&gt;</span> <span class="va">release_ts</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># remove release_ts column</span></span>
+<span><span class="va">data</span><span class="op">[</span>, <span class="va">release_ts</span> <span class="op">:=</span> <span class="cn">NULL</span><span class="op">]</span></span></code></pre></div>
+</div>
+<div class="section level3">
 <h3 id="add-species-column-or-other-relevant-columns">Add species column (or other relevant columns)<a class="anchor" aria-label="anchor" href="#add-species-column-or-other-relevant-columns"></a>
 </h3>
 <p>If we are working with multiple species, then we can join the species
 from the metadata. In this case I want the species to be the first row
 of the table.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># join with species data</span></span>
 <span><span class="va">all_tags</span><span class="op">[</span>, <span class="va">tag</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">tag</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">data</span><span class="op">[</span><span class="va">all_tags</span>, on <span class="op">=</span> <span class="st">"tag"</span>, <span class="fu">`:=`</span><span class="op">(</span>species <span class="op">=</span> <span class="va">i.species</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># make species first column</span></span>
-<span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setcolorder.html" class="external-link">setcolorder</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setcolorder.html" class="external-link">setcolorder</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span>, <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># order data.table</span></span>
 <span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setorder.html" class="external-link">setorder</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">species</span>, <span class="va">tag</span>, <span class="va">time</span><span class="op">)</span></span></code></pre></div>
@@ -452,7 +471,7 @@ of the table.</p>
 data sets, it is advised to only add columns that are necessary. This
 can also always be done whenever needed. This is just an example and
 Here we delete the columns again.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># join with metal rings, color rings and catch location</span></span>
 <span><span class="va">all_tags</span><span class="op">[</span>, <span class="va">tag</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">tag</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">data</span><span class="op">[</span><span class="va">all_tags</span>, on <span class="op">=</span> <span class="st">"tag"</span>, <span class="fu">`:=`</span><span class="op">(</span></span>
@@ -474,7 +493,7 @@ convenient and fast way is to use <code>fwrite</code> from the
 <code>data.table</code> package. By including <code>yaml = TRUE</code>
 we make sure the data stays in the same format when we load it again.
 Change the file path when running this example.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># save data</span></span>
 <span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span><span class="va">data</span>, file <span class="op">=</span> <span class="st">"../inst/extdata/watlas_data_raw.csv"</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -486,7 +505,7 @@ Change the file path when running this example.</p>
 </h4>
 <p>Here we simply check for how many individuals we have data and how
 many positions by tag and date we have.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="st">"../inst/extdata/watlas_data_raw.csv"</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -496,20 +515,20 @@ many positions by tag and date we have.</p>
 <span><span class="co"># N individuals with tagging data</span></span>
 <span><span class="va">data_summary</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 8</span></span></code></pre>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># N by species</span></span>
 <span><span class="va">data_summary</span><span class="op">[</span>, <span class="va">.N</span>, by <span class="op">=</span> <span class="va">species</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">##              species     N</span></span>
 <span><span class="co">##               &lt;char&gt; &lt;int&gt;</span></span>
-<span><span class="co">## 1:          redshank     1</span></span>
-<span><span class="co">## 2:          red knot     1</span></span>
-<span><span class="co">## 3: bar-tailed godwit     1</span></span>
-<span><span class="co">## 4:            curlew     1</span></span>
-<span><span class="co">## 5:     oystercatcher     1</span></span>
-<span><span class="co">## 6:         turnstone     1</span></span>
-<span><span class="co">## 7:            dunlin     1</span></span>
-<span><span class="co">## 8:        sanderling     1</span></span></code></pre>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<span><span class="co">## 1: bar-tailed godwit     1</span></span>
+<span><span class="co">## 2:            curlew     1</span></span>
+<span><span class="co">## 3:            dunlin     1</span></span>
+<span><span class="co">## 4:     oystercatcher     1</span></span>
+<span><span class="co">## 5:          red knot     1</span></span>
+<span><span class="co">## 6:          redshank     1</span></span>
+<span><span class="co">## 7:        sanderling     1</span></span>
+<span><span class="co">## 8:         turnstone     1</span></span></code></pre>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># show head of the table</span></span>
 <span><span class="va">data_summary</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -539,30 +558,6 @@ many positions by tag and date we have.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">redshank</td>
-<td align="left">3027</td>
-<td align="right">15859</td>
-<td align="left">2023-09-23 03:13:22</td>
-<td align="left">2023-09-23 22:24:26</td>
-<td align="right">0.8</td>
-<td align="right">3</td>
-<td align="right">2523</td>
-<td align="left">42 min</td>
-<td align="right">0.69</td>
-</tr>
-<tr class="even">
-<td align="left">red knot</td>
-<td align="left">3038</td>
-<td align="right">15959</td>
-<td align="left">2023-09-23 00:00:01</td>
-<td align="left">2023-09-23 23:59:57</td>
-<td align="right">1.0</td>
-<td align="right">3</td>
-<td align="right">2850</td>
-<td align="left">47.5 min</td>
-<td align="right">0.55</td>
-</tr>
-<tr class="odd">
 <td align="left">bar-tailed godwit</td>
 <td align="left">3063</td>
 <td align="right">12614</td>
@@ -587,30 +582,6 @@ many positions by tag and date we have.</p>
 <td align="right">0.41</td>
 </tr>
 <tr class="odd">
-<td align="left">oystercatcher</td>
-<td align="left">3158</td>
-<td align="right">12533</td>
-<td align="left">2023-09-23 00:00:01</td>
-<td align="left">2023-09-23 23:59:57</td>
-<td align="right">1.0</td>
-<td align="right">3</td>
-<td align="right">3060</td>
-<td align="left">51 min</td>
-<td align="right">0.44</td>
-</tr>
-<tr class="even">
-<td align="left">turnstone</td>
-<td align="left">3188</td>
-<td align="right">10195</td>
-<td align="left">2023-09-23 00:00:45</td>
-<td align="left">2023-09-23 23:41:50</td>
-<td align="right">1.0</td>
-<td align="right">3</td>
-<td align="right">5742</td>
-<td align="left">1.6 hours</td>
-<td align="right">0.36</td>
-</tr>
-<tr class="odd">
 <td align="left">dunlin</td>
 <td align="left">3212</td>
 <td align="right">3856</td>
@@ -623,6 +594,42 @@ many positions by tag and date we have.</p>
 <td align="right">0.36</td>
 </tr>
 <tr class="even">
+<td align="left">oystercatcher</td>
+<td align="left">3158</td>
+<td align="right">12533</td>
+<td align="left">2023-09-23 00:00:01</td>
+<td align="left">2023-09-23 23:59:57</td>
+<td align="right">1.0</td>
+<td align="right">3</td>
+<td align="right">3060</td>
+<td align="left">51 min</td>
+<td align="right">0.44</td>
+</tr>
+<tr class="odd">
+<td align="left">red knot</td>
+<td align="left">3038</td>
+<td align="right">15959</td>
+<td align="left">2023-09-23 00:00:01</td>
+<td align="left">2023-09-23 23:59:57</td>
+<td align="right">1.0</td>
+<td align="right">3</td>
+<td align="right">2850</td>
+<td align="left">47.5 min</td>
+<td align="right">0.55</td>
+</tr>
+<tr class="even">
+<td align="left">redshank</td>
+<td align="left">3027</td>
+<td align="right">15859</td>
+<td align="left">2023-09-23 03:13:22</td>
+<td align="left">2023-09-23 22:24:26</td>
+<td align="right">0.8</td>
+<td align="right">3</td>
+<td align="right">2523</td>
+<td align="left">42 min</td>
+<td align="right">0.69</td>
+</tr>
+<tr class="odd">
 <td align="left">sanderling</td>
 <td align="left">3288</td>
 <td align="right">8131</td>
@@ -633,6 +640,18 @@ many positions by tag and date we have.</p>
 <td align="right">2622</td>
 <td align="left">43.7 min</td>
 <td align="right">0.56</td>
+</tr>
+<tr class="even">
+<td align="left">turnstone</td>
+<td align="left">3188</td>
+<td align="right">10195</td>
+<td align="left">2023-09-23 00:00:45</td>
+<td align="left">2023-09-23 23:41:50</td>
+<td align="right">1.0</td>
+<td align="right">3</td>
+<td align="right">5742</td>
+<td align="left">1.6 hours</td>
+<td align="right">0.36</td>
 </tr>
 </tbody>
 </table>
@@ -693,7 +712,7 @@ between <code>first_data</code> and <code>last_data</code>)</td>
 </tbody>
 </table>
 <p>Plot the number of positions by day.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># add date</span></span>
 <span><span class="va">data</span><span class="op">[</span>, <span class="va">date</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">datetime</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -712,7 +731,7 @@ between <code>first_data</code> and <code>last_data</code>)</td>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Date"</span>, y <span class="op">=</span> <span class="st">"Tag"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_classic</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="load_and_check_data_files/figure-html/unnamed-chunk-11-1.png" alt="Number of positions per day by tag" width="100%"><p class="caption">
+<img src="load_and_check_data_files/figure-html/unnamed-chunk-12-1.png" alt="Number of positions per day by tag" width="100%"><p class="caption">
 Number of positions per day by tag
 </p>
 </div>
@@ -725,7 +744,7 @@ convenient to plot heatmaps, as plotting for example 40 million points
 would result in a lot of over plotting and makes the plotting slow. If
 the dataset is small, one can obviously also plot the data by tag number
 or in other ways (see vignette plotting data).</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create basemap</span></span>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data</span>, buffer <span class="op">=</span> <span class="fl">800</span><span class="op">)</span></span>
 <span></span>
@@ -751,7 +770,7 @@ or in other ways (see vignette plotting data).</p>
 <span>    direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="load_and_check_data_files/figure-html/unnamed-chunk-12-1.png" alt="Heatmap of all positions" width="100%"><p class="caption">
+<img src="load_and_check_data_files/figure-html/unnamed-chunk-13-1.png" alt="Heatmap of all positions" width="100%"><p class="caption">
 Heatmap of all positions
 </p>
 </div>

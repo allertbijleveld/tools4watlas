@@ -400,6 +400,12 @@ with saving png in the defined size).</p>
 <span>  <span class="va">waterline</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.polygons.html" class="external-link">as.polygons</a></span><span class="op">(</span><span class="va">bat_m</span>, values <span class="op">=</span> <span class="cn">TRUE</span>, dissolve <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># extract polygon with water level</span></span>
 <span></span>
+<span>  <span class="co"># create basemap</span></span>
+<span>  <span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span></span>
+<span>    buffer <span class="op">=</span> <span class="fl">800</span>, raster_data <span class="op">=</span> <span class="va">bat_c</span>, option <span class="op">=</span> <span class="st">"bathymetry"</span>, shade <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>    scalebar <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
 <span>  <span class="co"># add everything to the basemap</span></span>
 <span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="va">bm</span> <span class="op">+</span></span>
 <span>    <span class="co"># add water level</span></span>
