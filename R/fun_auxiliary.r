@@ -100,6 +100,61 @@ atl_spec_labs <- function(option = "multiline") {
   }
 }
 
+
+#' Assign colours to tag ID's
+#'
+#' Generates distinct and visually distinct colours for a set of input tags
+#' using the default hue-based palette from ggplot2
+#' (via \code{scales::hue_pal()}).
+#' This is useful for assigning consistent colours to categorical labels in
+#' plots, for example in an animation, where not all individuals always have
+#' data in each frame.
+#'
+#' @param tags A character or numeric vector of tags. Duplicate values are
+#' ignored.
+#' @param option A string indicating the output format. Either \code{"vector"}
+#'   for a named character vector of hex colors, or \code{"table"} for a
+#'   \code{data.table} with columns \code{tag} and \code{colour}. Default is
+#'   \code{"vector"}.
+#'
+#' @return A named character vector of hex color codes if 
+#'  \code{option = "vector"}, or a \code{data.table} with two columns
+#'  (\code{tag}, \code{colour}) if
+#'   \code{option = "table"}.
+#'
+#' @examples
+#' # Default output (named vector)
+#' atl_tag_cols(c("1234", "2121", "9999"))
+#'
+#' # Output as a data.table
+#' atl_tag_cols(c("1234", "2121", "9999"), option = "table")
+#'
+#' @importFrom scales hue_pal
+#' @export
+atl_tag_cols <- function(tags, option = "vector") {
+  # ensure valid input
+  match.arg(option, choices = c("vector", "table"))
+  
+  # convert to character in case tags are numeric
+  tags <- as.character(unique(tags))
+  
+  # generate ggplot2-like colours using hue_pal
+  n_tags <- length(tags)
+  colours <- scales::hue_pal()(n_tags)
+  
+  tag_colours <- stats::setNames(colours, tags)
+  
+  # return selected format
+  if (option == "vector") {
+    return(tag_colours)
+  } else {
+    return(data.table::data.table(
+      tag = names(tag_colours),
+      colour = tag_colours
+    ))
+  }
+}
+
 #' Format time in easy readable interval
 #'
 #' This function converts a given time (in seconds) into a easy readable format

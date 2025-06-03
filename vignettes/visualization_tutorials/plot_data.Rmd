@@ -34,7 +34,7 @@ library(scales)
 
 ## Plot grouped by tag ID
 
-Simply colour points and the path with tag ID.
+Simply colour points and the path with tag ID. The When one needs individual consistent colours between plots, one can use `atl_tag_cols(data$tag)` to assign them (see second example). 
 
 ```{r, fig.alt = "Points and tracks on a simple basemap by tag ID", fig.align = "center"}
 # load example data
@@ -47,11 +47,27 @@ bm <- atl_create_bm(data, buffer = 800)
 bm +
   geom_path(
     data = data, aes(x, y, colour = tag),
+    linewidth = 0.5, alpha = 0.1, show.legend = TRUE
+  ) +
+  geom_point(
+    data = data, aes(x, y, colour = tag),
+    size = 0.5, alpha = 1, show.legend = TRUE
+  ) + 
+  scale_color_discrete(name = paste("N = ", length(unique(data$tag)))) +
+  theme(legend.position = "top")
+
+# plot points and tracks with fixed assigned colours (e.g. in animations)
+bm +
+  geom_path(
+    data = data, aes(x, y, colour = tag),
     linewidth = 0.5, alpha = 0.1, show.legend = FALSE
   ) +
   geom_point(
     data = data, aes(x, y, colour = tag),
     size = 0.5, alpha = 1, show.legend = FALSE
+  ) +
+    scale_color_manual(
+    values = atl_tag_cols(data$tag)
   )
 
 # plot points and tracks with viridis colour scale
@@ -81,7 +97,7 @@ bm <- atl_create_bm(data, buffer = 800)
 # plot points and tracks
 bm +
   geom_path(
-    data = data, aes(x, y, colour = species),
+    data = data, aes(x, y, group = tag, colour = species),
     linewidth = 0.5, alpha = 0.5, show.legend = FALSE
   ) +
   geom_point(
