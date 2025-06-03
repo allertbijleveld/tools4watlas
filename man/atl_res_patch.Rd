@@ -36,7 +36,7 @@ residence patches.}
 }
 \value{
 A data.table that has the added column
-\code{patch} indicating the patch.
+\code{patch} indicating the patch ID.
 }
 \description{
 A cleaned movement track of one individual at a time can be classified into

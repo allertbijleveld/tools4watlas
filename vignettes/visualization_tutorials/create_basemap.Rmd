@@ -58,6 +58,22 @@ bm <- atl_create_bm(location, buffer = 7000, projection = sf::st_crs(4326))
 bm
 ```
 
+Instead of using one central point and a buffer we can also provide two points (corners of a rectangle) to specify the basemap. When we do this, we also might not want to use a buffer and a specific aspect ratio, so we can set `buffer = 0` and `asp = NULL`, but if desired we can also use a buffer and an aspect ratio. The example below shows how to create a basemap around Griend and Richel with two corner points, which is useful when we want to zoom into a specific area of the map. The first point is north-west of Richel and the second point south-east of Griend.
+
+```{r, fig.alt = "Basemap around Griend"}
+# specify corner points
+corner_points <- data.table(x = c(5.107, 5.330), y = c(53.303, 53.230))
+
+# create basemap
+bm <- atl_create_bm(
+  corner_points,
+  buffer = 0, asp = NULL, projection = sf::st_crs(4326)
+)
+
+# plot
+bm
+```
+
 ### Basemap with extend of movement data
 
 ```{r, fig.alt = "Points and tracks on basemap"}

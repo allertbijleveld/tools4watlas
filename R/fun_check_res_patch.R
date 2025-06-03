@@ -71,7 +71,7 @@ atl_check_res_patch <- function(data,
   # global variables
   patch <- duration <- . <- time_median <- time <- NULL
   x <- y <- datetime <- x_median <- y_median <- tideID <- NULL # nolint
-  i.duration <- NULL # nolint
+  i.duration <- tag <- NULL # nolint
 
   # check data structure
   atl_check_data(data, names_expected = c(
@@ -97,7 +97,7 @@ atl_check_res_patch <- function(data,
 
   # subset first if more than one tag
   ds <- data[tag == data[1]$tag]
-  
+
   # assign tag and tideID new to avoid confusion
   tag_id <- ds[1]$tag
   tideID_id <- tide #nolint
@@ -108,7 +108,7 @@ atl_check_res_patch <- function(data,
   # subset all data linked to this tide
   ds <- ds[tideID == tideID_id]
   dp <- dp[patch %in% unique(ds$patch)]
-  
+
   # check if data for this period and tide
   if (nrow(ds) == 0) {
     stop(paste0(
