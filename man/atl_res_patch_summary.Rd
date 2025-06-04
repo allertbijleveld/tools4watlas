@@ -4,12 +4,20 @@
 \alias{atl_res_patch_summary}
 \title{Summary of patch data}
 \usage{
-atl_res_patch_summary(data, summary_variables = c(), summary_functions = c())
+atl_res_patch_summary(
+  data,
+  id_columns = c("tag", "patch"),
+  summary_variables = c(),
+  summary_functions = c()
+)
 }
 \arguments{
 \item{data}{A data.frame or data.table containing movement data. Must include
 columns: \code{tag} (ID), \code{x}, \code{y} (coords),
 \code{time} (timestamp), and \code{patch} (patch ID).}
+
+\item{id_columns}{A character vector specifying the column(s) to group by.
+Defaults to "tag" and "patch".}
 
 \item{summary_variables}{Character vector of variable names in \code{data}
 for additional summaries. Variables should be numeric or compatible with

@@ -16,6 +16,8 @@
 #' @param data A data.frame or data.table containing movement data. Must include
 #'   columns: \code{tag} (ID), \code{x}, \code{y} (coords),
 #'   \code{time} (timestamp), and \code{patch} (patch ID).
+#' @param id_columns A character vector specifying the column(s) to group by.
+#'        Defaults to "tag" and "patch".
 #' @param summary_variables Character vector of variable names in \code{data}
 #'   for additional summaries. Variables should be numeric or compatible with
 #'   the summary functions.
@@ -48,6 +50,7 @@
 #' @export
 
 atl_res_patch_summary <- function(data,
+                                  id_columns = c("tag", "patch"),
                                   summary_variables = c(),
                                   summary_functions = c()) {
 
@@ -90,7 +93,7 @@ atl_res_patch_summary <- function(data,
     time_median = median(time),
     time_start = first(time),
     time_end = last(time)
-  ), by = .(tag, patch)]
+  ), by = c(id_columns)]
 
   # Additional summaries dynamically if any
   if (length(summary_variables) > 0) {
@@ -102,7 +105,7 @@ atl_res_patch_summary <- function(data,
     }), by = .(tag, patch)]
     ds <- merge(
       ds, extra_summaries,
-      by = c("tag", "patch"), all.x = TRUE
+      by = c(id_columns), all.x = TRUE
     )
   }
 
