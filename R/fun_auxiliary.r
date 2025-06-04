@@ -189,6 +189,10 @@ atl_tag_cols <- function(tags, option = "vector") {
 #' 
 #' @export
 atl_tag_labs <- function(data, columns, sep = " ") {
+
+  # Global variables to suppress notes in data.table
+  tag <- label <- NULL
+  
   # check data structure
   if (!("tag" %in% names(data))) {
     stop("Error: 'tag' column is missing from the data.")
@@ -216,7 +220,7 @@ atl_tag_labs <- function(data, columns, sep = " ") {
   )]
   
   # return named vector with tag as names and combined label as values
-  return(setNames(labels$label, labels$tag))
+  return(stats::setNames(labels$label, labels$tag))
 }
 
 #' Format time in easy readable interval
