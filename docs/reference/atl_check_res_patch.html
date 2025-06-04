@@ -121,9 +121,10 @@ water data.</p></dd>
 
 <dt id="arg-buffer-res-patches">buffer_res_patches<a class="anchor" aria-label="anchor" href="#arg-buffer-res-patches"></a></dt>
 <dd><p>A numeric value (in meters) specifying the buffer
-around the polygon of each residency patch, which should be the same as
-<code>lim_spat_indep</code> of the residency patch calculation or larger.
-Otherwise some patches will be multiple polygons.</p></dd>
+around the polygon of each residency patch, which should be
+half of <code>lim_spat_indep</code> of the residency patch calculation. If not
+the function can create MULTIPOLGONS for single residency patches. That will
+give a warning message, but works if desired.</p></dd>
 
 
 <dt id="arg-buffer-bm">buffer_bm<a class="anchor" aria-label="anchor" href="#arg-buffer-bm"></a></dt>
