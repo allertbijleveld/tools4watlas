@@ -16,12 +16,10 @@
 #' @param data A data.frame or data.table containing movement data. Must include
 #'   columns: \code{tag} (ID), \code{x}, \code{y} (coords),
 #'   \code{time} (timestamp), and \code{patch} (patch ID).
-#' @param id_columns A character vector specifying the column(s) to group by.
-#'        Defaults to "tag" and "patch".
 #' @param summary_variables Character vector of variable names in \code{data}
 #'   for additional summaries. Variables should be numeric or compatible with
 #'   the summary functions.
-#' @param summary_functions Character vector of function name (as single string)
+#' @param summary_functions Character vector of function names 
 #'   to apply to each variable in \code{summary_variables}. Functions must work
 #'   on numeric vectors (e.g., "mean" or "median").
 #'
@@ -37,7 +35,7 @@
 #'   \item Additional summaries from \code{summary_variables} and
 #'   \code{summary_functions}.
 #'   \item \code{dist_in_patch}:
-#'   Total distance (in m) traveled within thepatch.
+#'   Total distance (in m) travelled within the patch.
 #'   \item \code{dist_bw_patch}:
 #'   Distance (in m) between end of previous and start of current patch.
 #'   \item \code{time_bw_patch}:
@@ -50,7 +48,6 @@
 #' @export
 
 atl_res_patch_summary <- function(data,
-                                  id_columns = c("tag", "patch"),
                                   summary_variables = c(),
                                   summary_functions = c()) {
 
@@ -93,21 +90,7 @@ atl_res_patch_summary <- function(data,
     time_median = median(time),
     time_start = first(time),
     time_end = last(time)
-  ), by = c(id_columns)]
-
-  # Additional summaries dynamically if any
-  if (length(summary_variables) > 0) {
-    extra_summaries <- d[, lapply(summary_variables, function(var) {
-      lapply(summary_functions, function(fn) {
-        fun <- match.fun(fn)
-        fun(get(var))
-      })
-    }), by = .(tag, patch)]
-    ds <- merge(
-      ds, extra_summaries,
-      by = c(id_columns), all.x = TRUE
-    )
-  }
+  ), by = .(tag, patch)]
 
   # Distances inside patch
   dist_in_patch_dt <- d[, .(
@@ -125,6 +108,23 @@ atl_res_patch_summary <- function(data,
   # Displacement and duration
   ds[, disp_in_patch := sqrt((x_end - x_start)^2 + (y_end - y_start)^2)]
   ds[, duration := time_end - time_start]
+  
+  # Additional summaries with multiple variables × functions
+  if (length(summary_variables) > 0 && length(summary_functions) > 0) {
+    extra_summaries <- d[, {
+      out <- list()
+      for (var in summary_variables) {
+        for (fn in summary_functions) {
+          fun <- match.fun(fn)
+          colname <- paste0(var, "_", fn)
+          out[[colname]] <- fun(get(var), na.rm = TRUE)
+        }
+      }
+      out
+    }, by = .(tag, patch)]
+    
+    ds <- merge(ds, extra_summaries, by = c("tag", "patch"), all.x = TRUE)
+  }
 
   return(ds)
 
