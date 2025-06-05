@@ -4,26 +4,18 @@
 \alias{atl_res_patch_summary}
 \title{Summary of patch data}
 \usage{
-atl_res_patch_summary(
-  data,
-  id_columns = c("tag", "patch"),
-  summary_variables = c(),
-  summary_functions = c()
-)
+atl_res_patch_summary(data, summary_variables = c(), summary_functions = c())
 }
 \arguments{
 \item{data}{A data.frame or data.table containing movement data. Must include
 columns: \code{tag} (ID), \code{x}, \code{y} (coords),
 \code{time} (timestamp), and \code{patch} (patch ID).}
 
-\item{id_columns}{A character vector specifying the column(s) to group by.
-Defaults to "tag" and "patch".}
-
 \item{summary_variables}{Character vector of variable names in \code{data}
 for additional summaries. Variables should be numeric or compatible with
 the summary functions.}
 
-\item{summary_functions}{Character vector of function name (as single string)
+\item{summary_functions}{Character vector of function names
 to apply to each variable in \code{summary_variables}. Functions must work
 on numeric vectors (e.g., "mean" or "median").}
 }
@@ -40,7 +32,7 @@ stats of y.
 \item Additional summaries from \code{summary_variables} and
 \code{summary_functions}.
 \item \code{dist_in_patch}:
-Total distance (in m) traveled within thepatch.
+Total distance (in m) travelled within the patch.
 \item \code{dist_bw_patch}:
 Distance (in m) between end of previous and start of current patch.
 \item \code{time_bw_patch}:
