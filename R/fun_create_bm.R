@@ -91,7 +91,7 @@ atl_create_bm <- function(data = NULL,
   }
 
   # if bounding box make it a table
-  if (inherits(bbox, "bbox") &&
+  if (inherits(data, "bbox") &&
         all(c("xmin", "ymin", "xmax", "ymax") %in% names(data))) {
     data <- data.table::data.table(
       x = c(data["xmin"], data["xmax"], data["xmax"], data["xmin"]),
