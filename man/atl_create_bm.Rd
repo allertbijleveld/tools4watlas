@@ -34,8 +34,8 @@ atl_create_bm(
 }
 \arguments{
 \item{data}{A \code{data.table} or an object convertible to \code{data.table}
-containing spatial points. Defaults to a single point around Griend if
-\code{NULL}.}
+containing spatial points or a \code{sf} bounding box.
+Defaults to a single point around Griend if \code{NULL}.}
 
 \item{x}{A character string specifying the column with x-coordinates.
 Defaults to \code{"x"}.}

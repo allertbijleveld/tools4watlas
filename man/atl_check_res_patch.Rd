@@ -7,6 +7,7 @@
 atl_check_res_patch(
   data,
   tide_data,
+  tide_data_highres,
   tide,
   offset = 0,
   buffer_res_patches,
@@ -37,6 +38,9 @@ the columns: \code{tag}, \code{x}, \code{y}, \code{time},\code{datetime}, and \c
 \code{patch},  as created by \code{atl_res_patch()}.}
 
 \item{tide_data}{Data on the timing (in UTC) of low and high tides.}
+
+\item{tide_data_highres}{Data on the timing (in UTC) of the waterlevel in
+small intervals (e.g. every 10 min) as provided from Rijkwaterstaat.}
 
 \item{tide}{Tide ID to subset.}
 

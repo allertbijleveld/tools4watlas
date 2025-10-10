@@ -19,7 +19,7 @@
 #' @param summary_variables Character vector of variable names in \code{data}
 #'   for additional summaries. Variables should be numeric or compatible with
 #'   the summary functions.
-#' @param summary_functions Character vector of function names 
+#' @param summary_functions Character vector of function names
 #'   to apply to each variable in \code{summary_variables}. Functions must work
 #'   on numeric vectors (e.g., "mean" or "median").
 #'
@@ -108,7 +108,7 @@ atl_res_patch_summary <- function(data,
   # Displacement and duration
   ds[, disp_in_patch := sqrt((x_end - x_start)^2 + (y_end - y_start)^2)]
   ds[, duration := time_end - time_start]
-  
+
   # Additional summaries with multiple variables × functions
   if (length(summary_variables) > 0 && length(summary_functions) > 0) {
     extra_summaries <- d[, {
@@ -122,7 +122,7 @@ atl_res_patch_summary <- function(data,
       }
       out
     }, by = .(tag, patch)]
-    
+
     ds <- merge(ds, extra_summaries, by = c("tag", "patch"), all.x = TRUE)
   }
 

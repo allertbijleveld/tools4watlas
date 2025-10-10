@@ -304,7 +304,7 @@ foreach(i = steps) %dofuture% {
 
   # create basemap
   bm <- atl_create_bm(
-    buffer = 800, raster_data = bat_c, option = "bathymetry", shade = FALSE, 
+    buffer = 800, raster_data = bat_c, option = "bathymetry", shade = FALSE,
     scalebar = FALSE
   )
 

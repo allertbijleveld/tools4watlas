@@ -5,7 +5,7 @@
 #'
 #' @author Johannes Krietsch
 #' @param data A `data.table` or an object convertible to `data.table`
-#' containing spatial points or a `sf` bounding box. 
+#' containing spatial points or a `sf` bounding box.
 #' Defaults to a single point around Griend if `NULL`.
 #' @param x A character string specifying the column with x-coordinates.
 #'   Defaults to `"x"`.
