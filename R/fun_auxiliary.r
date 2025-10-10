@@ -48,11 +48,13 @@ atl_spec_cols <- function(option = "vector") {
 #' WATLAS species labels
 #'
 #' Returns a named vector of species labels in either a multiline or single-line
-#' format.
+#' format, which can also be the short common name.
 #'
 #' @param option A character string specifying the format of the species names. 
 #'   Options are `"multiline"` (default), where names include line breaks
 #'   (`\n`),  or `"singleline"`, where names are returned as a single line.
+#'   Additionally, `"short_multiline"` and `"short_singleline"` options can be
+#'   returned.
 #'
 #' @return A named character vector where names correspond to species 
 #' identifiers and values are formatted species names.
@@ -61,10 +63,14 @@ atl_spec_cols <- function(option = "vector") {
 #' @examples
 #' library(tools4watlas)
 #' atl_spec_labs("multiline")
-#' atl_spec_labs("multiline")
+#' atl_spec_labs("singleline")
+#' atl_spec_labs("short_multiline")
+#' atl_spec_labs("short_singleline")
 atl_spec_labs <- function(option = "multiline") {
   # Ensure valid input
-  match.arg(option, choices = c("multiline", "singleline"))
+  match.arg(option, choices = c(
+    "multiline", "singleline", "short_multiline", "short_singleline"
+  ))
 
   # Return selected format
   if (option == "multiline") {
@@ -76,13 +82,13 @@ atl_spec_labs <- function(option = "multiline") {
       "red knot" = "Red knot",
       "sanderling" = "Sanderling",
       "dunlin" = "Dunlin",
-      "turnstone" = "Turnstone",
+      "turnstone" = "Ruddy turnstone",
       "grey plover" = "Grey\nplover",
       "curlew sandpiper" = "Curlew\nsandpiper",
       "spoonbill" = "Eurasian\nspoonbill",
       "kentish plover" = "Kentish\nplover"
     ))
-  } else {
+  } else if (option == "singleline") {
     return(c(
       "curlew" = "Eurasian curlew",
       "bar-tailed godwit" = "Bar-tailed godwit",
@@ -91,15 +97,44 @@ atl_spec_labs <- function(option = "multiline") {
       "red knot" = "Red knot",
       "sanderling" = "Sanderling",
       "dunlin" = "Dunlin",
-      "turnstone" = "Turnstone",
+      "turnstone" = "Ruddy turnstone",
       "grey plover" = "Grey plover",
       "curlew sandpiper" = "Curlew sandpiper",
       "spoonbill" = "Eurasian spoonbill",
       "kentish plover" = "Kentish plover"
     ))
+  } else if (option == "short_multiline") {
+    return(c(
+      "curlew" = "Curlew",
+      "bar-tailed godwit" = "Bar-tailed\ngodwit",
+      "oystercatcher" = "Oystercatcher",
+      "redshank" = "Redshank",
+      "red knot" = "Red knot",
+      "sanderling" = "Sanderling",
+      "dunlin" = "Dunlin",
+      "turnstone" = "Turnstone",
+      "grey plover" = "Grey\nplover",
+      "curlew sandpiper" = "Curlew\nsandpiper",
+      "spoonbill" = "Spoonbill",
+      "kentish plover" = "Grey\nplover"
+    ))
+  } else if (option == "short_singleline") {
+    return(c(
+      "curlew" = "Curlew",
+      "bar-tailed godwit" = "Bar-tailed godwit",
+      "oystercatcher" = "Oystercatcher",
+      "redshank" = "Redshank",
+      "red knot" = "Red knot",
+      "sanderling" = "Sanderling",
+      "dunlin" = "Dunlin",
+      "turnstone" = "Turnstone",
+      "grey plover" = "Gre plover",
+      "curlew sandpiper" = "Curlew sandpiper",
+      "spoonbill" = "Spoonbill",
+      "kentish plover" = "Grey plover"
+    ))
   }
 }
-
 
 #' Assign colours to tag ID's
 #'
