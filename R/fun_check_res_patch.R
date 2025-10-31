@@ -45,6 +45,7 @@
 #' @import patchwork
 #' @importFrom ggtext element_markdown
 #' @importFrom ragg agg_png
+#' @importFrom grDevices dev.off
 #' @export
 
 atl_check_res_patch <- function(data,

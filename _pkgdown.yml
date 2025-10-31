@@ -51,8 +51,6 @@ navbar:
         href: articles/visualization_tutorials/plot_data_faster.html
       - text: "Plot data interactively"
         href: articles/visualization_tutorials/plot_data_interactively.html
-      - text: "Plot data in base R - deprecated"
-        href: articles/visualization_tutorials/plot_data_base_R.html   
       - text: "Animate data"
         href: articles/visualization_tutorials/animate_data.html
       - text: "--------"
@@ -137,11 +135,3 @@ reference:
      - land
      - mudflats
      - lakes
-  - title: "Deprecated"
-    desc: "Functions that a not further developed"
-    contents:
-     - atl_plot_tag
-     - atl_plot_tag_osm
-     - atl_plot_map_osm
-     - atl_plot_rpatches
-     - atl_plot_add_track
