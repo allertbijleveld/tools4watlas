@@ -74,6 +74,20 @@ test_that("atl_create_bm returns ggplot for bathymetry option", {
   expect_s3_class(bm, "ggplot")
 })
 
+test_that("atl_create_bm returns ggplot for bathymetry and shade option", {
+  # create a small raster for testing
+  r <- terra::rast(nrows = 5, ncols = 5, xmin = 0, xmax = 1, ymin = 0, ymax = 1)
+  terra::values(r) <- matrix(1:25, 5, 5)
+  
+  bm <- atl_create_bm(
+    data = data.table(x = 0:1, y = 0:1),
+    option = "bathymetry",
+    raster_data = r,
+    shade = TRUE
+  )
+  expect_s3_class(bm, "ggplot")
+})
+
 test_that("atl_create_bm returns ggplot with asp = NULL", {
   df <- data.frame(x = 0:1, y = 0:1)
   bm <- atl_create_bm(data = df, asp = NULL)
@@ -84,5 +98,33 @@ test_that("atl_create_bm returns ggplot without scalebar when scalebar = FALSE",
   df <- data.frame(x = 0:1, y = 0:1)
   bm <- atl_create_bm(data = df, scalebar = FALSE)
   expect_s3_class(bm, "ggplot")
+})
+
+test_that("atl_create_bm works with data in different projection", {
+  # Create data in EPSG:4326
+  coords <- data.table::data.table(
+    lon = c(4.8, 4.85),
+    lat = c(52.6, 52.65)
+  )
+  
+  # Call function with projection EPSG:4326 (will be transformed internally)
+  bm <- atl_create_bm(
+    data = coords,
+    x = "lon",
+    y = "lat",
+    buffer = 1000,
+    asp = "1:1",
+    projection = sf::st_crs(4326),
+    option = "osm"
+  )
+  
+  expect_s3_class(bm, "ggplot")
+  
+  # coord_sf limits should be in UTM31 (approx 650000-660000 / 5900000-5910000)
+  xlim <- ggplot2::ggplot_build(bm)$layout$panel_params[[1]]$x.range
+  ylim <- ggplot2::ggplot_build(bm)$layout$panel_params[[1]]$y.range
+  
+  expect_true(all(xlim > 600000 & xlim < 700000))
+  expect_true(all(ylim > 5800000 & ylim < 6000000))
 })
 

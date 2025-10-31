@@ -136,3 +136,38 @@ testthat::test_that(
     testthat::expect_true(all(!c("varx", "vary") %in% names(thinned)))
   }
 )
+
+testthat::test_that("atl_thin_data aggregates correctly with varx and vary columns", {
+  # Create data that includes varx and vary
+  data <- data.table::data.table(
+    animal_id = rep(1:2, each = 10),
+    time = rep(seq(1696218720, 1696218720 + 90, by = 10), 2),
+    x = stats::rnorm(20, 10, 1),
+    y = stats::rnorm(20, 15, 1),
+    varx = runif(20, 0.1, 0.5),
+    vary = runif(20, 0.1, 0.5)
+  )
+  data[, datetime := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
+  data <- as.data.frame(data)
+  
+  # Run aggregation
+  thinned <- atl_thin_data(
+    data = data,
+    interval = 60,
+    id_columns = "animal_id",
+    method = "aggregate"
+  )
+  
+  # Basic checks
+  testthat::expect_true(data.table::is.data.table(thinned))
+  testthat::expect_true(all(c("varx", "vary") %in% names(thinned)))
+  testthat::expect_true(all(thinned$n_aggregated > 0))
+  
+  # Check that varx and vary were aggregated correctly
+  testthat::expect_true(all(thinned$varx <= max(data$varx)))
+  testthat::expect_true(all(thinned$vary <= max(data$vary)))
+  
+  # Ensure time differences are consistent
+  lag <- thinned[, diff(time), by = animal_id]$V1
+  testthat::expect_true(all(lag >= 60, na.rm = TRUE))
+})

@@ -159,7 +159,7 @@ testthat::test_that("atl_as_sf works with custom projections", {
 
 testthat::test_that("atl_as_sf handles missing additional columns gracefully", {
   # Create test data
-  data <- data.table::data.table(
+  data <- data.frame(
     tag = c("1111", "1111", "2222", "2222"),
     x = c(1, 2, 3, 4),
     y = c(5, 6, 7, 8),
@@ -173,3 +173,64 @@ testthat::test_that("atl_as_sf handles missing additional columns gracefully", {
   # Check if only x, y, and geometry are present (no additional columns)
   testthat::expect_equal(names(d_sf), c("tag", "geometry"))
 })
+
+
+test_that("atl_as_sf triggers warning for MULTIPOLYGON in res_patches", {
+  # Create example data with multiple points per patch that will generate MULTIPOLYGON
+  test_data <- data.table(
+    tag = rep("A", 4),
+    x = c(0, 0.1, 5, 5.1),
+    y = c(0, 0.1, 5, 5.1),
+    patch = c(1, 1, 1, 1)
+  )
+  
+  # Expect warning when converting to res_patches with small buffer
+  expect_warning(
+    sf_result <- atl_as_sf(
+      data = test_data,
+      x = "x",
+      y = "y",
+      tag = "tag",
+      option = "res_patches",
+      buffer = 0.05
+    ),
+    "Some of the residency patch are split in MULTIPOLYGON geometries"
+  )
+  
+  # Check that the output is an sf object
+  expect_s3_class(sf_result, "sf")
+  # Check that geometry is MULTIPOLYGON
+  expect_true(any(sf::st_geometry_type(sf_result) == "MULTIPOLYGON"))
+})
+
+
+test_that("atl_as_sf stops if tag column does not exist", {
+  df <- data.table(x = 1:3, y = 4:6)
+  
+  # tag column "tag" is missing
+  expect_error(
+    atl_as_sf(df, tag = "tag", x = "x", y = "y"),
+    "Specified tag column do not exist in the data."
+  )
+})
+
+test_that("atl_as_sf stops if 'patch' column missing for res_patches", {
+  df <- data.table(tag = 1:3, x = 1:3, y = 4:6)
+  
+  # missing 'patch' column
+  expect_error(
+    atl_as_sf(df, tag = "tag", x = "x", y = "y", option = "res_patches", buffer = 1),
+    "Option 'res_patches' requires a 'patch' column in the data."
+  )
+})
+
+test_that("atl_as_sf stops if buffer missing for res_patches", {
+  df <- data.table(tag = 1:3, x = 1:3, y = 4:6, patch = 1:3)
+  
+  # buffer not supplied
+  expect_error(
+    atl_as_sf(df, tag = "tag", x = "x", y = "y", option = "res_patches"),
+    "Option 'res_patches' requires a specified 'buffer' value."
+  )
+})
+
