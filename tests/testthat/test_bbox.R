@@ -1,3 +1,6 @@
+library(testthat)
+library(tools4watlas)
+
 # Test that the function works with a simple polygon geometry
 testthat::test_that("atl_bbox handles simple geometry", {
   geom <- sf::st_as_sfc("POLYGON((0 0, 1 0, 1 2, 0 2, 0 0))")
@@ -21,6 +24,20 @@ testthat::test_that("atl_bbox applies buffer correctly short format", {
   testthat::expect_true(bbox_with_buffer["ymin"] < bbox_no_buffer["ymin"])
 })
 
+test_that("atl_bbox errors if buffer <= 0 for single-point sf geometry", {
+  # create single-point sf geometry
+  point_sf <- sf::st_as_sfc("POINT(0 0)")
+  
+  # expect error if buffer <= 0
+  expect_error(
+    atl_bbox(point_sf, buffer = 0),
+    "Buffer must be >0 if geometry is a single point"
+  )
+  expect_error(
+    atl_bbox(point_sf, buffer = -1),
+    "Buffer must be >0 if geometry is a single point"
+  )
+})
 
 # Test buffer functionality (expanding the bounding box)
 testthat::test_that("atl_bbox applies buffer correctly long format", {
@@ -47,4 +64,25 @@ testthat::test_that("atl_bbox throws an error for invalid asp ratio format", {
     tools4watlas::atl_bbox(geom, asp = "16:9:1"),
     "Aspect ratio must be in the format 'width:height'."
   )
+})
+
+test_that("atl_bbox returns original bbox if asp is NULL", {
+  # simple rectangle data.frame
+  df <- data.frame(
+    x = c(0, 1, 1, 0),
+    y = c(0, 0, 1, 1)
+  )
+  
+  # get bbox with asp = NULL
+  result <- atl_bbox(df, asp = NULL, buffer = 0)
+  
+  # check that returned object is a bbox
+  expect_s3_class(result, "bbox")
+  
+  # check that the values match the original bbox
+  original_bbox <- sf::st_bbox(c(
+    xmin = min(df$x), ymin = min(df$y),
+    xmax = max(df$x), ymax = max(df$y)
+  ))
+  expect_equal(result, original_bbox)
 })

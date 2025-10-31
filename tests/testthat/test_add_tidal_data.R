@@ -1,5 +1,5 @@
-library(testthat)
-library(data.table)
+# library(testthat)
+# library(tools4watlas)
 
 test_that("atl_add_tidal_data adds tidal information correctly", {
   # Mock tracking data

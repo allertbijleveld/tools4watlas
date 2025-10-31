@@ -432,7 +432,7 @@ atl_check_tag <- function(data,
       )
   }
 
-  # highlight last point if TRUE
+  # highlight outlier point if TRUE
   if (highlight_outliers == TRUE) {
     p <- p +
       geom_point(
