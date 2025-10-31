@@ -1,5 +1,5 @@
-pandoc: '3.2'
-pkgdown: 2.1.1
+pandoc: 3.6.3
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   extended_workflow/add_residency_patches: extended_workflow/add_residency_patches.html
@@ -14,12 +14,11 @@ articles:
   package_development/package_logo: package_development/package_logo.html
   package_development/package_maintenance: package_development/package_maintenance.html
   visualization_tutorials/plot_data: visualization_tutorials/plot_data.html
-  visualization_tutorials/plot_data_base_R: visualization_tutorials/plot_data_base_R.html
   visualization_tutorials/plot_data_faster: visualization_tutorials/plot_data_faster.html
   visualization_tutorials/plot_data_in_loop: visualization_tutorials/plot_data_in_loop.html
   visualization_tutorials/plot_data_interactively: visualization_tutorials/plot_data_interactively.html
   smooth_and_thin_data: smooth_and_thin_data.html
-last_built: 2025-04-04T18:31Z
+last_built: 2025-10-31T13:27Z
 urls:
   reference: https://allertbijleveld.github.io/tools4watlas/reference
   article: https://allertbijleveld.github.io/tools4watlas/articles
