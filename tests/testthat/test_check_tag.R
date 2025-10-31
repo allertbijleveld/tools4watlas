@@ -1,5 +1,5 @@
-# library(testthat)
-# library(tools4watlas)
+library(testthat)
+library(tools4watlas)
 library(ggplot2)
 
 # Sample dataset for testing
@@ -23,8 +23,17 @@ test_that("atl_check_tag handles invalid options", {
   expect_error(atl_check_tag(test_data, option = "invalid"), "Invalid option")
 })
 
+
 test_that("atl_check_tag returns a ggplot object", {
   p <- atl_check_tag(test_data, option = "datetime")
+  expect_s3_class(p, "ggplot")
+})
+
+test_that("atl_check_tag check highlighting points", {
+  p <- atl_check_tag(test_data,
+    option = "datetime",
+    highlight_first = FALSE, highlight_last = TRUE
+  )
   expect_s3_class(p, "ggplot")
 })
 
@@ -33,6 +42,7 @@ test_that("atl_check_tag handles different options correctly", {
   expect_s3_class(atl_check_tag(test_data, option = "nbs"), "ggplot")
   expect_s3_class(atl_check_tag(test_data, option = "var"), "ggplot")
   expect_s3_class(atl_check_tag(test_data, option = "speed_in"), "ggplot")
+  expect_s3_class(atl_check_tag(test_data, option = "gap"), "ggplot")
 })
 
 test_that("atl_check_tag correctly filters first_n and last_n", {

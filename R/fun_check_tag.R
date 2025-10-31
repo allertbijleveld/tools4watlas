@@ -411,7 +411,7 @@ atl_check_tag <- function(data,
   }
 
   # highlight first point if TRUE
-  if (highlight_last == TRUE) {
+  if (highlight_first == TRUE) {
     p <- p +
       geom_point(
         data = ds[is_first == TRUE],
