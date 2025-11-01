@@ -5,8 +5,8 @@
 #'
 #' @author Johannes Krietsch
 #' @param data A `data.table` or an object convertible to `data.table`
-#' containing spatial points. Defaults to a single point around Griend if
-#' `NULL`.
+#' containing spatial points or a `sf` bounding box.
+#' Defaults to a single point around Griend if `NULL`.
 #' @param x A character string specifying the column with x-coordinates.
 #'   Defaults to `"x"`.
 #' @param y A character string specifying the column with y-coordinates.
@@ -90,6 +90,16 @@ atl_create_bm <- function(data = NULL,
     stop("Error: The option must be either 'osm' or 'bathymetry'.")
   }
 
+  # if bounding box make it a table
+  if (inherits(data, "bbox") &&
+        all(c("xmin", "ymin", "xmax", "ymax") %in% names(data))) {
+    data <- data.table::data.table(
+      x = c(data["xmin"], data["xmax"], data["xmax"], data["xmin"]),
+      y = c(data["ymin"], data["ymin"], data["ymax"], data["ymax"])
+    )
+  }
+
+  # make buffere around Griend when no data provided
   if (is.null(data) || nrow(data) == 0) {
     # If no data make map around Griend
     data <- data.table::data.table(tag = 1, x = 650272.5, y = 5902705)

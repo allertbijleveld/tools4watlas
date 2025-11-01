@@ -159,7 +159,7 @@ bbox <- atl_bbox(d_sf, asp = "16:9", buffer = 10000)
 map <- openmap(
   c(bbox["ymax"], bbox["xmin"]),
   c(bbox["ymin"], bbox["xmax"]),
-  type = "osm", mergeTiles = TRUE
+  type = "esri", mergeTiles = TRUE
 )
 
 bm <- autoplot.OpenStreetMap(map)

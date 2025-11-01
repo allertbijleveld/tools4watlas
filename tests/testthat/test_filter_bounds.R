@@ -1,3 +1,6 @@
+library(testthat)
+library(tools4watlas)
+
 testthat::test_that("data kept within bounds", {
   # make test_data
   test_data <- data.table::data.table(
@@ -92,4 +95,39 @@ testthat::test_that("data removed within bounds", {
       data.table::between(test_output$Y, 700, 900))),
     info = "within bounds not working"
   )
+})
+
+testthat::test_that("data filtered correctly by polygon only", {
+  # create test data
+  test_data <- data.frame(
+    X = c(1, 2, 3, 4, 5),
+    Y = c(1, 2, 3, 4, 5)
+  )
+  
+  # define a square polygon covering points (2,2) to (4,4)
+  poly_coords <- list(matrix(c(
+    2,2,
+    4,2,
+    4,4,
+    2,4,
+    2,2
+  ), ncol = 2, byrow = TRUE))
+  test_polygon <- sf::st_polygon(poly_coords)
+  
+  # convert to sf object (required by atl_within_polygon)
+  sf_poly <- sf::st_sf(geometry = sf::st_sfc(test_polygon, crs = 32631))
+  
+  # run function to keep points **inside polygon**
+  filtered_inside <- tools4watlas::atl_filter_bounds(
+    data = test_data,
+    x = "X",
+    y = "Y",
+    sf_polygon = sf_poly,
+    remove_inside = FALSE
+  )
+  
+  # points inside polygon: (2,2), (3,3), (4,4)
+  expect_equal(filtered_inside$X, c(2, 3, 4))
+  expect_equal(filtered_inside$Y, c(2, 3, 4))
+  
 })

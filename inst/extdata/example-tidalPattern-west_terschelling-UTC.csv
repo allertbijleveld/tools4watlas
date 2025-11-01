@@ -1,0 +1,42 @@
+---
+source: R[v4.5.1]::data.table[v1.17.8]::fwrite
+creation_time_utc: 2025-10-30 14:17:50
+schema:
+  fields:
+  - name: tID
+    type: integer
+  - name: tideID
+    type: integer
+  - name: high_start_time
+    type: POSIXct
+  - name: high_start_type
+    type: character
+  - name: high_start_level
+    type: integer
+  - name: low_time
+    type: POSIXct
+  - name: low_type
+    type: character
+  - name: low_level
+    type: integer
+  - name: high_end_time
+    type: POSIXct
+  - name: high_end_type
+    type: character
+  - name: high_end_level
+    type: integer
+header: yes
+sep: ','
+sep2:
+- ''
+- '|'
+- ''
+eol: "\r\n"
+na.strings: ''
+dec: '.'
+qmethod: double
+logical01: no
+---
+tID,tideID,high_start_time,high_start_type,high_start_level,low_time,low_type,low_level,high_end_time,high_end_type,high_end_level
+513,2023513,2023-09-23T00:30:00Z,HH,105,2023-09-23T06:50:00Z,LL,-54,2023-09-23T12:50:00Z,LH,95
+514,2023514,2023-09-23T12:50:00Z,LH,95,2023-09-23T19:00:00Z,HL,-53,2023-09-24T01:10:00Z,HH,87

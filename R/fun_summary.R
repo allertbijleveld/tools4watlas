@@ -10,7 +10,6 @@
 #'        ID, x, y coordinates, time, and datetime.
 #' @param id_columns A character vector specifying the column(s) to group by.
 #'        Defaults to "tag".
-#'
 #' @returns A data.table with summary statistics for each ID group, including
 #' the total number of positions, first and last data, days of data and time
 #' gaps between localizations, as well as  data coverage.

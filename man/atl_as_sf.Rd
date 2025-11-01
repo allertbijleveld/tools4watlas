@@ -39,10 +39,10 @@ columns included).}
 \item{option}{A character string with "points" (default) for returning sf
 points, "lines" to return sf lines and "table" to return a table with a sf
 coordinates column or "res_patches" to return sf polygons with residency
-patches. For the latter, the please specify a buffer used around the points,
-which should be the same as \code{lim_spat_indep} of the residency patch
-calculation or larger. Otherwise some patches will be multiple polygons.
-Points outside patches are excluded when choosing option "res_patches".}
+patches. For the latter, it is best to specify the buffer around points to
+half of \code{lim_spat_indep} of the residency patch calculation. If not
+the function can create MULTIPOLGONS for single residency patches. That will
+give a warning message, but works if desired.}
 
 \item{buffer}{A numeric value (in meters) specifying the buffer around the
 polygon of each residency patch, which should be the same as

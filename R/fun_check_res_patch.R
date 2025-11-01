@@ -8,14 +8,17 @@
 #' the columns: `tag`, `x`, `y`, `time`,`datetime`, and `species` and
 #'   `patch`,  as created by `atl_res_patch()`.
 #' @param tide_data Data on the timing (in UTC) of low and high tides.
+#' @param tide_data_highres Data on the timing (in UTC) of the waterlevel in
+#' small intervals (e.g. every 10 min) as provided from Rijkwaterstaat.
 #' @param tide Tide ID to subset.
 #' @param offset The offset in minutes between the location of the tidal gauge
 #' and the tracking area. This value will be added to the timing of the
 #' water data.
 #' @param buffer_res_patches A numeric value (in meters) specifying the buffer
-#' around the polygon of each residency patch, which should be the same as
-#' \code{lim_spat_indep} of the residency patch calculation or larger.
-#' Otherwise some patches will be multiple polygons.
+#' around the polygon of each residency patch, which should be
+#' half of \code{lim_spat_indep} of the residency patch calculation. If not
+#' the function can create MULTIPOLGONS for single residency patches. That will
+#' give a warning message, but works if desired.
 #' @param buffer_bm Map buffer size (default: 250).
 #' @param buffer_overview Overview map buffer size (default: 10000).
 #' @param point_size Size of plotted points (default: 1).
@@ -42,10 +45,12 @@
 #' @import patchwork
 #' @importFrom ggtext element_markdown
 #' @importFrom ragg agg_png
+#' @importFrom grDevices dev.off
 #' @export
 
 atl_check_res_patch <- function(data,
                                 tide_data,
+                                tide_data_highres,
                                 tide,
                                 offset = 0,
                                 buffer_res_patches,

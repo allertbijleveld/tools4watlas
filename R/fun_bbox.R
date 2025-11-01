@@ -87,11 +87,11 @@ atl_bbox <- function(data,
   # If asp is NULL, return the bbox without modifying aspect ratio
   if (is.null(asp)) {
     return(bbox)
-  } 
-  
+  }
+
   # Parse the aspect ratio
   ratio <- as.numeric(unlist(strsplit(asp, ":")))
-  
+
   # Extract range
   x_range <- bbox["xmax"] - bbox["xmin"]
   y_range <- bbox["ymax"] - bbox["ymin"]

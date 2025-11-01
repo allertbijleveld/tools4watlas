@@ -23,7 +23,7 @@ This vignette shows how to assign residency patches to WATLAS data. Since every 
 ## Background and parameter explanation
 The `atl_res_patch()` function is designed to segment WATLAS movement data into residence patches. The main parameter is speed (`max_speed`). With perfect data that would be the only parameter necessary to adjust, because the speeds of flying and walking or standing do not overlap. However, because WATLAS data have localization error (comparable to GPS accuracy, see [Beardsworth et al. 2022](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13913)) and can have gaps, we need to have additional variables for classifying these data into robust residence patches.
 
-The logic of the function is to first identify proto-patches (preliminary residence patches), which are based subsequent localizations that with speed < `max_speed`, distance between positions < `lim_spat_indep` and the time between positions is < `lim_time_indep`. Proto-patches which have less positions than `min_fixes`, are then filtered out. 
+The logic of the function is to first identify proto-patches (preliminary residence patches), which are based on subsequent localizations with a speed smaller than `max_speed`, distance between positions smaller than `lim_spat_indep` and the time between positions smaller than `lim_time_indep`. Proto-patches which have less positions than `min_fixes`, are then filtered out. 
 
 Then the function calculates the median proto-patch position and the time between proto-patch (time between last location and first location of the next proto-patch). Based on this, proto-patches are merged if the distance between the median position of the proto-patch is < `lim_spat_indep`, and the time between the proto-patch is < `lim_time_indep`. 
 
@@ -45,7 +45,7 @@ In general, when deciding on the optimal parameters, the key is to find a good b
 
    - **`max_speed`:** Should be as high as possible in between walking and flying speeds. Due to error in data erroneously high/‘flying’ speeds are corrected due to subsequent proto-patches being merged on distance. A good starting point is **3 m/s**, but could be increased if needed, if it prevents the creation of proto-patches that should be assigned as resident locations.
    - **`lim_spat_indep`:** Decides on the distance between two proto-patches to be considered independent. This is a key parameter, because it prevents the creation of new proto-patches when the bird is still at the same location. A good starting point is **75 m**, but could be increased if the data are very gappy or if the species has large elongated foraging patches.
-   - **`lim_time_indep`:** **180 min** (2 hours) works typically, but could be increased (e.g. to 240) with really gappy data.
+   - **`lim_time_indep`:** **180 min** (3 hours) works typically, but could be increased (e.g. to 240 or higher) with really gappy data. For example, when the analysis is focused on roosting behaviour, this could be increased to e.g. 6 hours (360 min), to deal with large gaps in the data that can occur with roosting birds not moving and being at the same place with bad signal strength.
    - **`min_fixes`:** As small as possible. Only assign new patch if speed is consistently (several points) below this threshold, not just once. **3 fixes** should usually work.
    - **`min_duration`:** As small as possible, given biological relevance. **120 sec** (2 minutes) seems reasonable.
 

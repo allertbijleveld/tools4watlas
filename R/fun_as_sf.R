@@ -23,10 +23,10 @@
 #' @param option A character string with "points" (default) for returning sf
 #'  points, "lines" to return sf lines and "table" to return a table with a sf
 #' coordinates column or "res_patches" to return sf polygons with residency
-#' patches. For the latter, the please specify a buffer used around the points,
-#' which should be the same as \code{lim_spat_indep} of the residency patch
-#' calculation or larger. Otherwise some patches will be multiple polygons.
-#' Points outside patches are excluded when choosing option "res_patches".
+#' patches. For the latter, it is best to specify the buffer around points to
+#' half of \code{lim_spat_indep} of the residency patch calculation. If not
+#' the function can create MULTIPOLGONS for single residency patches. That will
+#' give a warning message, but works if desired.
 #' @param buffer A numeric value (in meters) specifying the buffer around the
 #' polygon of each residency patch, which should be the same as
 #' \code{lim_spat_indep} of the residency patch calculation or larger.
@@ -169,12 +169,14 @@ atl_as_sf <- function(data,
       d_sf %>%
         dplyr::filter(!is.na(patch)) %>% # remove NA patches (not part of patch)
         dplyr::group_by(tag, patch) %>% # group by patch
-        # combine points
-        dplyr::summarise(geometry = sf::st_combine(geometry)) %>%
-        # polygon from points
-        dplyr::mutate(geometry = sf::st_convex_hull(geometry)) %>%
-        sf::st_as_sf() %>% # convert to sf object
-        sf::st_buffer(dist = buffer) # buffer in m
+        # Buffer each point
+        dplyr::reframe(geometry = sf::st_buffer(geometry, dist = buffer)) %>%
+        dplyr::group_by(tag, patch) %>%
+        # Union buffered geometries
+        dplyr::summarise(
+          geometry = sf::st_union(geometry), .groups = "drop"
+        ) %>%
+        sf::st_as_sf()
     },
     stop("Invalid option")
   )
@@ -182,6 +184,17 @@ atl_as_sf <- function(data,
   # Delete dummy tag column again
   if (tag == "tag_dummy") {
     data[, tag_dummy := NULL]
+  }
+
+  # Check for MULTIPOLYGON in res_patches
+  if (option == "res_patches") {
+    if (any(sf::st_geometry_type(return_data) == "MULTIPOLYGON")) {
+      warning(
+        "Some of the residency patch are split in MULTIPOLYGON geometries. ",
+        "If this is not desired, increase the buffer to half of ",
+        "`lim_spat_indep` (see function description)"
+      )
+    }
   }
 
   return(return_data)

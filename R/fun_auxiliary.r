@@ -48,11 +48,13 @@ atl_spec_cols <- function(option = "vector") {
 #' WATLAS species labels
 #'
 #' Returns a named vector of species labels in either a multiline or single-line
-#' format.
+#' format, which can also be the short common name.
 #'
 #' @param option A character string specifying the format of the species names. 
 #'   Options are `"multiline"` (default), where names include line breaks
 #'   (`\n`),  or `"singleline"`, where names are returned as a single line.
+#'   Additionally, `"short_multiline"` and `"short_singleline"` options can be
+#'   returned.
 #'
 #' @return A named character vector where names correspond to species 
 #' identifiers and values are formatted species names.
@@ -61,10 +63,14 @@ atl_spec_cols <- function(option = "vector") {
 #' @examples
 #' library(tools4watlas)
 #' atl_spec_labs("multiline")
-#' atl_spec_labs("multiline")
+#' atl_spec_labs("singleline")
+#' atl_spec_labs("short_multiline")
+#' atl_spec_labs("short_singleline")
 atl_spec_labs <- function(option = "multiline") {
   # Ensure valid input
-  match.arg(option, choices = c("multiline", "singleline"))
+  match.arg(option, choices = c(
+    "multiline", "singleline", "short_multiline", "short_singleline"
+  ))
 
   # Return selected format
   if (option == "multiline") {
@@ -76,13 +82,13 @@ atl_spec_labs <- function(option = "multiline") {
       "red knot" = "Red knot",
       "sanderling" = "Sanderling",
       "dunlin" = "Dunlin",
-      "turnstone" = "Turnstone",
+      "turnstone" = "Ruddy\nturnstone",
       "grey plover" = "Grey\nplover",
       "curlew sandpiper" = "Curlew\nsandpiper",
       "spoonbill" = "Eurasian\nspoonbill",
       "kentish plover" = "Kentish\nplover"
     ))
-  } else {
+  } else if (option == "singleline") {
     return(c(
       "curlew" = "Eurasian curlew",
       "bar-tailed godwit" = "Bar-tailed godwit",
@@ -91,15 +97,44 @@ atl_spec_labs <- function(option = "multiline") {
       "red knot" = "Red knot",
       "sanderling" = "Sanderling",
       "dunlin" = "Dunlin",
-      "turnstone" = "Turnstone",
+      "turnstone" = "Ruddy turnstone",
       "grey plover" = "Grey plover",
       "curlew sandpiper" = "Curlew sandpiper",
       "spoonbill" = "Eurasian spoonbill",
       "kentish plover" = "Kentish plover"
     ))
+  } else if (option == "short_multiline") {
+    return(c(
+      "curlew" = "Curlew",
+      "bar-tailed godwit" = "Bar-tailed\ngodwit",
+      "oystercatcher" = "Oystercatcher",
+      "redshank" = "Redshank",
+      "red knot" = "Red knot",
+      "sanderling" = "Sanderling",
+      "dunlin" = "Dunlin",
+      "turnstone" = "Turnstone",
+      "grey plover" = "Grey\nplover",
+      "curlew sandpiper" = "Curlew\nsandpiper",
+      "spoonbill" = "Spoonbill",
+      "kentish plover" = "Grey\nplover"
+    ))
+  } else if (option == "short_singleline") {
+    return(c(
+      "curlew" = "Curlew",
+      "bar-tailed godwit" = "Bar-tailed godwit",
+      "oystercatcher" = "Oystercatcher",
+      "redshank" = "Redshank",
+      "red knot" = "Red knot",
+      "sanderling" = "Sanderling",
+      "dunlin" = "Dunlin",
+      "turnstone" = "Turnstone",
+      "grey plover" = "Grey plover",
+      "curlew sandpiper" = "Curlew sandpiper",
+      "spoonbill" = "Spoonbill",
+      "kentish plover" = "Grey plover"
+    ))
   }
 }
-
 
 #' Assign colours to tag ID's
 #'
@@ -189,6 +224,10 @@ atl_tag_cols <- function(tags, option = "vector") {
 #' 
 #' @export
 atl_tag_labs <- function(data, columns, sep = " ") {
+
+  # Global variables to suppress notes in data.table
+  tag <- label <- NULL
+  
   # check data structure
   if (!("tag" %in% names(data))) {
     stop("Error: 'tag' column is missing from the data.")
@@ -216,7 +255,7 @@ atl_tag_labs <- function(data, columns, sep = " ") {
   )]
   
   # return named vector with tag as names and combined label as values
-  return(setNames(labels$label, labels$tag))
+  return(stats::setNames(labels$label, labels$tag))
 }
 
 #' Format time in easy readable interval
@@ -254,7 +293,7 @@ atl_format_time <- function(time) {
 #' @param percent The percentage of transparancy to apply .
 #' @param name The name argument as passed on to rgb.
 #' @return The transparant color will be returned.
-#' @importFrom grDevices col2rgb
+#' @importFrom grDevices col2rgb rgb
 #' @examples
 #' # Example with 50% transparency
 #' color_with_alpha <- atl_t_col("blue", percent = 50)
@@ -296,95 +335,4 @@ atl_t_col <- function(color, percent = 50, name = NULL) {
     maxColorValue = 255, alpha = alpha_val,
     names = name
   )
-}
-
-#' Add residence patches to a plot
-#'
-#' Adds residence pattch data in UTM 31N as points or polygons to a plot.
-#'
-#' @author Allert Bijleveld
-#' @param data Either sfc_Polygon or a dataframe with the tracking data
-#' @param Pch Corresponding graphical argument passed on to the base plot
-#' function
-#' @param Cex Corresponding graphical argument passed on to the base plot
-#' function
-#' @param Lwd Corresponding graphical argument passed on to the base plot
-#' function
-#' @param Col Corresponding graphical argument passed on to the base plot
-#' function
-#' @param Bg Corresponding graphical argument passed on to the base plot
-#' function
-#' @param Lines Corresponding graphical argument passed on to the base plot
-#' function
-#' @return Nothing but an addition to the current plotting device.
-#' @export
-atl_plot_rpatches <- function(data,
-                              Pch = 21,
-                              Cex = 0.25,
-                              Lwd = 1,
-                              Col = 1,
-                              Bg = NULL,
-                              Lines = TRUE) {
-  if ("sfc_POLYGON" %in% class(data)) {
-    plot(data, add = TRUE, col = Bg, border = Col, lwd = 1)
-  } else {
-    points(data$X, data$Y, col = Col, bg = Bg, pch = Pch, cex = Cex, lwd = Lwd)
-    if (Lines) {
-      lines(data$X, data$Y, col = Col)
-    }
-  }
-}
-
-#' Plot a map downloaded with OpenStreetMap
-#'
-#' A function that is used in e.g. plotting multiple individuals.
-#'
-#' @author Allert Bijleveld
-#' @param map The map loaded with \code{OpenStreetMap::openmap()}.
-#' @param ppi The pixels per inch, which is used to calculate the dimensions of
-#' the plotting region from \code{mapID}. Deafults to 96.
-#' @return Returns an OSM background plot for adding tracks.
-#' @export
-atl_plot_map_osm <- function(map,
-                             ppi = 96) {
-  ## map=osm map; ppi=pixels per inch resolution for plot
-  ## get size of plot
-  px_width <- map$tiles[[1]]$yres[1]
-  px_height <- map$tiles[[1]]$xres[1]
-  ## initiate plotting window
-  dev.new(width = px_width / ppi, height = px_height / ppi)
-  par(bg = "black")
-  par(xpd = TRUE)
-  ## make plot
-  plot(map)
-}
-
-#' Add tracks to plot from list
-#'
-#' A function that is used for plotting multiple individuals on a map from a
-#' list of spatial data.
-#'
-#' @author Allert Bijleveld
-#' @param data The spatial data frame.
-#' @param Pch The type of point to plot a localization
-#' @param Cex The size of the point to plot a localization
-#' @param Lwd The width of the line to connect localizations
-#' @param col The colour of plotted localizations
-#' @param Type The type of graph to make. For instance, "b" is both points
-#' and lines and "o" is simlar but places points on top of line (no gaps)
-#' @param endpoint Whether to plot the last localization of an individual
-#' in magenta
-#' @export
-atl_plot_add_track <- function(data,
-                               Pch = 19,
-                               Cex = 0.25,
-                               Lwd = 1,
-                               col,
-                               Type = "o",
-                               endpoint = FALSE) {
-  points(data, col = col, pch = Pch, cex = Cex, lwd = Lwd, type = Type)
-
-  if (endpoint) {
-    points(data[nrow(data), ], col = "magenta", pch = Pch, cex = Cex * 2)
-  }
 }

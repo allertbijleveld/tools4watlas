@@ -166,8 +166,9 @@ atl_res_patch <- function(data,
     ## create  residence patches on new criteria
     ### new patch without speed filter & with spatial distance on end-start
     patch_summary[, `:=`(newpatch, cumsum(
-      (spat_diff > lim_spat_indep | time_diff_end_start > lim_time_indep) &
-        (spat_diff_end_start > lim_spat_indep)
+      ((spat_diff > lim_spat_indep &
+          spat_diff_end_start > lim_spat_indep) |
+         time_diff_end_start > lim_time_indep)
     ))]
 
     # Merge new patches with initial proto-patches

@@ -9,7 +9,9 @@ atl_spec_labs(option = "multiline")
 \arguments{
 \item{option}{A character string specifying the format of the species names.
 Options are \code{"multiline"} (default), where names include line breaks
-(\verb{\\n}),  or \code{"singleline"}, where names are returned as a single line.}
+(\verb{\\n}),  or \code{"singleline"}, where names are returned as a single line.
+Additionally, \code{"short_multiline"} and \code{"short_singleline"} options can be
+returned.}
 }
 \value{
 A named character vector where names correspond to species
@@ -17,10 +19,12 @@ identifiers and values are formatted species names.
 }
 \description{
 Returns a named vector of species labels in either a multiline or single-line
-format.
+format, which can also be the short common name.
 }
 \examples{
 library(tools4watlas)
 atl_spec_labs("multiline")
-atl_spec_labs("multiline")
+atl_spec_labs("singleline")
+atl_spec_labs("short_multiline")
+atl_spec_labs("short_singleline")
 }
