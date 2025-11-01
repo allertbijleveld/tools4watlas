@@ -1,0 +1,270 @@
+#' Create a basemap with customised bounding box
+#'
+#' This function creates a basemap using spatial data layers, allowing for
+#' custom bounding boxes, aspect ratios, and scale bar adjustments.
+#'
+#' @author Johannes Krietsch
+#' @param data A `data.table` or an object convertible to `data.table`
+#' containing spatial points or a `sf` bounding box.
+#' Defaults to a single point around Griend if `NULL`.
+#' @param x A character string specifying the column with x-coordinates.
+#'   Defaults to `"x"`.
+#' @param y A character string specifying the column with y-coordinates.
+#'   Defaults to `"y"`.
+#' @param buffer A numeric value (in meters) specifying the buffer distance for
+#' the bounding box. Default is `1000`.
+#' @param asp A character string specifying the desired aspect ratio in the
+#' format `"width:height"`. Default is `"16:9"`, if `NULL` returns simple
+#' bounding box without modifying aspect ratio.
+#' @param option A character string specifying the map tile provider.
+#'   Options include `"Esri.WorldImagery"`, `""OpenStreetMap"`, and others
+#'   supported by the `maptiles` package, see:
+#' @param zoom Numeric value specifying the zoom level for the map tiles. 
+#' Zoom levels are described in the OpenStreetMap wiki: 
+#' https://wiki.openstreetmap.org/wiki/Zoom_levels.
+#' @param scalebar TRUE or FALSE for adding a scalebar to the plot.
+#' @param sc_location A character string specifying the location of the scale
+#'   bar. Default is `"br"` (bottom right).
+#' @param sc_cex Numeric value for the scale bar text size. Default is `0.7`.
+#' @param sc_height A unit object specifying the height of the scale bar.
+#' Default is `unit(0.25, "cm")`.
+#' @param sc_pad_x A unit object specifying horizontal padding for the scale
+#' bar. Default is `unit(0.25, "cm")`.
+#' @param sc_pad_y A unit object specifying vertical padding for the scale bar.
+#'   Default is `unit(0.5, "cm")`.
+#' @param projection The coordinate reference system (CRS) for the spatial data.
+#'   Defaults to EPSG:32631 (WGS 84 / UTM zone 31N). Output is always UTM 31N
+#'
+#' @return A `ggplot2` object representing the base map with the specified
+#'   settings.
+#' @import ggplot2
+#' @import ggspatial
+#' @export
+#'
+#' @examples
+#' # Example with default settings (map around Griend)
+#' bm <- atl_create_bm(buffer = 5000)
+#' print(bm)
+atl_create_bm_tiles <- function(data = NULL,
+                                x = "x",
+                                y = "y",
+                                buffer = 100,
+                                asp = "16:9",
+                                option = "Esri.WorldImagery",
+                                zoom = 15,
+                                scalebar = TRUE,
+                                sc_location = "br",
+                                sc_cex = 1,
+                                sc_height = 0.3,
+                                sc_pad_x = 0.4,
+                                sc_pad_y = 0.6,
+                                projection = sf::st_crs(32631)) {
+
+  # check if valid option
+  # if (!option %in% c("osm", "bathymetry")) {
+  #   stop("Error: The option must be either 'osm' or 'bathymetry'.")
+  # }
+  
+  # if bounding box make it a table
+  if (inherits(data, "bbox") &&
+      all(c("xmin", "ymin", "xmax", "ymax") %in% names(data))) {
+    data <- data.table::data.table(
+      x = c(data["xmin"], data["xmax"], data["xmax"], data["xmin"]),
+      y = c(data["ymin"], data["ymin"], data["ymax"], data["ymax"])
+    )
+  }
+  
+  # make buffere around Griend when no data provided
+  if (is.null(data) || nrow(data) == 0) {
+    # If no data make map around Griend
+    data <- data.table::data.table(tag = 1, x = 650272.5, y = 5902705)
+  }
+  
+  # Convert to data.table if not already
+  if (!data.table::is.data.table(data)) {
+    data.table::setDT(data)
+  }
+  
+  # check if required columns are present
+  names_req <- c(x, y)
+  atl_check_data(data, names_req)
+  
+  # create bounding box
+  if (projection == sf::st_crs(32631)) {
+    bbox <- atl_bbox(data, x = x, y = y, asp = asp, buffer = buffer)
+  } else {
+    # Create sf and change projection if data were not UTM31
+    d_sf <- atl_as_sf(data, tag = NULL, x = x, y = y, projection = projection)
+    d_sf <- sf::st_transform(d_sf, crs = sf::st_crs(32631))
+    bbox <- atl_bbox(d_sf, x = x, y = y, asp = asp, buffer = buffer)
+  }
+  
+  # change projection of bounding box
+  bbox_sf <- st_as_sfc(bbox)
+  bbox_sf <- st_set_crs(bbox_sf, 32631)
+  bbox_sf <- st_transform(bbox_sf, crs = st_crs(4326)) #  #3857
+  bbox_3857 <- st_bbox(bbox_sf)
+  
+  # get tiles
+  sat <- get_tiles(bbox_3857, provider = option, zoom = zoom)
+  
+  # create base map
+  bm <- ggplot() +
+    layer_spatial(sat) 
+ 
+  # add scalbar if TRUE
+  if (scalebar == TRUE) {
+    bm <- bm +
+      ggspatial::annotation_scale(
+        aes(location = "br"),
+        text_cex = sc_cex,
+        height = unit(sc_height, "cm"),
+        pad_x = unit(sc_pad_x, "cm"),
+        pad_y = unit(sc_pad_y, "cm")
+      )
+  }
+  
+  # add plot modifications
+  bm <- bm +
+    # Crop to bounding box
+    coord_sf(
+      xlim = c(bbox_3857["xmin"], bbox_3857["xmax"]),
+      ylim = c(bbox_3857["ymin"], bbox_3857["ymax"]), expand = FALSE
+    ) +
+    # Clean up layout
+    theme(
+      panel.grid.major = element_line(colour = "transparent"),
+      panel.grid.minor = element_line(colour = "transparent"),
+      panel.background = element_rect(fill = "transparent"),
+      plot.background = element_rect(fill = "transparent", colour = NA),
+      panel.border = element_rect(fill = NA, colour = "grey20"),
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks.x = element_blank(),
+      axis.ticks.y = element_blank(),
+      axis.title = element_blank(),
+      plot.margin = unit(c(0, 0, -0.2, -0.2), "lines"),
+    )
+  
+  return(bm)
+}
+
+
+
+x = "x"
+y = "y"
+buffer = 10000
+asp = "16:9"
+option = "Esri.WorldImagery"
+zoom = 15
+scalebar = TRUE
+sc_location = "br"
+sc_cex = 1
+sc_height = 0.3
+sc_pad_x = 0.4
+sc_pad_y = 0.6
+projection = sf::st_crs(32631)
+
+
+
+
+
+
+
+
+
+
+
+
+
+library(maptiles)
+library(ggplot2)
+library(sf)
+library(tools4watlas)
+library(ggspatial)
+
+
+
+bm <- atl_create_bm_tiles(buffer = 5000, option = "OpenStreetMap", zoom = 12)
+print(bm)
+
+bm <- atl_create_bm_tiles(buffer = 15000, option = "Esri.WorldImagery", zoom = 12)
+print(bm)
+
+bm <- atl_create_bm_tiles(buffer = 15000, option = "Esri.NatGeoWorldMap", zoom = 12)
+print(bm)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+library(maptiles)
+library(ggplot2)
+library(sf)
+library(tools4watlas)
+library(ggspatial)
+
+
+# load example data
+data <- data_example
+
+# make data spatial and transform projection to WGS 84 (used in osm)
+d_sf <- atl_as_sf(data, additional_cols = c("tag", "datetime"))
+d_sf <- st_transform(d_sf, crs = st_crs(3857))
+
+
+
+aoi <- st_bbox(d_sf) |> st_as_sfc() |> 
+  st_buffer(15000) |> 
+  st_bbox() 
+sat <- get_tiles(aoi, provider = "Esri.WorldImagery", zoom = 15, crop = TRUE)
+
+
+
+st <- Sys.time()
+
+sat <- get_tiles(aoi, provider = "Esri.WorldImagery", zoom = 15, crop = TRUE)
+
+
+round(Sys.time() - st, 2)
+
+
+
+st <- Sys.time()
+
+sat <- get_tiles(aoi, provider = "Esri.WorldImagery", zoom = 15, crop = FALSE)
+
+
+round(Sys.time() - st, 2)
+
+
+# aoi <- st_bbox(d_sf)
+# sat <- get_tiles(aoi, provider = "OpenStreetMap", zoom = 16)
+
+
+
+ggplot() +
+  layer_spatial(sat) +                # basemap
+  geom_sf(data = d_sf, aes(color = tag), size = 1) +
+  theme_minimal() +
+  labs(title = "Example Data on Satellite Basemap") +
+  coord_sf(xlim = c(aoi["xmin"], aoi["xmax"]),
+           ylim = c(aoi["ymin"], aoi["ymax"])) 
+
+
+
+
+
+
+
