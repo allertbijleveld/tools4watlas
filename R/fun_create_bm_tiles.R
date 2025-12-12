@@ -33,7 +33,7 @@
 #' @param sc_pad_y A unit object specifying vertical padding for the scale bar.
 #'   Default is `unit(0.5, "cm")`.
 #' @param projection The coordinate reference system (CRS) for the spatial data.
-#'   Defaults to EPSG:32631 (WGS 84 / UTM zone 31N). Output is always UTM 31N
+#'   Defaults to EPSG:4326 (WGS 84). Output is always EPSG:4326
 #'
 #' @return A `ggplot2` object representing the base map with the specified
 #'   settings.
@@ -59,12 +59,6 @@ atl_create_bm_tiles <- function(data = NULL,
                                 sc_pad_x = 0.4,
                                 sc_pad_y = 0.6,
                                 projection = sf::st_crs(32631)) {
-
-  # check if valid option
-  # if (!option %in% c("osm", "bathymetry")) {
-  #   stop("Error: The option must be either 'osm' or 'bathymetry'.")
-  # }
-  
   # if bounding box make it a table
   if (inherits(data, "bbox") &&
       all(c("xmin", "ymin", "xmax", "ymax") %in% names(data))) {
@@ -102,11 +96,11 @@ atl_create_bm_tiles <- function(data = NULL,
   # change projection of bounding box
   bbox_sf <- st_as_sfc(bbox)
   bbox_sf <- st_set_crs(bbox_sf, 32631)
-  bbox_sf <- st_transform(bbox_sf, crs = st_crs(4326)) #  #3857
-  bbox_3857 <- st_bbox(bbox_sf)
+  bbox_sf <- st_transform(bbox_sf, crs = sf::st_crs(4326)) #  #3857
+  bbox_4326 <- st_bbox(bbox_sf)
   
   # get tiles
-  sat <- get_tiles(bbox_3857, provider = option, zoom = zoom)
+  sat <- maptiles::get_tiles(bbox_4326, provider = option, zoom = zoom)
   
   # create base map
   bm <- ggplot() +
@@ -126,10 +120,10 @@ atl_create_bm_tiles <- function(data = NULL,
   
   # add plot modifications
   bm <- bm +
-    # Crop to bounding box
+    # crop to bounding box
     coord_sf(
-      xlim = c(bbox_3857["xmin"], bbox_3857["xmax"]),
-      ylim = c(bbox_3857["ymin"], bbox_3857["ymax"]), expand = FALSE
+      xlim = c(bbox_4326["xmin"], bbox_4326["xmax"]),
+      ylim = c(bbox_4326["ymin"], bbox_4326["ymax"]), expand = FALSE
     ) +
     # Clean up layout
     theme(
@@ -149,13 +143,16 @@ atl_create_bm_tiles <- function(data = NULL,
   return(bm)
 }
 
+# TODO
+# check projection provided is flexible and works
 
 
+data = NULL
 x = "x"
 y = "y"
 buffer = 10000
 asp = "16:9"
-option = "Esri.WorldImagery"
+option = "OpenStreetMap"
 zoom = 15
 scalebar = TRUE
 sc_location = "br"
@@ -171,100 +168,43 @@ projection = sf::st_crs(32631)
 
 
 
-
-
-
-
-
-
+library(tools4watlas)
+library(sf)
 library(maptiles)
 library(ggplot2)
-library(sf)
-library(tools4watlas)
 library(ggspatial)
 
-
-
-bm <- atl_create_bm_tiles(buffer = 5000, option = "OpenStreetMap", zoom = 12)
+# look at some options
+bm <- atl_create_bm_tiles(
+  buffer = 15000, option = "Esri.NatGeoWorldMap", zoom = 12
+)
 print(bm)
 
-bm <- atl_create_bm_tiles(buffer = 15000, option = "Esri.WorldImagery", zoom = 12)
+bm <- atl_create_bm_tiles(
+  buffer = 15000, option = "OpenStreetMap", zoom = 12
+)
 print(bm)
 
-bm <- atl_create_bm_tiles(buffer = 15000, option = "Esri.NatGeoWorldMap", zoom = 12)
+bm <- atl_create_bm_tiles(
+  buffer = 15000, option = "Esri.WorldImagery", zoom = 12
+)
 print(bm)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-library(maptiles)
-library(ggplot2)
-library(sf)
-library(tools4watlas)
-library(ggspatial)
-
-
-# load example data
+# add tracks
 data <- data_example
 
-# make data spatial and transform projection to WGS 84 (used in osm)
-d_sf <- atl_as_sf(data, additional_cols = c("tag", "datetime"))
-d_sf <- st_transform(d_sf, crs = st_crs(3857))
+# transform data
+data <- atl_transform_dt(data)
 
-
-
-aoi <- st_bbox(d_sf) |> st_as_sfc() |> 
-  st_buffer(15000) |> 
-  st_bbox() 
-sat <- get_tiles(aoi, provider = "Esri.WorldImagery", zoom = 15, crop = TRUE)
-
-
-
-st <- Sys.time()
-
-sat <- get_tiles(aoi, provider = "Esri.WorldImagery", zoom = 15, crop = TRUE)
-
-
-round(Sys.time() - st, 2)
-
-
-
-st <- Sys.time()
-
-sat <- get_tiles(aoi, provider = "Esri.WorldImagery", zoom = 15, crop = FALSE)
-
-
-round(Sys.time() - st, 2)
-
-
-# aoi <- st_bbox(d_sf)
-# sat <- get_tiles(aoi, provider = "OpenStreetMap", zoom = 16)
-
-
-
-ggplot() +
-  layer_spatial(sat) +                # basemap
-  geom_sf(data = d_sf, aes(color = tag), size = 1) +
-  theme_minimal() +
-  labs(title = "Example Data on Satellite Basemap") +
-  coord_sf(xlim = c(aoi["xmin"], aoi["xmax"]),
-           ylim = c(aoi["ymin"], aoi["ymax"])) 
-
-
-
-
-
-
-
+# plot points and tracks with standard ggplot colours
+bm +
+  geom_path(
+    data = data, aes(x_4326, y_4326, colour = tag),
+    linewidth = 0.5, alpha = 0.1, show.legend = TRUE
+  ) +
+  geom_point(
+    data = data, aes(x_4326, y_4326, colour = tag),
+    size = 0.5, alpha = 1, show.legend = TRUE
+  ) +
+  scale_color_discrete(name = paste("N = ", length(unique(data$tag)))) +
+  theme(legend.position = "top")
