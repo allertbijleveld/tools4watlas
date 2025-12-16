@@ -28,7 +28,7 @@ library(tools4watlas)
 library(ggplot2)
 ```
 
-## Using `ggplot2` and a basemap layer
+## Using `ggplot2` and a basemap layer from `tools4watlas`
 
 One can create a simple basemaps of the study area by using the function `atl_create_bm()`. This function uses a data.table with x- and y-coordinates to check the required bounding box (which can be extended with a buffer in meters) and spatial features (polygons) of land, lakes, mudflats and rivers. Without adding spatial data, it will default to the spatial data provided in the package. By changing `asp` the desired aspect ratio can be chosen (default is "16:9"). The resulting map is always in EPSG:32631 (WGS 84 / UTM zone 31N), but the data can be provided in other projections, which then needs to be specified as `projection`.
 
@@ -132,7 +132,41 @@ bm <- atl_create_bm(
 bm
 ```
 
-## Basemap with `OpenStreetMap`
+## Basemap based on R package `maptiles`
+
+The package `maptiles` provides an easy way to create basemaps from different tile providers (e.g., OpenStreetMap, Esri satellite images, Stamen toner, etc.). The function `atl_create_bm_tiles()` wraps around the `maptiles` functions to create a basemap based on movement data or specified bounding boxes and otherwise works like `atl_create_bm()`. It is best to use the standard EPSG:32631 (WGS 84 / UTM zone 31N) to create a bounding box (since this means the data don't need to be transformed internally), but other projections also work. The output maps are however always in EPSG:4326, so movement data need to be transformed to be added to the plot. `atl_transform_dt()` can be used to add transformed coordinates to the data table.
+
+```{r, fig.alt = "Static map with satellite image using maptiles"}
+
+# example with satellite map and buffer around Griend
+bm <- atl_create_bm_tiles(
+  buffer = 15000, option = "Esri.WorldImagery", zoom = 12
+)
+
+# plot
+bm
+
+# example with bbox from data and movement data
+data <- data_example
+
+# add transformed coordinates in projection of the base map (EPSG:4326)
+data <- atl_transform_dt(data)
+
+# plot points and tracks using transformed coordinates.
+bm +
+  geom_path(
+    data = data, aes(x_4326, y_4326, colour = tag),
+    linewidth = 0.5, alpha = 0.1, show.legend = FALSE
+  ) +
+  geom_point(
+    data = data, aes(x_4326, y_4326, colour = tag),
+    size = 0.5, alpha = 1, show.legend = FALSE
+  ) +
+  scale_color_discrete(name = paste("N = ", length(unique(data$tag)))) +
+  theme(legend.position = "top")
+```
+
+## Basemap with R package `OpenStreetMap`
 
 Provides a range of different basemap options. For this we first have to transform the data to WGS 84 to extract the basemap with the bounding box and then transform our data to a Mercator projection to plot the data on top of the map.
 

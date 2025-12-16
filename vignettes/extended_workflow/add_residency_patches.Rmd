@@ -75,7 +75,7 @@ tidal_pattern <- fread(paste0(
 
 To calculate residency patches, we can first subset relevant columns from the data (to reduce the memory size of the table - as this table will be sent to all cores when computing in parallel), but also can use the original `data.table`, if working with few data. We then extract the unique tag IDs from the data and run `atl_res_patch()` for each tag in parallel, which adds an additional column to the data table, called `patch`, which contains unique patch ID's for each tag. 
 
-```{r echo=T}		
+```{r echo=T, warning=FALSE}		
 # subset relevant columns
 data <- data[, .(species, posID, tag, time, datetime, x, y, tideID)]
 
@@ -114,7 +114,7 @@ We can select one tag and tide to plot the data. Additionally, we need to specif
 atl_check_res_patch(
   data[tag == "3038"], tide_data = tidal_pattern,
   tide = "2023513", offset = 30,
-  buffer_res_patches = 75
+  buffer_res_patches = 75/2
 )
 ```
 
@@ -142,7 +142,7 @@ foreach(i = seq_len(nrow(idc))) %dofuture% {
     data[tag == idc$tag[i]],
     tide_data = tidal_pattern,
     tide = idc$tideID[i], offset = 30,
-    buffer_res_patches = 50,
+    buffer_res_patches = 75/2,
     filename = paste0(
       "./outputs/res_patch_check/",
       idc$species[i], "_tag_", idc$tag[i], "_tide_", idc$tideID[i]
