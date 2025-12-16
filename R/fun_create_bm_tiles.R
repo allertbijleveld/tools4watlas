@@ -19,8 +19,8 @@
 #' @param option A character string specifying the map tile provider.
 #'   Options include `"Esri.WorldImagery"`, `""OpenStreetMap"`, and others
 #'   supported by the `maptiles` package, see:
-#' @param zoom Numeric value specifying the zoom level for the map tiles. 
-#' Zoom levels are described in the OpenStreetMap wiki: 
+#' @param zoom Numeric value specifying the zoom level for the map tiles.
+#' Zoom levels are described in the OpenStreetMap wiki:
 #' https://wiki.openstreetmap.org/wiki/Zoom_levels.
 #' @param scalebar TRUE or FALSE for adding a scalebar to the plot.
 #' @param sc_location A character string specifying the location of the scale
@@ -33,8 +33,10 @@
 #' @param sc_pad_y A unit object specifying vertical padding for the scale bar.
 #'   Default is `unit(0.5, "cm")`.
 #' @param projection The coordinate reference system (CRS) for the spatial data.
-#'   Defaults to EPSG:4326 (WGS 84). Output is always EPSG:4326
-#'
+#'   Defaults to EPSG:32631 (WGS 84 / UTM zone 31N). Output is always EPSG:4326.
+#'   Bounding box calculation is much faster when uusing EPSG:3263, so use it
+#'   like this whenwever possible and then only plot the movement tracks in
+#'   EPSG:4326 on the map.
 #' @return A `ggplot2` object representing the base map with the specified
 #'   settings.
 #' @import ggplot2
@@ -42,9 +44,42 @@
 #' @export
 #'
 #' @examples
-#' # Example with default settings (map around Griend)
-#' bm <- atl_create_bm(buffer = 5000)
+#' # packages
+#' library(tools4watlas)
+#' library(ggplot2)
+#' 
+#' # example with satellite map
+#' bm <- atl_create_bm_tiles(
+#'   buffer = 15000, option = "Esri.WorldImagery", zoom = 12
+#' )
 #' print(bm)
+#'
+#' # example with open street map
+#' bm <- atl_create_bm_tiles(
+#'   buffer = 15000, option = "OpenStreetMap", zoom = 12
+#' )
+#' print(bm)
+#'
+#' # example with bbox from data and movement data
+#' data <- data_example
+#'
+#' # add transformed coordinates in projection of the base map (EPSG:4326)
+#' data <- atl_transform_dt(data)
+#'
+#' # plot points and tracks using transformed coordinates.
+#' bm +
+#'   geom_path(
+#'     data = data, aes(x_4326, y_4326, colour = tag),
+#'     linewidth = 0.5, alpha = 0.1, show.legend = TRUE
+#'   ) +
+#'   geom_point(
+#'     data = data, aes(x_4326, y_4326, colour = tag),
+#'     size = 0.5, alpha = 1, show.legend = TRUE
+#'   ) +
+#'   scale_color_discrete(name = paste("N = ", length(unique(data$tag)))) +
+#'   theme(legend.position = "top")
+
+
 atl_create_bm_tiles <- function(data = NULL,
                                 x = "x",
                                 y = "y",
@@ -61,51 +96,49 @@ atl_create_bm_tiles <- function(data = NULL,
                                 projection = sf::st_crs(32631)) {
   # if bounding box make it a table
   if (inherits(data, "bbox") &&
-      all(c("xmin", "ymin", "xmax", "ymax") %in% names(data))) {
+        all(c("xmin", "ymin", "xmax", "ymax") %in% names(data))) {
     data <- data.table::data.table(
       x = c(data["xmin"], data["xmax"], data["xmax"], data["xmin"]),
       y = c(data["ymin"], data["ymin"], data["ymax"], data["ymax"])
     )
-  }
-  
-  # make buffere around Griend when no data provided
+  } # make buffere around Griend when no data provided
   if (is.null(data) || nrow(data) == 0) {
     # If no data make map around Griend
     data <- data.table::data.table(tag = 1, x = 650272.5, y = 5902705)
   }
-  
+
   # Convert to data.table if not already
   if (!data.table::is.data.table(data)) {
     data.table::setDT(data)
   }
-  
+
   # check if required columns are present
   names_req <- c(x, y)
   atl_check_data(data, names_req)
-  
+
   # create bounding box
   if (projection == sf::st_crs(32631)) {
     bbox <- atl_bbox(data, x = x, y = y, asp = asp, buffer = buffer)
   } else {
-    # Create sf and change projection if data were not UTM31
+    # Create sf and change projection if data were not EPSG:32631
     d_sf <- atl_as_sf(data, tag = NULL, x = x, y = y, projection = projection)
     d_sf <- sf::st_transform(d_sf, crs = sf::st_crs(32631))
     bbox <- atl_bbox(d_sf, x = x, y = y, asp = asp, buffer = buffer)
   }
-  
+
   # change projection of bounding box
-  bbox_sf <- st_as_sfc(bbox)
-  bbox_sf <- st_set_crs(bbox_sf, 32631)
-  bbox_sf <- st_transform(bbox_sf, crs = sf::st_crs(4326)) #  #3857
-  bbox_4326 <- st_bbox(bbox_sf)
-  
+  bbox_sf <- sf::st_as_sfc(bbox)
+  bbox_sf <- sf::st_set_crs(bbox_sf, 32631)
+  bbox_sf <- sf::st_transform(bbox_sf, crs = sf::st_crs(4326)) #  #3857
+  bbox_4326 <- sf::st_bbox(bbox_sf)
+
   # get tiles
   sat <- maptiles::get_tiles(bbox_4326, provider = option, zoom = zoom)
-  
+
   # create base map
   bm <- ggplot() +
-    layer_spatial(sat) 
- 
+    layer_spatial(sat)
+
   # add scalbar if TRUE
   if (scalebar == TRUE) {
     bm <- bm +
@@ -117,7 +150,7 @@ atl_create_bm_tiles <- function(data = NULL,
         pad_y = unit(sc_pad_y, "cm")
       )
   }
-  
+
   # add plot modifications
   bm <- bm +
     # crop to bounding box
@@ -139,72 +172,6 @@ atl_create_bm_tiles <- function(data = NULL,
       axis.title = element_blank(),
       plot.margin = unit(c(0, 0, -0.2, -0.2), "lines"),
     )
-  
+
   return(bm)
 }
-
-# TODO
-# check projection provided is flexible and works
-
-
-data = NULL
-x = "x"
-y = "y"
-buffer = 10000
-asp = "16:9"
-option = "OpenStreetMap"
-zoom = 15
-scalebar = TRUE
-sc_location = "br"
-sc_cex = 1
-sc_height = 0.3
-sc_pad_x = 0.4
-sc_pad_y = 0.6
-projection = sf::st_crs(32631)
-
-
-
-
-
-
-
-library(tools4watlas)
-library(sf)
-library(maptiles)
-library(ggplot2)
-library(ggspatial)
-
-# look at some options
-bm <- atl_create_bm_tiles(
-  buffer = 15000, option = "Esri.NatGeoWorldMap", zoom = 12
-)
-print(bm)
-
-bm <- atl_create_bm_tiles(
-  buffer = 15000, option = "OpenStreetMap", zoom = 12
-)
-print(bm)
-
-bm <- atl_create_bm_tiles(
-  buffer = 15000, option = "Esri.WorldImagery", zoom = 12
-)
-print(bm)
-
-# add tracks
-data <- data_example
-
-# transform data
-data <- atl_transform_dt(data)
-
-# plot points and tracks with standard ggplot colours
-bm +
-  geom_path(
-    data = data, aes(x_4326, y_4326, colour = tag),
-    linewidth = 0.5, alpha = 0.1, show.legend = TRUE
-  ) +
-  geom_point(
-    data = data, aes(x_4326, y_4326, colour = tag),
-    size = 0.5, alpha = 1, show.legend = TRUE
-  ) +
-  scale_color_discrete(name = paste("N = ", length(unique(data$tag)))) +
-  theme(legend.position = "top")
