@@ -1,6 +1,5 @@
 #' Transform coordinates in a data.table and appends new EPSG-Suffixed columns
 #'
-#' @description
 #' Transforms coordinate columns in a `data.table` from one CRS to another using
 #' **sf**, and appends the transformed coordinates as new columns.
 #' The new columns are automatically named using the original column names
@@ -24,19 +23,17 @@
 #' transformed coordinates.
 #' @import     data.table
 #' @importFrom sf st_as_sf st_transform st_coordinates
+#' @export
 #'
 #' @examples
-#' require(tools4watlas)
+#' # packages
+#' library(tools4watlas)
 #'
-#'  data <- data_example
+#' # example with bbox from data and movement data
+#' data <- data_example
+#'
+#' # add transformed coordinates in projection of the base map (EPSG:4326)
 #' data <- atl_transform_dt(data)
-#' data[, .(species, tag, datetime, x, y, x_4326, y_4326)]
-#' #'
-#' DT = data.table(name = c('NARL', 'Utqiagvik'),
-#'                 lat  = c(71.320854, 71.290246),
-#'                 lon  = c(-156.648210, -156.788622))
-#'
-#' st_transform_DT(DT)
 atl_transform_dt <- function(data,
                              x = "x",
                              y = "y",
