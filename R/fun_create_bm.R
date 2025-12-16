@@ -1,4 +1,4 @@
-#' Create a basemap with customised bounding box
+#' Create a basemap with customised bounding box using package stored data
 #'
 #' This function creates a basemap using spatial data layers, allowing for
 #' custom bounding boxes, aspect ratios, and scale bar adjustments.

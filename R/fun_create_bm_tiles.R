@@ -1,4 +1,4 @@
-#' Create a basemap with customised bounding box
+#' Create a basemap with customised bounding box using map tiles
 #'
 #' This function creates a basemap using spatial data layers, allowing for
 #' custom bounding boxes, aspect ratios, and scale bar adjustments.
@@ -17,8 +17,9 @@
 #' format `"width:height"`. Default is `"16:9"`, if `NULL` returns simple
 #' bounding box without modifying aspect ratio.
 #' @param option A character string specifying the map tile provider.
-#'   Options include `"Esri.WorldImagery"`, `""OpenStreetMap"`, and others
-#'   supported by the `maptiles` package, see:
+#' Options include `"Esri.WorldImagery"`, `""OpenStreetMap"`,  `"Esri"`,
+#' `"CARTO"`, and `"Thunderforest"`. See
+#' supported by the `maptiles` package, see:
 #' @param zoom Numeric value specifying the zoom level for the map tiles.
 #' Zoom levels are described in the OpenStreetMap wiki:
 #' https://wiki.openstreetmap.org/wiki/Zoom_levels.
@@ -47,16 +48,16 @@
 #' # packages
 #' library(tools4watlas)
 #' library(ggplot2)
-#' 
-#' # example with satellite map
-#' bm <- atl_create_bm_tiles(
-#'   buffer = 15000, option = "Esri.WorldImagery", zoom = 12
-#' )
-#' print(bm)
 #'
 #' # example with open street map
 #' bm <- atl_create_bm_tiles(
 #'   buffer = 15000, option = "OpenStreetMap", zoom = 12
+#' )
+#' print(bm)
+#' 
+#' # example with satellite map
+#' bm <- atl_create_bm_tiles(
+#'   buffer = 15000, option = "Esri.WorldImagery", zoom = 12
 #' )
 #' print(bm)
 #'
@@ -70,11 +71,11 @@
 #' bm +
 #'   geom_path(
 #'     data = data, aes(x_4326, y_4326, colour = tag),
-#'     linewidth = 0.5, alpha = 0.1, show.legend = TRUE
+#'     linewidth = 0.5, alpha = 0.1, show.legend = FALSE
 #'   ) +
 #'   geom_point(
 #'     data = data, aes(x_4326, y_4326, colour = tag),
-#'     size = 0.5, alpha = 1, show.legend = TRUE
+#'     size = 0.5, alpha = 1, show.legend = FALSE
 #'   ) +
 #'   scale_color_discrete(name = paste("N = ", length(unique(data$tag)))) +
 #'   theme(legend.position = "top")

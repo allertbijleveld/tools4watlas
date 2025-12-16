@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_create_bm_tiles.R
 \name{atl_create_bm_tiles}
 \alias{atl_create_bm_tiles}
-\title{Create a basemap with customised bounding box}
+\title{Create a basemap with customised bounding box using map tiles}
 \usage{
 atl_create_bm_tiles(
   data = NULL,
@@ -40,7 +40,8 @@ format \code{"width:height"}. Default is \code{"16:9"}, if \code{NULL} returns s
 bounding box without modifying aspect ratio.}
 
 \item{option}{A character string specifying the map tile provider.
-Options include \code{"Esri.WorldImagery"}, \verb{""OpenStreetMap"}, and others
+Options include \code{"Esri.WorldImagery"}, \verb{""OpenStreetMap"},  \code{"Esri"},
+\code{"CARTO"}, and \code{"Thunderforest"}. See
 supported by the \code{maptiles} package, see:}
 
 \item{zoom}{Numeric value specifying the zoom level for the map tiles.
@@ -82,15 +83,15 @@ custom bounding boxes, aspect ratios, and scale bar adjustments.
 library(tools4watlas)
 library(ggplot2)
 
-# example with satellite map
-bm <- atl_create_bm_tiles(
-  buffer = 15000, option = "Esri.WorldImagery", zoom = 12
-)
-print(bm)
-
 # example with open street map
 bm <- atl_create_bm_tiles(
   buffer = 15000, option = "OpenStreetMap", zoom = 12
+)
+print(bm)
+
+# example with satellite map
+bm <- atl_create_bm_tiles(
+  buffer = 15000, option = "Esri.WorldImagery", zoom = 12
 )
 print(bm)
 
@@ -104,11 +105,11 @@ data <- atl_transform_dt(data)
 bm +
   geom_path(
     data = data, aes(x_4326, y_4326, colour = tag),
-    linewidth = 0.5, alpha = 0.1, show.legend = TRUE
+    linewidth = 0.5, alpha = 0.1, show.legend = FALSE
   ) +
   geom_point(
     data = data, aes(x_4326, y_4326, colour = tag),
-    size = 0.5, alpha = 1, show.legend = TRUE
+    size = 0.5, alpha = 1, show.legend = FALSE
   ) +
   scale_color_discrete(name = paste("N = ", length(unique(data$tag)))) +
   theme(legend.position = "top")

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fun_create_bm.R
 \name{atl_create_bm}
 \alias{atl_create_bm}
-\title{Create a basemap with customised bounding box}
+\title{Create a basemap with customised bounding box using package stored data}
 \usage{
 atl_create_bm(
   data = NULL,
