@@ -103,11 +103,13 @@ reference:
     desc: "Transform data to sf object and get a bounding box"
     contents:
      - atl_as_sf
+     - atl_transform_dt
      - atl_bbox
   - title: "Plotting functions"
     desc: "Functions to plot the data"
     contents:
      - atl_create_bm
+     - atl_create_bm_tiles
      - atl_check_tag
      - atl_check_res_patch
      - atl_t_col
