@@ -38,9 +38,26 @@ library(mapmate)
 library(terra)
 library(tidyterra)
 library(sf)
+```
 
+## Prepare movement data
+
+The movement data should be filtered and smoothed before (not shown here) and it makes sense to aggregate the data to a desired interval somewhat matching the time steps. 
+
+```{r}
 # load example data
 data <- data_example
+
+# only keep relevant rows
+data <- data[, .(species, tag, time, datetime, x, y)]
+
+# thin the data by aggregation with a 15-second interval
+data <- atl_thin_data(
+  data = data,
+  interval = 15,
+  id_columns = c("tag", "species"),
+  method = "aggregate"
+)
 ```
 
 ## Configuration of file paths and function arguments
@@ -83,26 +100,6 @@ measured_water_height_fp <- paste0(
 bathymetry_fp <- paste0(
   atl_file_path("rasters"), # file path to Birds, fish 'n chips GIS/rasters
   "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"
-)
-```
-
-## Prepare movement data
-
-The movement data should be filtered and smoothed before (not shown here) and it makes sense to aggregate the data to a desired interval somewhat matching the time steps. 
-
-```{r}
-# load example data
-data <- data_example
-
-# only keep relevant rows
-data <- data[, .(species, tag, time, datetime, x, y)]
-
-# thin the data by aggregation with a 15-second interval
-data <- atl_thin_data(
-  data = data,
-  interval = 15,
-  id_columns = c("tag", "species"),
-  method = "aggregate"
 )
 ```
 
@@ -430,7 +427,7 @@ plan(sequential)
 
 We can use `atl_progress_bar()` to monitor the progress while the png's are created in the background. This can't be done in the same R session, since it is busy, but we can open a new additional R session and run the code below to see the progress. In a more simple way, we can just go in the directory and see how many png's are created. By running atl_time_steps() above, a file `total_frames.txt` is created in the output path which contains the total number of frames that will be created - this is read automatically by `atl_progress_bar()` if `total = NULL`.
 
-```{r}
+```{r, eval = FALSE}
 # set output path again in new session (same as above)
 cfg_output_path <- "C:/Users/jkrietsch/temp/animation" # output path for png's
 # check progress
