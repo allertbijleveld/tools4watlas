@@ -32,6 +32,41 @@
 #' @return A character string representing the full file path to the selected
 #'   data type for the current user.
 #' @export
+#' 
+#' @examples
+#' \dontrun{
+#' # test if all files can be accessed using atl_file_path() function
+#' 
+#' # packages
+#' library(tools4watlas)
+#' 
+#' # file path to WATLAS teams data folder
+#' fp <- atl_file_path("watlas_teams")
+#' # check file path exists
+#' file.exists(paste0(
+#'   fp, "waterdata/allYears-tidalPattern-west_terschelling-UTC.csv"
+#' ))
+#' 
+#' # file path to Birds, fish 'n chips GIS/rasters folder
+#' fp <- atl_file_path("rasters")
+#' # check file path exists
+#' file.exists(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
+#' 
+#' 
+#' # file path to Birds, fish 'n chips GIS/shapefiles folder
+#' fp <- atl_file_path("shapefiles")
+#' # check file path exists
+#' file.exists(
+#'   paste0(fp, "open_street_map/land-polygons-complete-4326/land_polygons.shp")
+#' )
+#' 
+#' # file path to sqlite databases
+#' db_fp <- atl_file_path("sqlite_db")
+#' # check file path exists
+#' file.exists(
+#'   paste0(db_fp, "watlas-2024.sqlite")
+#' )
+#' }
 atl_file_path <- function(data_type = c("watlas_teams",
                                         "rasters",
                                         "shapefiles",

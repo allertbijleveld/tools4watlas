@@ -114,7 +114,7 @@ movement data, make animation).</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ragg.r-lib.org" class="external-link">ragg</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://leonawicz.github.io/mapmate" class="external-link">mapmate</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># additional to add water data</span></span>
+<span><span class="co"># additional to add for water data</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dieghernan.github.io/tidyterra/" class="external-link">tidyterra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></code></pre></div>
@@ -122,25 +122,85 @@ movement data, make animation).</p>
 <div class="section level3">
 <h3 id="prepare-movement-data">Prepare movement data<a class="anchor" aria-label="anchor" href="#prepare-movement-data"></a>
 </h3>
-<p>Set the folder path where the png’s are created, load the data,
-create time steps with a desired interval (e.g. 10 min), delete existing
-files.</p>
+<p>The movement data should be filtered and smoothed before (not shown
+here) and it makes sense to aggregate the data to a desired interval
+somewhat matching the time steps.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># file path</span></span>
-<span><span class="va">path</span> <span class="op">&lt;-</span> <span class="st">"C:/Users/jkrietsch/temp/animation"</span></span>
-<span></span>
-<span><span class="co"># load example data</span></span>
+<code class="sourceCode R"><span><span class="co"># load example data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
+<span></span>
+<span><span class="co"># only keep relevant rows</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">species</span>, <span class="va">tag</span>, <span class="va">time</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># thin the data by aggregation with a 15-second interval</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_thin_data.html">atl_thin_data</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>  interval <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>  id_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tag"</span>, <span class="st">"species"</span><span class="op">)</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"aggregate"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="configuration-of-file-paths-and-function-arguments">Configuration of file paths and function arguments<a class="anchor" aria-label="anchor" href="#configuration-of-file-paths-and-function-arguments"></a>
+</h3>
+<p>For more details see function descriptions of the used functions.
+Obviously more settings can be adjusted, but this should cover the main
+settings.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># time steps and output path (atl_time_steps):</span></span>
+<span><span class="va">cfg_time_interval</span> <span class="op">&lt;-</span> <span class="st">"1 min"</span> <span class="co"># time interval for animation steps</span></span>
+<span><span class="va">cfg_output_path</span> <span class="op">&lt;-</span> <span class="st">"C:/Users/jkrietsch/temp/animation"</span> <span class="co"># output path for png's</span></span>
+<span></span>
+<span><span class="co"># size and alpha settings of the tail (atl_size_along and atl_alpha_along)</span></span>
+<span><span class="va">cfg_size_head</span> <span class="op">&lt;-</span> <span class="fl">4</span> <span class="co"># number of positions in head</span></span>
+<span><span class="va">cfg_size_to</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1.5</span><span class="op">)</span></span>
+<span><span class="va">cfg_size_max</span> <span class="op">&lt;-</span> <span class="fl">3600</span> <span class="op">*</span> <span class="fl">6</span> <span class="co"># maximal tail length in seconds</span></span>
+<span><span class="va">cfg_alpha_head</span> <span class="op">&lt;-</span> <span class="fl">3</span> <span class="co"># number of positions in head for alpha</span></span>
+<span><span class="va">cfg_alpha_skew</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">1</span></span>
+<span></span>
+<span><span class="co"># exclude points with large gap</span></span>
+<span><span class="va">cfg_max_gap</span> <span class="op">&lt;-</span> <span class="fl">60</span> <span class="op">*</span> <span class="fl">5</span> <span class="co"># in seconds</span></span>
+<span></span>
+<span><span class="co"># define bounding box</span></span>
+<span><span class="va">bbox</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_bbox.html">atl_bbox</a></span><span class="op">(</span><span class="va">data</span>, buffer <span class="op">=</span> <span class="fl">800</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># animation settings (ffmpeg via mapmate)</span></span>
+<span><span class="va">cfg_file_name</span> <span class="op">&lt;-</span> <span class="st">"Animation.mp4"</span></span>
+<span><span class="va">cfg_frame_rate</span> <span class="op">&lt;-</span> <span class="fl">16</span> <span class="co"># in seconds</span></span>
+<span></span>
+<span><span class="co"># additional to add water data</span></span>
+<span><span class="co"># path to tide data</span></span>
+<span><span class="va">tidal_pattern_fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../../reference/atl_file_path.html">atl_file_path</a></span><span class="op">(</span><span class="st">"watlas_teams"</span><span class="op">)</span>, <span class="co"># file path to WATLAS teams data folder</span></span>
+<span>  <span class="st">"waterdata/allYears-tidalPattern-west_terschelling-UTC.csv"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">measured_water_height_fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../../reference/atl_file_path.html">atl_file_path</a></span><span class="op">(</span><span class="st">"watlas_teams"</span><span class="op">)</span>, <span class="co"># file path to WATLAS teams data folder</span></span>
+<span>  <span class="st">"waterdata/allYears-gemeten_waterhoogte-west_terschelling-clean-UTC.csv"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># path to bathymetry data</span></span>
+<span><span class="va">bathymetry_fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../../reference/atl_file_path.html">atl_file_path</a></span><span class="op">(</span><span class="st">"rasters"</span><span class="op">)</span>, <span class="co"># file path to Birds, fish 'n chips GIS/rasters</span></span>
+<span>  <span class="st">"bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="create-time-steps">Create time steps<a class="anchor" aria-label="anchor" href="#create-time-steps"></a>
+</h3>
+<p>Create time steps with a desired interval (e.g. 1 min), define the
+folder path where the png’s are created, delete existing files.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># delete existing files (if any)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">cfg_output_path</span>, <span class="st">"/*"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># create time steps</span></span>
 <span><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_time_steps.html">atl_time_steps</a></span><span class="op">(</span></span>
 <span>  datetime_vector <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">datetime</span>,</span>
-<span>  time_interval <span class="op">=</span> <span class="st">"10 min"</span>,</span>
-<span>  output_path <span class="op">=</span> <span class="va">path</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># delete existing files (if any)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path</span>, <span class="st">"/*"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span>  time_interval <span class="op">=</span> <span class="va">cfg_time_interval</span>,</span>
+<span>  output_path <span class="op">=</span> <span class="va">cfg_output_path</span>,</span>
+<span>  fps <span class="op">=</span> <span class="va">cfg_frame_rate</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="simple-animation-of-movements">Simple animation of movements<a class="anchor" aria-label="anchor" href="#simple-animation-of-movements"></a>
@@ -151,19 +211,25 @@ files.</p>
 <p>Make a basemap as desired and plot with all data to check the
 outcome, scalebar and time stamp. Adjust everything as desired (check
 with saving png in the defined size).</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create basemap</span></span>
-<span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data</span>, buffer <span class="op">=</span> <span class="fl">800</span><span class="op">)</span></span>
+<span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># plot points and tracks to check</span></span>
 <span><span class="va">bm</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">species</span><span class="op">)</span>,</span>
 <span>    linewidth <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">0.1</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">species</span><span class="op">)</span>,</span>
 <span>    size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">1</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># add color scale by species</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span></span>
+<span>    values <span class="op">=</span> <span class="fu"><a href="../../reference/atl_spec_cols.html">atl_spec_cols</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="../../reference/atl_spec_labs.html">atl_spec_labs</a></span><span class="op">(</span><span class="st">"multiline"</span><span class="op">)</span>,</span>
+<span>    name <span class="op">=</span> <span class="st">""</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="co"># add time stamp</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span></span>
@@ -171,7 +237,7 @@ with saving png in the defined size).</p>
 <span>    x <span class="op">=</span> <span class="op">-</span><span class="cn">Inf</span>, y <span class="op">=</span> <span class="op">-</span><span class="cn">Inf</span>, hjust <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>, vjust <span class="op">=</span> <span class="op">-</span><span class="fl">2.4</span>,</span>
 <span>    label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">$</span><span class="va">datetime</span>, <span class="st">"%Y-%m-%d %H:%M"</span><span class="op">)</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">4</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="animate_data_files/figure-html/unnamed-chunk-3-1.png" alt="Check the basemap" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="animate_data_files/figure-html/unnamed-chunk-5-1.png" alt="Check the basemap" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="loop-to-create-pngs-for-each-step">Loop to create png’s for each step<a class="anchor" aria-label="anchor" href="#loop-to-create-pngs-for-each-step"></a>
@@ -187,7 +253,7 @@ h). Then we use <code><a href="../../reference/atl_alpha_along.html">atl_alpha_a
 and <code><a href="../../reference/atl_size_along.html">atl_size_along()</a></code> to make a comet shape - adjust
 parameters as desired (see function description for more details).
 Afterwards we add this path to the basemap and add the time stamp.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># register cores and backend for parallel processing</span></span>
 <span><span class="fu"><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
@@ -202,27 +268,37 @@ Afterwards we add this path to the basemap and add the time stamp.</p>
 <span>  <span class="va">time_step</span> <span class="op">&lt;-</span> <span class="va">ts</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">$</span><span class="va">datetime</span> <span class="co"># current date</span></span>
 <span></span>
 <span>  <span class="co"># subset data</span></span>
-<span>  <span class="va">ds</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">datetime</span> <span class="op"><a href="https://rdatatable.gitlab.io/data.table/reference/between.html" class="external-link">%between%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">time_step</span> <span class="op">-</span> <span class="fl">3600</span> <span class="op">*</span> <span class="fl">6</span>, <span class="va">time_step</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="va">ds</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">datetime</span> <span class="op"><a href="https://rdatatable.gitlab.io/data.table/reference/between.html" class="external-link">%between%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">time_step</span> <span class="op">-</span> <span class="va">cfg_size_max</span>, <span class="va">time_step</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="va">ds</span> <span class="op">&lt;-</span> <span class="va">ds</span><span class="op">[</span><span class="va">datetime</span> <span class="op">&gt;</span> <span class="va">time_step</span> <span class="op">-</span> <span class="va">cfg_max_gap</span><span class="op">]</span> <span class="co"># exclude points with large gap</span></span>
+<span>  <span class="va">dsp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setkey.html" class="external-link">setkey</a></span><span class="op">(</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">ds</span><span class="op">)</span>, <span class="va">tag</span><span class="op">)</span><span class="op">[</span>, <span class="va">.SD</span><span class="op">[</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summarize-generics.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">datetime</span><span class="op">)</span><span class="op">]</span>, <span class="va">tag</span><span class="op">]</span> <span class="co"># point</span></span>
+<span>  <span class="va">dsp</span> <span class="op">&lt;-</span> <span class="va">dsp</span><span class="op">[</span><span class="va">datetime</span> <span class="op">&gt;</span> <span class="va">time_step</span> <span class="op">-</span> <span class="va">cfg_max_gap</span><span class="op">]</span> <span class="co"># exclude points with large gap</span></span>
 <span></span>
 <span>  <span class="co"># create alpha and size</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">ds</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">ds</span><span class="op">[</span>, <span class="va">a</span> <span class="op">:=</span> <span class="fu"><a href="../../reference/atl_alpha_along.html">atl_alpha_along</a></span><span class="op">(</span></span>
 <span>      <span class="va">datetime</span>,</span>
-<span>      head <span class="op">=</span> <span class="fl">30</span>, skew <span class="op">=</span> <span class="op">-</span><span class="fl">2</span></span>
+<span>      head <span class="op">=</span> <span class="va">cfg_alpha_head</span>, skew <span class="op">=</span> <span class="va">cfg_alpha_skew</span></span>
 <span>    <span class="op">)</span>, by <span class="op">=</span> <span class="va">tag</span><span class="op">]</span></span>
 <span>  <span class="op">}</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">ds</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">ds</span><span class="op">[</span>, <span class="va">s</span> <span class="op">:=</span> <span class="fu"><a href="../../reference/atl_size_along.html">atl_size_along</a></span><span class="op">(</span></span>
 <span>      <span class="va">datetime</span>,</span>
-<span>      head <span class="op">=</span> <span class="fl">70</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span>      head <span class="op">=</span> <span class="va">cfg_size_head</span>, to <span class="op">=</span> <span class="va">cfg_size_to</span></span>
 <span>    <span class="op">)</span>, by <span class="op">=</span> <span class="va">tag</span><span class="op">]</span></span>
 <span>  <span class="op">}</span></span>
 <span></span>
 <span>  <span class="co"># add tracks to basemap</span></span>
 <span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="va">bm</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span></span>
-<span>      data <span class="op">=</span> <span class="va">ds</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, color <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="va">ds</span><span class="op">$</span><span class="va">a</span>, linewidth <span class="op">=</span> <span class="va">ds</span><span class="op">$</span><span class="va">s</span>,</span>
+<span>      data <span class="op">=</span> <span class="va">ds</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, color <span class="op">=</span> <span class="va">species</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="va">ds</span><span class="op">$</span><span class="va">a</span>, linewidth <span class="op">=</span> <span class="va">ds</span><span class="op">$</span><span class="va">s</span>,</span>
 <span>      lineend <span class="op">=</span> <span class="st">"round"</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>    <span class="co"># add color scale by species</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span></span>
+<span>      values <span class="op">=</span> <span class="fu"><a href="../../reference/atl_spec_cols.html">atl_spec_cols</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>      labels <span class="op">=</span> <span class="fu"><a href="../../reference/atl_spec_labs.html">atl_spec_labs</a></span><span class="op">(</span><span class="st">"multiline"</span><span class="op">)</span>,</span>
+<span>      name <span class="op">=</span> <span class="st">""</span></span>
 <span>    <span class="op">)</span> <span class="op">+</span></span>
 <span></span>
 <span>    <span class="co"># add time stamp</span></span>
@@ -252,22 +328,11 @@ Afterwards we add this path to the basemap and add the time stamp.</p>
 <div class="section level3">
 <h3 id="add-tide-and-bathymetry-data">Add tide and bathymetry data<a class="anchor" aria-label="anchor" href="#add-tide-and-bathymetry-data"></a>
 </h3>
-<p>We add water level data to <code>ts</code> to know the waterlevel at
+<p>We add water level data to <code>ts</code> to know the water level at
 each step and crop the bathymetry data to the extend of the map (use
 same buffer as for basemap).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># file path to WATLAS teams data folder</span></span>
-<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_file_path.html">atl_file_path</a></span><span class="op">(</span><span class="st">"watlas_teams"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># sub path to tide data</span></span>
-<span><span class="va">tidal_pattern_fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
-<span>  <span class="va">fp</span>, <span class="st">"waterdata/allYears-tidalPattern-west_terschelling-UTC.csv"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">measured_water_height_fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
-<span>  <span class="va">fp</span>, <span class="st">"waterdata/allYears-gemeten_waterhoogte-west_terschelling-clean-UTC.csv"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># load tide data</span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># load tide data</span></span>
 <span><span class="va">tidal_pattern</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">tidal_pattern_fp</span><span class="op">)</span></span>
 <span><span class="va">measured_water_height</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">measured_water_height_fp</span><span class="op">)</span></span>
 <span></span>
@@ -280,18 +345,12 @@ same buffer as for basemap).</p>
 <span>  tide_data <span class="op">=</span> <span class="va">tidal_pattern</span>,</span>
 <span>  tide_data_highres <span class="op">=</span> <span class="va">measured_water_height</span>,</span>
 <span>  waterdata_resolution <span class="op">=</span> <span class="st">"10 min"</span>,</span>
-<span>  waterdata_interpolation <span class="op">=</span> <span class="st">"1 min"</span>,</span>
+<span>  waterdata_interpolation <span class="op">=</span> <span class="st">"10 sec"</span>,</span>
 <span>  offset <span class="op">=</span> <span class="fl">30</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># file path to Birds, fish 'n chips GIS/rasters folder</span></span>
-<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_file_path.html">atl_file_path</a></span><span class="op">(</span><span class="st">"rasters"</span><span class="op">)</span></span>
-<span></span>
 <span><span class="co"># load bathymetry data</span></span>
-<span><span class="va">bat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">fp</span>, <span class="st">"bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># bbox (should be buffer used for basemap)</span></span>
-<span><span class="va">bbox</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_bbox.html">atl_bbox</a></span><span class="op">(</span><span class="va">data</span>, buffer <span class="op">=</span> <span class="fl">800</span><span class="op">)</span></span>
+<span><span class="va">bat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">bathymetry_fp</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># crop the raster using the bounding box</span></span>
 <span><span class="va">bat_c</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">bat</span>, <span class="va">bbox</span><span class="op">)</span></span>
@@ -305,11 +364,10 @@ same buffer as for basemap).</p>
 <p>Make a basemap as desired and plot with all data to check the
 outcome, scalebar and time stamp. Adjust everything as desired (check
 with saving png in the defined size).</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create basemap</span></span>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  buffer <span class="op">=</span> <span class="fl">800</span>, raster_data <span class="op">=</span> <span class="va">bat_c</span>, option <span class="op">=</span> <span class="st">"bathymetry"</span>, scalebar <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="va">bbox</span>, raster_data <span class="op">=</span> <span class="va">bat_c</span>, option <span class="op">=</span> <span class="st">"bathymetry"</span>, scalebar <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># extract example water level</span></span>
@@ -328,12 +386,18 @@ with saving png in the defined size).</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="co"># add points and tracks</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">species</span><span class="op">)</span>,</span>
 <span>    linewidth <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">0.1</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">species</span><span class="op">)</span>,</span>
 <span>    size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">1</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># add color scale by species</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span></span>
+<span>    values <span class="op">=</span> <span class="fu"><a href="../../reference/atl_spec_cols.html">atl_spec_cols</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="../../reference/atl_spec_labs.html">atl_spec_labs</a></span><span class="op">(</span><span class="st">"multiline"</span><span class="op">)</span>,</span>
+<span>    name <span class="op">=</span> <span class="st">""</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="co"># add time stamp</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span></span>
@@ -352,14 +416,14 @@ with saving png in the defined size).</p>
 <span>    xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">[</span><span class="st">"xmin"</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="st">"xmax"</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>    ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">[</span><span class="st">"ymin"</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="st">"ymax"</span><span class="op">]</span><span class="op">)</span>, expand <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="animate_data_files/figure-html/unnamed-chunk-6-1.png" alt="Check the basemap with bathymetry data" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="animate_data_files/figure-html/unnamed-chunk-8-1.png" alt="Check the basemap with bathymetry data" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="loop-to-create-pngs-for-each-step-1">Loop to create png’s for each step<a class="anchor" aria-label="anchor" href="#loop-to-create-pngs-for-each-step-1"></a>
 </h3>
 <p>Same as above just with added water level polygon and scale bar
 (needs to be added above water).</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># register cores and backend for parallel processing</span></span>
 <span><span class="fu"><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
@@ -374,7 +438,10 @@ with saving png in the defined size).</p>
 <span>  <span class="va">time_step</span> <span class="op">&lt;-</span> <span class="va">ts</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">$</span><span class="va">datetime</span> <span class="co"># current date</span></span>
 <span></span>
 <span>  <span class="co"># subset data</span></span>
-<span>  <span class="va">ds</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">datetime</span> <span class="op"><a href="https://rdatatable.gitlab.io/data.table/reference/between.html" class="external-link">%between%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">time_step</span> <span class="op">-</span> <span class="fl">3600</span> <span class="op">*</span> <span class="fl">6</span>, <span class="va">time_step</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="va">ds</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">datetime</span> <span class="op"><a href="https://rdatatable.gitlab.io/data.table/reference/between.html" class="external-link">%between%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">time_step</span> <span class="op">-</span> <span class="va">cfg_size_max</span>, <span class="va">time_step</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="va">ds</span> <span class="op">&lt;-</span> <span class="va">ds</span><span class="op">[</span><span class="va">datetime</span> <span class="op">&gt;</span> <span class="va">time_step</span> <span class="op">-</span> <span class="va">cfg_max_gap</span><span class="op">]</span> <span class="co"># exclude points with large gap</span></span>
+<span>  <span class="va">dsp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setkey.html" class="external-link">setkey</a></span><span class="op">(</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">ds</span><span class="op">)</span>, <span class="va">tag</span><span class="op">)</span><span class="op">[</span>, <span class="va">.SD</span><span class="op">[</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/summarize-generics.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">datetime</span><span class="op">)</span><span class="op">]</span>, <span class="va">tag</span><span class="op">]</span> <span class="co"># point</span></span>
+<span>  <span class="va">dsp</span> <span class="op">&lt;-</span> <span class="va">dsp</span><span class="op">[</span><span class="va">datetime</span> <span class="op">&gt;</span> <span class="va">time_step</span> <span class="op">-</span> <span class="va">cfg_max_gap</span><span class="op">]</span> <span class="co"># exclude points with large gap</span></span>
 <span></span>
 <span>  <span class="co"># create alpha and size</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">ds</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
@@ -400,7 +467,7 @@ with saving png in the defined size).</p>
 <span></span>
 <span>  <span class="co"># create basemap</span></span>
 <span>  <span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span></span>
-<span>    buffer <span class="op">=</span> <span class="fl">800</span>, raster_data <span class="op">=</span> <span class="va">bat_c</span>, option <span class="op">=</span> <span class="st">"bathymetry"</span>, shade <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>    <span class="va">bbox</span>, raster_data <span class="op">=</span> <span class="va">bat_c</span>, option <span class="op">=</span> <span class="st">"bathymetry"</span>, shade <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    scalebar <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
@@ -413,8 +480,14 @@ with saving png in the defined size).</p>
 <span>    <span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="co"># add track</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span></span>
-<span>      data <span class="op">=</span> <span class="va">ds</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, color <span class="op">=</span> <span class="va">tag</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="va">ds</span><span class="op">$</span><span class="va">a</span>, linewidth <span class="op">=</span> <span class="va">ds</span><span class="op">$</span><span class="va">s</span>,</span>
+<span>      data <span class="op">=</span> <span class="va">ds</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, color <span class="op">=</span> <span class="va">species</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="va">ds</span><span class="op">$</span><span class="va">a</span>, linewidth <span class="op">=</span> <span class="va">ds</span><span class="op">$</span><span class="va">s</span>,</span>
 <span>      lineend <span class="op">=</span> <span class="st">"round"</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="co"># add color scale by species</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span></span>
+<span>      values <span class="op">=</span> <span class="fu"><a href="../../reference/atl_spec_cols.html">atl_spec_cols</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>      labels <span class="op">=</span> <span class="fu"><a href="../../reference/atl_spec_labs.html">atl_spec_labs</a></span><span class="op">(</span><span class="st">"multiline"</span><span class="op">)</span>,</span>
+<span>      name <span class="op">=</span> <span class="st">""</span></span>
 <span>    <span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="co"># add time stamp</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span></span>
@@ -446,6 +519,27 @@ with saving png in the defined size).</p>
 <span></span>
 <span><span class="co"># close parallel workers</span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
+<div class="section level5">
+<h5 id="monitor-progress-bar-while-files-are-created">Monitor progress bar while files are created<a class="anchor" aria-label="anchor" href="#monitor-progress-bar-while-files-are-created"></a>
+</h5>
+<p>We can use <code><a href="../../reference/atl_progress_bar.html">atl_progress_bar()</a></code> to monitor the progress
+while the png’s are created in the background. This can’t be done in the
+same R session, since it is busy, but we can open a new additional R
+session and run the code below to see the progress. In a more simple
+way, we can just go in the directory and see how many png’s are created.
+By running atl_time_steps() above, a file <code>total_frames.txt</code>
+is created in the output path which contains the total number of frames
+that will be created - this is read automatically by
+<code><a href="../../reference/atl_progress_bar.html">atl_progress_bar()</a></code> if <code>total = NULL</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># set output path again in new session (same as above)</span></span>
+<span><span class="va">cfg_output_path</span> <span class="op">&lt;-</span> <span class="st">"C:/Users/jkrietsch/temp/animation"</span> <span class="co"># output path for png's</span></span>
+<span><span class="co"># check progress</span></span>
+<span><span class="fu"><a href="../../reference/atl_progress_bar.html">atl_progress_bar</a></span><span class="op">(</span></span>
+<span>  file_path <span class="op">=</span> <span class="va">cfg_output_path</span>,</span>
+<span>  total <span class="op">=</span> <span class="cn">NULL</span>, refresh_rate <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="make-a-animation-using-ffmpeg-via-mapmate">Make a animation using <code>ffmpeg</code> via
@@ -454,11 +548,13 @@ with saving png in the defined size).</p>
 <p>Adjust the frame rate (<code>rate</code>) as desired (depending on
 the time step interval). File is created in the same path, but this can
 also be changed as desired.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># make animation</span></span>
 <span><span class="fu"><a href="https://leonawicz.github.io//reference/ffmpeg.html" class="external-link">ffmpeg</a></span><span class="op">(</span></span>
-<span>  dir <span class="op">=</span> <span class="va">path</span>, output_dir <span class="op">=</span> <span class="va">path</span>, pattern <span class="op">=</span> <span class="fu"><a href="../../reference/atl_ffmpeg_pattern.html">atl_ffmpeg_pattern</a></span><span class="op">(</span><span class="va">ts</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">$</span><span class="va">path</span><span class="op">)</span>,</span>
-<span>  output <span class="op">=</span> <span class="st">"Animation.mp4"</span>, rate <span class="op">=</span> <span class="fl">8</span>, details <span class="op">=</span> <span class="cn">TRUE</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  dir <span class="op">=</span> <span class="va">cfg_output_path</span>, output_dir <span class="op">=</span> <span class="va">cfg_output_path</span>,</span>
+<span>  pattern <span class="op">=</span> <span class="fu"><a href="../../reference/atl_ffmpeg_pattern.html">atl_ffmpeg_pattern</a></span><span class="op">(</span><span class="va">ts</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">$</span><span class="va">path</span><span class="op">)</span>,</span>
+<span>  output <span class="op">=</span> <span class="va">cfg_file_name</span>, rate <span class="op">=</span> <span class="va">cfg_frame_rate</span>,</span>
+<span>  details <span class="op">=</span> <span class="cn">TRUE</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
