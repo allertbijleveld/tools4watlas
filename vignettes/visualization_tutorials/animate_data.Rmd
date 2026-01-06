@@ -34,32 +34,93 @@ library(doFuture)
 library(ragg)
 library(mapmate)
 
-# additional to add water data
+# additional to add for water data
 library(terra)
 library(tidyterra)
 library(sf)
+
+# load example data
+data <- data_example
+```
+
+## Configuration of file paths and function arguments
+
+For more details see function descriptions of the used functions. Obviously more settings can be adjusted, but this should cover the main settings.
+```{r}
+# time steps and output path (atl_time_steps):
+cfg_time_interval <- "1 min" # time interval for animation steps
+cfg_output_path <- "C:/Users/jkrietsch/temp/animation" # output path for png's
+
+# size and alpha settings of the tail (atl_size_along and atl_alpha_along)
+cfg_size_head <- 4 # number of positions in head
+cfg_size_to <- c(0, 1.5)
+cfg_size_max <- 3600 * 6 # maximal tail length in seconds
+cfg_alpha_head <- 3 # number of positions in head for alpha
+cfg_alpha_skew <- -1
+
+# exclude points with large gap
+cfg_max_gap <- 60 * 5 # in seconds
+
+# define bounding box
+bbox <- atl_bbox(data, buffer = 800)
+
+# animation settings (ffmpeg via mapmate)
+cfg_file_name <- "Animation.mp4"
+cfg_frame_rate <- 16 # in seconds
+
+# additional to add water data
+# path to tide data
+tidal_pattern_fp <- paste0(
+  atl_file_path("watlas_teams"), # file path to WATLAS teams data folder
+  "waterdata/allYears-tidalPattern-west_terschelling-UTC.csv"
+)
+measured_water_height_fp <- paste0(
+  atl_file_path("watlas_teams"), # file path to WATLAS teams data folder
+  "waterdata/allYears-gemeten_waterhoogte-west_terschelling-clean-UTC.csv"
+)
+
+# path to bathymetry data
+bathymetry_fp <- paste0(
+  atl_file_path("rasters"), # file path to Birds, fish 'n chips GIS/rasters
+  "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"
+)
 ```
 
 ## Prepare movement data
 
-Set the folder path where the png's are created, load the data, create time steps with a desired interval (e.g. 10 min), delete existing files.
+The movement data should be filtered and smoothed before (not shown here) and it makes sense to aggregate the data to a desired interval somewhat matching the time steps. 
 
 ```{r}
-# file path
-path <- "C:/Users/jkrietsch/temp/animation"
-
 # load example data
 data <- data_example
+
+# only keep relevant rows
+data <- data[, .(species, tag, time, datetime, x, y)]
+
+# thin the data by aggregation with a 15-second interval
+data <- atl_thin_data(
+  data = data,
+  interval = 15,
+  id_columns = c("tag", "species"),
+  method = "aggregate"
+)
+```
+
+## Create time steps
+
+Create time steps with a desired interval (e.g. 1 min), define the folder path where the png's are created, delete existing files.
+
+```{r}
+# delete existing files (if any)
+unlink(paste0(cfg_output_path, "/*"), recursive = TRUE)
 
 # create time steps
 ts <- atl_time_steps(
   datetime_vector = data$datetime,
-  time_interval = "10 min",
-  output_path = path
+  time_interval = cfg_time_interval,
+  output_path = cfg_output_path,
+  fps = cfg_frame_rate
 )
-
-# delete existing files (if any)
-unlink(paste0(path, "/*"), recursive = TRUE)
 ```
 
 # Simple animation of movements
@@ -70,17 +131,23 @@ Make a basemap as desired and plot with all data to check the outcome, scalebar 
 
 ```{r, fig.alt = "Check the basemap", fig.align = "center"}
 # create basemap
-bm <- atl_create_bm(data, buffer = 800)
+bm <- atl_create_bm(bbox)
 
 # plot points and tracks to check
 bm +
   geom_path(
-    data = data, aes(x, y, colour = tag),
+    data = data, aes(x, y, colour = species),
     linewidth = 0.5, alpha = 0.1, show.legend = FALSE
   ) +
   geom_point(
-    data = data, aes(x, y, colour = tag),
+    data = data, aes(x, y, colour = species),
     size = 0.5, alpha = 1, show.legend = FALSE
+  ) +
+  # add color scale by species
+  scale_color_manual(
+    values = atl_spec_cols(),
+    labels = atl_spec_labs("multiline"),
+    name = ""
   ) +
   # add time stamp
   annotate(
@@ -111,27 +178,37 @@ foreach(i = steps) %dofuture% {
   time_step <- ts[i]$datetime # current date
 
   # subset data
-  ds <- data[datetime %between% c(time_step - 3600 * 6, time_step)]
+  ds <- data[datetime %between% c(time_step - cfg_size_max, time_step)]
+  ds <- ds[datetime > time_step - cfg_max_gap] # exclude points with large gap
+  dsp <- setkey(setDT(ds), tag)[, .SD[which.max(datetime)], tag] # point
+  dsp <- dsp[datetime > time_step - cfg_max_gap] # exclude points with large gap
 
   # create alpha and size
   if (nrow(ds) > 0) {
     ds[, a := atl_alpha_along(
       datetime,
-      head = 30, skew = -2
+      head = cfg_alpha_head, skew = cfg_alpha_skew
     ), by = tag]
   }
   if (nrow(ds) > 0) {
     ds[, s := atl_size_along(
       datetime,
-      head = 70, to = c(0.3, 2)
+      head = cfg_size_head, to = cfg_size_to
     ), by = tag]
   }
 
   # add tracks to basemap
   p <- bm +
     geom_path(
-      data = ds, aes(x, y, color = tag), alpha = ds$a, linewidth = ds$s,
+      data = ds, aes(x, y, color = species), alpha = ds$a, linewidth = ds$s,
       lineend = "round", show.legend = FALSE
+    ) +
+
+    # add color scale by species
+    scale_color_manual(
+      values = atl_spec_cols(),
+      labels = atl_spec_labs("multiline"),
+      name = ""
     ) +
 
     # add time stamp
@@ -159,20 +236,9 @@ plan(sequential)
 
 ## Add tide and bathymetry data
 
-We add water level data to `ts` to know the waterlevel at each step and crop the bathymetry data to the extend of the map (use same buffer as for basemap).  
+We add water level data to `ts` to know the water level at each step and crop the bathymetry data to the extend of the map (use same buffer as for basemap).  
 
 ```{r}
-# file path to WATLAS teams data folder
-fp <- atl_file_path("watlas_teams")
-
-# sub path to tide data
-tidal_pattern_fp <- paste0(
-  fp, "waterdata/allYears-tidalPattern-west_terschelling-UTC.csv"
-)
-measured_water_height_fp <- paste0(
-  fp, "waterdata/allYears-gemeten_waterhoogte-west_terschelling-clean-UTC.csv"
-)
-
 # load tide data
 tidal_pattern <- fread(tidal_pattern_fp)
 measured_water_height <- fread(measured_water_height_fp)
@@ -186,18 +252,12 @@ ts <- atl_add_tidal_data(
   tide_data = tidal_pattern,
   tide_data_highres = measured_water_height,
   waterdata_resolution = "10 min",
-  waterdata_interpolation = "1 min",
+  waterdata_interpolation = "10 sec",
   offset = 30
 )
 
-# file path to Birds, fish 'n chips GIS/rasters folder
-fp <- atl_file_path("rasters")
-
 # load bathymetry data
-bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
-
-# bbox (should be buffer used for basemap)
-bbox <- atl_bbox(data, buffer = 800)
+bat <- rast(bathymetry_fp)
 
 # crop the raster using the bounding box
 bat_c <- crop(bat, bbox)
@@ -213,8 +273,7 @@ Make a basemap as desired and plot with all data to check the outcome, scalebar 
 ```{r, fig.alt = "Check the basemap with bathymetry data", fig.align = "center"}
 # create basemap
 bm <- atl_create_bm(
-  data,
-  buffer = 800, raster_data = bat_c, option = "bathymetry", scalebar = FALSE
+  bbox, raster_data = bat_c, option = "bathymetry", scalebar = FALSE
 )
 
 # extract example water level
@@ -233,12 +292,18 @@ bm +
   ) +
   # add points and tracks
   geom_path(
-    data = data, aes(x, y, colour = tag),
+    data = data, aes(x, y, colour = species),
     linewidth = 0.5, alpha = 0.1, show.legend = FALSE
   ) +
   geom_point(
-    data = data, aes(x, y, colour = tag),
+    data = data, aes(x, y, colour = species),
     size = 0.5, alpha = 1, show.legend = FALSE
+  ) +
+  # add color scale by species
+  scale_color_manual(
+    values = atl_spec_cols(),
+    labels = atl_spec_labs("multiline"),
+    name = ""
   ) +
   # add time stamp
   annotate(
@@ -278,7 +343,10 @@ foreach(i = steps) %dofuture% {
   time_step <- ts[i]$datetime # current date
 
   # subset data
-  ds <- data[datetime %between% c(time_step - 3600 * 6, time_step)]
+  ds <- data[datetime %between% c(time_step - cfg_size_max, time_step)]
+  ds <- ds[datetime > time_step - cfg_max_gap] # exclude points with large gap
+  dsp <- setkey(setDT(ds), tag)[, .SD[which.max(datetime)], tag] # point
+  dsp <- dsp[datetime > time_step - cfg_max_gap] # exclude points with large gap
 
   # create alpha and size
   if (nrow(ds) > 0) {
@@ -304,7 +372,7 @@ foreach(i = steps) %dofuture% {
 
   # create basemap
   bm <- atl_create_bm(
-    buffer = 800, raster_data = bat_c, option = "bathymetry", shade = FALSE,
+    bbox, raster_data = bat_c, option = "bathymetry", shade = FALSE,
     scalebar = FALSE
   )
 
@@ -317,8 +385,14 @@ foreach(i = steps) %dofuture% {
     ) +
     # add track
     geom_path(
-      data = ds, aes(x, y, color = tag), alpha = ds$a, linewidth = ds$s,
+      data = ds, aes(x, y, color = species), alpha = ds$a, linewidth = ds$s,
       lineend = "round", show.legend = FALSE
+    ) +
+    # add color scale by species
+    scale_color_manual(
+      values = atl_spec_cols(),
+      labels = atl_spec_labs("multiline"),
+      name = ""
     ) +
     # add time stamp
     annotate(
@@ -352,6 +426,20 @@ foreach(i = steps) %dofuture% {
 plan(sequential)
 ```
 
+#### Monitor progress bar while files are created
+
+We can use `atl_progress_bar()` to monitor the progress while the png's are created in the background. This can't be done in the same R session, since it is busy, but we can open a new additional R session and run the code below to see the progress. In a more simple way, we can just go in the directory and see how many png's are created. By running atl_time_steps() above, a file `total_frames.txt` is created in the output path which contains the total number of frames that will be created - this is read automatically by `atl_progress_bar()` if `total = NULL`.
+
+```{r}
+# set output path again in new session (same as above)
+cfg_output_path <- "C:/Users/jkrietsch/temp/animation" # output path for png's
+# check progress
+atl_progress_bar(
+  file_path = cfg_output_path,
+  total = NULL, refresh_rate = 1
+)
+```
+
 ## Make a animation using `ffmpeg` via `mapmate`
 
 Adjust the frame rate (`rate`) as desired (depending on the time step interval). File is created in the same path, but this can also be changed as desired.
@@ -359,7 +447,9 @@ Adjust the frame rate (`rate`) as desired (depending on the time step interval).
 ```{r, eval = FALSE}
 # make animation
 ffmpeg(
-  dir = path, output_dir = path, pattern = atl_ffmpeg_pattern(ts[1]$path),
-  output = "Animation.mp4", rate = 8, details = TRUE, overwrite = TRUE
+  dir = cfg_output_path, output_dir = cfg_output_path,
+  pattern = atl_ffmpeg_pattern(ts[1]$path),
+  output = cfg_file_name, rate = cfg_frame_rate,
+  details = TRUE, overwrite = TRUE
 )
 ```
