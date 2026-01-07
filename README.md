@@ -21,8 +21,8 @@ tracking system can be found in [Bijleveld et al. 2022. WATLAS:
 high-throughput and real-time tracking of many small birds in the Dutch
 Wadden Sea.](https://doi.org/10.1186/s40317-022-00307-w).
 
-Visit <https://www.nioz.nl/watlas> to follow tracked birds in real time
-and to read the latest project news.
+Visit <https://www.nioz.nl/en/watlas-bird-tracking> to follow tracked
+birds in real time and to read the latest project news.
 
 The package `tools4watlas` builds on the package
 [`atlastools`](https://github.com/pratikunterwegs/atlastools) ([Gupte et
@@ -183,7 +183,6 @@ Bijleveld](mailto:allert.bijleveld@nioz.nl).
 
 We are working on the following articles at the moment:
 
-- Residency patch analysis
 - Connect WATLAS with SIBES data
 
 ### **Contribute**
