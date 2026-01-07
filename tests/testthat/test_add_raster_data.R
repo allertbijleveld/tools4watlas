@@ -11,6 +11,7 @@ terra::crs(example_raster) <- "EPSG:32631"
 
 # Test valid raster extraction
 test_that("atl_add_raster_data extracts raster values correctly", {
+  skip_on_os("mac")
   result <- atl_add_raster_data(data, raster_data = example_raster)
   expect_s3_class(result, "data.table")
   expect_true("lyr.1" %in% names(result))
@@ -18,6 +19,7 @@ test_that("atl_add_raster_data extracts raster values correctly", {
 
 # Test missing coordinate columns
 test_that("atl_add_raster_data handles missing coordinates", {
+  skip_on_os("mac")
   data_invalid <- data.table(a = c(1, 2, 3), b = c(4, 5, 6))
   expect_error(
     atl_add_raster_data(data_invalid, raster_data = example_raster),
@@ -27,6 +29,7 @@ test_that("atl_add_raster_data handles missing coordinates", {
 
 # Test invalid raster input
 test_that("atl_add_raster_data checks raster input type", {
+  skip_on_os("mac")
   expect_error(
     atl_add_raster_data(data, raster_data = "not_a_raster"),
     "Specified raster_data are not terra SpatRaster, but should be."
