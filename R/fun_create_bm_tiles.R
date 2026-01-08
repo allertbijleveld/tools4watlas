@@ -55,7 +55,7 @@
 #'   buffer = 15000, option = "OpenStreetMap", zoom = 12
 #' )
 #' print(bm)
-#' 
+#'
 #' # example with satellite map
 #' bm <- atl_create_bm_tiles(
 #'   buffer = 15000, option = "Esri.WorldImagery", zoom = 12

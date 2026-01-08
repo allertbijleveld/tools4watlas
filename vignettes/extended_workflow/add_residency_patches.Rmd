@@ -110,11 +110,11 @@ The function `atl_check_res_patch()` can be used to evaluate the residency patch
 
 We can select one tag and tide to plot the data. Additionally, we need to specify the offset of the tidal data we use (e.g. 30 min for Terschelling) and a buffer (in m) around the residency patch data to create a polygon. This buffer should best be  `lim_spat_indep`. 
 
-```{r, fig.align = "center", fig.width = 10, fig.height = 6}
+```{r, fig.align = "center", fig.alt = "Overview plot res patches one tide", fig.width = 10, fig.height = 6}
 atl_check_res_patch(
   data[tag == "3038"], tide_data = tidal_pattern,
   tide = "2023513", offset = 30,
-  buffer_res_patches = 75/2
+  buffer_res_patches = 75 / 2
 )
 ```
 
@@ -142,7 +142,7 @@ foreach(i = seq_len(nrow(idc))) %dofuture% {
     data[tag == idc$tag[i]],
     tide_data = tidal_pattern,
     tide = idc$tideID[i], offset = 30,
-    buffer_res_patches = 75/2,
+    buffer_res_patches = 75 / 2,
     filename = paste0(
       "./outputs/res_patch_check/",
       idc$species[i], "_tag_", idc$tag[i], "_tide_", idc$tideID[i]
@@ -206,7 +206,7 @@ head(data_summary) |> knitr::kable(digits = 2)
 
 We can also easily plot the residency patches by tag as desired using `ggplot2`. In this example we will plot the residency patches for one red knot (tag 3038). The residency patches are coloured by patch ID, and the points are plotted with a grey colour to show the track.
 
-```{r}
+```{r, fig.alt = "Residency patches within track colored by ID"}
 # subset red knot
 data_subset <- data[tag == 3038]
 data_summary_subset <- data_summary[tag == 3038]
@@ -229,7 +229,7 @@ bm +
 
 Or we could plot the residency patch at it's median position with the duration in minutes as size and colour of the points.
 
-```{r}
+```{r, fig.alt = "Residency patches by duration in patch"}
 # plot residency patches itself by duration
 bm +
   geom_point(
@@ -244,7 +244,7 @@ bm +
 
 Similar, we can plot the residency patches by species. For this we need to merge the species information back to the summary table, which is done in the code below. The residency patches are coloured by species and sized by duration.
 
-```{r}
+```{r, fig.alt = "Residency patches colored by species"}
 # create basemap
 bm <- atl_create_bm(data, buffer = 500)
 
