@@ -21,9 +21,9 @@ tracking system can be found in [Bijleveld et al. 2022. WATLAS:
 high-throughput and real-time tracking of many small birds in the Dutch
 Wadden Sea](https://doi.org/10.1186/s40317-022-00307-w).
 
-Visit <https://www.nioz.nl/watlas> to follow tracked birds in real time
-and to read the latest project news. Feel free to reach out by
-[e-mail](mailto:allert.bijleveld@nioz.nl) for questions or
+Visit <https://www.nioz.nl/en/watlas-bird-tracking> to follow tracked
+birds in real time and to read the latest project news. Feel free to
+reach out by [e-mail](mailto:allert.bijleveld@nioz.nl) for questions or
 collaborations if you would like to work with WATLAS data.
 
 The package `tools4watlas` builds on the package
@@ -130,17 +130,8 @@ install_github("allertbijleveld/tools4watlas")
 
 ``` r
 library(tools4watlas)
-```
-
-    ## Warning: package 'data.table' was built under R version 4.4.3
-
-``` r
 library(ggplot2)
-```
 
-    ## Warning: package 'ggplot2' was built under R version 4.4.3
-
-``` r
 # Load example data
 data <- data_example
 
@@ -177,6 +168,7 @@ bm +
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" alt="Example tracks with one individual by species for two tide cycles" width="100%" />
 <p class="caption">
+
 Example tracks with one individual by species for two tide cycles
 </p>
 
@@ -191,7 +183,6 @@ Bijleveld](mailto:allert.bijleveld@nioz.nl).
 
 We are working on the following articles at the moment:
 
-- Residency patch analysis
 - Connect WATLAS with SIBES data
 
 ### **Contribute**
@@ -225,6 +216,7 @@ for visualizing the tracking data in real time on
 volunteers that facilitated this work.
 
 <p align="middle">
+
 <a href="https://www.nioz.nl/en">
 <img src="man/figures/NIOZ_logo_ENG_RGB.png" align="middle" height="150" alt="nioz website" />
 </a>

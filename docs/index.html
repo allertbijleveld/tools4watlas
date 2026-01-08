@@ -6,12 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Tools for Processing WATLAS Tracking Data • tools4watlas</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" sizes="any" href="favicon.ico">
+<link rel="manifest" href="site.webmanifest">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -90,7 +89,7 @@
 <!-- badges: start -->
 
 <p>The goal of <code>tools4watlas</code> is to provide tools for getting, processing and plotting WATLAS tracking data. More information on the WATLAS tracking system can be found in <a href="https://doi.org/10.1186/s40317-022-00307-w" class="external-link">Bijleveld et al. 2022. WATLAS: high-throughput and real-time tracking of many small birds in the Dutch Wadden Sea</a>.</p>
-<p>Visit <a href="https://www.nioz.nl/watlas" class="external-link uri">https://www.nioz.nl/watlas</a> to follow tracked birds in real time and to read the latest project news. Feel free to reach out by <a href="mailto:allert.bijleveld@nioz.nl">e-mail</a> for questions or collaborations if you would like to work with WATLAS data.</p>
+<p>Visit <a href="https://www.nioz.nl/en/watlas-bird-tracking" class="external-link uri">https://www.nioz.nl/en/watlas-bird-tracking</a> to follow tracked birds in real time and to read the latest project news. Feel free to reach out by <a href="mailto:allert.bijleveld@nioz.nl">e-mail</a> for questions or collaborations if you would like to work with WATLAS data.</p>
 <p>The package <code>tools4watlas</code> builds on the package <a href="https://github.com/pratikunterwegs/atlastools" class="external-link"><code>atlastools</code></a> (<a href="https://doi.org/10.1111/1365-2656.13610" class="external-link">Gupte et al. 2021. A Guide to Pre-processing High-throughput Animal Tracking Data</a>). Some major adjustments are that in <code>tools4watlas</code>, we have incorporated <a href="https://rdatatable.gitlab.io/data.table/" class="external-link"><code>data.table</code></a> by tag ID. This approach is more efficient and significantly speeds up processing large datasets. Additionally, <code>tools4watlas</code> includes functions specific to the Wadden Sea such as integrating tidal and bathymetry data, and more elaborate functions and tutorials on visualizing movement data.</p>
 <div class="section level3">
 <h3 id="documentation">
@@ -140,13 +139,10 @@
 <strong>Example data</strong><a class="anchor" aria-label="anchor" href="#example-data"></a>
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="do">## Warning: package 'data.table' was built under R version 4.4.3</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="do">## Warning: package 'ggplot2' was built under R version 4.4.3</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load example data</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Load example data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
 <span></span>
 <span><span class="co"># Create base map</span></span>
@@ -189,7 +185,6 @@ Example tracks with one individual by species for two tide cycles
 <p>More examples of workflows aimed at processing, plotting and adding environmental data to WATLAS tracking data are being prepared. If you have a request, please contact <a href="mailto:allert.bijleveld@nioz.nl">Allert Bijleveld</a>.</p>
 <p>We are working on the following articles at the moment:</p>
 <ul>
-<li>Residency patch analysis</li>
 <li>Connect WATLAS with SIBES data</li>
 </ul>
 </div>
@@ -236,13 +231,13 @@ Example tracks with one individual by species for two tide cycles
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-8080-1734" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-8080-1734" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li>
-<a href="https://github.com/pratikunterwegs" class="external-link">Pratik Gupte</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-5294-7819" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<a href="https://github.com/pratikunterwegs" class="external-link">Pratik Gupte</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-5294-7819" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li>
-<a href="https://github.com/CBeardsworth" class="external-link">Christine Beardsworth</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-1308-1455" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<a href="https://github.com/CBeardsworth" class="external-link">Christine Beardsworth</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-1308-1455" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li>
-<a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-3159-8944" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-3159-8944" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 </ul>
 </div>
 
@@ -265,7 +260,7 @@ Example tracks with one individual by species for two tide cycles
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>

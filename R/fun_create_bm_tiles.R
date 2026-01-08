@@ -45,6 +45,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # packages
 #' library(tools4watlas)
 #' library(ggplot2)
@@ -54,7 +55,7 @@
 #'   buffer = 15000, option = "OpenStreetMap", zoom = 12
 #' )
 #' print(bm)
-#' 
+#'
 #' # example with satellite map
 #' bm <- atl_create_bm_tiles(
 #'   buffer = 15000, option = "Esri.WorldImagery", zoom = 12
@@ -79,8 +80,7 @@
 #'   ) +
 #'   scale_color_discrete(name = paste("N = ", length(unique(data$tag)))) +
 #'   theme(legend.position = "top")
-
-
+#' }
 atl_create_bm_tiles <- function(data = NULL,
                                 x = "x",
                                 y = "y",

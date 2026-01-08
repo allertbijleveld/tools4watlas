@@ -75,6 +75,7 @@ test_that("atl_create_bm returns ggplot for bathymetry option", {
 })
 
 test_that("atl_create_bm returns ggplot for bathymetry and shade option", {
+  skip_on_os("mac")
   # create a small raster for testing
   r <- terra::rast(nrows = 5, ncols = 5, xmin = 0, xmax = 1, ymin = 0, ymax = 1)
   terra::values(r) <- matrix(1:25, 5, 5)

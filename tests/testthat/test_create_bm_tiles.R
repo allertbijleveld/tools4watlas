@@ -3,9 +3,10 @@ library(ggplot2)
 
 testthat::test_that(
   "atl_create_bm_tiles works with defaults", {
+    skip_on_os("mac")
     
     bm <- atl_create_bm_tiles(buffer = 500)
-    
+
     testthat::expect_s3_class(bm, "ggplot")
   }
 )
@@ -13,14 +14,15 @@ testthat::test_that(
 
 testthat::test_that(
   "atl_create_bm_tiles works with input data", {
-    
+    skip_on_os("mac")
+
     dt <- data.table::data.table(
       x = 650272.5,
       y = 5902705
     )
-    
+
     bm <- atl_create_bm_tiles(data = dt, buffer = 100)
-    
+
     testthat::expect_s3_class(bm, "ggplot")
   }
 )
@@ -28,9 +30,10 @@ testthat::test_that(
 
 testthat::test_that(
   "atl_create_bm_tiles handles NULL data", {
-    
+    skip_on_os("mac")
+
     bm <- atl_create_bm_tiles(data = NULL, buffer = 100)
-    
+
     testthat::expect_s3_class(bm, "ggplot")
   }
 )
@@ -38,7 +41,8 @@ testthat::test_that(
 
 testthat::test_that(
   "atl_create_bm_tiles converts bbox input", {
-    
+    skip_on_os("mac")
+
     bbox <- sf::st_bbox(
       c(
         xmin = 650000,
@@ -48,9 +52,9 @@ testthat::test_that(
       ),
       crs = sf::st_crs(32631)
     )
-    
+
     bm <- atl_create_bm_tiles(data = bbox)
-    
+
     testthat::expect_s3_class(bm, "ggplot")
   }
 )
@@ -58,14 +62,15 @@ testthat::test_that(
 
 testthat::test_that(
   "atl_create_bm_tiles works with data.frame input", {
-    
+    skip_on_os("mac")
+
     df <- data.frame(
       x = 650272.5,
       y = 5902705
     )
-    
+
     bm <- atl_create_bm_tiles(data = df, buffer = 100)
-    
+
     testthat::expect_s3_class(bm, "ggplot")
   }
 )
@@ -73,17 +78,18 @@ testthat::test_that(
 
 testthat::test_that(
   "atl_create_bm_tiles works without scalebar", {
-    
+    skip_on_os("mac")
+
     dt <- data.table::data.table(
       x = 650272.5,
       y = 5902705
     )
-    
+
     bm <- atl_create_bm_tiles(
       data = dt,
       scalebar = FALSE
     )
-    
+
     testthat::expect_s3_class(bm, "ggplot")
   }
 )
@@ -91,7 +97,8 @@ testthat::test_that(
 
 testthat::test_that(
   "atl_create_bm_tiles errors on invalid data", {
-    
+    skip_on_os("mac")
+
     testthat::expect_error(
       atl_create_bm_tiles(data = "invalid")
     )

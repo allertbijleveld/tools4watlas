@@ -66,7 +66,9 @@ For more details see function descriptions of the used functions. Obviously more
 ```{r}
 # time steps and output path (atl_time_steps):
 cfg_time_interval <- "1 min" # time interval for animation steps
-cfg_output_path <- "C:/Users/jkrietsch/temp/animation" # output path for png's
+cfg_output_path <- paste0(
+  "C:/Users/", Sys.info()[["user"]], "/temp/animation"
+) # output path for png's
 
 # size and alpha settings of the tail (atl_size_along and atl_alpha_along)
 cfg_size_head <- 4 # number of positions in head
@@ -116,6 +118,7 @@ ts <- atl_time_steps(
   datetime_vector = data$datetime,
   time_interval = cfg_time_interval,
   output_path = cfg_output_path,
+  create_path = TRUE,
   fps = cfg_frame_rate
 )
 ```
@@ -429,7 +432,10 @@ We can use `atl_progress_bar()` to monitor the progress while the png's are crea
 
 ```{r, eval = FALSE}
 # set output path again in new session (same as above)
-cfg_output_path <- "C:/Users/jkrietsch/temp/animation" # output path for png's
+cfg_output_path <- paste0(
+  "C:/Users/", Sys.info()[["user"]], "/temp/animation"
+) # output path for png's
+
 # check progress
 atl_progress_bar(
   file_path = cfg_output_path,

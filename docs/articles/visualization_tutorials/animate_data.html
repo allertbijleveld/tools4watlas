@@ -149,7 +149,9 @@ settings.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># time steps and output path (atl_time_steps):</span></span>
 <span><span class="va">cfg_time_interval</span> <span class="op">&lt;-</span> <span class="st">"1 min"</span> <span class="co"># time interval for animation steps</span></span>
-<span><span class="va">cfg_output_path</span> <span class="op">&lt;-</span> <span class="st">"C:/Users/jkrietsch/temp/animation"</span> <span class="co"># output path for png's</span></span>
+<span><span class="va">cfg_output_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
+<span>  <span class="st">"C:/Users/"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"user"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"/temp/animation"</span></span>
+<span><span class="op">)</span> <span class="co"># output path for png's</span></span>
 <span></span>
 <span><span class="co"># size and alpha settings of the tail (atl_size_along and atl_alpha_along)</span></span>
 <span><span class="va">cfg_size_head</span> <span class="op">&lt;-</span> <span class="fl">4</span> <span class="co"># number of positions in head</span></span>
@@ -199,6 +201,7 @@ folder path where the png’s are created, delete existing files.</p>
 <span>  datetime_vector <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">datetime</span>,</span>
 <span>  time_interval <span class="op">=</span> <span class="va">cfg_time_interval</span>,</span>
 <span>  output_path <span class="op">=</span> <span class="va">cfg_output_path</span>,</span>
+<span>  create_path <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  fps <span class="op">=</span> <span class="va">cfg_frame_rate</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -533,7 +536,10 @@ that will be created - this is read automatically by
 <code><a href="../../reference/atl_progress_bar.html">atl_progress_bar()</a></code> if <code>total = NULL</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># set output path again in new session (same as above)</span></span>
-<span><span class="va">cfg_output_path</span> <span class="op">&lt;-</span> <span class="st">"C:/Users/jkrietsch/temp/animation"</span> <span class="co"># output path for png's</span></span>
+<span><span class="va">cfg_output_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
+<span>  <span class="st">"C:/Users/"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"user"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"/temp/animation"</span></span>
+<span><span class="op">)</span> <span class="co"># output path for png's</span></span>
+<span></span>
 <span><span class="co"># check progress</span></span>
 <span><span class="fu"><a href="../../reference/atl_progress_bar.html">atl_progress_bar</a></span><span class="op">(</span></span>
 <span>  file_path <span class="op">=</span> <span class="va">cfg_output_path</span>,</span>
