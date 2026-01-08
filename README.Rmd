@@ -22,11 +22,11 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/allertbijleveld/tools4watlas/graph/badge.svg)](https://app.codecov.io/gh/allertbijleveld/tools4watlas)
 <!-- badges: end -->
 
-The goal of `tools4watlas` is to provide tools for getting, processing and plotting WATLAS tracking data. More information on the WATLAS tracking system can be found in [Bijleveld et al. 2022. WATLAS: high-throughput and real-time tracking of many small birds in the Dutch Wadden Sea.](https://doi.org/10.1186/s40317-022-00307-w).
+The goal of `tools4watlas` is to provide tools for getting, processing and plotting WATLAS tracking data. More information on the WATLAS tracking system can be found in [Bijleveld et al. 2022. WATLAS: high-throughput and real-time tracking of many small birds in the Dutch Wadden Sea](https://doi.org/10.1186/s40317-022-00307-w). 
 
-Visit <https://www.nioz.nl/en/watlas-bird-tracking> to follow tracked birds in real time and to read the latest project news.
+Visit <https://www.nioz.nl/en/watlas-bird-tracking> to follow tracked birds in real time and to read the latest project news. Feel free to reach out by [e-mail](mailto:allert.bijleveld@nioz.nl) for questions or collaborations if you would like to work with WATLAS data.
 
-The package `tools4watlas` builds on the package [`atlastools`](https://github.com/pratikunterwegs/atlastools) ([Gupte et al. 2021. A Guide to Pre-processing High-throughput Animal Tracking Data.](https://doi.org/10.1111/1365-2656.13610)). In `tools4watlas`, we have improved the data processing functions of [`atlastools`](https://github.com/pratikunterwegs/atlastools) with a more efficient approach using [`data.table`](https://rdatatable.gitlab.io/data.table/) by tag ID. This change enhances memory efficiency and significantly speeds up processing for large datasets. Additionally, `tools4watlas` includes functions to integrate tidal and raster data (e.g. bathymetry), and functions and tutorials on how to visualize movement data.
+The package `tools4watlas` builds on the package [`atlastools`](https://github.com/pratikunterwegs/atlastools) ([Gupte et al. 2021. A Guide to Pre-processing High-throughput Animal Tracking Data](https://doi.org/10.1111/1365-2656.13610)). Some major adjustments are that in `tools4watlas`, we have incorporated [`data.table`](https://rdatatable.gitlab.io/data.table/) by tag ID. This approach is more efficient and significantly speeds up processing large datasets. Additionally, `tools4watlas` includes functions specific to the Wadden Sea such as integrating tidal and bathymetry data, and more elaborate functions and tutorials on visualizing movement data.
 
 ### **Documentation**
 

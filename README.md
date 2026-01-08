@@ -19,23 +19,23 @@ The goal of `tools4watlas` is to provide tools for getting, processing
 and plotting WATLAS tracking data. More information on the WATLAS
 tracking system can be found in [Bijleveld et al. 2022. WATLAS:
 high-throughput and real-time tracking of many small birds in the Dutch
-Wadden Sea.](https://doi.org/10.1186/s40317-022-00307-w).
+Wadden Sea](https://doi.org/10.1186/s40317-022-00307-w).
 
 Visit <https://www.nioz.nl/en/watlas-bird-tracking> to follow tracked
-birds in real time and to read the latest project news.
+birds in real time and to read the latest project news. Feel free to reach out by
+[e-mail](mailto:allert.bijleveld@nioz.nl) for questions or
+collaborations if you would like to work with WATLAS data.
 
 The package `tools4watlas` builds on the package
 [`atlastools`](https://github.com/pratikunterwegs/atlastools) ([Gupte et
 al. 2021. A Guide to Pre-processing High-throughput Animal Tracking
-Data.](https://doi.org/10.1111/1365-2656.13610)). In `tools4watlas`, we
-have improved the data processing functions of
-[`atlastools`](https://github.com/pratikunterwegs/atlastools) with a
-more efficient approach using
+Data](https://doi.org/10.1111/1365-2656.13610)). Some major adjustments
+are that in `tools4watlas`, we have incorporated
 [`data.table`](https://rdatatable.gitlab.io/data.table/) by tag ID. This
-change enhances memory efficiency and significantly speeds up processing
-for large datasets. Additionally, `tools4watlas` includes functions to
-integrate tidal and raster data (e.g. bathymetry), and functions and
-tutorials on how to visualize movement data.
+approach is more efficient and significantly speeds up processing large
+datasets. Additionally, `tools4watlas` includes functions specific to
+the Wadden Sea such as integrating tidal and bathymetry data, and more
+elaborate functions and tutorials on visualizing movement data.
 
 ### **Documentation**
 
@@ -130,8 +130,17 @@ install_github("allertbijleveld/tools4watlas")
 
 ``` r
 library(tools4watlas)
-library(ggplot2)
+```
 
+    ## Warning: package 'data.table' was built under R version 4.4.3
+
+``` r
+library(ggplot2)
+```
+
+    ## Warning: package 'ggplot2' was built under R version 4.4.3
+
+``` r
 # Load example data
 data <- data_example
 
@@ -168,7 +177,6 @@ bm +
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" alt="Example tracks with one individual by species for two tide cycles" width="100%" />
 <p class="caption">
-
 Example tracks with one individual by species for two tide cycles
 </p>
 
@@ -216,7 +224,6 @@ for visualizing the tracking data in real time on
 volunteers that facilitated this work.
 
 <p align="middle">
-
 <a href="https://www.nioz.nl/en">
 <img src="man/figures/NIOZ_logo_ENG_RGB.png" align="middle" height="150" alt="nioz website" />
 </a>
