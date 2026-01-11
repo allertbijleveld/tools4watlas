@@ -1,0 +1,234 @@
+# Filter data
+
+This vignette shows how to filter WATLAS data based on spatial
+boundaries, temporal specifications, error estimates and speed.
+
+## Loading the data
+
+``` r
+# packages
+library(tools4watlas)
+library(lubridate)
+library(sf)
+library(ggplot2)
+library(scales)
+library(viridis)
+
+# path to csv with raw data
+data_path <- system.file(
+  "extdata", "watlas_data_raw.csv",
+  package = "tools4watlas"
+)
+
+# load data
+data <- fread(data_path, yaml = TRUE)
+```
+
+## Spatial filtering
+
+Depending on the analysis, can make sense to use a spatial filter to
+exclude large outliers or subset only data from an area of interest. In
+this example we subset all data around Griend, Richel and Ballastplaat.
+Note that in this example all data are within the specified bounding
+box, so no data will be filtered out.
+
+``` r
+# location east of Griend
+griend_east <- st_sfc(st_point(c(5.275, 53.2523)), crs = st_crs(4326)) |>
+  st_transform(crs = st_crs(32631))
+
+# rectangle including Griend, Richel and Ballastplaat
+bbox <- atl_bbox(griend_east, asp = "16:9", buffer = 8000)
+bbox_sf <- st_as_sfc(bbox)
+
+# create a base map
+bm <- atl_create_bm(buffer = 10000)
+
+# round data to 1 ha (100x100 meter) grid cells
+data[, c("x_round", "y_round") := list(
+  plyr::round_any(x, 100),
+  plyr::round_any(y, 100)
+)]
+
+# N by location
+data_subset <- data[, .N, by = c("x_round", "y_round")]
+
+# plot data with bounding box
+bm +
+  geom_tile(
+    data = data_subset, aes(x_round, y_round, fill = N),
+    linewidth = 0.1, show.legend = TRUE
+  ) +
+  geom_sf(data = bbox_sf, color = "firebrick", fill = NA) +
+  scale_fill_viridis(
+    option = "A", discrete = FALSE, trans = "log10", name = "N positions",
+    breaks = trans_breaks("log10", function(x) 10^x),
+    labels = trans_format("log10", math_format(10^.x)),
+    direction = -1
+  ) +
+  coord_sf(expand = FALSE)
+```
+
+![Heatmap of all positions with bounding box
+(red)](filter_data_files/figure-html/unnamed-chunk-2-1.png)
+
+Heatmap of all positions with bounding box (red)
+
+``` r
+# remove rounded coordinates columns
+data[, c("x_round", "y_round") := NULL]
+
+# filter data with bounding box
+# note: for large tables use range and not sf_polygon
+data <- atl_filter_bounds(
+  data = data,
+  x = "x",
+  y = "y",
+  x_range = c(bbox["xmin"], bbox["xmax"]),
+  y_range = c(bbox["ymin"], bbox["ymax"]),
+  remove_inside = FALSE
+)
+```
+
+If data are removed, one might want to look at what was removed. This
+can be done like shown here (code not run as nothing was removed in our
+example).
+
+``` r
+# check what was removed
+data_removed <- atl_filter_bounds(
+  data = data,
+  x = "x",
+  y = "y",
+  x_range = c(bbox["xmin"], bbox["xmax"]),
+  y_range = c(bbox["ymin"], bbox["ymax"]),
+  remove_inside = TRUE
+)
+
+# create a base map
+bm <- atl_create_bm(data_removed, buffer = 1000)
+
+# check removed data
+bm +
+  geom_point(
+    data = data_removed, aes(x, y), color = "firebrick",
+    size = 0.5, alpha = 1, show.legend = FALSE
+  ) +
+  geom_sf(data = bbox_sf, color = "firebrick", fill = NA)
+```
+
+## Temporal filtering
+
+We now want to filter all positions of the tag before the bird was
+released. Since it usually takes a bit of time until birds are adjusted
+from the catching and getting used to the new tag, we also exclude 24
+hours after release. Sometimes the tag still gives data after it fell
+off or the bird died, in this case we can exclude these positions too.
+To identify such circumstances, it can help to plot for example the last
+1000 positions of each tag (see vignette: plotting data).
+
+Some birds might have also directly left the area after release, so
+depending on the project it might be useful to already exclude birds
+with few data at this point (e.g. here with less than 100 positions -
+none of the birds is filtered out in this case using the example data).
+
+``` r
+# load meta data
+all_tags_path <- system.file(
+  "extdata", "tags_watlas_subset.xlsx", package = "tools4watlas"
+)
+all_tags <- readxl::read_excel(all_tags_path, sheet = "tags_watlas_all") |>
+  data.table()
+
+# correct time zone to CET and change to UTC
+all_tags[, release_ts := force_tz(as_datetime(release_ts), tzone = "CET")]
+all_tags[, release_ts := with_tz(release_ts, tzone = "UTC")]
+
+# join release_ts with data
+all_tags[, tag := as.character(tag)]
+data[all_tags, on = "tag", `:=`(release_ts = i.release_ts)]
+
+# exclude positions before the release and 24h after
+data <- data[datetime > release_ts + 24 * 3600]
+
+# exclude positions after this date (bird died):
+data <- data[!(tag == "3103" &
+                 datetime > as.POSIXct("2023-09-25 15:00:00", tz = "UTC"))]
+
+# exclude tags with less than 100 positions
+data[, N := .N, tag]
+data[N < 100] |> unique(by = "tag")
+data <- data[N > 100]
+
+# remove unneeded columns
+data[, release_ts := NULL]
+data[, N := NULL]
+```
+
+## Filtering location errors
+
+### Based on WATLAS error estimate
+
+5000 is typically used by Allert.
+
+``` r
+# filter based on variance in the Easting and Northing
+var_max <- 5000 # in meters squared
+
+data <- atl_filter_covariates(
+  data = data,
+  filters = c(
+    sprintf("varx < %s", var_max),
+    sprintf("vary < %s", var_max)
+  )
+)
+```
+
+    ## Note: 0.54% of the dataset was filtered out, corresponding to 470 positions.
+
+### Based on speed
+
+This will filter more unrealistic positions.
+
+``` r
+# calculate speed
+data <- atl_get_speed(data, type = c("in", "out"))
+
+# plot speed (subset relevant range)
+ggplot(data = data[!is.na(speed_in) & speed_in > 5 & speed_in < 100]) +
+  geom_histogram(aes(x = speed_in), bins = 50) +
+  labs(x = "Speed in (m/s)") +
+  theme_bw()
+```
+
+![Histogram of speed moved from all
+data](filter_data_files/figure-html/unnamed-chunk-6-1.png)
+
+Histogram of speed moved from all data
+
+``` r
+# filter by speed
+speed_max <- 35 # m/s (126 km/h)
+
+data <- atl_filter_covariates(
+  data = data,
+  filters = c(
+    sprintf("speed_in < %s | is.na(speed_in)", speed_max),
+    sprintf("speed_out < %s | is.na(speed_out)", speed_max)
+  )
+)
+```
+
+    ## Note: 0.36% of the dataset was filtered out, corresponding to 315 positions.
+
+``` r
+# recalculate speed
+data <- atl_get_speed(data, type = c("in", "out"))
+```
+
+## Save data
+
+``` r
+# save data
+fwrite(data, file = "../inst/extdata/watlas_data_filtered.csv", yaml = TRUE)
+```

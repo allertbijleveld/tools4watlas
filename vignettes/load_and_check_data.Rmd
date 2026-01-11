@@ -36,9 +36,9 @@ library(viridis)
 
 WATLAS data can either be loaded from a local SQLite database or a remote SQL database server. To do so, first select the tags and time period for which to extract data.
 
-Use the `tags_watlas_all.xlsx` file (including metadata of all tags) or for collaborators the `tags_watlas_subset.xlsx` (including a subset of metadata) to select the desired tags. Here shown with the example data in `tools4watlas`.
+Use the `tags_watlas_all.xlsx` file (including metadata of all tags) or for collaborators the `tags_watlas_subset.xlsx` (including a subset of metadata) to select the desired tags. 
 
-Loading the `tags_watlas_subset.xlsx` will provide a table with the following columns:
+Using the example data in `tools4watlas`, the `tags_watlas_subset.xlsx` will provide a table with the following columns:
 
 | Column            | Description |
 | ----              | --------------------- |
@@ -46,9 +46,10 @@ Loading the `tags_watlas_subset.xlsx` will provide a table with the following co
 |**species**	      |	Species common name  |
 |**tag**	          |	Tag ID with 4 digits |
 |**rings**	        | Metal ring number |
-|**crc**            |	Colour ring combo  |
+|**crc**            |	Colour ring combination |
 |**release_ts**		  |	Release time stamp in CET |
 |**catch_location** |	Location where the bird was caught  |
+
 
 #### Select the desired tags and time period
 
@@ -73,11 +74,11 @@ to <- "2023-09-25 00:00:00"
 
 #### Extract data from local SQLite file
 
-First, the path and file name of the local SQLite database need to be provided. Then, with the established connection, the database can be queried for the selected tags and period. Here we will load the tagging data in one data.table.
+First, the path and file name of the local SQLite database needs to be provided. Then, a connection to the database can be established, and the database can be queried for the selected tags and period. Here, we will load the selected tagging data in a `data.table` object.
 
 
 ```{r}
-# database connection
+# establish database connection
 sqlite_db <- system.file(
   "extdata", "watlas_example.SQLite", package = "tools4watlas"
 )
@@ -98,7 +99,7 @@ RSQLite::dbDisconnect(con)
 
 #### Alternatively, extract from remote SQL-database
 
-To safely work with database credentials one option is to store them as environmental variables in R. This allows for example to have scripts on GitHub without sharing them. Restart R after adding variables to be able to access them. Ask Allert for the host, username and password and then add them in your environment like this:
+To safely work with database credentials, one option is to store them as environmental variables in R. This allows, for example, to have shared scripts on GitHub without storing the credentials online. Ask Allert for the host, username and password and then add them in your environment as indicated below. After adding the credentials to the R-environment, restart R and access should be available and the scripts should run succesfully.
 
 ```{r nolint_start, echo = FALSE}
 # nolint start: assignment_linter.
@@ -121,9 +122,9 @@ Sys.getenv("variable_name")
 # nolint end: assignment_linter.
 ```
 
-`atl_get_data` does the same as when connecting to a local SQLite database when connecting to a remote database. In this example (chunk not run and only shown) we load the last three days of data from all tags of 2024. Host, username and password are specified as environmental variables in this example, but can also be specified directly.
+Connecting to a remote database with `atl_get_data` is similar to connecting with a local SQLite database. In this example (chunk not run and only shown), we load the last three days of data from all tags of 2024. Note that the host, username and password are specified as environmental variables in this example, but can also be specified directly.
 
-Since we want the up to date metadata we load the `tags_watlas_all.xlsx` from the “WATLAS” SharePoint folder: `Documents/data/`. Either specify the path to your local copy of this folder or add the path for your user in the `atl_file_path()` function.
+Connecting to the remote database is normally restricted to current group members that also have access to the NIOZ/Bijleveld Teams environment. To use the most recent metadata stored online, we first load the `tags_watlas_all.xlsx` from the “WATLAS” SharePoint folder: `Documents/data/`. Either specify the path to your local copy of this folder or add the path for your user in the `atl_file_path()` function.
 
 ```{r, eval = FALSE}
 # file path to WATLAS teams data folder
@@ -168,19 +169,20 @@ head(data) |> knitr::kable(digits = 2)
 
 | Column      | Description |
 | ----        | --------------------- |
-|**posID**    |	Unique number for localizations  |
+|**posID**    |	Unique identifier for positions  |
 |**tag**	    |	4 digit tag number (character), i.e. last 4 digits of the full tag number  |
 |**time**	    |	UNIX time (seconds)  |
 |**datetime**	| Datetime in POSIXct (UTC)  |
-|**x**        |	X-cordinates in meters (UTM 31 N)  |
-|**y**		    |	Y-cordinates in meters (UTM 31 N)  |
-|**nbs**	    |	Number of Base Stations used in calculating coordinates  |
+|**x**        |	X-coordinates in meters (UTM 31 N)  |
+|**y**		    |	Y-coordinates in meters (UTM 31 N)  |
+|**nbs**	    |	Number of Base Stations used for estimating the positions  |
 |**varx**	    |	Variance in estimating X-coordinates  |
 |**vary**	    |	Variance in estimating Y-coordinates  |
 |**covxy**	  |	Co-variance between X- and Y-coordinates  |
 
 ### Remove data before release
 
+Because tags are turned on before the bird are released, these positions need to be removed. The release time stamp is specified in the metadata that was previously loaded in the object `all_tags`. 
 
 ```{r}
 # correct time zone to CET and change to UTC
@@ -194,13 +196,13 @@ data[all_tags, on = "tag", `:=`(release_ts = i.release_ts)]
 # exclude positions before the release
 data <- data[datetime > release_ts]
 
-# remove release_ts column
+# remove release_ts column from data
 data[, release_ts := NULL]
 ```
 
 ### Add species column (or other relevant columns)
 
-If we are working with multiple species, then we can join the species from the metadata. In this case I want the species to be the first row of the table. 
+If we are working with multiple species, then we can join the species from the metadata. In this case, `species` is added as the first column of the `data.table`. 
 
 ```{r}
 # join with species data
@@ -213,7 +215,7 @@ setcolorder(data, c("species", setdiff(names(data), c("species"))))
 # order data.table
 setorder(data, species, tag, time)
 ```
-We can also add other metadata by merging whatever column we want (e.g. color rings and catch location). However, when working with large data sets, it is advised to only add columns that are necessary. This can also always be done whenever needed. This is just an example and Here we delete the columns again.
+We can also add other metadata by merging any column (e.g. color rings and catch location). However, when working with large data sets, it is advised to only add columns that are necessary. Adding columns can be done at any stage of the analyses. Here, after showing how to add columns, we delete them immediately because they are not necessary.
 
 ```{r}
 # join with metal rings, color rings and catch location
@@ -230,7 +232,7 @@ data[, c("rings", "crc", "catch_location") := NULL]
 
 ## Save data
 
-At this point it might be good to save the raw data, as extrating the data from the database can take a long time with big datasets. A convenient and fast way is to use `fwrite` from the `data.table` package. By including `yaml = TRUE` we make sure the data stays in the same format when we load it again. Change the file path when running this example.
+At this point it might be good to save the raw data for further analyses, as extracting the data from the database can take a long time with big datasets. A convenient and fast way is to use `fwrite` from the `data.table` package. By including `yaml = TRUE` we make sure the data stays in the same format, when we load it again. Note that the file path needs to be changed when running this example.
 
 ```{r, eval = FALSE}
 # save data
@@ -241,7 +243,7 @@ fwrite(data, file = "../inst/extdata/watlas_data_raw.csv", yaml = TRUE)
 
 #### Data summary
 
-Here we simply check for how many individuals we have data and how many positions by tag and date we have. 
+Here, we inspect for how many individuals we have data within the selection, and how many positions we have per tag and date. 
 
 ```{r}
 # load data
@@ -265,15 +267,15 @@ data_summary |> knitr::kable(digits = 2)
 |**species**         |	Species  |
 |**tag**	           |	Tag number |
 |**n_positions**     |	Number of positions  |
-|**first_data**	     |  Datetime first localization (UTC)  |
-|**last_data**       |	Datetime last localization (UTC)  |
+|**first_data**	     |  Datetime of first position (UTC)  |
+|**last_data**       |	Datetime of last position (UTC)  |
 |**days_data**	     |	Days of data  |
-|**min_gap**	       |	Minimum time interval between localizations (interval of the tag in seconds) |
-|**max_gap**    	   |	Maximum time interval between localizations (largest gap in seconds) |
-|**max_gap_factor**	 |	Maximum time interval between localizations as factor (in seconds, minutes, hours, or days)  |
-|**fix_rate**	       |	Fix rate (=1 if every `min_gap` has a localization between `first_data` and `last_data`)  |
+|**min_gap**	       |	Minimum time interval between positions (should be the interval of the tag in seconds) |
+|**max_gap**    	   |	Maximum time interval between positions (largest gap in seconds) |
+|**max_gap_factor**	 |	Maximum time interval between positions as factor (in seconds, minutes, hours, or days)  |
+|**fix_rate**	       |	The average fix rate (=1 if every `min_gap` has a position between `first_data` and `last_data`)  |
 
-Plot the number of positions by day.
+Plot the number of positions by day. Here, we use the example data that only has one day, but this graph is particularly convenient to obtain a quick overview of the data for an entire field season.   
 
 ```{r, fig.cap = "Number of positions per day by tag", fig.width = 7, fig.height = 4, fig.align = "center"}
 # add date
@@ -296,9 +298,9 @@ ggplot(data_subset, aes(x = date, y = tag, fill = N)) +
 ```
 
 
-#### Plot overview of the data
+#### Plot a heatmap of the data
 
-Now we want to see the data on a map. With large datasets it is convenient to plot heatmaps, as plotting for example 40 million points would result in a lot of over plotting and makes the plotting slow. If the dataset is small, one can obviously also plot the data by tag number or in other ways (see vignette plotting data).
+With large datasets it is convenient to plot heatmaps, as plotting millions of positions is slow. For plotting all  positions by tag number, for example, please see the vignette [Plot data] (https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html)
 
 
 ```{r, fig.cap = "Heatmap of all positions", fig.width = 7, fig.height = 4, fig.align = "center"}
@@ -306,7 +308,7 @@ Now we want to see the data on a map. With large datasets it is convenient to pl
 # create basemap
 bm <- atl_create_bm(data, buffer = 800)
 
-# round data to 1 ha (100x100 meter) grid cells
+# round example data to 1 ha (100x100 meter) grid cells
 data[, c("x_round", "y_round") := list(
   plyr::round_any(x, 100),
   plyr::round_any(y, 100)

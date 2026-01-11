@@ -21,16 +21,16 @@ tracking system can be found in [Bijleveld et al. 2022. WATLAS:
 high-throughput and real-time tracking of many small birds in the Dutch
 Wadden Sea](https://doi.org/10.1186/s40317-022-00307-w).
 
-Visit <https://www.nioz.nl/en/watlas-bird-tracking> to follow tracked
-birds in real time and to read the latest project news. Feel free to
-reach out by [e-mail](mailto:allert.bijleveld@nioz.nl) for questions or
+Visit <https://maps.nioz.nl/watlas> to follow tracked birds in real time
+and to read the latest project news. Feel free to reach out by
+[e-mail](mailto:allert.bijleveld@nioz.nl) for questions or
 collaborations if you would like to work with WATLAS data.
 
 The package `tools4watlas` builds on the package
 [`atlastools`](https://github.com/pratikunterwegs/atlastools) ([Gupte et
 al. 2021. A Guide to Pre-processing High-throughput Animal Tracking
-Data](https://doi.org/10.1111/1365-2656.13610)). Some major adjustments
-are that in `tools4watlas`, we have incorporated
+Data](https://doi.org/10.1111/1365-2656.13610)). Some major developments
+are that we have incorporated
 [`data.table`](https://rdatatable.gitlab.io/data.table/) by tag ID. This
 approach is more efficient and significantly speeds up processing large
 datasets. Additionally, `tools4watlas` includes functions specific to
@@ -168,7 +168,6 @@ bm +
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" alt="Example tracks with one individual by species for two tide cycles" width="100%" />
 <p class="caption">
-
 Example tracks with one individual by species for two tide cycles
 </p>
 
@@ -216,7 +215,6 @@ for visualizing the tracking data in real time on
 volunteers that facilitated this work.
 
 <p align="middle">
-
 <a href="https://www.nioz.nl/en">
 <img src="man/figures/NIOZ_logo_ENG_RGB.png" align="middle" height="150" alt="nioz website" />
 </a>

@@ -1,0 +1,62 @@
+# Add tidal data to tracking data
+
+Adds a unique tide identifier, waterlevel, time from high tide and time
+to low tide for tracking data (both in minutes).
+
+## Usage
+
+``` r
+atl_add_tidal_data(
+  data,
+  tide_data,
+  tide_data_highres,
+  waterdata_resolution = "10 min",
+  waterdata_interpolation = NULL,
+  offset = 0
+)
+```
+
+## Arguments
+
+- data:
+
+  A dataframe with the tracking data with the timestamp column
+  'datetime' in UTC.
+
+- tide_data:
+
+  Data on the timing (in UTC) of low and high tides.
+
+- tide_data_highres:
+
+  Data on the timing (in UTC) of the waterlevel in small intervals (e.g.
+  every 10 min) as provided from Rijkwaterstaat.
+
+- waterdata_resolution:
+
+  The resolution of the high resolution waterlevel data. This is used
+  for matching the high resolution tidal data to the tracking data.
+  Defaults to 10 minutes but can be set differently.
+
+- waterdata_interpolation:
+
+  Time interval to which the water level data will be interpolated
+  (should be smaller than water data resolution e.g. 1 min). If NULL
+  will keep the original water data resolution.
+
+- offset:
+
+  The offset in minutes between the location of the tidal gauge and the
+  tracking area. This value will be added to the timing of the water
+  data.
+
+## Value
+
+The input data but with three columns added: tideID (a unique number for
+the tidal period between two consecutive high tides), tidaltime (time
+since high tide in minutes), time2lowtide (time to low tide in minutes),
+and waterlevel with reference to NAP (cm).
+
+## Author
+
+Pratik Gupte & Allert Bijleveld & Johannes Krietsch

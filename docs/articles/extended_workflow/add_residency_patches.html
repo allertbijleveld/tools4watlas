@@ -383,7 +383,7 @@ create a polygon. This buffer should best be
 <span>  tide <span class="op">=</span> <span class="st">"2023513"</span>, offset <span class="op">=</span> <span class="fl">30</span>,</span>
 <span>  buffer_res_patches <span class="op">=</span> <span class="fl">75</span> <span class="op">/</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="add_residency_patches_files/figure-html/unnamed-chunk-3-1.png" alt="Overview plot res patches one tide" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="add_residency_patches_files/figure-html/unnamed-chunk-3-1.png" class="r-plt" alt="Overview plot res patches one tide" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="loop-through-all-tags-and-tides">Loop through all tags and tides<a class="anchor" aria-label="anchor" href="#loop-through-all-tags-and-tides"></a>
@@ -753,7 +753,7 @@ ID, and the points are plotted with a grey colour to show the track.</p>
 <span>    data <span class="op">=</span> <span class="va">data_subset</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">patch</span><span class="op">)</span><span class="op">]</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">patch</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    size <span class="op">=</span> <span class="fl">1.5</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="add_residency_patches_files/figure-html/unnamed-chunk-6-1.png" alt="Residency patches within track colored by ID" width="100%"></p>
+<p><img src="add_residency_patches_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="Residency patches within track colored by ID" width="100%"></p>
 <p>Or we could plot the residency patch at it’s median position with the
 duration in minutes as size and colour of the points.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -765,7 +765,7 @@ duration in minutes as size and colour of the points.</p>
 <span>    show.legend <span class="op">=</span> <span class="cn">TRUE</span>, alpha <span class="op">=</span> <span class="fl">0.5</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html" class="external-link">scale_color_viridis</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="add_residency_patches_files/figure-html/unnamed-chunk-7-1.png" alt="Residency patches by duration in patch" width="100%"></p>
+<p><img src="add_residency_patches_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="Residency patches by duration in patch" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="plot-by-species">Plot by species<a class="anchor" aria-label="anchor" href="#plot-by-species"></a>
@@ -794,7 +794,7 @@ and sized by duration.</p>
 <span>    labels <span class="op">=</span> <span class="fu"><a href="../../reference/atl_spec_labs.html">atl_spec_labs</a></span><span class="op">(</span><span class="st">"multiline"</span><span class="op">)</span>,</span>
 <span>    name <span class="op">=</span> <span class="st">""</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="add_residency_patches_files/figure-html/unnamed-chunk-8-1.png" alt="Residency patches colored by species" width="100%"></p>
+<p><img src="add_residency_patches_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="Residency patches colored by species" width="100%"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -808,7 +808,7 @@ and sized by duration.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

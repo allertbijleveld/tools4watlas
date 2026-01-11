@@ -34,25 +34,27 @@ knitr::opts_chunk$set(
 ```
 
 
-## This bibliography contains all peer-reviewed publications linked to WATLAS
+## This bibliography contains all peer-reviewed publications and PhD-dissertations linked to WATLAS
 
 The `.bib` file containing the full bibliography in `BibTeX` can be downloaded [here](https://github.com/allertbijleveld/tools4watlas/blob/master/vignettes/literature/literature.bib).
 
 ### Introduction 
 
-Tracking animal movement is crucial for understanding interactions with changing environments and predicting the effects of anthropogenic activities, particularly in ecologically significant areas like the Wadden Sea. The WATLAS system  (Wadden Sea Advanced Tracking and Localisation of Animals in real life Systems) enables high-resolution monitoring of small bird movements, offering insights into space use, individual variation, and social networks, thereby supporting research and conservation efforts in the region. A detailed description of WATLAS can be found in **@bijleveld2022**.
+Tracking animal movement is crucial for understanding interactions with changing environments and predicting the effects of anthropogenic activities, particularly in ecologically significant areas like the Wadden Sea. The WATLAS system (Wadden Sea Advanced Tracking and Localisation of Animals in real life Systems) enables high-resolution monitoring of small bird movements, offering insights into space use, individual variation, and social networks, thereby supporting research and conservation efforts in the region. A detailed description of WATLAS can be found in **@bijleveld2022**.
 
 In **@nathan2022** we discuss how big-data approaches, such as high-throughput tracking with WATLAS, can lead to an increased understanding of the ecology of animal movement. Particularly that advances in high-throughput wildlife tracking systems now allow more thorough investigation of variation among individuals and species across space and time, the nature of biological interactions, and behavioral responses to the environment.  
 
 ### Prologue to WATLAS
 
-ATLAS builds on and is inspired by 'Time Of Arrival'-tracking developed by **@maccurdy2009**. This tracking method is described in **@maccurdy2019** that also includes a pilot study in the Wadden Sea as a 'proof of concept'. After these initial tests in 2008-2009, this pre-WATLAS TOA-system was deployed in the Wadden Sea with 15 receivers studying red knot habitat use. After much trial and error, we could show in **@bijleveld2016** how red knots selected habitat to maximise their energy intake rates. They did, however, not select areas with the highest density of prey but trade-off prey quantity and quality. Moreover, individuals differed in how they leaned towards quantity or quality of prey in selecting mudflat habitat. 
+ATLAS builds on and is inspired by 'Time Of Arrival'-tracking developed by **@maccurdy2009**. This tracking method is described in **@maccurdy2019** that also includes a pilot study in the Wadden Sea as a 'proof of concept'. In the chapter **@maccurdyinthesis**, we reviewed tracking technologies and discussed how many of the tools are inapplicable to many species due to mass, cost and energy constraints, leaving gaps in our understanding. We presented the new 'Time Of Arrival'-tracking and argue that this can be broadly applied to species that were previously too small for automated tracking systems at low costs, thus offering researchers unprecedented amounts of data allowing for novel insights. 
 
-After the success in the Wadden Sea, we also deployed TOA-tracking in Mauritania. Consistent with previous empirical studies, patch residence times in the field were positively correlated with gizzard mass. The slope of this correlation, as well as the observed range of patch residence times, was in accordance with the simulated values. The 12 canutus Red Knots with experimentally reduced gizzard masses did not decrease patch residence times in response to the reduction in gizzard mass. *These findings suggest that diet preferences can indeed cause the observed among-individual variation in gizzard mass and patch residence times [@RN2322]*.
+After these initial tests in 2008-2009, this pre-WATLAS TOA-system was deployed in the Wadden Sea with 15 receivers studying red knot habitat use. After much trial and error, we could show in **@bijleveld2016** how red knots selected habitat to maximise their energy intake rates. They did, however, not select areas with the highest density of prey but trade-off prey quantity and quality. Moreover, individuals differed in how they leaned towards quantity or quality of prey in selecting mudflat habitat. 
 
-Having deployed the same tracking and resouce sampling methods in Mauritania and the Wadden Sea allowed a comparisson within species [@RN2675]. Compared to Banc d’Arguin, resource patches in the Wadden Sea were larger and the maximum local resource abundance was higher. However, because of constraints set by digestive capacity, the average potential intake rates by red knots were similar at the two study sites. Space-use patterns differed as predicted from these differences in resource landscapes. Whereas foraging red knots in the Wadden Sea roamed the mudflats in high aggregation without site fidelity (i.e. grouping nomads), at Banc d’Arguin they showed less aggregation but were strongly site-faithful (i.e. solitary residents).
+After the success in the Wadden Sea, we also deployed TOA-tracking in Mauritania. Consistent with previous empirical studies, patch residence times in the field were positively correlated with gizzard mass. A manipulation of gizzard mass through diet revealed that Red Knots with experimentally reduced gizzard masses did not accordingly decreased patch residence times in the field. These findings suggest that diet preferences can cause the observed among-individual variation in gizzard mass and patch residence times **[@oudman2017]**.
 
-As part of a broader review on circadian rhythms, we reveal individual differences in tidal and circadian foraging rhythms of red knots and highlight potential fruitful avenues for further studies [@RN2594].
+Having deployed the same tracking and resouce sampling methods in Mauritania and the Wadden Sea allowed a comparisson within species **[@oudman2018]**. Compared to Banc d’Arguin, resource patches in the Wadden Sea were larger and the maximum local resource abundance was higher. However, because of constraints set by digestive capacity, the average potential intake rates by red knots were similar at the two study sites. Space-use patterns differed as predicted from these differences in resource landscapes. Foraging red knots in the Wadden Sea roamed the mudflats in large aggregations without site fidelity (i.e. grouping nomads), at Banc d’Arguin they acted more individually with strong site-fidelity (i.e. solitary residents).
+
+For a broader review on circadian rhythms, we re-analysed the high resolution tracking data from Red Knots in Mauritanie. We revealed individual differences in tidal and circadian foraging rhythms and highlight potential fruitful avenues for further studies **[@bulla2017]**.
 
 ### Validation
 
@@ -67,17 +69,25 @@ In  **@toledo2022** we describe our tags and particulary the design of these ver
 ### Ecology
 
 #### Migration, relocation and departure decisions  
-Using WATLAS to record the timing of migration, we showed that red knots that had ad libitum food in captivity departed earlier from the Wadden Sea on spring migration than birds with restricted food access. Becasue Red Knots adjust mass gain and moult rates to local foraging conditions, this study suggests that improved food conditions at staging sites, like the Wadden Sea, could enable earlier departures and help migratory birds better track advancing spring under climate warming [RN3310].
+Using WATLAS to record the timing of migration, we showed that red knots that had ad libitum food in captivity departed earlier on spring migration from the Wadden Sea than birds with restricted food access. Becasue Red Knots adjust their mass gain and moult rates to local foraging conditions, this study suggests that improved food conditions at staging sites, like the Wadden Sea, could enable earlier departures and help migratory birds better track advancing spring under climate warming [@Lameris2025].
 
-In **@gobbens2024**, we studied the environmental conditions that red knots selected for relocation flights within their wintereing range across the North Sea to the United Kingdom. Approximately 37% of tagged red knots departed yearly and on average did so a few hours after sunset, 4h before high tide, with tailwinds, and little cloud cover.  
+In **@gobbens2024**, we studied the environmental conditions that red knots selected for relocation flights within their wintering range across the North Sea to the United Kingdom. Approximately 37% of tagged red knots departed yearly and on average did so a few hours after sunset, 4h before high tide, with tailwinds, and little cloud cover.  
 
-#### Habitat use
-Red knots foraging on the thick-shelled cockles, that are swallowed whole, needed to trade-off quantity and quality of their prey. In **@bijleveld2016** we show how they, therefore, select habitat with intermediate prey densities to maximise energy intake rates. Other shorebirds, do select for highest desnities where prey are easiliy discovered. In **Penning et al. (in prep)** we show how Sanderling select habitat with the highest desnities of shrimp.
+#### Habitat use and resource selection
+We are interested whether shorebird select mudflat habitat where they can maximise their energy intake rates, that is where food densities are high. In **Penning et al. (in prep)**, we show that Sanderling select intertidal mudflats with the highest densities of Brown Shrimp. Becasue of tag weight constraints and Sanderling being so small, this is the first time ever that Sanderling have been tracked at such high spatiotemporal resolution. 
+
+In **Danielson-Owczynsky et al. (in prep)**, we show that Bar-tailed Godwits select areas where they their preferred prey are most abundant. For long-billed females these were areas with high densities of Lugworms and Ragworms, which live deeper in the sediment. Males males with shorter bills, however, almost exclusively consumed and selected areas with high densities of Mud Shrimp that live more superficially on the mudflats. The latter, that fuelling Bar-tailed godwits forage primarily on Mud Shrimp, has not been documented before.
 
 #### Individual variation
 In **@ersoy2022** we showed that foraging tactics and diet are associated with the personality trait exploration, independent of morphological differences. WATLAS was used to locate tagged individuals on mudflats for detailed behavioural observations.  
 
-Following this result, in **@ersoy2024** we studied the development of consistent exploration behaviour and found that juvenile red knots had a more diverse diet than adults and had less consistent personalites. We discuss a pathway how early foraging experiences could shape development of exploratory personalities. WATLAS was used to show how juvenile red knots differed in habitat use, which is presented in the appendix. 
+Following this result, in **@ersoy2024**, we studied the development of consistent exploration behaviour and found that juvenile red knots had a more diverse diet than adults and had less consistent personalites. We discuss a pathway how early foraging experiences could shape development of exploratory personalities. WATLAS was used to show how juvenile red knots differed in habitat use, which is presented in the appendix. 
+
+#### Climate change 
+With the climiate crisis, extreme wind speeds are predicted to occur more frequently and pose a threat to shorebirds. In **Timo Keuning et al. (in prep)**, we studied how strong winds affect the availability of intertidal foraging habitat through increased water levels ('wind setup') and the behaviour of Red Knots. With high wind speeds from the West, mudflats stayed submerged up to 50% and the availability of prey was reduced by 44%. Moreover, with strong headwinds birds roosted closer. These wind-driven effects are likely to increase energetic costs while reducing opportunities for food intake, thereby reshaping energy balances. 
+
+### PhD-dissertations
+The pre-WATLAS insights were also published within the dissertations of Thomas Oudman **[@oudmanthesis]** and Allert Bijleveld **[@bijleveldthesis]**. so far, WATLAS has been part of the dissertations of Eva Kok **[@kokthesis]**, Selin Erosy **[@ersoythesis]**, and Emma Penning **[@penningthesis]**.
 
 ## Bibliography
 
