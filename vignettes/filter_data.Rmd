@@ -121,7 +121,7 @@ bm +
 
 ## Temporal filtering
 
-We now want to filter all positions of the tag before the bird was released. Since it usually takes a bit of time until birds are adjusted from the catching and getting used to the new tag, we also exclude 24 hours after release. Sometimes the tag still gives data after it fell off or the bird died, in this case we can exclude these positions too. To identify such circumstances, it can help to plot for example the last 1000 positions of each tag (see vignette: plotting data). 
+We now want to filter all positions of the tag before the bird was released. Since it usually takes a bit of time until birds are adjusted from the catching and getting used to the new tag, we also exclude 24 hours after release. Sometimes the tag still gives data after it fell off or the bird died, in this case we can exclude these positions too. To identify such circumstances, it can help to plot for example the last 1000 positions of each tag (see vignette: [plotting data](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html#simple-preset-plots-to-check-the-data)). 
 
 Some birds might have also directly left the area after release, so depending on the project it might be useful to already exclude birds with few data at this point (e.g. here with less than 100 positions - none of the birds is filtered out in this case using the example data). 
 

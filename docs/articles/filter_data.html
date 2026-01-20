@@ -210,7 +210,8 @@ from the catching and getting used to the new tag, we also exclude 24
 hours after release. Sometimes the tag still gives data after it fell
 off or the bird died, in this case we can exclude these positions too.
 To identify such circumstances, it can help to plot for example the last
-1000 positions of each tag (see vignette: plotting data).</p>
+1000 positions of each tag (see vignette: <a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html#simple-preset-plots-to-check-the-data">plotting
+data</a>).</p>
 <p>Some birds might have also directly left the area after release, so
 depending on the project it might be useful to already exclude birds
 with few data at this point (e.g. here with less than 100 positions -
@@ -241,7 +242,7 @@ data).</p>
 <span></span>
 <span><span class="co"># exclude tags with less than 100 positions</span></span>
 <span><span class="va">data</span><span class="op">[</span>, <span class="va">N</span> <span class="op">:=</span> <span class="va">.N</span>, <span class="va">tag</span><span class="op">]</span></span>
-<span><span class="va">data</span><span class="op">[</span><span class="va">N</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/unique.html" class="external-link">unique</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></span>
+<span><span class="va">data</span><span class="op">[</span><span class="va">N</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">N</span> <span class="op">&gt;</span> <span class="fl">100</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># remove unneeded columns</span></span>
