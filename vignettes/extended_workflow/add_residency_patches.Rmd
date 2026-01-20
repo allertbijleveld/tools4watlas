@@ -1,6 +1,5 @@
 ---
 title: "Add residency patches"
-author: "Johannes Krietsch"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Add residency patches}

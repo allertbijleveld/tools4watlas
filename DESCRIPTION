@@ -54,6 +54,7 @@ Suggests:
     mockery,
     OpenStreetMap,
     plyr,
+    plotly,
     progress,
     raster,
     RColorBrewer,

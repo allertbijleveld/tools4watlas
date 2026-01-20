@@ -1,6 +1,5 @@
 ---
 title: "Package maintenance"
-author: "Johannes Krietsch"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Package maintenance}

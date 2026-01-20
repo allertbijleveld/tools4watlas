@@ -1,6 +1,5 @@
 ---
 title: "Add tidal and bathymetry data"
-author: "Johannes Krietsch"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Add tidal and bathymetry data}

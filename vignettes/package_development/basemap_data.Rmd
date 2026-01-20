@@ -1,6 +1,5 @@
 ---
 title: "Basemap data"
-author: "Johannes Krietsch"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Basemap data}

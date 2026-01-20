@@ -1,6 +1,5 @@
 ---
 title: "Plot data"
-author: "Johannes Krietsch"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Plot data}

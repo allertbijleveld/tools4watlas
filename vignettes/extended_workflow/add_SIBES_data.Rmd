@@ -1,6 +1,5 @@
 ---
 title: "Add SIBES data"
-author: "Johannes Krietsch"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Add SIBES data}
