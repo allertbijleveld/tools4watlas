@@ -222,6 +222,14 @@ atl_check_tag(
   highlight_first = TRUE, highlight_last = TRUE
 )
 
+# subset with last 1000 positions
+atl_check_tag(
+  data,
+  last_n = 1000,
+  option = "datetime",
+  highlight_first = TRUE, highlight_last = TRUE
+)
+
 # plot option speed_in
 atl_check_tag(data, option = "speed_in")
 
