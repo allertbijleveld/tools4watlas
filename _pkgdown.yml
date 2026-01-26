@@ -37,8 +37,6 @@ navbar:
         href: articles/extended_workflow/add_tidal_and_bathymetry_data.html
       - text: "Add residency patches"
         href: articles/extended_workflow/add_residency_patches.html
-      - text: "Add SIBES data"
-        href: articles/extended_workflow/add_SIBES_data.html
       - text: "--------"
       - text: Visualization tutorials
       - text: "Create a basemap"

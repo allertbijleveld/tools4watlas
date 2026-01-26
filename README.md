@@ -21,10 +21,10 @@ tracking system can be found in [Bijleveld et al. 2022. WATLAS:
 high-throughput and real-time tracking of many small birds in the Dutch
 Wadden Sea](https://doi.org/10.1186/s40317-022-00307-w).
 
-Visit <https://www.nioz.nl/en/watlas-bird-tracking> to follow tracked
-birds in real time and to read the latest project news. Feel free to
-reach out by [e-mail](mailto:allert.bijleveld@nioz.nl) for questions or
-collaborations if you would like to work with WATLAS data.
+Visit <https://www.nioz.nl/en/research/projects/watlas> to follow
+tracked birds in real time and to read the latest project news. Feel
+free to reach out by [e-mail](mailto:allert.bijleveld@nioz.nl) for
+questions or collaborations if you would like to work with WATLAS data.
 
 The package `tools4watlas` builds on the package
 [`atlastools`](https://github.com/pratikunterwegs/atlastools) ([Gupte et
@@ -69,12 +69,7 @@ local NIOZ file server is required.
   data**\*](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html)
 
 - [**Add residency
-  patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residency_patches.html) -
-  work in progress.
-
-- [**Add SIBES
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_SIBES_data.html) -
-  work in progress.
+  patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residency_patches.html)
 
 **Visualization tutorials**:
 
