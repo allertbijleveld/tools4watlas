@@ -365,8 +365,8 @@ Number of positions per day by tag
 
 With large datasets it is convenient to plot heatmaps, as plotting
 millions of positions is slow. For plotting all positions by tag number,
-for example, please see the vignette \[Plot data\]
-(<https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html>)
+for example, please see the vignette [Plot
+data](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html)
 
 ``` r
 # create basemap

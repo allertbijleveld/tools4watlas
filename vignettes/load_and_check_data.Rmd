@@ -1,6 +1,5 @@
 ---
 title: "Loading and checking data"
-author: "Johannes Krietsch"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Loading and checking data}
@@ -300,7 +299,7 @@ ggplot(data_subset, aes(x = date, y = tag, fill = N)) +
 
 #### Plot a heatmap of the data
 
-With large datasets it is convenient to plot heatmaps, as plotting millions of positions is slow. For plotting all  positions by tag number, for example, please see the vignette [Plot data] (https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html)
+With large datasets it is convenient to plot heatmaps, as plotting millions of positions is slow. For plotting all  positions by tag number, for example, please see the vignette [Plot data](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html).
 
 
 ```{r, fig.cap = "Heatmap of all positions", fig.width = 7, fig.height = 4, fig.align = "center"}
