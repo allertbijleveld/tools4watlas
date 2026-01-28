@@ -29,8 +29,8 @@ questions or collaborations if you would like to work with WATLAS data.
 The package `tools4watlas` builds on the package
 [`atlastools`](https://github.com/pratikunterwegs/atlastools) ([Gupte et
 al. 2021. A Guide to Pre-processing High-throughput Animal Tracking
-Data](https://doi.org/10.1111/1365-2656.13610)). Some major adjustments
-are that in `tools4watlas`, we have incorporated
+Data](https://doi.org/10.1111/1365-2656.13610)). Some major developments
+are that we have incorporated
 [`data.table`](https://rdatatable.gitlab.io/data.table/) by tag ID. This
 approach is more efficient and significantly speeds up processing large
 datasets. Additionally, `tools4watlas` includes functions specific to
@@ -163,7 +163,6 @@ bm +
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" alt="Example tracks with one individual by species for two tide cycles" width="100%" />
 <p class="caption">
-
 Example tracks with one individual by species for two tide cycles
 </p>
 
@@ -211,7 +210,6 @@ for visualizing the tracking data in real time on
 volunteers that facilitated this work.
 
 <p align="middle">
-
 <a href="https://www.nioz.nl/en">
 <img src="man/figures/NIOZ_logo_ENG_RGB.png" align="middle" height="150" alt="nioz website" />
 </a>

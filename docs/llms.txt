@@ -1,0 +1,371 @@
+# tools4watlas
+
+The goal of `tools4watlas` is to provide tools for getting, processing
+and plotting WATLAS tracking data. More information on the WATLAS
+tracking system can be found in [Bijleveld et al. 2022. WATLAS:
+high-throughput and real-time tracking of many small birds in the Dutch
+Wadden Sea](https://doi.org/10.1186/s40317-022-00307-w).
+
+Visit <https://maps.nioz.nl/watlas> to follow tracked birds in real time
+and to read the latest project news. Feel free to reach out by
+[e-mail](mailto:allert.bijleveld@nioz.nl) for questions or
+collaborations if you would like to work with WATLAS data.
+
+The package `tools4watlas` builds on the package
+[`atlastools`](https://github.com/pratikunterwegs/atlastools) ([Gupte et
+al. 2021. A Guide to Pre-processing High-throughput Animal Tracking
+Data](https://doi.org/10.1111/1365-2656.13610)). Some major developments
+are that we have incorporated
+[`data.table`](https://rdatatable.gitlab.io/data.table/) by tag ID. This
+approach is more efficient and significantly speeds up processing large
+datasets. Additionally, `tools4watlas` includes functions specific to
+the Wadden Sea such as integrating tidal and bathymetry data, and more
+elaborate functions and tutorials on visualizing movement data.
+
+### **Documentation**
+
+The `tools4watlas` package is thoroughly documented on the [**official
+package website**](https://allertbijleveld.github.io/tools4watlas/). The
+package vignettes outline the **basic workflow** for working with WATLAS
+data, while **extended workflows** guide through more specialized
+analyses. Additionally, we provide **visualization tutorials** that
+demonstrate various methods for plotting and animating the movement
+data. The **package development** section offers insights into package
+maintenance and how to contribute to the `tools4watlas` package. To
+completely run some articles (marked with an asterisk) access to the
+local NIOZ file server is required.
+
+**Basic workflow (Vignettes)**:
+
+- [**Load and check
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html)
+
+- [**Filter
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html) -
+  based on spatial boundaries, temporal specifications, error estimates
+  and speed.
+
+- [**Smooth and thin
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html)
+
+**Extended workflow**:
+
+- [**Add tidal and bathymetry
+  data**\*](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html)
+
+- [**Add residency
+  patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residency_patches.html) -
+  work in progress.
+
+- [**Add SIBES
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_SIBES_data.html) -
+  work in progress.
+
+**Visualization tutorials**:
+
+- [**Create a
+  basemap**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/create_basemap.html) -
+  (Bathymetry basemap option\*)
+
+- [**Plot
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html) -
+  an important step between all stages to check the data.
+
+- [**Plot data in
+  loop**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_in_loop.html) -
+  quick way to make plots by tag ID.
+
+- [**Fast plotting with
+  ggplot2**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/fast_plotting.html)
+
+- [**Plot data
+  interactively**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_interactively.html)
+
+- [**Animate
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/animate_data.html)
+
+**Package development**:
+
+- [**Package
+  maintenance**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_maintenance.html) -
+  describes how to work on `tools4watlas`.
+
+- [**Basemap
+  data**\*](https://allertbijleveld.github.io/tools4watlas/articles/package_development/basemap_data.html) -
+  describes how the basemap data were extracted and can guide the user
+  in creating customized base maps.
+
+- [**tools4watlas
+  logo**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_logo.html) -
+  describes how the `tools4watlas` logo is made.
+
+\**requires access to the local NIOZ file server*
+
+### **Installation**
+
+You can install the latest version of `tools4watlas` from
+[GitHub](https://github.com/allertbijleveld/tools4watlas) with:
+
+``` r
+library(remotes)
+install_github("allertbijleveld/tools4watlas")
+```
+
+### **Example data**
+
+``` r
+library(tools4watlas)
+library(ggplot2)
+
+# Load example data
+data <- data_example
+
+# Create base map
+bm <- atl_create_bm(data, buffer = 800)
+
+# Plot points and tracks
+bm +
+  geom_path(
+    data = data, aes(x, y, colour = species),
+    linewidth = 0.5, alpha = 0.5, show.legend = FALSE
+  ) +
+  geom_point(
+    data = data, aes(x, y, color = species),
+    size = 0.5, alpha = 0.5, show.legend = TRUE
+  ) +
+  scale_color_manual(
+    values = atl_spec_cols(),
+    labels = atl_spec_labs("multiline"),
+    name = ""
+  ) +
+  guides(colour = guide_legend(
+    nrow = 1, override.aes = list(size = 7, pch = 16, alpha = 1)
+  )) +
+  theme(
+    legend.position = "top",
+    legend.justification = "center",
+    legend.key = element_blank(),
+    legend.background = element_rect(fill = "transparent")
+  )
+```
+
+![Example tracks with one individual by species for two tide
+cycles](reference/figures/README-unnamed-chunk-3-1.png)
+
+Example tracks with one individual by species for two tide cycles
+
+### **Work in progress**
+
+More examples of workflows aimed at processing, plotting and adding
+environmental data to WATLAS tracking data are being prepared. If you
+have a request, please contact [Allert
+Bijleveld](mailto:allert.bijleveld@nioz.nl).
+
+We are working on the following articles at the moment:
+
+- Connect WATLAS with SIBES data
+
+### **Contribute**
+
+If you want to contribute to `tools4watlas`
+[fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)
+the repository on GitHub and then submit a [pull
+request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
+Besides clear bug fixes, it is best to discuss potential changes or
+additions with [Allert Bijleveld](mailto:allert.bijleveld@nioz.nl).
+Check the article [Package
+maintenance](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_maintenance.html)
+for more details.
+
+### **Acknowledgements**
+
+Many people and organisations are involved in developing and maintaining
+WATLAS. We particularly thank Sivan Toledo and Ran Nathan for the
+initial development of ATLAS, and Frank van Maarseveen and Bas Denissen
+for the initial development of the Wadden Sea ATLAS (WATLAS).
+Additionally, we thank Remko de Haan, Aris van der Vis, Yetzo de Hoo,
+and NMF colleagues for further developments, assemblage and support.
+Anne Dekinga is crucial for the field deployment and logistical
+solutions. We thank our colleagues from COS for help catching birds,
+especially Job ten Horn, Anne Dekinga, and Luc de Monte. Also, we thank
+all partners and stakeholders for hosting equipment and for access to
+their sites. Lastly, we thank the crews of the RV Wim Wolff and Wim-Jan
+Boon of the RV Adriaen Coenen for their help in the field, Marten Tacoma
+for visualizing the tracking data in real time on
+<https://www.nioz.nl/watlas>, and the many other NIOZ staff and
+volunteers that facilitated this work.
+
+[![nioz
+website](reference/figures/NIOZ_logo_ENG_RGB.png)](https://www.nioz.nl/en)
+
+# Package index
+
+## Load and check data
+
+Functions to load data from SQLlite or remote SQL database
+
+- [`atl_get_data()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_get_data.md)
+  : Get data from a SQLite-database
+- [`atl_summary()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_summary.md)
+  : Summary of localization data
+- [`atl_format_time()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_format_time.md)
+  : Format time in easy readable interval
+- [`atl_check_data()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_check_data.md)
+  : Check data has required columns
+- [`atl_full_tag_id()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_full_tag_id.md)
+  : Create full tag ID or tag ID with specific length
+- [`atl_file_path()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.md)
+  : Get the file path for WATLAS or GIS data based on the user's name.
+
+## Filter data
+
+Fuctions to filter data
+
+- [`atl_filter_covariates()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_filter_covariates.md)
+  : Filter data by position covariates
+- [`atl_filter_bounds()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_filter_bounds.md)
+  : Filter positions by an area
+- [`atl_within_polygon()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_within_polygon.md)
+  : Detect position intersections with a polygon
+
+## Track characteristics
+
+Functions to calculate speed and turning angle
+
+- [`atl_simple_dist()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_simple_dist.md)
+  : Calculate distances between successive localizations
+- [`atl_get_speed()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_get_speed.md)
+  : Calculate instantaneous speed
+- [`atl_turning_angle()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_turning_angle.md)
+  : Get the turning angle between points
+
+## Smooth or thin track
+
+Functions to calculate speed and turning angle
+
+- [`atl_median_smooth()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_median_smooth.md)
+  : Apply a median smooth to coordinates
+- [`atl_thin_data()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_thin_data.md)
+  : Thin tracking data by resampling or aggregation
+
+## Residency patch functions
+
+Functions to calculate residency patches
+
+- [`atl_res_patch()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_res_patch.md)
+  : Construct residence patches from position data
+- [`atl_patch_dist()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_patch_dist.md)
+  : Get the distance between patches
+- [`atl_res_patch_summary()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_res_patch_summary.md)
+  : Summary of patch data
+- [`atl_check_res_patch()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_check_res_patch.md)
+  : Check the residency patches from one tag during one tide
+
+## Spatial functions
+
+Transform data to sf object and get a bounding box
+
+- [`atl_as_sf()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_as_sf.md)
+  : Convert a data.frame or data.table to an simple feature (sf) object
+- [`atl_transform_dt()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_transform_dt.md)
+  : Transform coordinates in a data.table and appends new EPSG-Suffixed
+  columns
+- [`atl_bbox()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_bbox.md)
+  : Create a bounding box with specified aspect ratio and buffer
+
+## Plotting functions
+
+Functions to plot the data
+
+- [`atl_create_bm()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_create_bm.md)
+  : Create a basemap with customised bounding box using package stored
+  data
+- [`atl_create_bm_tiles()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_create_bm_tiles.md)
+  : Create a basemap with customised bounding box using map tiles
+- [`atl_check_tag()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_check_tag.md)
+  : Check the data from one tag on a map
+- [`atl_check_res_patch()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_check_res_patch.md)
+  : Check the residency patches from one tag during one tide
+- [`atl_t_col()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_t_col.md)
+  : Make a colour transparent
+- [`atl_spec_cols()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_spec_cols.md)
+  : WATLAS species colours
+- [`atl_spec_labs()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_spec_labs.md)
+  : WATLAS species labels
+- [`atl_tag_cols()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_tag_cols.md)
+  : Assign colours to tag ID's
+- [`atl_tag_labs()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_tag_labs.md)
+  : Create unique labels for tags by combining specified columns
+
+## Animation functions
+
+Functions to animate the data
+
+- [`atl_time_steps()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_time_steps.md)
+  : Generate time steps and file names for an animation of movements
+- [`atl_progress_bar()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_progress_bar.md)
+  : Display a live progress bar for PNG file generation in a directory
+- [`atl_alpha_along()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_alpha_along.md)
+  : Creates different alpha values along a vector
+- [`atl_size_along()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_size_along.md)
+  : Creates different size values along a vector
+- [`atl_ffmpeg_pattern()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_ffmpeg_pattern.md)
+  : Generate ffmpeg filename pattern
+
+## Add enviromental data
+
+Functions to add tidal data and other SpatRaster data
+
+- [`atl_add_tidal_data()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_add_tidal_data.md)
+  : Add tidal data to tracking data
+- [`atl_add_raster_data()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_add_raster_data.md)
+  : Add raster data to tracking data
+
+## Data
+
+Example and map data provided with the package
+
+- [`data_example`](https://allertbijleveld.github.io/tools4watlas/reference/data_example.md)
+  : Data from two red knots and one redshank
+- [`land`](https://allertbijleveld.github.io/tools4watlas/reference/land.md)
+  : Land polygon around the Dutch Wadden Sea
+- [`mudflats`](https://allertbijleveld.github.io/tools4watlas/reference/mudflats.md)
+  : Mudflats polygons within the Dutch Wadden Sea
+- [`lakes`](https://allertbijleveld.github.io/tools4watlas/reference/lakes.md)
+  : Lake on Griend
+
+# Articles
+
+### All vignettes
+
+- [Add residency
+  patches](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residency_patches.md):
+- [Add SIBES
+  data](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_SIBES_data.md):
+- [Add tidal and bathymetry
+  data](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.md):
+- [Animate
+  data](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/animate_data.md):
+- [Basemap
+  data](https://allertbijleveld.github.io/tools4watlas/articles/package_development/basemap_data.md):
+- [Create a
+  basemap](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/create_basemap.md):
+- [Filter
+  data](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.md):
+- [Literature](https://allertbijleveld.github.io/tools4watlas/articles/literature/literature.md):
+- [Loading and checking
+  data](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.md):
+- [tools4watlas
+  logo](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_logo.md):
+- [Package
+  maintenance](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_maintenance.md):
+- [Plot
+  data](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.md):
+- [Plot data
+  faster](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_faster.md):
+- [Plot data in
+  loop](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_in_loop.md):
+- [Plot data
+  interactively](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_interactively.md):
+- [Smooth and thin
+  data](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.md):

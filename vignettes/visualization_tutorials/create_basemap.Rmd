@@ -135,7 +135,7 @@ bm
 
 The package `maptiles` provides an easy way to create basemaps from different tile providers (e.g., OpenStreetMap, Esri satellite images, Stamen toner, etc.). The function `atl_create_bm_tiles()` wraps around the `maptiles` functions to create a basemap based on movement data or specified bounding boxes and otherwise works like `atl_create_bm()`. It is best to use the standard EPSG:32631 (WGS 84 / UTM zone 31N) to create a bounding box (since this means the data don't need to be transformed internally), but other projections also work. The output maps are however always in EPSG:4326, so movement data need to be transformed to be added to the plot. `atl_transform_dt()` can be used to add transformed coordinates to the data table.
 
-```{r, fig.alt = "Static map with satellite image using maptiles"}
+```{r, fig.alt = "Static map with satellite image using maptiles", eval = TRUE}
 
 # example with satellite map and buffer around Griend
 bm <- atl_create_bm_tiles(
