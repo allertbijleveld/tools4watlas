@@ -1,6 +1,5 @@
 ---
 title: "tools4watlas logo"
-author: "Johannes Krietsch"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{tools4watlas logo}

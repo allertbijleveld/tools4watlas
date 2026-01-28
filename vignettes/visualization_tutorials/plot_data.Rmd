@@ -1,6 +1,5 @@
 ---
 title: "Plot data"
-author: "Johannes Krietsch"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Plot data}
@@ -218,6 +217,14 @@ data <- data[species == "bar-tailed godwit"]
 # plot option datetime
 atl_check_tag(
   data,
+  option = "datetime",
+  highlight_first = TRUE, highlight_last = TRUE
+)
+
+# subset with last 1000 positions
+atl_check_tag(
+  data,
+  last_n = 1000,
   option = "datetime",
   highlight_first = TRUE, highlight_last = TRUE
 )

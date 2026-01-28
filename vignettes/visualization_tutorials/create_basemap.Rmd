@@ -1,6 +1,5 @@
 ---
 title: "Create a basemap"
-author: "Johannes Krietsch"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Create a basemap}

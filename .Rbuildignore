@@ -13,3 +13,4 @@
 ^README\.Rmd$
 ^dummy_path.db$
 .lintr
+^paper$
