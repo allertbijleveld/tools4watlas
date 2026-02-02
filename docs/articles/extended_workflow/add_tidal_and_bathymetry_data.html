@@ -47,7 +47,6 @@
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_residency_patches.html">Add residency patches</a></li>
-    <li><a class="dropdown-item" href="../../articles/extended_workflow/add_SIBES_data.html">Add SIBES data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
     <li><a class="dropdown-item" href="../../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
@@ -92,8 +91,8 @@
     
     
 <p>This article shows how to add tidal and bathymetry data to WATLAS
-data and provides an example of how to subset by specific times within
-the tide and plot the data with bathymetry.</p>
+data, subset data within tidal cycle, and visualise the tracking data on
+the bathymetry.</p>
 <div class="section level4">
 <h4 id="load-packages-and-movement-data">Load packages and movement data<a class="anchor" aria-label="anchor" href="#load-packages-and-movement-data"></a>
 </h4>
@@ -109,7 +108,7 @@ the tide and plot the data with bathymetry.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># load data</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">data_path</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">data_path</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="add-tidal-data">Add tidal data<a class="anchor" aria-label="anchor" href="#add-tidal-data"></a>
@@ -118,11 +117,6 @@ the tide and plot the data with bathymetry.</p>
 located in the “WATLAS” SharePoint folder: <code>Documents/data/</code>.
 Either specify the path to your local copy of this folder or add the
 path for your user in the <code><a href="../../reference/atl_file_path.html">atl_file_path()</a></code> function.</p>
-<p>The offset of 30 minutes is set to match Griend. One can also
-interpolate the water level data with this function by setting for
-example <code>waterdata_interpolation = "1 min"</code>. This will keep
-the tidal pattern in the original time resolution, but interpolate the
-water level data to the specified resolution.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># file path to WATLAS teams data folder</span></span>
 <span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_file_path.html">atl_file_path</a></span><span class="op">(</span><span class="st">"watlas_teams"</span><span class="op">)</span></span>
@@ -136,10 +130,11 @@ water level data to the specified resolution.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># load tide data</span></span>
-<span><span class="va">tidal_pattern</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">tidal_pattern_fp</span><span class="op">)</span></span>
-<span><span class="va">measured_water_height</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">measured_water_height_fp</span><span class="op">)</span></span>
+<span><span class="va">tidal_pattern</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">tidal_pattern_fp</span><span class="op">)</span></span>
+<span><span class="va">measured_water_height</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">measured_water_height_fp</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># add tide data to movement data</span></span>
+<span><span class="co"># The offset of 30 minutes is set to match Griend. </span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_add_tidal_data.html">atl_add_tidal_data</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data</span>,</span>
 <span>  tide_data <span class="op">=</span> <span class="va">tidal_pattern</span>,</span>
@@ -224,13 +219,14 @@ water level data to the specified resolution.</p>
 <div class="section level2">
 <h2 id="add-bathymetry-data">Add bathymetry data<a class="anchor" aria-label="anchor" href="#add-bathymetry-data"></a>
 </h2>
-<p>A short example of how to add bathymetry data to WATLAS data.</p>
-<p>Bathymetry data can be found in the “Birds, fish ’n chips” SharePoint
-folder: <code>Documents/data/GIS/rasters/</code>. To run the script set
+<p>Bathymetry data can be downloaded from <a href="https://waterinfo.rws.nl/" class="external-link">Rijkswaterstaat</a> but can also be
+found in the “Birds, fish ’n chips” SharePoint folder:
+<code>Documents/data/GIS/rasters/</code>. To run the below script, set
 the file path (<code>fp</code>) to the local copy of the folder on your
-computer. The data can also be downloaded from the <a href="https://datahuiswadden.openearth.nl/geonetwork/srv/eng/catalog.search#/metadata/JkrvJXasRSGAWU1mJLHUzg" class="external-link">Waddenregister</a>.</p>
-<p>Extract bathymetry data for each location and coarsely classify time
-in the tide cycle.</p>
+computer.</p>
+<p>Here, we show how to extract bathymetry data (cm NAP) for each WATLAS
+position and calculate tidal time (time relative to the tidal
+cycle).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># file path to Birds, fish 'n chips GIS/rasters folder</span></span>
 <span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_file_path.html">atl_file_path</a></span><span class="op">(</span><span class="st">"rasters"</span><span class="op">)</span></span>
@@ -285,28 +281,18 @@ in the tide cycle.</p>
 </tr>
 </tbody>
 </table>
-<div class="section level3">
-<h3 id="save-as-example-data-for-tools4watlas-">Save as example data for <code>tools4watlas</code>.<a class="anchor" aria-label="anchor" href="#save-as-example-data-for-tools4watlas-"></a>
-</h3>
-<p>(This step is just to save the <code>tools4watlas</code> example
-data)</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># reassign so data_example is data and select two tides</span></span>
-<span><span class="va">data_example</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">tideID</span> <span class="op"><a href="https://rspatial.github.io/terra/reference/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2023513</span>, <span class="fl">2023514</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">data_example</span>, file <span class="op">=</span> <span class="st">"../../data/watlas_data_example.rda"</span><span class="op">)</span></span></code></pre></div>
-</div>
 </div>
 <div class="section level2">
-<h2 id="example-filter-data-with-by-tide-and-plot-with-bathymetry-data">Example: Filter data with by tide and plot with bathymetry data<a class="anchor" aria-label="anchor" href="#example-filter-data-with-by-tide-and-plot-with-bathymetry-data"></a>
+<h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
 </h2>
 <div class="section level3">
-<h3 id="filter-data-with-specific-times-within-the-tide-cycle">Filter data with specific times within the tide cycle<a class="anchor" aria-label="anchor" href="#filter-data-with-specific-times-within-the-tide-cycle"></a>
+<h3 id="filter-data-by-specific-times-within-the-tide-cycle">Filter data by specific times within the tide cycle<a class="anchor" aria-label="anchor" href="#filter-data-by-specific-times-within-the-tide-cycle"></a>
 </h3>
 <p>To select localizations when mudlfats are available for foraging, we
 can for example select a low tide period from -2.5 hours to +2.5 hours
 around low tide <a href="https://royalsocietypublishing.org/doi/10.1098/rspb.2015.1557" class="external-link">(Bijleveld
 et al. 2016)</a>:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># select the low tide period for a particular tide as specified by tideID</span></span>
 <span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_filter_covariates.html">atl_filter_covariates</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data</span>,</span>
@@ -318,9 +304,9 @@ et al. 2016)</a>:</p>
 <pre><code><span><span class="co">## Note: 50.18% of the dataset was filtered out, corresponding to 43596 positions.</span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="plot-data-movement-data-with-bathymetry-data">Plot data movement data with bathymetry data<a class="anchor" aria-label="anchor" href="#plot-data-movement-data-with-bathymetry-data"></a>
+<h3 id="plot-movement-data-on-top-of-bathymetry-layer">Plot movement data on top of bathymetry layer<a class="anchor" aria-label="anchor" href="#plot-movement-data-on-top-of-bathymetry-layer"></a>
 </h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># additional packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sjmgarnier.github.io/viridis/" class="external-link">viridis</a></span><span class="op">)</span></span>
@@ -357,7 +343,7 @@ et al. 2016)</a>:</p>
 <span>    legend.position.inside <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.07</span>, <span class="fl">0.2</span><span class="op">)</span>,</span>
 <span>    legend.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="add_tidal_and_bathymetry_data_files/figure-html/unnamed-chunk-6-1.png" alt="Movement tracks colored with bathymetry data" width="100%"></p>
+<p><img src="add_tidal_and_bathymetry_data_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" alt="Movement tracks colored with bathymetry data" width="100%"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -371,7 +357,7 @@ et al. 2016)</a>:</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

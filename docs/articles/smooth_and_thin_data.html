@@ -47,7 +47,6 @@
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_residency_patches.html">Add residency patches</a></li>
-    <li><a class="dropdown-item" href="../articles/extended_workflow/add_SIBES_data.html">Add SIBES data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
     <li><a class="dropdown-item" href="../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
@@ -104,31 +103,35 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load data</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">data_path</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">data_path</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="median-smooth-data">Median smooth data<a class="anchor" aria-label="anchor" href="#median-smooth-data"></a>
 </h2>
-<p>To further reduce error in the localization data, a basic smoother
-such as a median filter can be applied. The resulting table has the
-smoothed location stored in the <code>x</code> and <code>y</code> column
-and the original location stored in the <code>x_raw</code> and
-<code>y_raw</code> column.</p>
+<p>To reduce error in the position data, a basic smoother such as a
+median filter can be applied. the function
+<code>atl_median_smooth</code> calculates the median coordinates within
+a window of positions set by <code>moving window</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Smooth the data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_median_smooth.html">atl_median_smooth</a></span><span class="op">(</span><span class="va">data</span>, moving_window <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<p>The resulting table overwrites the smoothed coordinates in the
+columns <code>x</code> and <code>y</code> and keeps the original ones in
+the columns <code>x_raw</code> and <code>y_raw</code>.</p>
 <div class="section level3">
-<h3 id="recalculate-speed">Recalculate speed<a class="anchor" aria-label="anchor" href="#recalculate-speed"></a>
+<h3 id="calculate-speed-and-turning-angle">Calculate speed and turning angle<a class="anchor" aria-label="anchor" href="#calculate-speed-and-turning-angle"></a>
 </h3>
-<p>After smoothing the data, the speeds need to be recalculated. We now
-also calculate turning angles. Note: the distance between smoothed
-positions can be 0 and therefore will produce NAs and a warning</p>
+<p>After median filtering the data, the speeds need to be recalculated.
+We will also calculate turning angles.</p>
+<p>Note: the distance between median smoothed positions can be 0 and
+therefore will produce NAs and a warning</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Recalculate speed</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_get_speed.html">atl_get_speed</a></span><span class="op">(</span><span class="va">data</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"in"</span>, <span class="st">"out"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="look-at-the-data">Look at the data<a class="anchor" aria-label="anchor" href="#look-at-the-data"></a>
 </h4>
-<p>This plot just shows one example.</p>
+<p>This plot just shows one example of a raw and median smooted
+track.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># subset first tag</span></span>
 <span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">$</span><span class="va">tag</span><span class="op">]</span></span>
@@ -136,7 +139,7 @@ positions can be 0 and therefore will produce NAs and a warning</p>
 <span><span class="co"># subset some data to look at</span></span>
 <span><span class="va">from</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">data_subset</span><span class="op">[</span>, <span class="va">datetime</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">*</span> <span class="fl">3600</span></span>
 <span><span class="va">to</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">data_subset</span><span class="op">[</span>, <span class="va">datetime</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fl">12</span> <span class="op">*</span> <span class="fl">3600</span></span>
-<span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data_subset</span><span class="op">[</span><span class="va">datetime</span> <span class="op"><a href="https://rdatatable.gitlab.io/data.table/reference/between.html" class="external-link">%between%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data_subset</span><span class="op">[</span><span class="va">datetime</span> <span class="op"><a href="https://rdrr.io/pkg/data.table/man/between.html" class="external-link">%between%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">from</span>, <span class="va">to</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># Create basemap</span></span>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data_subset</span><span class="op">)</span></span>
@@ -160,7 +163,7 @@ positions can be 0 and therefore will produce NAs and a warning</p>
 <span>    color <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">1</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="smooth_and_thin_data_files/figure-html/unnamed-chunk-4-1.png" alt="Smoothed track (black) on top of raw track (red)" width="100%"><p class="caption">
+<img src="smooth_and_thin_data_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="Smoothed track (black) on top of raw track (red)" width="100%"><p class="caption">
 Smoothed track (black) on top of raw track (red)
 </p>
 </div>
@@ -168,11 +171,11 @@ Smoothed track (black) on top of raw track (red)
 </div>
 </div>
 <div class="section level2">
-<h2 id="save-data">Save data<a class="anchor" aria-label="anchor" href="#save-data"></a>
+<h2 id="save-data-for-the-next-steps">Save data for the next steps<a class="anchor" aria-label="anchor" href="#save-data-for-the-next-steps"></a>
 </h2>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Save data</span></span>
-<span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  file <span class="op">=</span> <span class="st">"../inst/extdata/watlas_data_smoothed.csv"</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -187,9 +190,9 @@ steps (depending on the interval).</p>
 <h3 id="by-aggregation">By aggregation<a class="anchor" aria-label="anchor" href="#by-aggregation"></a>
 </h3>
 <p>Returns the mean of all columns for each time step. The additional
-column <code>n_aggregated</code> shows how many locations were
-aggregated for this location. Time and datetime are returned rounded to
-the interval.</p>
+column <code>n_aggregated</code> shows how many positions were
+aggregated for this position. Time and datetime are returned rounded
+down to the desired interval.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Thin the data by aggregation with a 60-second interval</span></span>
 <span><span class="va">thinned_aggregated</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_thin_data.html">atl_thin_data</a></span><span class="op">(</span></span>
@@ -274,8 +277,8 @@ the interval.</p>
 <div class="section level3">
 <h3 id="by-subsampling">By subsampling<a class="anchor" aria-label="anchor" href="#by-subsampling"></a>
 </h3>
-<p>Returns the first location for each time step. The additional column
-<code>n_subsampled</code> shows from how many locations this location
+<p>Returns the first position for each time step. The column
+<code>n_subsampled</code> shows from how many positions this position
 was sampled.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Thin the data by subsampling with a 60-second interval</span></span>
@@ -370,7 +373,7 @@ was sampled.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

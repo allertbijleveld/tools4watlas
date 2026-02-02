@@ -47,7 +47,6 @@
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_residency_patches.html">Add residency patches</a></li>
-    <li><a class="dropdown-item" href="../../articles/extended_workflow/add_SIBES_data.html">Add SIBES data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
     <li><a class="dropdown-item" href="../../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
@@ -130,18 +129,9 @@ data.</p>
 <span><span class="va">netherlands</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_countries.html" class="external-link">ne_countries</a></span><span class="op">(</span></span>
 <span>  country <span class="op">=</span> <span class="st">"netherlands"</span>, scale <span class="op">=</span> <span class="st">"large"</span>, returnclass <span class="op">=</span> <span class="st">"sf"</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="fl">32631</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #00BBBB;">──</span> <span style="color: #00BBBB;">R CMD build</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">##       <span style="color: #00BB00;">✔</span>  <span style="color: #9E9E9E;">checking for file 'C:\Users\jkrietsch\AppData\Local\Temp\Rtmp8AEQ2V\remotes1ef0761476c5\ropensci-rnaturalearthhires-e4736f6/DESCRIPTION'</span></span></span>
-<span><span class="co">##       <span style="color: #9E9E9E;">─  preparing 'rnaturalearthhires':</span></span></span>
-<span><span class="co">##    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   <span style="color: #00BB00;">✔</span>  <span style="color: #9E9E9E;">checking DESCRIPTION meta-information</span></span></span>
-<span><span class="co">##       <span style="color: #9E9E9E;">─  checking for LF line-endings in source and make files and shell scripts</span></span></span>
-<span><span class="co">##   <span style="color: #9E9E9E;">─  checking for empty or unneeded directories</span></span></span>
-<span><span class="co">##       <span style="color: #9E9E9E;">─  building 'rnaturalearthhires_1.0.0.9000.tar.gz'</span></span></span>
-<span><span class="co">##      </span></span>
-<span><span class="co">## </span></span></code></pre>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># point of Griend (and a bit east)</span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="fl">32631</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># point of Griend (and a bit east)</span></span>
 <span><span class="va">griend</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html" class="external-link">st_sfc</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html" class="external-link">st_point</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.2525</span> <span class="op">+</span> <span class="fl">0.6</span>, <span class="fl">53.2523</span><span class="op">)</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="fl">4326</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="fl">32631</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -158,7 +148,7 @@ data.</p>
 <span>    ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">[</span><span class="st">"ymin"</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="st">"ymax"</span><span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="basemap_data_files/figure-html/unnamed-chunk-2-1.png" alt="Bounding box around the Dutch Wadden Sea" width="100%"><p class="caption">
+<img src="basemap_data_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" alt="Bounding box around the Dutch Wadden Sea" width="100%"><p class="caption">
 Bounding box around the Dutch Wadden Sea
 </p>
 </div>
@@ -166,7 +156,7 @@ Bounding box around the Dutch Wadden Sea
 <div class="section level2">
 <h2 id="extract-the-land-polygon-data-from-this-bounding-box">Extract the land polygon data from this bounding box<a class="anchor" aria-label="anchor" href="#extract-the-land-polygon-data-from-this-bounding-box"></a>
 </h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load osm land polygon</span></span>
 <span><span class="va">land_</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
 <span>  <span class="va">fp</span>, <span class="st">"open_street_map/land-polygons-complete-4326/land_polygons.shp"</span></span>
@@ -191,7 +181,7 @@ Bounding box around the Dutch Wadden Sea
 <span>    ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">[</span><span class="st">"ymin"</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="st">"ymax"</span><span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="basemap_data_files/figure-html/unnamed-chunk-3-1.png" alt="Cropped land polygon around the Dutch Wadden Sea" width="100%"><p class="caption">
+<img src="basemap_data_files/figure-html/unnamed-chunk-3-1.png" class="r-plt" alt="Cropped land polygon around the Dutch Wadden Sea" width="100%"><p class="caption">
 Cropped land polygon around the Dutch Wadden Sea
 </p>
 </div>
@@ -200,7 +190,7 @@ Cropped land polygon around the Dutch Wadden Sea
 </h3>
 <p>Includes data in the package, if <code>tools4watlas</code> is opened
 as project.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># save data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">land</span>, file <span class="op">=</span> <span class="st">"../../data/land.rda"</span>, compress <span class="op">=</span> <span class="st">"xz"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -210,7 +200,7 @@ as project.</p>
 </h2>
 <p>To simplify the basemap we only want the mudflats from within the
 Wadden Sea, otherwise <em>fclass</em> also includes other wetlands.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load polygon of Wadden sea</span></span>
 <span><span class="va">wadden_sea</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
 <span>  <span class="va">fp</span>, <span class="st">"wadden_area_legally/pkb_gebied_derde_nota_waddenzee.shp"</span></span>
@@ -229,7 +219,7 @@ Wadden Sea, otherwise <em>fclass</em> also includes other wetlands.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">land</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ws_buffer</span>, color <span class="op">=</span> <span class="st">"firebrick"</span>, fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="basemap_data_files/figure-html/unnamed-chunk-5-1.png" alt="Polygon of the Dutch Wadden Sea" width="100%"><p class="caption">
+<img src="basemap_data_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" alt="Polygon of the Dutch Wadden Sea" width="100%"><p class="caption">
 Polygon of the Dutch Wadden Sea
 </p>
 </div>
@@ -238,7 +228,7 @@ Polygon of the Dutch Wadden Sea
 <h2 id="extract-mudflats-and-lakes-from-within-the-wadden-sea">Extract mudflats and lakes from within the Wadden Sea<a class="anchor" aria-label="anchor" href="#extract-mudflats-and-lakes-from-within-the-wadden-sea"></a>
 </h2>
 <p>We only take the lakes from Griend to not blow up the data.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Friesland</span></span>
 <span><span class="va">lakes_fr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
 <span>  <span class="va">fp</span>, <span class="st">"open_street_map/friesland-latest-free.shp/gis_osm_water_a_free_1.shp"</span></span>
@@ -257,7 +247,7 @@ Polygon of the Dutch Wadden Sea
 <span></span>
 <span><span class="co"># merge both and change projection</span></span>
 <span><span class="va">lakes_</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">lakes_fr</span>, <span class="va">lakes_nh</span>, <span class="va">lakes_g</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/unique.html" class="external-link">unique</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"osm_id"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"osm_id"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="fl">32631</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># crop data</span></span>
@@ -303,7 +293,7 @@ Polygon of the Dutch Wadden Sea
 <span>    panel.border <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="cn">NA</span>, colour <span class="op">=</span> <span class="st">"grey20"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="basemap_data_files/figure-html/unnamed-chunk-6-1.png" alt="Final basemap data of the Dutch Wadden Sea" width="100%"><p class="caption">
+<img src="basemap_data_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="Final basemap data of the Dutch Wadden Sea" width="100%"><p class="caption">
 Final basemap data of the Dutch Wadden Sea
 </p>
 </div>
@@ -312,7 +302,7 @@ Final basemap data of the Dutch Wadden Sea
 </h3>
 <p>Includes data in the package, if <code>tools4watlas</code> is opened
 as project.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># save data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">mudflats</span>, file <span class="op">=</span> <span class="st">"../../data/muddflats.rda"</span>, compress <span class="op">=</span> <span class="st">"xz"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">lakes</span>, file <span class="op">=</span> <span class="st">"../../data/lakes.rda"</span>, compress <span class="op">=</span> <span class="st">"xz"</span><span class="op">)</span></span></code></pre></div>
@@ -329,7 +319,7 @@ as project.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

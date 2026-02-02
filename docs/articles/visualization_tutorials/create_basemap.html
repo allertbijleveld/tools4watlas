@@ -47,7 +47,6 @@
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_residency_patches.html">Add residency patches</a></li>
-    <li><a class="dropdown-item" href="../../articles/extended_workflow/add_SIBES_data.html">Add SIBES data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
     <li><a class="dropdown-item" href="../../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
@@ -141,7 +140,7 @@ Maps</a> by a right click on a specific location. Here I choose a point
 a bit east of Griend, to include Richel and Ballastplaat in the map.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># define location</span></span>
-<span><span class="va">location</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.275</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">53.2523</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">location</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.275</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">53.2523</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># create basemap</span></span>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">location</span>, buffer <span class="op">=</span> <span class="fl">7000</span>, projection <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="fl">4326</span><span class="op">)</span><span class="op">)</span></span>
@@ -160,7 +159,7 @@ to zoom into a specific area of the map. The first point is north-west
 of Richel and the second point south-east of Griend.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># specify corner points</span></span>
-<span><span class="va">corner_points</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.107</span>, <span class="fl">5.330</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">53.303</span>, <span class="fl">53.230</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">corner_points</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.107</span>, <span class="fl">5.330</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">53.303</span>, <span class="fl">53.230</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># create basemap</span></span>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span></span>
@@ -368,7 +367,7 @@ image) does not work.</p>
 <span><span class="va">y_pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">y</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># create table with image of the logo</span></span>
-<span><span class="va">di</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x_pos</span>, y <span class="op">=</span> <span class="va">y_pos</span>, image <span class="op">=</span> <span class="va">logo_path</span><span class="op">)</span></span>
+<span><span class="va">di</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x_pos</span>, y <span class="op">=</span> <span class="va">y_pos</span>, image <span class="op">=</span> <span class="va">logo_path</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># plot basemap with logo</span></span>
 <span><span class="va">bm</span> <span class="op">+</span></span>
@@ -397,7 +396,7 @@ to your local copy of this folder or add the path for your user in the
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">fp</span>, <span class="st">"receivers/receiver specifications.xlsx"</span><span class="op">)</span>,</span>
 <span>  sheet <span class="op">=</span> <span class="st">"receivers"</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># end date for active receivers as system date</span></span>
 <span><span class="va">dr</span><span class="op">[</span><span class="va">active</span> <span class="op">==</span> <span class="st">"ja"</span>, <span class="va">date_removed</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>, tz <span class="op">=</span> <span class="st">"UTC"</span><span class="op">)</span><span class="op">]</span></span>

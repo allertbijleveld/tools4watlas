@@ -255,12 +255,25 @@ atl_check_tag(
 data](plot_data_files/figure-html/unnamed-chunk-6-1.png)
 
 ``` r
+# subset with last 1000 positions
+atl_check_tag(
+  data,
+  last_n = 1000,
+  option = "datetime",
+  highlight_first = TRUE, highlight_last = TRUE
+)
+```
+
+![Plots of single tag to check
+data](plot_data_files/figure-html/unnamed-chunk-6-2.png)
+
+``` r
 # plot option speed_in
 atl_check_tag(data, option = "speed_in")
 ```
 
 ![Plots of single tag to check
-data](plot_data_files/figure-html/unnamed-chunk-6-2.png)
+data](plot_data_files/figure-html/unnamed-chunk-6-3.png)
 
 ``` r
 # plot option nbs
@@ -268,7 +281,7 @@ atl_check_tag(data, option = "nbs")
 ```
 
 ![Plots of single tag to check
-data](plot_data_files/figure-html/unnamed-chunk-6-3.png)
+data](plot_data_files/figure-html/unnamed-chunk-6-4.png)
 
 ``` r
 # plot option sd
@@ -276,7 +289,7 @@ atl_check_tag(data, option = "var")
 ```
 
 ![Plots of single tag to check
-data](plot_data_files/figure-html/unnamed-chunk-6-4.png)
+data](plot_data_files/figure-html/unnamed-chunk-6-5.png)
 
 ``` r
 # plot option gap
@@ -284,7 +297,7 @@ atl_check_tag(data, option = "gap", scale_trans = "log")
 ```
 
 ![Plots of single tag to check
-data](plot_data_files/figure-html/unnamed-chunk-6-5.png)
+data](plot_data_files/figure-html/unnamed-chunk-6-6.png)
 
 ## Plot heatmaps
 

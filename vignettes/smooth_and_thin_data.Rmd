@@ -37,17 +37,20 @@ data <- fread(data_path, yaml = TRUE)
 
 ## Median smooth data
 
-To further reduce error in the localization data, a basic smoother such as a median filter can be applied. The resulting table has the smoothed location stored in the `x` and `y` column and the original location stored in the `x_raw` and `y_raw` column. 
+To reduce error in the position data, a basic smoother such as a median filter can be applied. the function `atl_median_smooth` calculates the median coordinates within a window of positions set by `moving window`.  
 
 ```{r echo=T, results='hide'}		
 # Smooth the data
 data <- atl_median_smooth(data, moving_window = 5)
 ```
 
-### Recalculate speed
+The resulting table overwrites the smoothed coordinates in the columns `x` and `y` and keeps the original ones in the columns `x_raw` and `y_raw`.
 
-After smoothing the data, the speeds need to be recalculated. We now also calculate turning angles. 
-Note: the distance between smoothed positions can be 0 and therefore will produce NAs and a warning
+### Calculate speed and turning angle
+
+After median filtering the data, the speeds need to be recalculated. We will also calculate turning angles. 
+
+Note: the distance between median smoothed positions can be 0 and therefore will produce NAs and a warning
 
 ```{r echo=T}		
 # Recalculate speed
@@ -56,7 +59,7 @@ data <- atl_get_speed(data, type = c("in", "out"))
 
 #### Look at the data
 
-This plot just shows one example.
+This plot just shows one example of a raw and median smooted track.
 
 ```{r, fig.cap = "Smoothed track (black) on top of raw track (red)", fig.align = "center"}	
 # subset first tag
@@ -89,7 +92,7 @@ bm +
     color = "black", size = 1
   )
 ```
-## Save data
+## Save data for the next steps
 
 ```{r, eval = FALSE}
 # Save data
@@ -105,7 +108,7 @@ Depending on the desired analysis, it might make sense to thin data, either by a
 
 ### By aggregation
 
-Returns the mean of all columns for each time step. The additional column `n_aggregated` shows how many locations were aggregated for this location. Time and datetime are returned rounded to the interval.
+Returns the mean of all columns for each time step. The additional column `n_aggregated` shows how many positions were aggregated for this position. Time and datetime are returned rounded down to the desired interval.
 
 ```{r echo=T}		
 # Thin the data by aggregation with a 60-second interval
@@ -123,7 +126,7 @@ head(thinned_aggregated[, .(tag, time, datetime, x, y, n_aggregated)]) |>
 
 ### By subsampling
 
-Returns the first location for each time step. The additional column `n_subsampled` shows from how many locations this location was sampled.
+Returns the first position for each time step. The column `n_subsampled` shows from how many positions this position was sampled.
 
 ```{r echo=T}		
 # Thin the data by subsampling with a 60-second interval

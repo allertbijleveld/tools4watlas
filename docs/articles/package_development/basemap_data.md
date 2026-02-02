@@ -41,19 +41,7 @@ netherlands <- ne_countries(
   country = "netherlands", scale = "large", returnclass = "sf"
 ) |>
   st_transform(crs = st_crs(32631))
-```
 
-    ## ── R CMD build ─────────────────────────────────────────────────────────────────
-    ##       ✔  checking for file 'C:\Users\jkrietsch\AppData\Local\Temp\Rtmpsndvoy\remotes65bc819328a\ropensci-rnaturalearthhires-e4736f6/DESCRIPTION'
-    ##       ─  preparing 'rnaturalearthhires':
-    ##    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information
-    ##       ─  checking for LF line-endings in source and make files and shell scripts
-    ##   ─  checking for empty or unneeded directories
-    ##       ─  building 'rnaturalearthhires_1.0.0.9000.tar.gz'
-    ##      
-    ## 
-
-``` r
 # point of Griend (and a bit east)
 griend <- st_sfc(st_point(c(5.2525 + 0.6, 53.2523)), crs = st_crs(4326)) |>
   st_transform(crs = st_crs(32631))

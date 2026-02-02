@@ -4,8 +4,6 @@
 
 - [Add residency
   patches](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residency_patches.md):
-- [Add SIBES
-  data](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_SIBES_data.md):
 - [Add tidal and bathymetry
   data](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.md):
 - [Animate
