@@ -1,8 +1,8 @@
 ---
-title: "Add residency patches"
+title: "Add residence patches"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Add residency patches}
+  %\VignetteIndexEntry{Add residence patches}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette shows how to assign residency patches to WATLAS data. Since every species has distinct behaviours, this analysis will require species specific adjustments of parameters. However, we ignore this for this example and provide a general workflow that can be adapted to different species and data quality.
+This vignette shows how to assign residence patches to WATLAS data. Since every species has distinct behaviours, this analysis will require species specific adjustments of parameters. However, we ignore this for this example and provide a general workflow that can be adapted to different species and data quality.
 
 ## Background and parameter explanation
 The `atl_res_patch()` function is designed to segment WATLAS movement data into residence patches. The main parameter is speed (`max_speed`). With perfect data that would be the only parameter necessary to adjust, because the speeds of flying and walking or standing do not overlap. However, because WATLAS data have localization error (comparable to GPS accuracy, see [Beardsworth et al. 2022](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13913)) and can have gaps, we need to have additional variables for classifying these data into robust residence patches.
@@ -26,7 +26,7 @@ The logic of the function is to first identify proto-patches (preliminary reside
 
 Then the function calculates the median proto-patch position and the time between proto-patch (time between last location and first location of the next proto-patch). Based on this, proto-patches are merged if the distance between the median position of the proto-patch is < `lim_spat_indep`, and the time between the proto-patch is < `lim_time_indep`. 
 
-Lastly, the function assigns a unique patch ID for each residency patch from 1 to n, in order of the time.
+Lastly, the function assigns a unique patch ID for each residence patch from 1 to n, in order of the time.
 
 Note: Keep in mind that smoothing and thinning will influence the speed and thus the residence patches. The `atl_res_patch()` function is designed to work with data that has already been filtered (`var_max < 5000`) and smoothed (`moving_window = 5`), so it is recommended to run this function after these steps. With short position intervals (e.g. 3 sec), position error can lead to speed outliers, which influences (i.e. reduces) the creation of proto-patches. To avoid this, the speed can be set to a higher value, or the data can be thinned before. 
 
@@ -34,8 +34,8 @@ Note: Keep in mind that smoothing and thinning will influence the speed and thus
 
    - **`max_speed`:** A numeric value specifying the **maximum speed (m/s)** between two coordinates that would be considered non-transitory.
    - **`lim_spat_indep`:** A numeric value of **distance in metres of the spatial distance between two patches** for them to the considered independent. This parameter is there to avoid that a gap in data does not make a new proto-patch when the bird was still at the same location and works in combination with `lim_time_indep`.
-   - **`lim_time_indep`:** A numeric value of time in minutes of the **time difference between two patches for them to be considered independent**. This parameter can prevent the creation new proto-patches when there are large gaps in the data. For example, at the roost site a bird might not move for long in at a location with bad signal strength, but we can assume the bird was still at the same location. If the bird then moves away and sends data again, we can classify all positions at this place as the same residency patch.
-   - **`min_fixes`:** The **minimum number of fixes** for a group of spatially-proximate number of points to be considered a proto-patch. To make sure that at least a few points are considered together to qualify as residency patch.
+   - **`lim_time_indep`:** A numeric value of time in minutes of the **time difference between two patches for them to be considered independent**. This parameter can prevent the creation new proto-patches when there are large gaps in the data. For example, at the roost site a bird might not move for long in at a location with bad signal strength, but we can assume the bird was still at the same location. If the bird then moves away and sends data again, we can classify all positions at this place as the same residence patch.
+   - **`min_fixes`:** The **minimum number of fixes** for a group of spatially-proximate number of points to be considered a proto-patch. To make sure that at least a few points are considered together to qualify as residence patch.
    - **`min_duration`:** The **minimum duration** (in seconds) for classifying residence patches. With high-sampling interval (e.g. 1 sec), short residence patches can be created, which are not biological relevant.
 
 **Guidelines to choose parameters:**
@@ -70,9 +70,9 @@ tidal_pattern <- fread(paste0(
 ))
 ```
 
-## Calculate residency patches by tag
+## Calculate residence patches by tag
 
-To calculate residency patches, we can first subset relevant columns from the data (to reduce the memory size of the table - as this table will be sent to all cores when computing in parallel), but also can use the original `data.table`, if working with few data. We then extract the unique tag IDs from the data and run `atl_res_patch()` for each tag in parallel, which adds an additional column to the data table, called `patch`, which contains unique patch ID's for each tag. 
+To calculate residence patches, we can first subset relevant columns from the data (to reduce the memory size of the table - as this table will be sent to all cores when computing in parallel), but also can use the original `data.table`, if working with few data. We then extract the unique tag IDs from the data and run `atl_res_patch()` for each tag in parallel, which adds an additional column to the data table, called `patch`, which contains unique patch ID's for each tag. 
 
 ```{r echo=T, warning=FALSE}		
 # subset relevant columns
@@ -85,7 +85,7 @@ id <- unique(data$tag)
 registerDoFuture()
 plan(multisession)
 
-# loop through all tags to calculate residency patches
+# loop through all tags to calculate residence patches
 data <- foreach(i = id, .combine = "rbind") %dofuture% {
   atl_res_patch(
     data[tag == i],
@@ -101,13 +101,13 @@ plan(sequential)
 head(data) |> knitr::kable(digits = 2)
 ```
 
-## Evaluate residency patch classification and parameters
+## Evaluate residence patch classification and parameters
 
-The function `atl_check_res_patch()` can be used to evaluate the residency patch classification, by tag and tide. The title of the plot gives standard information about the data and the water level for the corresponding tide. It plots the track with residency patches on a map and shows the duration (time in a patch in min) as coloured polygon on the map and as plot against the time in a separate plot. Time starts on the top and goes from high tide to high tide (solid blue lines), as well as indicating low tide (dashed blue line).
+The function `atl_check_res_patch()` can be used to evaluate the residence patch classification, by tag and tide. The title of the plot gives standard information about the data and the water level for the corresponding tide. It plots the track with residence patches on a map and shows the duration (time in a patch in min) as coloured polygon on the map and as plot against the time in a separate plot. Time starts on the top and goes from high tide to high tide (solid blue lines), as well as indicating low tide (dashed blue line).
 
 ### Example for one tag and tide
 
-We can select one tag and tide to plot the data. Additionally, we need to specify the offset of the tidal data we use (e.g. 30 min for Terschelling) and a buffer (in m) around the residency patch data to create a polygon. This buffer should best be  `lim_spat_indep`. 
+We can select one tag and tide to plot the data. Additionally, we need to specify the offset of the tidal data we use (e.g. 30 min for Terschelling) and a buffer (in m) around the residence patch data to create a polygon. This buffer should best be  `lim_spat_indep`. 
 
 ```{r, fig.align = "center", fig.alt = "Overview plot res patches one tide", fig.width = 10, fig.height = 6}
 atl_check_res_patch(
@@ -154,14 +154,14 @@ foreach(i = seq_len(nrow(idc))) %dofuture% {
 plan(sequential)
 ```
 
-Based on these plots and potentially additional checks, the parameters can be adjusted to improve the classification of residency patches.
+Based on these plots and potentially additional checks, the parameters can be adjusted to improve the classification of residence patches.
 
-## Summary of residency patch data
+## Summary of residence patch data
 
-Once we are satisfied with the residency patch classification, we can summarize the residency patches by tag and patch and merge desired columns back to our full data table. 
+Once we are satisfied with the residence patch classification, we can summarize the residence patches by tag and patch and merge desired columns back to our full data table. 
 
 ```{r}
-# summary of residency patches
+# summary of residence patches
 data_summary <- atl_res_patch_summary(data)
 
 # duration in minutes
@@ -203,9 +203,9 @@ head(data_summary) |> knitr::kable(digits = 2)
 
 ### Plot by tag
 
-We can also easily plot the residency patches by tag as desired using `ggplot2`. In this example we will plot the residency patches for one red knot (tag 3038). The residency patches are coloured by patch ID, and the points are plotted with a grey colour to show the track.
+We can also easily plot the residence patches by tag as desired using `ggplot2`. In this example we will plot the residence patches for one red knot (tag 3038). The residence patches are coloured by patch ID, and the points are plotted with a grey colour to show the track.
 
-```{r, fig.alt = "Residency patches within track colored by ID"}
+```{r, fig.alt = "residence patches within track colored by ID"}
 # subset red knot
 data_subset <- data[tag == 3038]
 data_summary_subset <- data_summary[tag == 3038]
@@ -213,7 +213,7 @@ data_summary_subset <- data_summary[tag == 3038]
 # create basemap
 bm <- atl_create_bm(data_subset, buffer = 500)
 
-# track with residency patches coloured
+# track with residence patches coloured
 bm +
   geom_path(data = data_subset, aes(x, y), alpha = 0.1) +
   geom_point(
@@ -226,10 +226,10 @@ bm +
   )
 ```
 
-Or we could plot the residency patch at it's median position with the duration in minutes as size and colour of the points.
+Or we could plot the residence patch at it's median position with the duration in minutes as size and colour of the points.
 
-```{r, fig.alt = "Residency patches by duration in patch"}
-# plot residency patches itself by duration
+```{r, fig.alt = "residence patches by duration in patch"}
+# plot residence patches itself by duration
 bm +
   geom_point(
     data = data_summary_subset,
@@ -241,9 +241,9 @@ bm +
 
 ### Plot by species
 
-Similar, we can plot the residency patches by species. For this we need to merge the species information back to the summary table, which is done in the code below. The residency patches are coloured by species and sized by duration.
+Similar, we can plot the residence patches by species. For this we need to merge the species information back to the summary table, which is done in the code below. The residence patches are coloured by species and sized by duration.
 
-```{r, fig.alt = "Residency patches colored by species"}
+```{r, fig.alt = "residence patches colored by species"}
 # create basemap
 bm <- atl_create_bm(data, buffer = 500)
 
@@ -251,7 +251,7 @@ bm <- atl_create_bm(data, buffer = 500)
 du <- unique(data, by = "tag")
 data_summary <- data_summary[du, on = "tag", `:=`(species = i.species)]
 
-# plot residency patches itself by duration and species
+# plot residence patches itself by duration and species
 bm +
   geom_point(
     data = data_summary,
