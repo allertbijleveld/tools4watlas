@@ -56,12 +56,12 @@ griend_east <- st_sfc(st_point(c(5.275, 53.2523)), crs = st_crs(4326)) |>
 bbox <- atl_bbox(griend_east, asp = "16:9", buffer = 8000)
 bbox_sf <- st_as_sfc(bbox)
 
-## plot the data and bounding box 
+## plot the data and bounding box
 
-# create a base map for background 
+# create a base map for background
 bm <- atl_create_bm(buffer = 10000) # default centre is Griend
 
-# to speed-up plotting the tracking data, we will make a heatmap 
+# to speed-up plotting the tracking data, we will make a heatmap
 # round tracking data to 1 ha (100x100 meter) grid cells
 data[, c("x_round", "y_round") := list(
   plyr::round_any(x, 100),
@@ -90,7 +90,7 @@ bm +
 data[, c("x_round", "y_round") := NULL]
 
 # filter data with bounding box
-# note: when filtering with a rectangle bounding box 
+# note: when filtering with a rectangle bounding box
 # and large datasets, using th range is faster than sf_polygon
 data <- atl_filter_bounds(
   data = data,

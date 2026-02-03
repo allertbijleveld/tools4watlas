@@ -58,7 +58,7 @@ tidal_pattern <- fread(tidal_pattern_fp)
 measured_water_height <- fread(measured_water_height_fp)
 
 # add tide data to movement data
-# The offset of 30 minutes is set to match Griend. 
+# The offset of 30 minutes is set to match Griend.
 data <- atl_add_tidal_data(
   data = data,
   tide_data = tidal_pattern,

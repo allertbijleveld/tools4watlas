@@ -35,8 +35,8 @@ navbar:
       - text: Extended workflow
       - text: "Add tidal and bathymetry data"
         href: articles/extended_workflow/add_tidal_and_bathymetry_data.html
-      - text: "Add residency patches"
-        href: articles/extended_workflow/add_residency_patches.html
+      - text: "Add residence patches"
+        href: articles/extended_workflow/add_residence_patches.html
       - text: "--------"
       - text: Visualization tutorials
       - text: "Create a basemap"
@@ -90,8 +90,8 @@ reference:
     contents:
      - atl_median_smooth
      - atl_thin_data
-  - title: "Residency patch functions"
-    desc: "Functions to calculate residency patches"
+  - title: "Residence patch functions"
+    desc: "Functions to calculate residence patches"
     contents:
      - atl_res_patch
      - atl_patch_dist
