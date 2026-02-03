@@ -1,6 +1,6 @@
-#' Check the residency patches from one tag during one tide
+#' Check the residence patches from one tag during one tide
 #'
-#' Generates a `ggplot2` showing bird residency patches per tideID, including
+#' Generates a `ggplot2` showing bird residence patches per tideID, including
 #' movement paths, patch durations, and an inset overview map.
 #'
 #' @author Johannes Krietsch
@@ -15,9 +15,9 @@
 #' and the tracking area. This value will be added to the timing of the
 #' water data.
 #' @param buffer_res_patches A numeric value (in meters) specifying the buffer
-#' around the polygon of each residency patch, which should be
-#' half of \code{lim_spat_indep} of the residency patch calculation. If not
-#' the function can create MULTIPOLGONS for single residency patches. That will
+#' around the polygon of each residence patch, which should be
+#' half of \code{lim_spat_indep} of the residence patch calculation. If not
+#' the function can create MULTIPOLGONS for single residence patches. That will
 #' give a warning message, but works if desired.
 #' @param buffer_bm Map buffer size (default: 250).
 #' @param buffer_overview Overview map buffer size (default: 10000).

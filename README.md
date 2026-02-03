@@ -68,8 +68,8 @@ local NIOZ file server is required.
 - [**Add tidal and bathymetry
   data**\*](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html)
 
-- [**Add residency
-  patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residency_patches.html)
+- [**Add residence
+  patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residence_patches.html)
 
 **Visualization tutorials**:
 
@@ -163,6 +163,7 @@ bm +
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" alt="Example tracks with one individual by species for two tide cycles" width="100%" />
 <p class="caption">
+
 Example tracks with one individual by species for two tide cycles
 </p>
 
@@ -210,6 +211,7 @@ for visualizing the tracking data in real time on
 volunteers that facilitated this work.
 
 <p align="middle">
+
 <a href="https://www.nioz.nl/en">
 <img src="man/figures/NIOZ_logo_ENG_RGB.png" align="middle" height="150" alt="nioz website" />
 </a>
