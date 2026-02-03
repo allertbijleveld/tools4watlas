@@ -17,26 +17,26 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette shows how to assign residence patches to WATLAS data. Since every species has distinct behaviours, this analysis will require species specific adjustments of parameters. However, we ignore this for this example and provide a general workflow that can be adapted to different species and data quality.
+In this vignette, we provide a general workflow to group WATLAS position data into so-called 'residence patches'. Note that this workflow with parameter settings can be adapted for different species' behaviour and data quality.  
 
 ## Background and parameter explanation
-The `atl_res_patch()` function is designed to segment WATLAS movement data into residence patches. The main parameter is speed (`max_speed`). With perfect data that would be the only parameter necessary to adjust, because the speeds of flying and walking or standing do not overlap. However, because WATLAS data have localization error (comparable to GPS accuracy, see [Beardsworth et al. 2022](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13913)) and can have gaps, we need to have additional variables for classifying these data into robust residence patches.
+The `atl_res_patch()` function is designed to segment and aggregate WATLAS movement data into residence patches. The main parameter is speed (`max_speed`). With perfect data that would be the only parameter necessary to adjust, because the speed flying, walking or standing do not overlap. Because WATLAS data have localization error (comparable to GPS, see [Beardsworth et al. 2022](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13913)) and gaps when birds are out of range of receivers, we need to have additional variables for classifying these data into robust residence patches.
 
-The logic of the function is to first identify proto-patches (preliminary residence patches), which are based on subsequent localizations with a speed smaller than `max_speed`, distance between positions smaller than `lim_spat_indep` and the time between positions smaller than `lim_time_indep`. Proto-patches which have less positions than `min_fixes`, are then filtered out. 
+The logic of the function is to first identify proto-patches (preliminary residence patches). When subsequent positions have a speed smaller than `max_speed`, a distance smaller than `lim_spat_indep` and a time gap smaller than `lim_time_indep`, they are assigned to the same proto patch. Proto-patches with fewer than `min_fixes` positions are filtered out. 
 
-Then the function calculates the median proto-patch position and the time between proto-patch (time between last location and first location of the next proto-patch). Based on this, proto-patches are merged if the distance between the median position of the proto-patch is < `lim_spat_indep`, and the time between the proto-patch is < `lim_time_indep`. 
+For each proto patch, the median position is calculated as well as the time between two subsequent proto-patches (time between last location and first location of the next proto-patch). Proto patches are merged into residence patches, if the distance between the median positions of two subsequent proto-patches is smaller than `lim_spat_indep` and the time between the proto-patch is less then `lim_time_indep`. 
 
-Lastly, the function assigns a unique patch ID for each residence patch from 1 to n, in order of the time.
+Lastly, a unique patch ID is assigned to each residence patch ordered by time from 1 to n.
 
-Note: Keep in mind that smoothing and thinning will influence the speed and thus the residence patches. The `atl_res_patch()` function is designed to work with data that has already been filtered (`var_max < 5000`) and smoothed (`moving_window = 5`), so it is recommended to run this function after these steps. With short position intervals (e.g. 3 sec), position error can lead to speed outliers, which influences (i.e. reduces) the creation of proto-patches. To avoid this, the speed can be set to a higher value, or the data can be thinned before. 
+Note that without cleaning the data or having short intervals (e.g. 3 sec), position error can lead to speed outliers, which affects the creation of proto-patches. When calculating residence patches, it is therefor recommended to first filter (`var_max < 5000`) and smooth (`moving_window = 5`) the data. Depending on the species' behaviour or quality of the data, the `max_speed` can also be set to a higher value, or the data can be thinned first. Keep in mind that smoothing and thinning will influence the speeds between positions, and thus the creation of residence patches.
 
-**Parameters overview:**
+**Parameter overview:**
 
-   - **`max_speed`:** A numeric value specifying the **maximum speed (m/s)** between two coordinates that would be considered non-transitory.
-   - **`lim_spat_indep`:** A numeric value of **distance in metres of the spatial distance between two patches** for them to the considered independent. This parameter is there to avoid that a gap in data does not make a new proto-patch when the bird was still at the same location and works in combination with `lim_time_indep`.
-   - **`lim_time_indep`:** A numeric value of time in minutes of the **time difference between two patches for them to be considered independent**. This parameter can prevent the creation new proto-patches when there are large gaps in the data. For example, at the roost site a bird might not move for long in at a location with bad signal strength, but we can assume the bird was still at the same location. If the bird then moves away and sends data again, we can classify all positions at this place as the same residence patch.
-   - **`min_fixes`:** The **minimum number of fixes** for a group of spatially-proximate number of points to be considered a proto-patch. To make sure that at least a few points are considered together to qualify as residence patch.
-   - **`min_duration`:** The **minimum duration** (in seconds) for classifying residence patches. With high-sampling interval (e.g. 1 sec), short residence patches can be created, which are not biological relevant.
+   - **`max_speed`:** A numeric value specifying the **maximum speed (m/s)** between two subsequent positions that would be considered non-transitory.
+   - **`lim_spat_indep`:** A numeric value specifying the **maximum distance (m) between subsequent residence patches** at which them to be considered independent. In combination with `lim_time_indep`, this parameter avoids making a new proto-patch from gaps in the data when the bird was actually still at the same location.
+   - **`lim_time_indep`:** A numeric value specifying the **time difference (min) between two subsequent residence patches for them to be considered independent**. In combination with `lim_spat_indep`, this parameter can prevent the creation new proto-patches when there are large gaps in the data. For example, at the roost site a bird might not move for a long time at a location with poor coverage by receivers. If the bird then moves away and sends data from the same position, we can assume that all missed positions were also at this place.
+   - **`min_fixes`:** The **minimum number of positions** for proto-patches. To make sure that residence patches have at least a few positions.
+   - **`min_duration`:** The **minimum duration (s)** for classifying residence patches. With a high-sampling interval (e.g. 1 s), short residence patches can be created, which are not biological relevant.
 
 **Guidelines to choose parameters:**
 
