@@ -46,8 +46,7 @@
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
-    <li><a class="dropdown-item" href="../articles/extended_workflow/add_residency_patches.html">Add residency patches</a></li>
-    <li><a class="dropdown-item" href="../articles/extended_workflow/add_SIBES_data.html">Add SIBES data</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/add_residence_patches.html">Add residence patches</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
     <li><a class="dropdown-item" href="../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
@@ -117,7 +116,7 @@ example data.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># load data</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">data_path</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">data_path</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="spatial-filtering">Spatial filtering<a class="anchor" aria-label="anchor" href="#spatial-filtering"></a>
@@ -138,12 +137,12 @@ out.</p>
 <span><span class="va">bbox</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_bbox.html">atl_bbox</a></span><span class="op">(</span><span class="va">griend_east</span>, asp <span class="op">=</span> <span class="st">"16:9"</span>, buffer <span class="op">=</span> <span class="fl">8000</span><span class="op">)</span></span>
 <span><span class="va">bbox_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sfc.html" class="external-link">st_as_sfc</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## plot the data and bounding box </span></span>
+<span><span class="co">## plot the data and bounding box</span></span>
 <span></span>
-<span><span class="co"># create a base map for background </span></span>
+<span><span class="co"># create a base map for background</span></span>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span>buffer <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span> <span class="co"># default centre is Griend</span></span>
 <span></span>
-<span><span class="co"># to speed-up plotting the tracking data, we will make a heatmap </span></span>
+<span><span class="co"># to speed-up plotting the tracking data, we will make a heatmap</span></span>
 <span><span class="co"># round tracking data to 1 ha (100x100 meter) grid cells</span></span>
 <span><span class="va">data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x_round"</span>, <span class="st">"y_round"</span><span class="op">)</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="fu">plyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/round_any.html" class="external-link">round_any</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">100</span><span class="op">)</span>,</span>
@@ -168,7 +167,7 @@ out.</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">coord_sf</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="filter_data_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" alt="Heatmap of all positions with bounding box (red)" width="100%"><p class="caption">
+<img src="filter_data_files/figure-html/unnamed-chunk-2-1.png" alt="Heatmap of all positions with bounding box (red)" width="100%"><p class="caption">
 Heatmap of all positions with bounding box (red)
 </p>
 </div>
@@ -177,7 +176,7 @@ Heatmap of all positions with bounding box (red)
 <span><span class="va">data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x_round"</span>, <span class="st">"y_round"</span><span class="op">)</span> <span class="op">:=</span> <span class="cn">NULL</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># filter data with bounding box</span></span>
-<span><span class="co"># note: when filtering with a rectangle bounding box </span></span>
+<span><span class="co"># note: when filtering with a rectangle bounding box</span></span>
 <span><span class="co"># and large datasets, using th range is faster than sf_polygon</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_filter_bounds.html">atl_filter_bounds</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data</span>,</span>
@@ -234,7 +233,7 @@ none of the birds in the example data is actually filtered out.</p>
 <span>  <span class="st">"extdata"</span>, <span class="st">"tags_watlas_subset.xlsx"</span>, package <span class="op">=</span> <span class="st">"tools4watlas"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">all_tags</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span><span class="va">all_tags_path</span>, sheet <span class="op">=</span> <span class="st">"tags_watlas_all"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># specify the time zone as CET, and standardise to UTC</span></span>
 <span><span class="va">all_tags</span><span class="op">[</span>, <span class="va">release_ts</span> <span class="op">:=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/force_tz.html" class="external-link">force_tz</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/as_date.html" class="external-link">as_datetime</a></span><span class="op">(</span><span class="va">release_ts</span><span class="op">)</span>, tzone <span class="op">=</span> <span class="st">"CET"</span><span class="op">)</span><span class="op">]</span></span>
@@ -253,7 +252,7 @@ none of the birds in the example data is actually filtered out.</p>
 <span></span>
 <span><span class="co"># exclude tags with less than 100 positions</span></span>
 <span><span class="va">data</span><span class="op">[</span>, <span class="va">N</span> <span class="op">:=</span> <span class="va">.N</span>, <span class="va">tag</span><span class="op">]</span></span>
-<span><span class="va">data</span><span class="op">[</span><span class="va">N</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></span>
+<span><span class="va">data</span><span class="op">[</span><span class="va">N</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/unique.html" class="external-link">unique</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">N</span> <span class="op">&gt;</span> <span class="fl">100</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># clean up data table by removing unneeded columns</span></span>
@@ -276,10 +275,10 @@ explanation</a>). Depending on the goal of the study, one can choose
 different variance thresholds. If its important that the position data
 is accurate, the value can be set low at e.g. 2,000 (see appendix S1
 panel A in <strong>Beardsworth et al. <a href="https://doi.org/10.1111/2041-210X.13913" class="external-link">2022</a>)</strong>.
-Another strategy is to have a higher less conservative threshold (5,000)
-and use the resulting larger data volume to increase the quality
-(e.g. by <a href="https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html#median-smooth-data">median
-smoothing</a>).</p>
+Another strategy is to have a higher, less conservative threshold
+(e.g. 5,000) and use the resulting larger data volume to increase the
+quality by <a href="https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html#median-smooth-data">median
+smoothing</a>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># filter on the variance of the estimated X- and Y-coordinates</span></span>
 <span><span class="va">var_max</span> <span class="op">&lt;-</span> <span class="fl">5000</span> <span class="co"># in meters squared</span></span>
@@ -317,7 +316,7 @@ smoothing</a>).</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Speed in (m/s)"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="filter_data_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="Histogram of speed moved from all data" width="100%"><p class="caption">
+<img src="filter_data_files/figure-html/unnamed-chunk-6-1.png" alt="Histogram of speed moved from all data" width="100%"><p class="caption">
 Histogram of speed moved from all data
 </p>
 </div>
@@ -343,7 +342,7 @@ Histogram of speed moved from all data
 </h2>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># save data</span></span>
-<span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span><span class="va">data</span>, file <span class="op">=</span> <span class="st">"../inst/extdata/watlas_data_filtered.csv"</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span><span class="va">data</span>, file <span class="op">=</span> <span class="st">"../inst/extdata/watlas_data_filtered.csv"</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -356,7 +355,7 @@ Histogram of speed moved from all data
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>
