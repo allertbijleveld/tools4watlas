@@ -80,7 +80,7 @@ individual differences in tidal and circadian foraging rhythms and
 highlight potential fruitful avenues for further studies **([Bulla et
 al., 2017](#ref-bulla2017))**.
 
-## WATLAS
+## WATLAS papers
 
 After an intitial development starting in 2016, we first deployed WATLAS
 as a pilot study near Griend with 5 receivers in 2017. After its succes,
@@ -127,7 +127,7 @@ Becasue Red Knots adjust their mass gain and moult rates to local
 foraging conditions, this study suggests that improved food conditions
 at staging sites, like the Wadden Sea, could enable earlier departures
 and help migratory birds better track advancing spring under climate
-warming ([Lameris et al., 2025](#ref-lameris2025)).
+warming **([Lameris et al., 2025](#ref-lameris2025))**.
 
 In **Gobbens et al. ([2024](#ref-gobbens2024))**, we studied the
 environmental conditions that red knots selected for relocation flights
@@ -137,11 +137,15 @@ sunset, 4h before high tide, with tailwinds, and little cloud cover.
 
 #### Habitat use and resource selection
 
-We are interested whether shorebird select mudflat habitat where they
-can maximise their energy intake rates, that is where food densities are
-high. In **Penning et al. (in prep)**, we show that Sanderling select
+We are interested whether shorebirds select mudflat habitat where they
+can maximise their energy intake rates, which is generally where food
+densities are highest. Combining WATLAS-data with prey sampling data
+from [SIBES](https://www.nature.com/articles/s41597-025-04540-9)
+provides a unique opportunity to investigate such habitat use.
+
+In **Penning et al. (in prep)**, we show that Sanderling select
 intertidal mudflats that contain the highest densities of Brown Shrimp.
-Becasue of tag weight constraints and Sanderling being so small, this is
+Because of tag weight constraints and Sanderling being so small, this is
 the first time ever that Sanderling have been tracked at such high
 spatiotemporal resolution.
 
@@ -157,13 +161,13 @@ Shrimp, has not been documented before.
 #### Individual variation
 
 In **Ersoy et al. ([2022](#ref-ersoy2022))** we showed that foraging
-tactics and diet are associated with the personality trait exploration,
+tactics and diet are associated with the personality trait ‘exploration’
 independent of morphological differences. WATLAS was used to locate
 tagged individuals on mudflats for detailed behavioural observations.
 
 Following this result, in **Ersoy et al. ([2024](#ref-ersoy2024))**, we
-studied the development of consistent exploration behaviour and found
-that juvenile red knots had a more diverse diet than adults and had less
+studied the development of consistency in behaviour and found that
+juvenile red knots had a more diverse diet than adults and had less
 consistent personalites. We discuss a pathway how early foraging
 experiences could shape development of exploratory personalities. WATLAS
 was used to show how juvenile red knots differed in habitat use, which
@@ -172,15 +176,15 @@ is presented in the appendix.
 #### Climate change
 
 With the climiate crisis, extreme wind speeds are predicted to occur
-more frequently and pose a threat to shorebirds. In **Keuning et al. (in
-prep)**, we studied how strong winds affect the availability of
-intertidal foraging habitat through increased water levels (‘wind
-setup’) and the behaviour of Red Knots. With high wind speeds from the
-West, up to 50% of mudflats stayed submerged and the availability of
-prey was reduced by 44%. Moreover, with strong headwinds, birds roosted
-closer by. These wind-driven effects are likely to increase energetic
-costs while reducing opportunities for food intake, thereby reshaping
-energy balances.
+more frequently and pose a threat to shorebirds. In **Keuning et al.
+([2026](#ref-keuning2026))**, we studied how strong winds affect the
+availability of intertidal foraging habitat through increased water
+levels (‘wind setup’) and the behaviour of Red Knots. With high wind
+speeds from the West, up to 50% of mudflats stayed submerged and the
+availability of prey was reduced by 44%. Moreover, with strong
+headwinds, birds roosted closer by. These wind-driven effects are likely
+to increase energetic costs while reducing opportunities for food
+intake, thereby reshaping energy balances.
 
 ## PhD-dissertations
 
@@ -252,6 +256,11 @@ Gupte, P. R., Beardsworth, C. E., Spiegel, O., Lourie, E., Toledo, S.,
 Nathan, R., & Bijleveld, A. I. (2022). **A guide to pre-processing
 high-throughput animal tracking data**. *Journal of Animal Ecology*,
 *91*(2), 287–307. <https://doi.org/10.1111/1365-2656.13610>
+
+Keuning, T., Gobbens, E., Nathan, R., & Bijleveld, A. I. (2026). **Storm
+events will simultaneously reduce foraging opportunities and affect
+movements of red knots (calidris canutus) in the intertidal wadden sea**
+\[Journal Article\]. *Ibis*. <https://doi.org/10.1111/ibi.70028>
 
 Kok, E. M. A. (2020). ***Why knot? Exploration of variation in
 long-distance migration*** \[Thesis\].

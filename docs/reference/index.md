@@ -48,9 +48,9 @@ Functions to calculate speed and turning angle
 - [`atl_thin_data()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_thin_data.md)
   : Thin tracking data by resampling or aggregation
 
-## Residency patch functions
+## Residence patch functions
 
-Functions to calculate residency patches
+Functions to calculate residence patches
 
 - [`atl_res_patch()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_res_patch.md)
   : Construct residence patches from position data
@@ -59,7 +59,7 @@ Functions to calculate residency patches
 - [`atl_res_patch_summary()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_res_patch_summary.md)
   : Summary of patch data
 - [`atl_check_res_patch()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_check_res_patch.md)
-  : Check the residency patches from one tag during one tide
+  : Check the residence patches from one tag during one tide
 
 ## Spatial functions
 
@@ -85,7 +85,7 @@ Functions to plot the data
 - [`atl_check_tag()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_check_tag.md)
   : Check the data from one tag on a map
 - [`atl_check_res_patch()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_check_res_patch.md)
-  : Check the residency patches from one tag during one tide
+  : Check the residence patches from one tag during one tide
 - [`atl_t_col()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_t_col.md)
   : Make a colour transparent
 - [`atl_spec_cols()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_spec_cols.md)

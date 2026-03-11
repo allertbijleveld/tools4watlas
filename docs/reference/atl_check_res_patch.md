@@ -1,6 +1,6 @@
-# Check the residency patches from one tag during one tide
+# Check the residence patches from one tag during one tide
 
-Generates a `ggplot2` showing bird residency patches per tideID,
+Generates a `ggplot2` showing bird residence patches per tideID,
 including movement paths, patch durations, and an inset overview map.
 
 ## Usage
@@ -66,9 +66,9 @@ atl_check_res_patch(
 - buffer_res_patches:
 
   A numeric value (in meters) specifying the buffer around the polygon
-  of each residency patch, which should be half of `lim_spat_indep` of
-  the residency patch calculation. If not the function can create
-  MULTIPOLGONS for single residency patches. That will give a warning
+  of each residence patch, which should be half of `lim_spat_indep` of
+  the residence patch calculation. If not the function can create
+  MULTIPOLGONS for single residence patches. That will give a warning
   message, but works if desired.
 
 - buffer_bm:

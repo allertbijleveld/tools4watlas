@@ -30,6 +30,11 @@ your user in the
 [`atl_file_path()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.md)
 function.
 
+Here we show how to add tide data (tideID - a unique tide identifier,
+tidaltime and time2lowtide - time from high tide and time to low tide in
+minutes, waterlevel - as measured from the tide gauge station with
+offset) in cm NAP.
+
 ``` r
 # file path to WATLAS teams data folder
 fp <- atl_file_path("watlas_teams")
@@ -47,7 +52,7 @@ tidal_pattern <- fread(tidal_pattern_fp)
 measured_water_height <- fread(measured_water_height_fp)
 
 # add tide data to movement data
-# The offset of 30 minutes is set to match Griend. 
+# The offset of 30 minutes is set to match Griend.
 data <- atl_add_tidal_data(
   data = data,
   tide_data = tidal_pattern,
@@ -80,7 +85,7 @@ the “Birds, fish ’n chips” SharePoint folder:
 path (`fp`) to the local copy of the folder on your computer.
 
 Here, we show how to extract bathymetry data (cm NAP) for each WATLAS
-position and calculate tidal time (time relative to the tidal cycle).
+position.
 
 ``` r
 # file path to Birds, fish 'n chips GIS/rasters folder
@@ -172,4 +177,4 @@ bm +
 ```
 
 ![Movement tracks colored with bathymetry
-data](add_tidal_and_bathymetry_data_files/figure-html/unnamed-chunk-5-1.png)
+data](add_tidal_and_bathymetry_data_files/figure-html/unnamed-chunk-6-1.png)

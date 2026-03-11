@@ -5,9 +5,8 @@
 `tools4watlas` is based on `data.table` to be fast and efficient. A key
 feature of `data.table` is modification in place, where data is changed
 without making a copy. To prevent this (whenever it is not desired) use
-the function
-[`copy()`](https://rdatatable.gitlab.io/data.table/reference/copy.html)
-to make a true copy of the data set. Basic knowledge about
+the function [`copy()`](https://rdrr.io/pkg/data.table/man/copy.html) to
+make a true copy of the data set. Basic knowledge about
 [`data.table`](https://rdatatable.gitlab.io/data.table/index.html) is
 helpful, but not necessary, when working with `tools4watlas`.
 
@@ -366,7 +365,7 @@ Number of positions per day by tag
 With large datasets it is convenient to plot heatmaps, as plotting
 millions of positions is slow. For plotting all positions by tag number,
 for example, please see the vignette [Plot
-data](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html)
+data](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html).
 
 ``` r
 # create basemap

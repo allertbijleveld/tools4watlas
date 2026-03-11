@@ -2,8 +2,8 @@
 
 ### All vignettes
 
-- [Add residency
-  patches](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residency_patches.md):
+- [Add residence
+  patches](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residence_patches.md):
 - [Add tidal and bathymetry
   data](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.md):
 - [Animate

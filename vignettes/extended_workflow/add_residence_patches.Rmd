@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-In this vignette, we provide a general workflow to group WATLAS position data into so-called 'residence patches'. Note that this workflow with parameter settings can be adapted for different species' behaviour and data quality.  
+In this vignette, we provide a general workflow to group WATLAS position data into so-called 'residence patches'. Note that the parameter settings can/should be adapted for different species' behaviour and data quality.  
 
 ## Background and parameter explanation
 The `atl_res_patch()` function is designed to segment and aggregate WATLAS movement data into residence patches. The main parameter is speed (`max_speed`). With perfect data that would be the only parameter necessary to adjust, because the speed flying, walking or standing do not overlap. Because WATLAS data have localization error (comparable to GPS, see [Beardsworth et al. 2022](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13913)) and gaps when birds are out of range of receivers, we need to have additional variables for classifying these data into robust residence patches.
@@ -32,23 +32,23 @@ Note that without cleaning the data or having short intervals (e.g. 3 sec), posi
 
 **Parameter overview:**
 
-   - **`max_speed`:** A numeric value specifying the **maximum speed (m/s)** between two subsequent positions that would be considered non-transitory.
-   - **`lim_spat_indep`:** A numeric value specifying the **maximum distance (m) between subsequent residence patches** at which them to be considered independent. In combination with `lim_time_indep`, this parameter avoids making a new proto-patch from gaps in the data when the bird was actually still at the same location.
-   - **`lim_time_indep`:** A numeric value specifying the **time difference (min) between two subsequent residence patches for them to be considered independent**. In combination with `lim_spat_indep`, this parameter can prevent the creation new proto-patches when there are large gaps in the data. For example, at the roost site a bird might not move for a long time at a location with poor coverage by receivers. If the bird then moves away and sends data from the same position, we can assume that all missed positions were also at this place.
-   - **`min_fixes`:** The **minimum number of positions** for proto-patches. To make sure that residence patches have at least a few positions.
-   - **`min_duration`:** The **minimum duration (s)** for classifying residence patches. With a high-sampling interval (e.g. 1 s), short residence patches can be created, which are not biological relevant.
+   - **`max_speed`:** A numeric value specifying the maximum speed (m/s) between two subsequent positions that would be considered non-transitory.
+   - **`lim_spat_indep`:** A numeric value specifying the maximum distance (m) between subsequent residence patches at which them to be considered independent. In combination with `lim_time_indep`, this parameter avoids making a new proto-patch from gaps in the data when the bird was actually still at the same location.
+   - **`lim_time_indep`:** A numeric value specifying the time difference (min) between two subsequent residence patches for them to be considered independent. In combination with `lim_spat_indep`, this parameter can prevent the creation new proto-patches when there are large gaps in the data. For example, at the roost site a bird might not move for a long time at a location with poor coverage by receivers. If the bird then moves away and sends data from the same position, we can assume that all missed positions were also at this place.
+   - **`min_fixes`:** The minimum number of positions for proto-patches. To make sure that residence patches have at least a few positions.
+   - **`min_duration`:** The minimum duration (s) for classifying residence patches. With a high-sampling interval (e.g. 1 s), short residence patches can be created, which are not biological relevant.
 
 **Guidelines to choose parameters:**
 
 In general, when deciding on the optimal parameters, the key is to find a good balance between true and false positives. We give some starting points for each parameter, which has to be adjusted based on the data quality and species behaviour.
 
-   - **`max_speed`:** Should be as high as possible in between walking and flying speeds. Due to error in data erroneously high/‘flying’ speeds are corrected due to subsequent proto-patches being merged on distance. A good starting point is **3 m/s**, but could be increased if needed, if it prevents the creation of proto-patches that should be assigned as resident locations.
-   - **`lim_spat_indep`:** Decides on the distance between two proto-patches to be considered independent. This is a key parameter, because it prevents the creation of new proto-patches when the bird is still at the same location. A good starting point is **75 m**, but could be increased if the data are very gappy or if the species has large elongated foraging patches.
-   - **`lim_time_indep`:** **180 min** (3 hours) works typically, but could be increased (e.g. to 240 or higher) with really gappy data. For example, when the analysis is focused on roosting behaviour, this could be increased to e.g. 6 hours (360 min), to deal with large gaps in the data that can occur with roosting birds not moving and being at the same place with bad signal strength.
-   - **`min_fixes`:** As small as possible. Only assign new patch if speed is consistently (several points) below this threshold, not just once. **3 fixes** should usually work.
-   - **`min_duration`:** As small as possible, given biological relevance. **120 sec** (2 minutes) seems reasonable.
+   - **`max_speed`:** Should be as high as possible in between walking and flying speeds. A good starting point is **3 m/s**, but could be reduced if it prevents the creation of proto-patches, or increased if too many proto-patches are created. Having too many proto-patches is not alwasy an issue becasue subsequent proto-patches can be merged if the distance between them is small enough (set by `lim_spat_indep`). Likewise, errors in positiong data can inflate the creation of proto patches, but these will be corrected in the procedure.
+   - **`lim_spat_indep`:** Provides the distance between two proto-patches at which they are considered independent. This is a key parameter, because it prevents the creation of new proto-patches when the bird is still at the same location. A good starting point is **75 m**, but could be increased if the position data has many/large gaps, or if the species has elongated foraging patches.
+   - **`lim_time_indep`:** Typically, **180 min** (3 hours) works fine, but could be increased with position data that has large gaps. For example, when the analysis is focused on roosting behaviour, this could even be increased to e.g. 6 hours (360 min), to deal with large gaps in the data that can occur with roosting birds not moving and being at the same place with bad signal strength.
+   - **`min_fixes`:** This should be set as small as possible and **3 positions** usually works. Setting this variable >1 allows assigning proto patches only if subsequent positions are consistently above the 1 `max_speed` and `lim_spat_indep` and not just once becasue of an outlier, for instance. 
+   - **`min_duration`:** Should be set as small as possible while maintaining most biological relevance. A value of **120 sec** (2 minutes) seems reasonable.
 
-### Load packages and required data
+## Load packages and required data
 
 ```{r, message = FALSE}
 # packages
@@ -72,13 +72,13 @@ tidal_pattern <- fread(paste0(
 
 ## Calculate residence patches by tag
 
-To calculate residence patches, we can first subset relevant columns from the data (to reduce the memory size of the table - as this table will be sent to all cores when computing in parallel), but also can use the original `data.table`, if working with few data. We then extract the unique tag IDs from the data and run `atl_res_patch()` for each tag in parallel, which adds an additional column to the data table, called `patch`, which contains unique patch ID's for each tag. 
+To reduce the memory size for parallel computing, we will first subset the relevant columns from the data. This can be skipped for small data tables. We will then run `atl_res_patch()` for each tag ID in parallel. The column `patch` is added to the data table, which provides the assigned patch ID's for the positions.  
 
 ```{r echo=T, warning=FALSE}		
 # subset relevant columns
 data <- data[, .(species, posID, tag, time, datetime, x, y, tideID)]
 
-# unique tag ID
+# extract the unique tag IDs
 id <- unique(data$tag)
 
 # register cores and backend for parallel processing
@@ -94,7 +94,7 @@ data <- foreach(i = id, .combine = "rbind") %dofuture% {
   )
 }
 
-# close parallel workers
+# close parallel processing
 plan(sequential)
 
 # show head of the summary table
@@ -103,26 +103,26 @@ head(data) |> knitr::kable(digits = 2)
 
 ## Evaluate residence patch classification and parameters
 
-The function `atl_check_res_patch()` can be used to evaluate the residence patch classification, by tag and tide. The title of the plot gives standard information about the data and the water level for the corresponding tide. It plots the track with residence patches on a map and shows the duration (time in a patch in min) as coloured polygon on the map and as plot against the time in a separate plot. Time starts on the top and goes from high tide to high tide (solid blue lines), as well as indicating low tide (dashed blue line).
+The function `atl_check_res_patch()` can be used to evaluate the residence patch classification by tag and tide ID. the function plots the track with residence patches on a map and shows the duration (time in a patch in min) as coloured polygon on the map and as plot against the time in a separate plot. Time starts on the top and goes from high tide to high tide (solid blue lines), as well as indicating low tide (dashed blue line). The title of the plot gives basic information about the data and the water level for the corresponding tide. 
 
-### Example for one tag and tide
+### Inspect one tag and tide
 
-We can select one tag and tide to plot the data. Additionally, we need to specify the offset of the tidal data we use (e.g. 30 min for Terschelling) and a buffer (in m) around the residence patch data to create a polygon. This buffer should best be  `lim_spat_indep`. 
+We can select one tag and tide to plot. Additionally, we need to specify the offset for the tidal data we use (e.g. 30 min for West-Terschelling) and a buffer (in m) around the residence patch data to create the polygon. This buffer should best be identical to `lim_spat_indep`. 
 
 ```{r, fig.align = "center", fig.alt = "Overview plot res patches one tide", fig.width = 10, fig.height = 6}
 atl_check_res_patch(
   data[tag == "3038"], tide_data = tidal_pattern,
   tide = "2023513", offset = 30,
-  buffer_res_patches = 75 / 2
+  buffer_res_patches = 75
 )
 ```
 
-### Loop through all tags and tides
+### Inpect many tags and tides
 
-For a better overview we can also plot all data by tag and tide or for example a random sample of 100 tags and tides. The plots are saved in the choosen directory (e.g. `./outputs/res_patch_check/` - edit path as desired), which has to be created before running the code.
+To get a general overview, we can also loop through and plot all data by tag and tide, or for example a random sample of 100 tags and tides. The plots are saved in any directory (e.g. `./outputs/res_patch_check/`), which has to be created before running the code.
 
 ```{r, eval = FALSE}
-# unique ID combinations
+# create table with data combinations to plot
 idc <- unique(data[, c("species", "tag", "tideID")])
 
 # sample 100 combinations to plot
@@ -141,7 +141,7 @@ foreach(i = seq_len(nrow(idc))) %dofuture% {
     data[tag == idc$tag[i]],
     tide_data = tidal_pattern,
     tide = idc$tideID[i], offset = 30,
-    buffer_res_patches = 75 / 2,
+    buffer_res_patches = 75,
     filename = paste0(
       "./outputs/res_patch_check/",
       idc$species[i], "_tag_", idc$tag[i], "_tide_", idc$tideID[i]
@@ -150,24 +150,24 @@ foreach(i = seq_len(nrow(idc))) %dofuture% {
 
 }
 
-# close parallel workers
+# close parallel processing
 plan(sequential)
 ```
 
-Based on these plots and potentially additional checks, the parameters can be adjusted to improve the classification of residence patches.
+Based on these plots and perhaps additional checks, the parameters can be adjusted to improve the classification of residence patches.
 
 ## Summary of residence patch data
 
-Once we are satisfied with the residence patch classification, we can summarize the residence patches by tag and patch and merge desired columns back to our full data table. 
+Once satisfied with the residence patch classification, we can summarize the residence patches by tag and patch ID and merge the desired columns back to our full data table. 
 
 ```{r}
 # summary of residence patches
 data_summary <- atl_res_patch_summary(data)
 
-# duration in minutes
+# standardise duration to minutes
 data_summary[, duration := duration / 60]
 
-# merge desired summary columns to data
+# merge desired summary columns with original data table
 data[data_summary, on = c("tag", "patch"), `:=`(
   duration = i.duration,
   disp_in_patch = i.disp_in_patch
@@ -179,31 +179,34 @@ head(data_summary) |> knitr::kable(digits = 2)
 
 | Column            | Description                                                                 |
 |------------------|------------------------------------------------------------------------------|
-|**tag**           | 4 digit tag number (character), i.e. last 4 digits of the full tag number    |
+|**tag**           | 4 digit tag ID (character), i.e. last 4 digits of the full tag number        |
 |**patch**         | Patch ID                                                                     |
 |**nfixes**        | Number of fixes in the patch                                                 |
 |**x_mean**        | Mean X-coordinate in meters (UTM 31 N)                                       |
 |**x_median**      | Median X-coordinate in meters (UTM 31 N)                                     |
-|**x_start**       | X-coordinate at the start of the patch (UTM 31 N)                            |
-|**x_end**         | X-coordinate at the end of the patch (UTM 31 N)                              |
+|**x_start**       | X-coordinate at the start of the residence patch (UTM 31 N)                  |
+|**x_end**         | X-coordinate at the end of the residence patch (UTM 31 N)                    |
 |**y_mean**        | Mean Y-coordinate in meters (UTM 31 N)                                       |
 |**y_median**      | Median Y-coordinate in meters (UTM 31 N)                                     |
-|**y_start**       | Y-coordinate at the start of the patch (UTM 31 N)                            |
-|**y_end**         | Y-coordinate at the end of the patch (UTM 31 N)                              |
-|**time_mean**     | Mean UNIX time (seconds) for the patch                                       |
-|**time_median**   | Median UNIX time (seconds) for the patch                                     |
+|**y_start**       | Y-coordinate at the start of the residence patch (UTM 31 N)                  |
+|**y_end**         | Y-coordinate at the end of the residence patch (UTM 31 N)        			  |
+|**time_mean**     | Mean UNIX time (seconds) of the positions in the residence patch             |
+|**time_median**   | Median UNIX time (seconds) of the positions in the residence patch           |
 |**time_start**    | Start UNIX time (seconds) of the patch                                       |
 |**time_end**      | End UNIX time (seconds) of the patch                                         |
 |**dist_in_patch** | Total distance (in meters) travelled within the patch (cummulative distance) |
 |**dist_bw_patch** | Distance (in meters) between end of previous and start of current patch      |
 |**time_bw_patch** | Time (in seconds) between end of previous and start of current patch         |
 |**disp_in_patch** | Straight-line displacement (in meters) between start and end of the patch    |
-|**duration**      | Time duration (in seconds) spent within the patch                            |
+|**duration**      | Time duration (in seconds) between first and last position in patch          |
 
+
+
+## Plot the residence pathes
+It might also be useful to plot the residence patches using `ggplot2`. 
 
 ### Plot by tag
-
-We can also easily plot the residence patches by tag as desired using `ggplot2`. In this example we will plot the residence patches for one red knot (tag 3038). The residence patches are coloured by patch ID, and the points are plotted with a grey colour to show the track.
+In this example, we will plot the residence patches for one red knot (tag 3038). In the frist example, the residence patches are coloured by patch ID. To show the full track, the transient (unassigned) positions are plotted in grey.
 
 ```{r, fig.alt = "residence patches within track colored by ID"}
 # subset red knot
@@ -226,7 +229,7 @@ bm +
   )
 ```
 
-Or we could plot the residence patch at it's median position with the duration in minutes as size and colour of the points.
+In the second example, the residence patches are plotted at their median positions with the size and colour scaled to their duration (in minutes).
 
 ```{r, fig.alt = "residence patches by duration in patch"}
 # plot residence patches itself by duration
@@ -241,7 +244,7 @@ bm +
 
 ### Plot by species
 
-Similar, we can plot the residence patches by species. For this we need to merge the species information back to the summary table, which is done in the code below. The residence patches are coloured by species and sized by duration.
+Similarly, we can plot the residence patches by species. For this, we need to merge the species information back to the summary table for residence patches. The residence patches are coloured by species and scaled by duration (in minutes).
 
 ```{r, fig.alt = "residence patches colored by species"}
 # create basemap

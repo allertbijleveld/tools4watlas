@@ -160,11 +160,7 @@ bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
 bm <- atl_create_bm(
   buffer = 5000, raster_data = bat, option = "bathymetry", shade = TRUE
 )
-```
 
-    ## |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          
-
-``` r
 # plot
 bm
 ```
@@ -194,11 +190,7 @@ can be used to add transformed coordinates to the data table.
 bm <- atl_create_bm_tiles(
   buffer = 15000, option = "Esri.WorldImagery", zoom = 12
 )
-```
 
-    ## |---------|---------|---------|---------|=========================================                                          
-
-``` r
 # plot
 bm
 ```
@@ -244,7 +236,11 @@ work.
 # additional packages
 library(OpenStreetMap)
 library(sf)
+```
 
+    ## Warning: package 'sf' was built under R version 4.5.2
+
+``` r
 # load example data
 data <- data_example
 

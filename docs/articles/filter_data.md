@@ -49,12 +49,12 @@ griend_east <- st_sfc(st_point(c(5.275, 53.2523)), crs = st_crs(4326)) |>
 bbox <- atl_bbox(griend_east, asp = "16:9", buffer = 8000)
 bbox_sf <- st_as_sfc(bbox)
 
-## plot the data and bounding box 
+## plot the data and bounding box
 
-# create a base map for background 
+# create a base map for background
 bm <- atl_create_bm(buffer = 10000) # default centre is Griend
 
-# to speed-up plotting the tracking data, we will make a heatmap 
+# to speed-up plotting the tracking data, we will make a heatmap
 # round tracking data to 1 ha (100x100 meter) grid cells
 data[, c("x_round", "y_round") := list(
   plyr::round_any(x, 100),
@@ -90,7 +90,7 @@ Heatmap of all positions with bounding box (red)
 data[, c("x_round", "y_round") := NULL]
 
 # filter data with bounding box
-# note: when filtering with a rectangle bounding box 
+# note: when filtering with a rectangle bounding box
 # and large datasets, using th range is faster than sf_polygon
 data <- atl_filter_bounds(
   data = data,
@@ -195,10 +195,10 @@ Depending on the goal of the study, one can choose different variance
 thresholds. If its important that the position data is accurate, the
 value can be set low at e.g. 2,000 (see appendix S1 panel A in
 **Beardsworth et al. [2022](https://doi.org/10.1111/2041-210X.13913))**.
-Another strategy is to have a higher less conservative threshold (5,000)
-and use the resulting larger data volume to increase the quality
-(e.g. by [median
-smoothing](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html#median-smooth-data)).
+Another strategy is to have a higher, less conservative threshold
+(e.g. 5,000) and use the resulting larger data volume to increase the
+quality by [median
+smoothing](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html#median-smooth-data).
 
 ``` r
 # filter on the variance of the estimated X- and Y-coordinates
