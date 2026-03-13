@@ -126,6 +126,6 @@ atl_res_patch_summary <- function(data,
     ds <- merge(ds, extra_summaries, by = c("tag", "patch"), all.x = TRUE)
   }
 
-  return(ds)
+  ds
 
 }

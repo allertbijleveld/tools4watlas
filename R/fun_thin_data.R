@@ -194,5 +194,5 @@ atl_thin_data <- function(data,
   # clean original data
   data[, time_agg := NULL]
 
-  return(data_s)
+  data_s
 }

@@ -96,5 +96,5 @@ atl_filter_covariates <- function(data,
     ))
   }
 
-  return(data)
+  data
 }

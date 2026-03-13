@@ -148,5 +148,5 @@ atl_filter_bounds <- function(data,
     warning("filter_bbox: cleaned data has no rows remaining!")
   }
 
-  return(data_)
+  data_
 }

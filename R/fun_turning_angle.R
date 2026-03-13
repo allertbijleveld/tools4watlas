@@ -84,5 +84,5 @@ atl_turning_angle <- function(data,
   ) := NULL]
 
   # return data
-  return(data)
+  data
 }

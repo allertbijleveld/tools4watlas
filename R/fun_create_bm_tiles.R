@@ -174,5 +174,5 @@ atl_create_bm_tiles <- function(data = NULL,
       plot.margin = unit(c(0, 0, -0.2, -0.2), "lines"),
     )
 
-  return(bm)
+  bm
 }

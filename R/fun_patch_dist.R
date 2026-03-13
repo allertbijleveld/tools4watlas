@@ -64,5 +64,5 @@ atl_patch_dist <- function(data,
     dist <- NA_real_
   }
 
-  return(dist)
+  dist
 }

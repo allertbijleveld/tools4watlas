@@ -62,7 +62,7 @@
     <li><a class="dropdown-item" href="../../articles/package_development/package_logo.html">tools4watlas logo</a></li>
   </ul>
 </li>
-<li class="nav-item"><a class="nav-link" href="../../articles/literature/literature.html">Literature</a></li>
+<li class="nav-item"><a class="nav-link" href="../../articles/literature/literature.html">Research &amp; Publications</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -140,7 +140,7 @@ considered non-transitory.</li>
 <li>
 <strong><code>lim_spat_indep</code>:</strong> A numeric value
 specifying the maximum distance (m) between subsequent residence patches
-at which them to be considered independent. In combination with
+for them to be considered independent. In combination with
 <code>lim_time_indep</code>, this parameter avoids making a new
 proto-patch from gaps in the data when the bird was actually still at
 the same location.</li>
@@ -375,13 +375,16 @@ corresponding tide.</p>
 <p>We can select one tag and tide to plot. Additionally, we need to
 specify the offset for the tidal data we use (e.g. 30 min for
 West-Terschelling) and a buffer (in m) around the residence patch data
-to create the polygon. This buffer should best be identical to
-<code>lim_spat_indep</code>.</p>
+to create the polygon. This buffer should be set to half of
+<code>lim_spat_indep</code> (maximum distance between subsequent
+residence patches at which they will be considered independent),
+ensuring that the polygons around residence patches correspond to the
+spatial distance threshold used to merge residence patches.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/atl_check_res_patch.html">atl_check_res_patch</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="st">"3038"</span><span class="op">]</span>, tide_data <span class="op">=</span> <span class="va">tidal_pattern</span>,</span>
 <span>  tide <span class="op">=</span> <span class="st">"2023513"</span>, offset <span class="op">=</span> <span class="fl">30</span>,</span>
-<span>  buffer_res_patches <span class="op">=</span> <span class="fl">75</span></span>
+<span>  buffer_res_patches <span class="op">=</span> <span class="fl">75</span> <span class="op">/</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="add_residence_patches_files/figure-html/unnamed-chunk-3-1.png" class="r-plt" alt="Overview plot res patches one tide" width="100%" style="display: block; margin: auto;"></p>
 </div>

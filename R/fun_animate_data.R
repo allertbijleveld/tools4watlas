@@ -100,7 +100,7 @@ atl_time_steps <- function(datetime_vector,
     "({round(animation_duration / 60, 2)} min) with {fps} fps"
   ))
 
-  return(ts)
+  ts
 }
 
 #' Display a live progress bar for PNG file generation in a directory

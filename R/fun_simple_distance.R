@@ -27,5 +27,5 @@ atl_simple_dist <- function(data, x = "x", y = "y", lag = 1) {
   } else {
     dist <- rep(NA_real_, lag)
   }
-  return(dist)
+  dist
 }

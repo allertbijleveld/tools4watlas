@@ -73,5 +73,5 @@ atl_summary <- function(data,
   data[, gap_tmp := NULL]
   ds[, c("first_data_sec", "last_data_sec") := NULL]
 
-  return(ds)
+  ds
 }

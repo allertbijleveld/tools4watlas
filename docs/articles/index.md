@@ -14,7 +14,8 @@
   basemap](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/create_basemap.md):
 - [Filter
   data](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.md):
-- [Literature](https://allertbijleveld.github.io/tools4watlas/articles/literature/literature.md):
+- [Research &
+  Publications](https://allertbijleveld.github.io/tools4watlas/articles/literature/literature.md):
 - [Loading and checking
   data](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.md):
 - [tools4watlas

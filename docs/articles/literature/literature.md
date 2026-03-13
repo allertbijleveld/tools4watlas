@@ -1,11 +1,4 @@
-# Literature
-
-**This bibliography contains all peer-reviewed publications and
-PhD-dissertations linked to WATLAS**
-
-The `.bib` file containing the full bibliography in `BibTeX` can be
-downloaded
-[here](https://github.com/allertbijleveld/tools4watlas/blob/master/vignettes/literature/literature.bib).
+# Research & Publications
 
 ## Introduction
 
@@ -80,7 +73,7 @@ individual differences in tidal and circadian foraging rhythms and
 highlight potential fruitful avenues for further studies **([Bulla et
 al., 2017](#ref-bulla2017))**.
 
-## WATLAS papers
+## WATLAS research
 
 After an intitial development starting in 2016, we first deployed WATLAS
 as a pilot study near Griend with 5 receivers in 2017. After its succes,
@@ -196,7 +189,22 @@ has been part of the dissertations of Eva Kok **([Kok,
 2022](#ref-ersoythesis))**, and Emma Penning **([Penning,
 2023](#ref-penningthesis))**.
 
+## Published Code
+
+Some code used in the analyses associated with these publications is
+publicly available on GitHub and collected in the [teamWATLAS
+repository](https://github.com/teamwatlas).
+
 ## Bibliography
+
+**This bibliography contains all peer-reviewed publications and
+PhD-dissertations linked to WATLAS**
+
+The `.bib` file containing the full bibliography in `BibTeX` can be
+downloaded
+[here](https://github.com/allertbijleveld/tools4watlas/blob/master/vignettes/literature/literature.bib).
+
+ 
 
 Beardsworth, C. E., Gobbens, E., Maarseveen, F. van, Denissen, B.,
 Dekinga, A., Nathan, R., Toledo, S., & Bijleveld, A. I. (2022).

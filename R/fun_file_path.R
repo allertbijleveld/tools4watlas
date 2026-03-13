@@ -121,5 +121,5 @@ atl_file_path <- function(data_type = c("watlas_teams",
     )
   )
 
-  return(path)
+  path
 }

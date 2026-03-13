@@ -60,7 +60,7 @@ navbar:
       - text: "tools4watlas logo"
         href: articles/package_development/package_logo.html
     literature:
-      text: Literature
+      text: Research & Publications
       href: articles/literature/literature.html
     
 reference:

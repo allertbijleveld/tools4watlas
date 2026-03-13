@@ -115,5 +115,5 @@ atl_bbox <- function(data,
   }
 
   # Return the adjusted bounding box
-  return(bbox)
+  bbox
 }
