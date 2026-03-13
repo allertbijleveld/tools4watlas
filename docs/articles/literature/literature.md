@@ -192,19 +192,15 @@ has been part of the dissertations of Eva Kok **([Kok,
 ## Published Code
 
 Some code used in the analyses associated with these publications is
-publicly available on GitHub and collected in the [teamWATLAS
+publicly available on GitHub and collected in the [WATLAS-team
 repository](https://github.com/teamwatlas).
 
 ## Bibliography
 
-**This bibliography contains all peer-reviewed publications and
-PhD-dissertations linked to WATLAS**
-
-The `.bib` file containing the full bibliography in `BibTeX` can be
-downloaded
+This bibliography contains all peer-reviewed publications and
+PhD-dissertations linked to WATLAS. The corresponding `BibTeX` file
+(`.bib`) can be downloaded
 [here](https://github.com/allertbijleveld/tools4watlas/blob/master/vignettes/literature/literature.bib).
-
- 
 
 Beardsworth, C. E., Gobbens, E., Maarseveen, F. van, Denissen, B.,
 Dekinga, A., Nathan, R., Toledo, S., & Bijleveld, A. I. (2022).

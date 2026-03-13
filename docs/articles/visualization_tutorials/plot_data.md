@@ -1,17 +1,17 @@
 # Plot data
 
-This article shows different ways on how to plot WATLAS data. In this
-example we use a simple basemap with the extend of the data, but any
-other type could be used too (see article: [Create a
+This article shows different ways of plotting WATLAS position data. In
+these examples, we use a simple basemap with the extend of the data, but
+any other type could be used too (see Article [Create a
 basemap](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/create_basemap.html)).
 
-It first presents some examples of how to plot data grouped by tag ID,
-then by species and then how to make single plots with different options
-to quickly check the data, and how to plot heatmaps of the data. These
-examples can be customized as desired and should jsut give a quick
-starting point.
+We first present some examples of plotting data grouped by tag ID, then
+by species, and then by individual. These individual plots allow quickly
+check the data. We end by whoing how to plot heatmaps of the position
+data. These examples give a starting point, and can be customized as
+desired.
 
-#### Load packages
+## Load packages
 
 ``` r
 # packages
@@ -21,12 +21,12 @@ library(viridis)
 library(scales)
 ```
 
-## Plot grouped by tag ID
+## Plot by tag ID
 
-Simply colour points and the path with tag ID. Add for example the
-number of tags as legend name if desired. When one needs individual
-consistent colours between plots, one can use `atl_tag_cols(data$tag)`
-to assign them (see second example).
+Here, we show how to plot movement data grouped and coloured by tag ID.
+The number of tags can, for example, be added to the legend if desired.
+When one needs consistent colours for individual tags between plots, one
+can use `atl_tag_cols(data$tag)` to assign them (see second example).
 
 ``` r
 # load example data
@@ -138,8 +138,9 @@ bm +
 ![Points and tracks on a simple basemap by tag ID with
 labels](plot_data_files/figure-html/unnamed-chunk-3-1.png)
 
-## Plot grouped by species
+## Plot by species
 
+Here, we show how to plot movement data grouped and coloured by species.
 `tools4watlas` includes specific species colours in the atl_spec_cols()
 function and species labels in the atl_spec_labs() function.
 
@@ -179,9 +180,14 @@ bm +
 ![Points and tracks of multiple species on a
 basemap](plot_data_files/figure-html/unnamed-chunk-4-1.png)
 
-## Plot single plots by tag ID
+## Plot single tag
 
-### Template for a customizable plot of one tag
+Here, we show how to plot movement data per individual tag ID.
+
+### Simple plot-template
+
+Here, we show a simple template for plotting an individual tag ID, which
+can be customized as desired.
 
 ``` r
 # load example data
@@ -208,27 +214,28 @@ bm +
 ![Points and tracks on a simple
 basemap](plot_data_files/figure-html/unnamed-chunk-5-1.png)
 
-### Simple preset plots to check the data
+### Quality inspection plots
 
 The
 [`atl_check_tag()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_check_tag.md)
-function can be used to quickly check the data from one tag. It provides
+function can be used to quickly check the data for one tag. It provides
 five different options for colouring the track:
 
 - `"datetime"`: Datetime along the track
 - `"nbs"`: Number of receiver (base) stations that contributed to the
-  localization
-- `"var"`: Error as maximal variance of varx and vary
+  position
+- `"var"`: Error as maximum of `varx` and `vary`
 - `"speed_in"`: Speed in m/s
-- `"gap"`: Gaps coloured by time and as point size
+- `"gap"`: Gaps coloured and scaled by duration
 
-The scale can be coloured with all options from
+By specifying the `scale_option`, tracks can be coloured differently
+using
 [`viridis`](https://search.r-project.org/CRAN/refmans/viridisLite/html/viridis.html)
-(default: `"A"`) by specifying the `scale_option`. The scale can also be
-transformed with `scale_trans` for example using `"log"` or `"sqrt"`.
-First and last point can be highlighted (`highlight_first` and
-`highlight_last`) or just a specific number of points from the beginning
-or end of the track can be selected (`first_n` or `last_n`).
+(defaults to `"A"`). The scale can also be transformed with
+`scale_trans`, for example, using `"log"` or `"sqrt"`. First and last
+point can be highlighted (`highlight_first` and `highlight_last`) or a
+specific number of positions from the beginning or end of the track
+(`first_n` or `last_n`).
 
 ``` r
 # path to csv with filtered data
@@ -299,10 +306,11 @@ atl_check_tag(data, option = "gap", scale_trans = "log")
 ![Plots of single tag to check
 data](plot_data_files/figure-html/unnamed-chunk-6-6.png)
 
-## Plot heatmaps
+## Heatmaps
 
-Here we round the data (e.g. to 200 m) and then plot the number of
-positions per location.
+Here, we provide examples of making heatmaps by rounding the tracking
+data (e.g. to 200 m) and then plotting the number of positions per
+location.
 
 ### All positions
 
@@ -341,10 +349,9 @@ bm +
 ![Heatmap of all
 positions](plot_data_files/figure-html/unnamed-chunk-7-1.png)
 
-### Positions by species
+### By species
 
-We group the data by species (or whatever group we desire) and then make
-a plot for each of those groups.
+Here, we plot data grouped by species, but this can be any group.
 
 ``` r
 # N by location and species

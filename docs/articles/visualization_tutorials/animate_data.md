@@ -1,16 +1,16 @@
 # Animate data
 
-This article gives a simple workflow on how to animate movement data. It
-works with any type of basemap and allows to adjust everything as
-wanted. It first shows how to animate data with a simple basemap and
-then how to do it with a bathymetry data basemap and the water level.
-The first two steps and the last are the same (load packages, prepare
-movement data, make animation).
+This article provides a workflow to animate movement data. It works with
+any type of basemap and is fully customizable. First, we show how to
+animate data with a simple basemap and then how to do it with a
+bathymetry data basemap and the water level. The first two steps and the
+last are the same (load packages, prepare movement data, make
+animation).
 
-Install `mapmate` from GitHub:
-`remotes::install_github("leonawicz/mapmate")`.
+To call `ffmpeg` from within `R`, it is necesarry to install `mapmate`
+from GitHub: `remotes::install_github("leonawicz/mapmate")`.
 
-##### Load packages
+### Load packages
 
 ``` r
 # packages
@@ -27,6 +27,8 @@ library(terra)
 library(tidyterra)
 library(sf)
 ```
+
+## Setup animation
 
 ### Prepare movement data
 
@@ -50,11 +52,10 @@ data <- atl_thin_data(
 )
 ```
 
-### Configuration of file paths and function arguments
+### Configure settings
 
-For more details see function descriptions of the used functions.
-Obviously more settings can be adjusted, but this should cover the main
-settings.
+For more details, see function descriptions of the functions. Obviously,
+more settings can be adjusted but here we cover the basics.
 
 ``` r
 # time steps and output path (atl_time_steps):
@@ -100,7 +101,7 @@ bathymetry_fp <- paste0(
 
 ### Create time steps
 
-Create time steps with a desired interval (e.g. 1 min), define the
+Create time steps with the desired interval (e.g. 1 min), define the
 folder path where the png’s are created, delete existing files.
 
 ``` r
@@ -117,7 +118,7 @@ ts <- atl_time_steps(
 )
 ```
 
-## Simple animation of movements
+## Create frames
 
 ### Check plot
 
@@ -159,9 +160,9 @@ basemap](animate_data_files/figure-html/unnamed-chunk-5-1.png)
 ### Loop to create png’s for each step
 
 Create a png for each step (check steps - that is how many png’s are
-created). Run first with an example step to check (e.g. `step <- 50`)
-outcome for one png. Depending on the number of png’s, run first on a
-subset to check if everything is as desired, once everything is fine,
+created). Run first with an example step to check the outcome for one
+png (e.g. `step <- 50`). Depending on the number of png’s, run first on
+a subset to check if everything is as desired, once everything is fine,
 run for all steps. A desired color scale can be simply added to `p`.
 
 In the subset step, the maximal tail length can be chosen (here, 6 h).
@@ -242,7 +243,7 @@ foreach(i = steps) %dofuture% {
 plan(sequential)
 ```
 
-## Animation of movements with water level
+## Create frames with tide
 
 ### Add tide and bathymetry data
 
@@ -444,7 +445,7 @@ foreach(i = steps) %dofuture% {
 plan(sequential)
 ```
 
-##### Monitor progress bar while files are created
+### Monitor progress bar while files are created
 
 We can use
 [`atl_progress_bar()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_progress_bar.md)
@@ -472,11 +473,12 @@ atl_progress_bar(
 )
 ```
 
-### Make a animation using `ffmpeg` via `mapmate`
+## Animate frames
 
-Adjust the frame rate (`rate`) as desired (depending on the time step
-interval). File is created in the same path, but this can also be
-changed as desired.
+We can use `ffmpeg` via `mapmate` to animate the frames saved as `.png`
+files. The frame rate (`rate`) can be adjusted as desired (depending on
+the time step interval). The output file is created in the same path,
+but this can also be changed as desired.
 
 ``` r
 # make animation

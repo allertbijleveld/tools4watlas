@@ -117,7 +117,7 @@ atl_check_res_patch(
 )
 ```
 
-### Inpect many tags and tides
+### Inspect many tags and tides
 
 To get a general overview, we can also loop through and plot all data by tag and tide, or for example a random sample of 100 tags and tides. The plots are saved in any directory (e.g. `./outputs/res_patch_check/`), which has to be created before running the code.
 

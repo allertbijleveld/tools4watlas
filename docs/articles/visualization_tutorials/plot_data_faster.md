@@ -1,28 +1,27 @@
 # Plot data faster
 
-Plotting in R can get really slow when using big data, like
-high-throughput WATLAS tracking data, which can consist \>50 million
-localizations in one season. There are two things to consider: the
-necessary content of the plot (practical side) and plotting performance
-(technical side).
+Plotting in R can get really slow down when using big data sets, like
+high-throughput WATLAS tracking data that have \>50 million positions in
+one season. There are two things to consider: 1) the necessary content
+of the plot (practical side) and 2) plotting performance (technical
+side).
 
 ##### The necessary content of the plot
 
 For what do you want to plot the data? A quick look or a publication?
 What do you want to see with the plot? An overview of all positions or a
-specific part of the track? Depending on your answers choose the
+specific part of the track? Depending on your answers, choose the
 smallest suitable dataset. For example, thinning the data (e.g. to one
 or 10-min intervals) can greatly reduce the number of localization to be
-plotted and therefore speed up plotting. When plotting a lot of data, it
-can be better to plot a heat map (which is the fastest way of plotting
-many localization) than many single points that just overlap and are
-anyway not seen ultimately.
+plotted and, therefore, speed-up plotting. When plotting a lot of data,
+it can be better to plot a heat map (which is the fastest way of
+plotting many localization) than many single positions that just overlap
+and are anyway not seen clearly.
 
 ##### Plotting performance
 
 One way to speed up plotting is to switch from the R standard
-`grDevices` to [`ragg`](https://ragg.r-lib.org/index.html), which
-provides graphic devices for R based on the AGG library and provides
+`grDevices` to [`ragg`](https://ragg.r-lib.org/index.html) that provides
 both [higher
 performance](https://ragg.r-lib.org/articles/ragg_performance.html) (up
 to 40% faster) and [higher
@@ -39,7 +38,7 @@ each option. Note that the run time at the end of each chunk should be
 seen as relative and should be faster when the code is not complied, but
 simply run.
 
-### Load packages and data
+## Load packages and data
 
 This vignette shows different ways on how to plot WATLAS data. Each
 chunk of code only requires this chunk with loading the data to be run
@@ -56,7 +55,7 @@ library(scales)
 library(viridis)
 ```
 
-## Create dummy tracking data and base map
+## Create dummy data and map
 
 Create dummy tracks of 300 individuals for 1000 steps (3000.000 points).
 
@@ -103,7 +102,7 @@ data <- rbindlist(lapply(1:n_individuals, function(id) {
 bm <- atl_create_bm(data, buffer = 3000)
 ```
 
-## Standard `ggplot2` with points and tracks
+## `ggplot2` standard
 
 ``` r
 # start time
@@ -130,9 +129,9 @@ tracks](plot_data_faster_files/figure-html/unnamed-chunk-3-1.png)
 round(Sys.time() - st, 2)
 ```
 
-    ## Time difference of 11.34 secs
+    ## Time difference of 14.28 secs
 
-## `ggplot2` with points as pch = “.” and tracks
+## `ggplot2` with points as pch = “.”
 
 ``` r
 # start time
@@ -159,9 +158,9 @@ tracks](plot_data_faster_files/figure-html/unnamed-chunk-4-1.png)
 round(Sys.time() - st, 2)
 ```
 
-    ## Time difference of 5.13 secs
+    ## Time difference of 7.17 secs
 
-## `ggplot2` with points as geom_scattermore() and tracks
+## `ggplot2` with points as geom_scattermore()
 
 ``` r
 # start time
@@ -188,9 +187,9 @@ tracks](plot_data_faster_files/figure-html/unnamed-chunk-5-1.png)
 round(Sys.time() - st, 2)
 ```
 
-    ## Time difference of 3 secs
+    ## Time difference of 4.27 secs
 
-## `ggplot2` summarized points in heat map
+## `ggplot2` heat map
 
 The larger the grid cell size, the faster.
 
@@ -229,7 +228,7 @@ map](plot_data_faster_files/figure-html/unnamed-chunk-6-1.png)
 round(Sys.time() - st, 2)
 ```
 
-    ## Time difference of 0.52 secs
+    ## Time difference of 0.77 secs
 
 ## Fast saving with `ragg`
 

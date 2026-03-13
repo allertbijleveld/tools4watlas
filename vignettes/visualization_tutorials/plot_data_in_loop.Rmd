@@ -17,9 +17,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-This article shows how to make and save plots in a loop and parallel loop using the package [`foreach`]() and [`doFuture`](). This is useful for example when checking the data by tag ID using `atl_check_tag()`.
+This article shows how to make and save plots in a loop using a single-core as well as with parallel computing using the package [`foreach`]() and [`doFuture`](). This is convenient for checking the quality of many tags by flicking though them.
 
-#### Load packages
+## Load packages
 
 ```{r}
 # packages
@@ -29,7 +29,7 @@ library(foreach)
 library(doFuture)
 ```
 
-## Plot and save data in loop by tag ID
+## Loop by tag ID
 
 Example of a simple loop by tag ID and using `atl_check_tag()`.
 
@@ -93,9 +93,9 @@ foreach(i = id) %do% {
 ```
 
 
-## Plot and save data in parallel loop by tag ID
+## Parallel loop by tag ID
 
-We can use the same structure, simply replacing `%do%` with `%dofuture%`, which is the key advantage of using `foreach.` The only additional step is setting up parallel processing with `registerDoFuture()` and `plan(multisession)`.
+For computing efficieny, we can use parallel computing. We use the same structure, but only replacing `%do%` with `%dofuture%`, which is the key advantage of using `foreach.` The only additional step is setting up parallel processing with `registerDoFuture()` and `plan(multisession)`.
 
 ```{r, eval = FALSE}
 # load example data

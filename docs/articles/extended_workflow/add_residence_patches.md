@@ -166,14 +166,14 @@ plan(sequential)
 head(data) |> knitr::kable(digits = 2)
 ```
 
-| species | posID | tag | time | datetime | x | y | tideID | patch |
-|:---|---:|:---|---:|:---|---:|---:|---:|---:|
-| redshank | 2 | 3027 | 1695438805 | 2023-09-23 03:13:25 | 650705.6 | 5902556 | 2023513 | 1 |
-| redshank | 3 | 3027 | 1695438808 | 2023-09-23 03:13:28 | 650705.6 | 5902556 | 2023513 | 1 |
-| redshank | 4 | 3027 | 1695439189 | 2023-09-23 03:19:49 | 650721.0 | 5902559 | 2023513 | 1 |
-| redshank | 5 | 3027 | 1695439192 | 2023-09-23 03:19:52 | 650721.1 | 5902559 | 2023513 | 1 |
-| redshank | 6 | 3027 | 1695439195 | 2023-09-23 03:19:55 | 650723.1 | 5902564 | 2023513 | 1 |
-| redshank | 7 | 3027 | 1695439198 | 2023-09-23 03:19:58 | 650723.1 | 5902564 | 2023513 | 1 |
+| species  | posID | tag  |       time | datetime            |        x |       y |  tideID | patch |
+|:---------|------:|:-----|-----------:|:--------------------|---------:|--------:|--------:|------:|
+| redshank |     2 | 3027 | 1695438805 | 2023-09-23 03:13:25 | 650705.6 | 5902556 | 2023513 |     1 |
+| redshank |     3 | 3027 | 1695438808 | 2023-09-23 03:13:28 | 650705.6 | 5902556 | 2023513 |     1 |
+| redshank |     4 | 3027 | 1695439189 | 2023-09-23 03:19:49 | 650721.0 | 5902559 | 2023513 |     1 |
+| redshank |     5 | 3027 | 1695439192 | 2023-09-23 03:19:52 | 650721.1 | 5902559 | 2023513 |     1 |
+| redshank |     6 | 3027 | 1695439195 | 2023-09-23 03:19:55 | 650723.1 | 5902564 | 2023513 |     1 |
+| redshank |     7 | 3027 | 1695439198 | 2023-09-23 03:19:58 | 650723.1 | 5902564 | 2023513 |     1 |
 
 ## Evaluate residence patch classification and parameters
 
@@ -210,7 +210,7 @@ atl_check_res_patch(
 ![Overview plot res patches one
 tide](add_residence_patches_files/figure-html/unnamed-chunk-3-1.png)
 
-### Inpect many tags and tides
+### Inspect many tags and tides
 
 To get a general overview, we can also loop through and plot all data by
 tag and tide, or for example a random sample of 100 tags and tides. The
@@ -276,37 +276,37 @@ data[data_summary, on = c("tag", "patch"), `:=`(
 head(data_summary) |> knitr::kable(digits = 2)
 ```
 
-| tag | patch | nfixes | x_mean | x_median | x_start | x_end | y_mean | y_median | y_start | y_end | time_mean | time_median | time_start | time_end | dist_in_patch | dist_bw_patch | time_bw_patch | disp_in_patch | duration |
-|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 3027 | 1 | 52 | 650705.5 | 650702.8 | 650705.6 | 650701.9 | 5902566 | 5902562 | 5902556 | 5902570 | 1695439841 | 1695439509 | 1695438805 | 1695442747 | 178.36 | NA | NA | 14.61 | 65.70 |
-| 3027 | 2 | 60 | 650776.6 | 650776.6 | 650778.7 | 650771.9 | 5902216 | 5902217 | 5902216 | 5902206 | 1695443135 | 1695443132 | 1695443041 | 1695443230 | 51.41 | 362.21 | 293.98 | 12.29 | 3.15 |
-| 3027 | 3 | 2456 | 650760.9 | 650762.0 | 650778.4 | 650699.8 | 5901722 | 5901737 | 5902014 | 5901490 | 1695447498 | 1695447344 | 1695443257 | 1695451884 | 1968.58 | 192.16 | 27.00 | 530.22 | 143.79 |
-| 3027 | 4 | 64 | 648364.2 | 648362.5 | 648360.7 | 648365.8 | 5901596 | 5901590 | 5901578 | 5901620 | 1695452281 | 1695452282 | 1695452178 | 1695452382 | 79.03 | 2340.88 | 293.98 | 42.01 | 3.40 |
-| 3027 | 5 | 41 | 648059.6 | 648058.4 | 648059.7 | 648058.4 | 5902193 | 5902192 | 5902184 | 5902204 | 1695452509 | 1695452511 | 1695452439 | 1695452577 | 48.94 | 641.75 | 57.00 | 19.69 | 2.30 |
-| 3027 | 6 | 316 | 647775.8 | 647776.4 | 647771.5 | 647775.4 | 5902555 | 5902555 | 5902560 | 5902546 | 1695453152 | 1695453155 | 1695452625 | 1695453663 | 452.32 | 456.97 | 48.00 | 13.69 | 17.30 |
+| tag  | patch | nfixes |   x_mean | x_median |  x_start |    x_end |  y_mean | y_median | y_start |   y_end |  time_mean | time_median | time_start |   time_end | dist_in_patch | dist_bw_patch | time_bw_patch | disp_in_patch | duration |
+|:-----|------:|-------:|---------:|---------:|---------:|---------:|--------:|---------:|--------:|--------:|-----------:|------------:|-----------:|-----------:|--------------:|--------------:|--------------:|--------------:|---------:|
+| 3027 |     1 |     52 | 650705.5 | 650702.8 | 650705.6 | 650701.9 | 5902566 |  5902562 | 5902556 | 5902570 | 1695439841 |  1695439509 | 1695438805 | 1695442747 |        178.36 |            NA |            NA |         14.61 |    65.70 |
+| 3027 |     2 |     60 | 650776.6 | 650776.6 | 650778.7 | 650771.9 | 5902216 |  5902217 | 5902216 | 5902206 | 1695443135 |  1695443132 | 1695443041 | 1695443230 |         51.41 |        362.21 |        293.98 |         12.29 |     3.15 |
+| 3027 |     3 |   2456 | 650760.9 | 650762.0 | 650778.4 | 650699.8 | 5901722 |  5901737 | 5902014 | 5901490 | 1695447498 |  1695447344 | 1695443257 | 1695451884 |       1968.58 |        192.16 |         27.00 |        530.22 |   143.79 |
+| 3027 |     4 |     64 | 648364.2 | 648362.5 | 648360.7 | 648365.8 | 5901596 |  5901590 | 5901578 | 5901620 | 1695452281 |  1695452282 | 1695452178 | 1695452382 |         79.03 |       2340.88 |        293.98 |         42.01 |     3.40 |
+| 3027 |     5 |     41 | 648059.6 | 648058.4 | 648059.7 | 648058.4 | 5902193 |  5902192 | 5902184 | 5902204 | 1695452509 |  1695452511 | 1695452439 | 1695452577 |         48.94 |        641.75 |         57.00 |         19.69 |     2.30 |
+| 3027 |     6 |    316 | 647775.8 | 647776.4 | 647771.5 | 647775.4 | 5902555 |  5902555 | 5902560 | 5902546 | 1695453152 |  1695453155 | 1695452625 | 1695453663 |        452.32 |        456.97 |         48.00 |         13.69 |    17.30 |
 
-| Column | Description |
-|----|----|
-| **tag** | 4 digit tag ID (character), i.e. last 4 digits of the full tag number |
-| **patch** | Patch ID |
-| **nfixes** | Number of fixes in the patch |
-| **x_mean** | Mean X-coordinate in meters (UTM 31 N) |
-| **x_median** | Median X-coordinate in meters (UTM 31 N) |
-| **x_start** | X-coordinate at the start of the residence patch (UTM 31 N) |
-| **x_end** | X-coordinate at the end of the residence patch (UTM 31 N) |
-| **y_mean** | Mean Y-coordinate in meters (UTM 31 N) |
-| **y_median** | Median Y-coordinate in meters (UTM 31 N) |
-| **y_start** | Y-coordinate at the start of the residence patch (UTM 31 N) |
-| **y_end** | Y-coordinate at the end of the residence patch (UTM 31 N) |
-| **time_mean** | Mean UNIX time (seconds) of the positions in the residence patch |
-| **time_median** | Median UNIX time (seconds) of the positions in the residence patch |
-| **time_start** | Start UNIX time (seconds) of the patch |
-| **time_end** | End UNIX time (seconds) of the patch |
+| Column            | Description                                                                  |
+|-------------------|------------------------------------------------------------------------------|
+| **tag**           | 4 digit tag ID (character), i.e. last 4 digits of the full tag number        |
+| **patch**         | Patch ID                                                                     |
+| **nfixes**        | Number of fixes in the patch                                                 |
+| **x_mean**        | Mean X-coordinate in meters (UTM 31 N)                                       |
+| **x_median**      | Median X-coordinate in meters (UTM 31 N)                                     |
+| **x_start**       | X-coordinate at the start of the residence patch (UTM 31 N)                  |
+| **x_end**         | X-coordinate at the end of the residence patch (UTM 31 N)                    |
+| **y_mean**        | Mean Y-coordinate in meters (UTM 31 N)                                       |
+| **y_median**      | Median Y-coordinate in meters (UTM 31 N)                                     |
+| **y_start**       | Y-coordinate at the start of the residence patch (UTM 31 N)                  |
+| **y_end**         | Y-coordinate at the end of the residence patch (UTM 31 N)                    |
+| **time_mean**     | Mean UNIX time (seconds) of the positions in the residence patch             |
+| **time_median**   | Median UNIX time (seconds) of the positions in the residence patch           |
+| **time_start**    | Start UNIX time (seconds) of the patch                                       |
+| **time_end**      | End UNIX time (seconds) of the patch                                         |
 | **dist_in_patch** | Total distance (in meters) travelled within the patch (cummulative distance) |
-| **dist_bw_patch** | Distance (in meters) between end of previous and start of current patch |
-| **time_bw_patch** | Time (in seconds) between end of previous and start of current patch |
-| **disp_in_patch** | Straight-line displacement (in meters) between start and end of the patch |
-| **duration** | Time duration (in seconds) between first and last position in patch |
+| **dist_bw_patch** | Distance (in meters) between end of previous and start of current patch      |
+| **time_bw_patch** | Time (in seconds) between end of previous and start of current patch         |
+| **disp_in_patch** | Straight-line displacement (in meters) between start and end of the patch    |
+| **duration**      | Time duration (in seconds) between first and last position in patch          |
 
 ## Plot the residence pathes
 

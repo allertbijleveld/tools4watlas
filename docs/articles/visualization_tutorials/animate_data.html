@@ -46,7 +46,7 @@
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
-    <li><a class="dropdown-item" href="../../articles/extended_workflow/add_residency_patches.html">Add residency patches</a></li>
+    <li><a class="dropdown-item" href="../../articles/extended_workflow/add_residence_patches.html">Add residence patches</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
     <li><a class="dropdown-item" href="../../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
@@ -62,7 +62,7 @@
     <li><a class="dropdown-item" href="../../articles/package_development/package_logo.html">tools4watlas logo</a></li>
   </ul>
 </li>
-<li class="nav-item"><a class="nav-link" href="../../articles/literature/literature.html">Literature</a></li>
+<li class="nav-item"><a class="nav-link" href="../../articles/literature/literature.html">Research &amp; Publications</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -90,17 +90,18 @@
 
     
     
-<p>This article gives a simple workflow on how to animate movement data.
-It works with any type of basemap and allows to adjust everything as
-wanted. It first shows how to animate data with a simple basemap and
-then how to do it with a bathymetry data basemap and the water level.
-The first two steps and the last are the same (load packages, prepare
-movement data, make animation).</p>
-<p>Install <code>mapmate</code> from GitHub:
+<p>This article provides a workflow to animate movement data. It works
+with any type of basemap and is fully customizable. First, we show how
+to animate data with a simple basemap and then how to do it with a
+bathymetry data basemap and the water level. The first two steps and the
+last are the same (load packages, prepare movement data, make
+animation).</p>
+<p>To call <code>ffmpeg</code> from within <code>R</code>, it is
+necesarry to install <code>mapmate</code> from GitHub:
 <code>remotes::install_github("leonawicz/mapmate")</code>.</p>
-<div class="section level5">
-<h5 id="load-packages">Load packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
-</h5>
+<div class="section level3">
+<h3 id="load-packages">Load packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
+</h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span>
@@ -116,6 +117,9 @@ movement data, make animation).</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dieghernan.github.io/tidyterra/" class="external-link">tidyterra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></code></pre></div>
 </div>
+<div class="section level2">
+<h2 id="setup-animation">Setup animation<a class="anchor" aria-label="anchor" href="#setup-animation"></a>
+</h2>
 <div class="section level3">
 <h3 id="prepare-movement-data">Prepare movement data<a class="anchor" aria-label="anchor" href="#prepare-movement-data"></a>
 </h3>
@@ -138,11 +142,11 @@ somewhat matching the time steps.</p>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="configuration-of-file-paths-and-function-arguments">Configuration of file paths and function arguments<a class="anchor" aria-label="anchor" href="#configuration-of-file-paths-and-function-arguments"></a>
+<h3 id="configure-settings">Configure settings<a class="anchor" aria-label="anchor" href="#configure-settings"></a>
 </h3>
-<p>For more details see function descriptions of the used functions.
-Obviously more settings can be adjusted, but this should cover the main
-settings.</p>
+<p>For more details, see function descriptions of the functions.
+Obviously, more settings can be adjusted but here we cover the
+basics.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># time steps and output path (atl_time_steps):</span></span>
 <span><span class="va">cfg_time_interval</span> <span class="op">&lt;-</span> <span class="st">"1 min"</span> <span class="co"># time interval for animation steps</span></span>
@@ -187,7 +191,7 @@ settings.</p>
 <div class="section level3">
 <h3 id="create-time-steps">Create time steps<a class="anchor" aria-label="anchor" href="#create-time-steps"></a>
 </h3>
-<p>Create time steps with a desired interval (e.g. 1 min), define the
+<p>Create time steps with the desired interval (e.g. 1 min), define the
 folder path where the png’s are created, delete existing files.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># delete existing files (if any)</span></span>
@@ -202,8 +206,9 @@ folder path where the png’s are created, delete existing files.</p>
 <span>  fps <span class="op">=</span> <span class="va">cfg_frame_rate</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
+</div>
 <div class="section level2">
-<h2 id="simple-animation-of-movements">Simple animation of movements<a class="anchor" aria-label="anchor" href="#simple-animation-of-movements"></a>
+<h2 id="create-frames">Create frames<a class="anchor" aria-label="anchor" href="#create-frames"></a>
 </h2>
 <div class="section level3">
 <h3 id="check-plot">Check plot<a class="anchor" aria-label="anchor" href="#check-plot"></a>
@@ -243,11 +248,11 @@ with saving png in the defined size).</p>
 <h3 id="loop-to-create-pngs-for-each-step">Loop to create png’s for each step<a class="anchor" aria-label="anchor" href="#loop-to-create-pngs-for-each-step"></a>
 </h3>
 <p>Create a png for each step (check steps - that is how many png’s are
-created). Run first with an example step to check
-(e.g. <code>step &lt;- 50</code>) outcome for one png. Depending on the
-number of png’s, run first on a subset to check if everything is as
-desired, once everything is fine, run for all steps. A desired color
-scale can be simply added to <code>p</code>.</p>
+created). Run first with an example step to check the outcome for one
+png (e.g. <code>step &lt;- 50</code>). Depending on the number of png’s,
+run first on a subset to check if everything is as desired, once
+everything is fine, run for all steps. A desired color scale can be
+simply added to <code>p</code>.</p>
 <p>In the subset step, the maximal tail length can be chosen (here, 6
 h). Then we use <code><a href="../../reference/atl_alpha_along.html">atl_alpha_along()</a></code> to create an fading alpha
 and <code><a href="../../reference/atl_size_along.html">atl_size_along()</a></code> to make a comet shape - adjust
@@ -323,7 +328,7 @@ Afterwards we add this path to the basemap and add the time stamp.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="animation-of-movements-with-water-level">Animation of movements with water level<a class="anchor" aria-label="anchor" href="#animation-of-movements-with-water-level"></a>
+<h2 id="create-frames-with-tide">Create frames with tide<a class="anchor" aria-label="anchor" href="#create-frames-with-tide"></a>
 </h2>
 <div class="section level3">
 <h3 id="add-tide-and-bathymetry-data">Add tide and bathymetry data<a class="anchor" aria-label="anchor" href="#add-tide-and-bathymetry-data"></a>
@@ -519,9 +524,10 @@ with saving png in the defined size).</p>
 <span></span>
 <span><span class="co"># close parallel workers</span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
-<div class="section level5">
-<h5 id="monitor-progress-bar-while-files-are-created">Monitor progress bar while files are created<a class="anchor" aria-label="anchor" href="#monitor-progress-bar-while-files-are-created"></a>
-</h5>
+</div>
+<div class="section level3">
+<h3 id="monitor-progress-bar-while-files-are-created">Monitor progress bar while files are created<a class="anchor" aria-label="anchor" href="#monitor-progress-bar-while-files-are-created"></a>
+</h3>
 <p>We can use <code><a href="../../reference/atl_progress_bar.html">atl_progress_bar()</a></code> to monitor the progress
 while the png’s are created in the background. This can’t be done in the
 same R session, since it is busy, but we can open a new additional R
@@ -544,13 +550,14 @@ that will be created - this is read automatically by
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
-<div class="section level3">
-<h3 id="make-a-animation-using-ffmpeg-via-mapmate">Make a animation using <code>ffmpeg</code> via
-<code>mapmate</code><a class="anchor" aria-label="anchor" href="#make-a-animation-using-ffmpeg-via-mapmate"></a>
-</h3>
-<p>Adjust the frame rate (<code>rate</code>) as desired (depending on
-the time step interval). File is created in the same path, but this can
-also be changed as desired.</p>
+<div class="section level2">
+<h2 id="animate-frames">Animate frames<a class="anchor" aria-label="anchor" href="#animate-frames"></a>
+</h2>
+<p>We can use <code>ffmpeg</code> via <code>mapmate</code> to animate
+the frames saved as <code>.png</code> files. The frame rate
+(<code>rate</code>) can be adjusted as desired (depending on the time
+step interval). The output file is created in the same path, but this
+can also be changed as desired.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># make animation</span></span>
 <span><span class="fu"><a href="https://leonawicz.github.io//reference/ffmpeg.html" class="external-link">ffmpeg</a></span><span class="op">(</span></span>
@@ -559,7 +566,6 @@ also be changed as desired.</p>
 <span>  output <span class="op">=</span> <span class="va">cfg_file_name</span>, rate <span class="op">=</span> <span class="va">cfg_frame_rate</span>,</span>
 <span>  details <span class="op">=</span> <span class="cn">TRUE</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

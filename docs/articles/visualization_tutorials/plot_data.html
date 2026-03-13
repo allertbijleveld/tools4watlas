@@ -46,7 +46,7 @@
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
-    <li><a class="dropdown-item" href="../../articles/extended_workflow/add_residency_patches.html">Add residency patches</a></li>
+    <li><a class="dropdown-item" href="../../articles/extended_workflow/add_residence_patches.html">Add residence patches</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
     <li><a class="dropdown-item" href="../../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
@@ -62,7 +62,7 @@
     <li><a class="dropdown-item" href="../../articles/package_development/package_logo.html">tools4watlas logo</a></li>
   </ul>
 </li>
-<li class="nav-item"><a class="nav-link" href="../../articles/literature/literature.html">Literature</a></li>
+<li class="nav-item"><a class="nav-link" href="../../articles/literature/literature.html">Research &amp; Publications</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -90,18 +90,18 @@
 
     
     
-<p>This article shows different ways on how to plot WATLAS data. In this
-example we use a simple basemap with the extend of the data, but any
-other type could be used too (see article: <a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/create_basemap.html">Create
+<p>This article shows different ways of plotting WATLAS position data.
+In these examples, we use a simple basemap with the extend of the data,
+but any other type could be used too (see Article <a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/create_basemap.html">Create
 a basemap</a>).</p>
-<p>It first presents some examples of how to plot data grouped by tag
-ID, then by species and then how to make single plots with different
-options to quickly check the data, and how to plot heatmaps of the data.
-These examples can be customized as desired and should jsut give a quick
-starting point.</p>
-<div class="section level4">
-<h4 id="load-packages">Load packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
-</h4>
+<p>We first present some examples of plotting data grouped by tag ID,
+then by species, and then by individual. These individual plots allow
+quickly check the data. We end by whoing how to plot heatmaps of the
+position data. These examples give a starting point, and can be
+customized as desired.</p>
+<div class="section level2">
+<h2 id="load-packages">Load packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span>
@@ -110,13 +110,13 @@ starting point.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org" class="external-link">scales</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="plot-grouped-by-tag-id">Plot grouped by tag ID<a class="anchor" aria-label="anchor" href="#plot-grouped-by-tag-id"></a>
+<h2 id="plot-by-tag-id">Plot by tag ID<a class="anchor" aria-label="anchor" href="#plot-by-tag-id"></a>
 </h2>
-<p>Simply colour points and the path with tag ID. Add for example the
-number of tags as legend name if desired. When one needs individual
-consistent colours between plots, one can use
-<code>atl_tag_cols(data$tag)</code> to assign them (see second
-example).</p>
+<p>Here, we show how to plot movement data grouped and coloured by tag
+ID. The number of tags can, for example, be added to the legend if
+desired. When one needs consistent colours for individual tags between
+plots, one can use <code>atl_tag_cols(data$tag)</code> to assign them
+(see second example).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load example data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
@@ -211,10 +211,11 @@ tag, such as metal rings, colour rings or name.</p>
 <p><img src="plot_data_files/figure-html/unnamed-chunk-3-1.png" class="r-plt" alt="Points and tracks on a simple basemap by tag ID with labels" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
-<h2 id="plot-grouped-by-species">Plot grouped by species<a class="anchor" aria-label="anchor" href="#plot-grouped-by-species"></a>
+<h2 id="plot-by-species">Plot by species<a class="anchor" aria-label="anchor" href="#plot-by-species"></a>
 </h2>
-<p><code>tools4watlas</code> includes specific species colours in the
-atl_spec_cols() function and species labels in the atl_spec_labs()
+<p>Here, we show how to plot movement data grouped and coloured by
+species. <code>tools4watlas</code> includes specific species colours in
+the atl_spec_cols() function and species labels in the atl_spec_labs()
 function.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load example data</span></span>
@@ -250,11 +251,14 @@ function.</p>
 <p><img src="plot_data_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="Points and tracks of multiple species on a basemap" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
-<h2 id="plot-single-plots-by-tag-id">Plot single plots by tag ID<a class="anchor" aria-label="anchor" href="#plot-single-plots-by-tag-id"></a>
+<h2 id="plot-single-tag">Plot single tag<a class="anchor" aria-label="anchor" href="#plot-single-tag"></a>
 </h2>
+<p>Here, we show how to plot movement data per individual tag ID.</p>
 <div class="section level3">
-<h3 id="template-for-a-customizable-plot-of-one-tag">Template for a customizable plot of one tag<a class="anchor" aria-label="anchor" href="#template-for-a-customizable-plot-of-one-tag"></a>
+<h3 id="simple-plot-template">Simple plot-template<a class="anchor" aria-label="anchor" href="#simple-plot-template"></a>
 </h3>
+<p>Here, we show a simple template for plotting an individual tag ID,
+which can be customized as desired.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load example data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
@@ -278,32 +282,34 @@ function.</p>
 <p><img src="plot_data_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" alt="Points and tracks on a simple basemap" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="simple-preset-plots-to-check-the-data">Simple preset plots to check the data<a class="anchor" aria-label="anchor" href="#simple-preset-plots-to-check-the-data"></a>
+<h3 id="quality-inspection-plots">Quality inspection plots<a class="anchor" aria-label="anchor" href="#quality-inspection-plots"></a>
 </h3>
 <p>The <code><a href="../../reference/atl_check_tag.html">atl_check_tag()</a></code> function can be used to quickly
-check the data from one tag. It provides five different options for
+check the data for one tag. It provides five different options for
 colouring the track:</p>
 <ul>
 <li>
 <code>"datetime"</code>: Datetime along the track</li>
 <li>
 <code>"nbs"</code>: Number of receiver (base) stations that
-contributed to the localization</li>
+contributed to the position</li>
 <li>
-<code>"var"</code>: Error as maximal variance of varx and vary</li>
+<code>"var"</code>: Error as maximum of <code>varx</code> and
+<code>vary</code>
+</li>
 <li>
 <code>"speed_in"</code>: Speed in m/s</li>
 <li>
-<code>"gap"</code>: Gaps coloured by time and as point size</li>
+<code>"gap"</code>: Gaps coloured and scaled by duration</li>
 </ul>
-<p>The scale can be coloured with all options from <a href="https://search.r-project.org/CRAN/refmans/viridisLite/html/viridis.html" class="external-link"><code>viridis</code></a>
-(default: <code>"A"</code>) by specifying the <code>scale_option</code>.
-The scale can also be transformed with <code>scale_trans</code> for
-example using <code>"log"</code> or <code>"sqrt"</code>. First and last
-point can be highlighted (<code>highlight_first</code> and
-<code>highlight_last</code>) or just a specific number of points from
-the beginning or end of the track can be selected (<code>first_n</code>
-or <code>last_n</code>).</p>
+<p>By specifying the <code>scale_option</code>, tracks can be coloured
+differently using <a href="https://search.r-project.org/CRAN/refmans/viridisLite/html/viridis.html" class="external-link"><code>viridis</code></a>
+(defaults to <code>"A"</code>). The scale can also be transformed with
+<code>scale_trans</code>, for example, using <code>"log"</code> or
+<code>"sqrt"</code>. First and last point can be highlighted
+(<code>highlight_first</code> and <code>highlight_last</code>) or a
+specific number of positions from the beginning or end of the track
+(<code>first_n</code> or <code>last_n</code>).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># path to csv with filtered data</span></span>
 <span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
@@ -352,10 +358,11 @@ or <code>last_n</code>).</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="plot-heatmaps">Plot heatmaps<a class="anchor" aria-label="anchor" href="#plot-heatmaps"></a>
+<h2 id="heatmaps">Heatmaps<a class="anchor" aria-label="anchor" href="#heatmaps"></a>
 </h2>
-<p>Here we round the data (e.g. to 200 m) and then plot the number of
-positions per location.</p>
+<p>Here, we provide examples of making heatmaps by rounding the tracking
+data (e.g. to 200 m) and then plotting the number of positions per
+location.</p>
 <div class="section level3">
 <h3 id="all-positions">All positions<a class="anchor" aria-label="anchor" href="#all-positions"></a>
 </h3>
@@ -391,10 +398,9 @@ positions per location.</p>
 <p><img src="plot_data_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="Heatmap of all positions" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="positions-by-species">Positions by species<a class="anchor" aria-label="anchor" href="#positions-by-species"></a>
+<h3 id="by-species">By species<a class="anchor" aria-label="anchor" href="#by-species"></a>
 </h3>
-<p>We group the data by species (or whatever group we desire) and then
-make a plot for each of those groups.</p>
+<p>Here, we plot data grouped by species, but this can be any group.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># N by location and species</span></span>
 <span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span>, <span class="va">.N</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x_round"</span>, <span class="st">"y_round"</span>, <span class="st">"species"</span><span class="op">)</span><span class="op">]</span></span>

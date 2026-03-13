@@ -46,7 +46,7 @@
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
-    <li><a class="dropdown-item" href="../../articles/extended_workflow/add_residency_patches.html">Add residency patches</a></li>
+    <li><a class="dropdown-item" href="../../articles/extended_workflow/add_residence_patches.html">Add residence patches</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
     <li><a class="dropdown-item" href="../../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
@@ -62,7 +62,7 @@
     <li><a class="dropdown-item" href="../../articles/package_development/package_logo.html">tools4watlas logo</a></li>
   </ul>
 </li>
-<li class="nav-item"><a class="nav-link" href="../../articles/literature/literature.html">Literature</a></li>
+<li class="nav-item"><a class="nav-link" href="../../articles/literature/literature.html">Research &amp; Publications</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -90,12 +90,12 @@
 
     
     
-<p>This article shows how to make and save plots in a loop and parallel
-loop using the package <a href=""><code>foreach</code></a> and <a href=""><code>doFuture</code></a>. This is useful for example when
-checking the data by tag ID using <code><a href="../../reference/atl_check_tag.html">atl_check_tag()</a></code>.</p>
-<div class="section level4">
-<h4 id="load-packages">Load packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
-</h4>
+<p>This article shows how to make and save plots in a loop using a
+single-core as well as with parallel computing using the package <a href=""><code>foreach</code></a> and <a href=""><code>doFuture</code></a>. This is convenient for checking the
+quality of many tags by flicking though them.</p>
+<div class="section level2">
+<h2 id="load-packages">Load packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span>
@@ -104,7 +104,7 @@ checking the data by tag ID using <code><a href="../../reference/atl_check_tag.h
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://doFuture.futureverse.org" class="external-link">doFuture</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="plot-and-save-data-in-loop-by-tag-id">Plot and save data in loop by tag ID<a class="anchor" aria-label="anchor" href="#plot-and-save-data-in-loop-by-tag-id"></a>
+<h2 id="loop-by-tag-id">Loop by tag ID<a class="anchor" aria-label="anchor" href="#loop-by-tag-id"></a>
 </h2>
 <p>Example of a simple loop by tag ID and using
 <code><a href="../../reference/atl_check_tag.html">atl_check_tag()</a></code>.</p>
@@ -165,10 +165,11 @@ with <code>ragg</code>.</p>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="plot-and-save-data-in-parallel-loop-by-tag-id">Plot and save data in parallel loop by tag ID<a class="anchor" aria-label="anchor" href="#plot-and-save-data-in-parallel-loop-by-tag-id"></a>
+<h2 id="parallel-loop-by-tag-id">Parallel loop by tag ID<a class="anchor" aria-label="anchor" href="#parallel-loop-by-tag-id"></a>
 </h2>
-<p>We can use the same structure, simply replacing <code>%do%</code>
-with <code>%dofuture%</code>, which is the key advantage of using
+<p>For computing efficieny, we can use parallel computing. We use the
+same structure, but only replacing <code>%do%</code> with
+<code>%dofuture%</code>, which is the key advantage of using
 <code>foreach.</code> The only additional step is setting up parallel
 processing with <code><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture()</a></code> and
 <code>plan(multisession)</code>.</p>

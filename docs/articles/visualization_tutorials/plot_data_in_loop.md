@@ -1,14 +1,14 @@
 # Plot data in loop
 
-This article shows how to make and save plots in a loop and parallel
-loop using the package
+This article shows how to make and save plots in a loop using a
+single-core as well as with parallel computing using the package
 [`foreach`](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/)
 and
 [`doFuture`](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/).
-This is useful for example when checking the data by tag ID using
-[`atl_check_tag()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_check_tag.md).
+This is convenient for checking the quality of many tags by flicking
+though them.
 
-#### Load packages
+## Load packages
 
 ``` r
 # packages
@@ -18,7 +18,7 @@ library(foreach)
 library(doFuture)
 ```
 
-## Plot and save data in loop by tag ID
+## Loop by tag ID
 
 Example of a simple loop by tag ID and using
 [`atl_check_tag()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_check_tag.md).
@@ -82,11 +82,12 @@ foreach(i = id) %do% {
 }
 ```
 
-## Plot and save data in parallel loop by tag ID
+## Parallel loop by tag ID
 
-We can use the same structure, simply replacing `%do%` with
-`%dofuture%`, which is the key advantage of using `foreach.` The only
-additional step is setting up parallel processing with
+For computing efficieny, we can use parallel computing. We use the same
+structure, but only replacing `%do%` with `%dofuture%`, which is the key
+advantage of using `foreach.` The only additional step is setting up
+parallel processing with
 [`registerDoFuture()`](https://doFuture.futureverse.org/reference/registerDoFuture.html)
 and `plan(multisession)`.
 

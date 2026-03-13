@@ -1,16 +1,16 @@
 # Plot data interactively
 
-This article shows different ways on how to plot WATLAS data
-interactively using `plotly` and `mapview`. This is useful when manually
-checking specific data. `plotly` allows for a quick interactive overview
-of the data from any `ggplot2` and `mapview` is specifically designed
-for spatial data and provides more options for exploration
+This article shows different ways to plot WATLAS-data interactively
+using `plotly` and `mapview`. This is useful when manually checking
+specific data. `plotly` allows for a quick interactive overview of the
+data from any `ggplot2`, and `mapview` is specifically designed for
+spatial data and provides more options for exploration
 (e.g. specification of what should be shown and different base maps).
 Check the specific tutorials for more details the
 [plotly](https://plotly.com/r/getting-started/) or
 [mapview](https://r-spatial.github.io/mapview/index.html).
 
-#### Load packages
+## Load packages
 
 ``` r
 # packages
@@ -20,10 +20,10 @@ library(plotly)
 library(mapview)
 ```
 
-## Interactive plot using `plotly`
+## Using `plotly`
 
-Note that the scale bar is not supported at the moment and `plotly` will
-give a warning if the base map contains a scale bar.
+Note that the scale bar is not supported at the moment, and `plotly`
+will give a warning if the base map contains a scale bar.
 
 ``` r
 # load example data
@@ -49,14 +49,14 @@ p <- bm +
 ggplotly(p, tooltip = c("tag", "x", "y"))
 ```
 
-## Interactive plot using `mapview`
+## Using `mapview`
 
-Note that one can change the base map by clicking in the layer symbol,
-to for example a satellite image. Each chunk of code only requires this
-chunk with loading the data to be run before and is otherwise
+Note that one can change the base map to, for example, a satellite
+image, by clicking in the layer symbol. Each chunk of code only requires
+the first chunk with loading the data to be run before and is otherwise
 independent.
 
-### Interactive plot for one individual
+### One individual
 
 Subset the individual of choice and transform it into a `sf` with the
 additional columns of your choice (can be seen when clicking on the
@@ -87,7 +87,7 @@ mapview(d_sf_lines, zcol = "speed_in", legend = FALSE) +
   mapview(d_sf, zcol = "speed_in")
 ```
 
-### Interactive plot for multiple individuals
+### Multiple individuals
 
 If one wants to plot a lot of data, it is recommended to thin the data
 first.
@@ -119,7 +119,7 @@ mapview(d_sf_lines, zcol = "tag", legend = FALSE) +
   mapview(d_sf, zcol = "tag")
 ```
 
-### Interactive plot for multiple species
+### Multiple species
 
 ``` r
 # load example data from one tide

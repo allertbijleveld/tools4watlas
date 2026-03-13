@@ -91,15 +91,12 @@ With the climiate crisis, extreme wind speeds are predicted to occur more freque
 The pre-WATLAS insights were also published within the dissertations of Thomas Oudman **[@oudmanthesis]** and Allert Bijleveld **[@bijleveldthesis]**. so far, WATLAS has been part of the dissertations of Eva Kok **[@kokthesis]**, Selin Erosy **[@ersoythesis]**, and Emma Penning **[@penningthesis]**.
 
 ## Published Code
-Some code used in the analyses associated with these publications is publicly available on GitHub and collected in the [teamWATLAS repository](https://github.com/teamwatlas).
+
+Some code used in the analyses associated with these publications is publicly available on GitHub and collected in the [WATLAS-team repository](https://github.com/teamwatlas).
 
 ## Bibliography
 
-**This bibliography contains all peer-reviewed publications and PhD-dissertations linked to WATLAS**
-
-The `.bib` file containing the full bibliography in `BibTeX` can be downloaded [here](https://github.com/allertbijleveld/tools4watlas/blob/master/vignettes/literature/literature.bib).
-
-<p>&nbsp;</p>
+This bibliography contains all peer-reviewed publications and PhD-dissertations linked to WATLAS. The corresponding `BibTeX` file (`.bib`) can be downloaded [here](https://github.com/allertbijleveld/tools4watlas/blob/master/vignettes/literature/literature.bib).
 
 ---
 nocite: '@*'

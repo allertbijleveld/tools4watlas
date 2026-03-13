@@ -7,16 +7,19 @@ If you want to contribute to `tools4watlas`
 the repository on GitHub and then submit a [pull
 request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
 Besides clear bug fixes, it is best to discuss potential changes or
-additions with [Allert Bijleveld](mailto:allert.bijleveld@nioz.nl).
+additions with [Allert Bijleveld](mailto:allert.bijleveld@nioz.nl)
+first.
 
 Before submitting a pull request to the original “upstream” repository,
 please make sure the code passes all R CMD checks
 ([`devtools::check()`](https://devtools.r-lib.org/reference/check.html))
 and follow the procedure described below.
 
-For more details see [R Packages by Hadley Wickham and Jennifer
-Bryan](https://r-pkgs.org/) and read the documentation of the used
-packages.
+For more details see the book [R Packages](https://r-pkgs.org/) by
+Hadley Wickham and Jennifer Bryan, and read the documentation of the
+packages we use (see section [Required
+packages](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_maintenance.html#required-packages)
+below).
 
 ## Working on `tools4watlas`
 
@@ -97,7 +100,7 @@ covr::package_coverage()
 
 ### Vignettes and articles
 
-Vignettes and articles are both types of documentation of an R packaged.
+Vignettes and articles are both types of documentation of an R package.
 The difference is that vignettes are included in the package (always
 checked with
 [`devtools::check()`](https://devtools.r-lib.org/reference/check.html)

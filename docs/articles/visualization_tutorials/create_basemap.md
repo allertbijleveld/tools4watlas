@@ -1,13 +1,14 @@
 # Create a basemap
 
-This article shows how to make different basemaps to plot the movement
-data on. Here we present three options: A simple basemap using polygons
-provided with the package (see also article: [Basemap
+This article shows how to make different basemaps for plotting movement
+data. We present three options for creating a basemap using: 1) polygons
+delineating areas of mudflat, water and land provided within the package
+(see also the Article [Basemap
 data](https://allertbijleveld.github.io/tools4watlas/articles/package_development/basemap_data.html)),
-a simple basemap based on bathymetry data and flexible approach using
-the package `OpenStreetMap` (e.g. to plot on a satellite image).
+2) bathymetry data, 3) backgrounds from the package `maptiles`, and 4)
+the package `OpenStreetMap`.
 
-#### Load packages
+## Load packages
 
 ``` r
 # packages
@@ -15,7 +16,7 @@ library(tools4watlas)
 library(ggplot2)
 ```
 
-## Using `ggplot2` and a basemap layer from `tools4watlas`
+## Using polygons
 
 One can create a simple basemaps of the study area by using the function
 [`atl_create_bm()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_create_bm.md).
@@ -28,12 +29,32 @@ be chosen (default is “16:9”). The resulting map is always in EPSG:32631
 (WGS 84 / UTM zone 31N), but the data can be provided in other
 projections, which then needs to be specified as `projection`.
 
+### Basemap with extent of movement data
+
+Instead of using a priori coordinates to construct a basemap, one can
+also use the movement data to set the extent of the map.
+
+``` r
+# load example data
+data <- data_example
+
+# create basemap
+bm <- atl_create_bm(data, buffer = 1000)
+
+# plot
+bm +
+  geom_point(data = data, aes(x, y), alpha = 0.1, color = "darkorange")
+```
+
+![Points and tracks on
+basemap](create_basemap_files/figure-html/unnamed-chunk-2-1.png)
+
 ### Basemap independent of movement data
 
 This can be useful when one wants to zoom into a specific area of the
-plot or has an area of interest, but the movement data also go out of
-this range. If no data are provided the function creates a map around
-Griend (our main study site) with a specified buffer.
+plot or has an area of interest, but the movement data can extent beyond
+this specifieds range. If no data are provided, the function defaults to
+a map around Griend (our main study site) with a specified buffer.
 
 ``` r
 # create basemap
@@ -44,11 +65,11 @@ bm
 ```
 
 ![Basemap around
-Griend](create_basemap_files/figure-html/unnamed-chunk-2-1.png)
+Griend](create_basemap_files/figure-html/unnamed-chunk-3-1.png)
 
 Alternatively, one can provide a table with one or multiple locations,
-which will then be used to buffer the map. This can for example be a
-location in EPSG:4326 (WGS 84 in degrees) that can be exacted from
+which will then be used to make the map. This can for example be a
+location in EPSG:4326 (WGS 84 in degrees) that can be extracted from
 [Google
 Maps](https://www.google.com/maps/@53.1892078,5.5670405,68619m/data=!3m1!1e3?entry=ttu&g_ep=EgoyMDI1MDIwNS4xIKXMDSoASAFQAw%3D%3D)
 by a right click on a specific location. Here I choose a point a bit
@@ -66,7 +87,7 @@ bm
 ```
 
 ![Basemap around
-Griend](create_basemap_files/figure-html/unnamed-chunk-3-1.png)
+Griend](create_basemap_files/figure-html/unnamed-chunk-4-1.png)
 
 Instead of using one central point and a buffer we can also provide two
 points (corners of a rectangle) to specify the basemap. When we do this,
@@ -92,27 +113,11 @@ bm
 ```
 
 ![Basemap around
-Griend](create_basemap_files/figure-html/unnamed-chunk-4-1.png)
+Griend](create_basemap_files/figure-html/unnamed-chunk-5-1.png)
 
-### Basemap with extend of movement data
+## Using bathymetry data
 
-``` r
-# load example data
-data <- data_example
-
-# create basemap
-bm <- atl_create_bm(data, buffer = 1000)
-
-# plot
-bm +
-  geom_point(data = data, aes(x, y), alpha = 0.1, color = "darkorange")
-```
-
-![Points and tracks on
-basemap](create_basemap_files/figure-html/unnamed-chunk-5-1.png)
-
-## Basemap with bathymetry data
-
+Here, we use a raster file with bathymetry to construct a basemap.
 Bathymetry data can be found in the “Birds, fish ’n chips” SharePoint
 folder: `Documents/data/GIS/rasters/`. To run the script set the file
 path (`fp`) to the local copy of the folder on your computer. The data
@@ -142,9 +147,9 @@ bm
 map](create_basemap_files/figure-html/unnamed-chunk-6-1.png)
 
 We can also add some shading (`shade = TRUE`) to the bathymetry data to
-highlight the water depth better. Note that calculating the shade can
-take a while, especially for large maps. So, only use this option for
-polished maps.
+highlight the geomorphological structures better. Note that calculating
+shading can take a while, especially for large maps. We remommend using
+this option only for polished maps.
 
 ``` r
 # additional packages
@@ -160,7 +165,11 @@ bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
 bm <- atl_create_bm(
   buffer = 5000, raster_data = bat, option = "bathymetry", shade = TRUE
 )
+```
 
+    ## |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          
+
+``` r
 # plot
 bm
 ```
@@ -168,7 +177,7 @@ bm
 ![Bathymetry map with
 shade](create_basemap_files/figure-html/unnamed-chunk-7-1.png)
 
-## Basemap based on R package `maptiles`
+## Using `maptiles`
 
 The package `maptiles` provides an easy way to create basemaps from
 different tile providers (e.g., OpenStreetMap, Esri satellite images,
@@ -180,17 +189,23 @@ movement data or specified bounding boxes and otherwise works like
 It is best to use the standard EPSG:32631 (WGS 84 / UTM zone 31N) to
 create a bounding box (since this means the data don’t need to be
 transformed internally), but other projections also work. The output
-maps are however always in EPSG:4326, so movement data need to be
+maps are, however, always in EPSG:4326, so movement data need to be
 transformed to be added to the plot.
 [`atl_transform_dt()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_transform_dt.md)
-can be used to add transformed coordinates to the data table.
+can be used to add transformed positions to the data table.
+
+### Use satellite map
 
 ``` r
-# example with satellite map and buffer around Griend
+# satellite map and buffer around Griend
 bm <- atl_create_bm_tiles(
   buffer = 15000, option = "Esri.WorldImagery", zoom = 12
 )
+```
 
+    ## |---------|---------|---------|---------|=========================================                                          
+
+``` r
 # plot
 bm
 ```
@@ -199,7 +214,7 @@ bm
 maptiles](create_basemap_files/figure-html/unnamed-chunk-8-1.png)
 
 ``` r
-# example with bbox from data and movement data
+# example with bbox and adding movement data
 data <- data_example
 
 # add transformed coordinates in projection of the base map (EPSG:4326)
@@ -222,25 +237,21 @@ bm +
 ![Static map with satellite image using
 maptiles](create_basemap_files/figure-html/unnamed-chunk-8-2.png)
 
-## Basemap with R package `OpenStreetMap`
+## Using `OpenStreetMap`
 
-Provides a range of different basemap options. For this we first have to
-transform the data to WGS 84 to extract the basemap with the bounding
-box and then transform our data to a Mercator projection to plot the
-data on top of the map.
+A range of basemap options are provided by `OpenStreetMap`. First, we
+have to transform the data to WGS 84 to extract the basemap with the
+bounding box, and then transform our data to a Mercator projection to
+plot the data on top of the map.
 
-Unfortunately, sometimes the `type = "bing"` (satellite image) does not
-work.
+Unfortunately, the `type = "bing"` (satellite image) is unstable and
+does not always work.
 
 ``` r
 # additional packages
 library(OpenStreetMap)
 library(sf)
-```
 
-    ## Warning: package 'sf' was built under R version 4.5.2
-
-``` r
 # load example data
 data <- data_example
 
@@ -285,11 +296,12 @@ bm +
 ![Static map with satellite
 image](create_basemap_files/figure-html/unnamed-chunk-9-1.png)
 
-## Additional features
+## Adding features to a map
 
-How to add a WATLAS logo or receivers to a base map.
+Here, we show how to add additional features, like the WATLAS logo or
+receivers, to a map.
 
-### Add WATLAS logo to a basemap
+### Add WATLAS logo
 
 ``` r
 # additional packages
@@ -323,7 +335,7 @@ bm +
 ![basemap with
 logo](create_basemap_files/figure-html/unnamed-chunk-10-1.png)
 
-### Add WATLAS receivers to a basemap
+### Add WATLAS receivers
 
 Receiver data are managed by Allert. They are located in the “WATLAS”
 SharePoint folder: `Documents/data/`. Either specify the path to your
