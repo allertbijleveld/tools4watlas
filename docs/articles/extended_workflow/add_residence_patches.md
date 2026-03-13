@@ -361,6 +361,51 @@ bm +
 ![residence patches by duration in
 patch](add_residence_patches_files/figure-html/unnamed-chunk-7-1.png)
 
+In the third example, we will calculate polygons around the residence
+patches and plot them
+
+``` r
+# make patch character for plotting
+data_subset[, patch := as.character(patch)]
+
+# create polygons around residence patches
+d_sf <- atl_as_sf(
+  data_subset,
+  additional_cols = "patch",
+  option = "res_patches", buffer = 75 / 2
+)
+
+# geom_sf overwrites the coordinate system, so we need to set the limits again
+bbox <- atl_bbox(data_subset, buffer = 500)
+
+# plot polygons around residence patches
+bm +
+  # add patch polygons
+  geom_sf(data = d_sf, aes(fill = patch), alpha = 0.2) +
+  # add track and points
+    geom_path(
+      data = data_subset, aes(x, y),
+      linewidth = 0.5, alpha = 0.5
+    ) +
+    geom_point(
+      data = data_subset[is.na(patch)], aes(x, y),
+      size = 0.5, alpha = 0.5, color = "grey20",
+      show.legend = FALSE
+    ) +
+    geom_point(
+      data = data_subset[!is.na(patch)], aes(x, y, color = patch),
+      size = 0.5, show.legend = FALSE
+    ) +
+  # set extend again (overwritten by geom_sf)
+  coord_sf(
+    xlim = c(bbox["xmin"], bbox["xmax"]),
+    ylim = c(bbox["ymin"], bbox["ymax"]), expand = FALSE
+  )
+```
+
+![residence patches by duration in
+patch](add_residence_patches_files/figure-html/unnamed-chunk-8-1.png)
+
 ### Plot by species
 
 Similarly, we can plot the residence patches by species. For this, we
@@ -391,4 +436,4 @@ bm +
 ```
 
 ![residence patches colored by
-species](add_residence_patches_files/figure-html/unnamed-chunk-8-1.png)
+species](add_residence_patches_files/figure-html/unnamed-chunk-9-1.png)
