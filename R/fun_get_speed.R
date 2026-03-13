@@ -89,5 +89,5 @@ atl_get_speed <- function(data,
   # remove unwanted columns
   data[, c("distance", "time_diff") := NULL]
 
-  return(data)
+  data
 }

@@ -33,7 +33,7 @@ Note that without cleaning the data or having short intervals (e.g. 3 sec), posi
 **Parameter overview:**
 
    - **`max_speed`:** A numeric value specifying the maximum speed (m/s) between two subsequent positions that would be considered non-transitory.
-   - **`lim_spat_indep`:** A numeric value specifying the maximum distance (m) between subsequent residence patches at which them to be considered independent. In combination with `lim_time_indep`, this parameter avoids making a new proto-patch from gaps in the data when the bird was actually still at the same location.
+   - **`lim_spat_indep`:** A numeric value specifying the maximum distance (m) between subsequent residence patches for them to be considered independent. In combination with `lim_time_indep`, this parameter avoids making a new proto-patch from gaps in the data when the bird was actually still at the same location.
    - **`lim_time_indep`:** A numeric value specifying the time difference (min) between two subsequent residence patches for them to be considered independent. In combination with `lim_spat_indep`, this parameter can prevent the creation new proto-patches when there are large gaps in the data. For example, at the roost site a bird might not move for a long time at a location with poor coverage by receivers. If the bird then moves away and sends data from the same position, we can assume that all missed positions were also at this place.
    - **`min_fixes`:** The minimum number of positions for proto-patches. To make sure that residence patches have at least a few positions.
    - **`min_duration`:** The minimum duration (s) for classifying residence patches. With a high-sampling interval (e.g. 1 s), short residence patches can be created, which are not biological relevant.
@@ -107,13 +107,13 @@ The function `atl_check_res_patch()` can be used to evaluate the residence patch
 
 ### Inspect one tag and tide
 
-We can select one tag and tide to plot. Additionally, we need to specify the offset for the tidal data we use (e.g. 30 min for West-Terschelling) and a buffer (in m) around the residence patch data to create the polygon. This buffer should best be identical to `lim_spat_indep`. 
+We can select one tag and tide to plot. Additionally, we need to specify the offset for the tidal data we use (e.g. 30 min for West-Terschelling) and a buffer (in m) around the residence patch data to create the polygon. This buffer should be set to half of `lim_spat_indep` (maximum distance between subsequent residence patches at which they will be considered independent), ensuring that the polygons around residence patches correspond to the spatial distance threshold used to merge residence patches. 
 
 ```{r, fig.align = "center", fig.alt = "Overview plot res patches one tide", fig.width = 10, fig.height = 6}
 atl_check_res_patch(
   data[tag == "3038"], tide_data = tidal_pattern,
   tide = "2023513", offset = 30,
-  buffer_res_patches = 75
+  buffer_res_patches = 75 / 2
 )
 ```
 
@@ -241,6 +241,48 @@ bm +
   ) +
   scale_color_viridis()
 ```
+
+In the third example, we will calculate polygons around the residence patches and plot them
+```{r, fig.alt = "residence patches by duration in patch"}
+# make patch character for plotting
+data_subset[, patch := as.character(patch)]
+
+# create polygons around residence patches
+d_sf <- atl_as_sf(
+  data_subset,
+  additional_cols = "patch",
+  option = "res_patches", buffer = 75 / 2
+)
+
+# geom_sf overwrites the coordinate system, so we need to set the limits again
+bbox <- atl_bbox(data_subset, buffer = 500)
+
+# plot polygons around residence patches
+bm +
+  # add patch polygons
+  geom_sf(data = d_sf, aes(fill = patch), alpha = 0.2) +
+  # add track and points
+    geom_path(
+      data = data_subset, aes(x, y),
+      linewidth = 0.5, alpha = 0.5
+    ) +
+    geom_point(
+      data = data_subset[is.na(patch)], aes(x, y),
+      size = 0.5, alpha = 0.5, color = "grey20",
+      show.legend = FALSE
+    ) +
+    geom_point(
+      data = data_subset[!is.na(patch)], aes(x, y, color = patch),
+      size = 0.5, show.legend = FALSE
+    ) +
+  # set extend again (overwritten by geom_sf)
+  coord_sf(
+    xlim = c(bbox["xmin"], bbox["xmax"]),
+    ylim = c(bbox["ymin"], bbox["ymax"]), expand = FALSE
+  )
+
+```
+
 
 ### Plot by species
 

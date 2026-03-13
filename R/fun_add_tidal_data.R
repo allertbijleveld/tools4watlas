@@ -156,5 +156,5 @@ atl_add_tidal_data <- function(data,
   tide_data_highres[, dateTime := dateTime - offset * 60]
 
   # export
-  return(temp_data)
+  temp_data
 }

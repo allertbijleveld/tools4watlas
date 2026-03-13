@@ -82,7 +82,7 @@ atl_within_polygon <- function(data,
   )
 
   # return rows
-  return(rows[poly_intersections])
+  rows[poly_intersections]
 }
 
 # ends here

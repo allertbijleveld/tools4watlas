@@ -69,5 +69,5 @@ atl_transform_dt <- function(data,
     setattr(data, "crs", to)
   }
 
-  return(data)
+  data
 }

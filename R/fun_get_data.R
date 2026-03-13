@@ -163,10 +163,10 @@ atl_get_data <- function(tag,
     # create posID
     tmp_data[, posID := seq_len(.N), by = tag]
 
-    return(tmp_data[, c(
+    tmp_data[, c(
       "posID", "tag", "time", "datetime", "x", "y",
       "nbs", "varx", "vary", "covxy"
-    )])
+    )]
   } else {
     warning(paste0("No data available for tag ",
                    stringr::str_pad(
@@ -176,16 +176,17 @@ atl_get_data <- function(tag,
                    " in this time period.\n"))
 
     # return empty data.table with same columns
-    return(tmp_data = data.table(posID = as.integer(),
-                                 tag = as.character(),
-                                 time = as.numeric(),
-                                 datetime = as.POSIXct(NA),
-                                 x = as.numeric(),
-                                 y = as.numeric(),
-                                 nbs = as.integer(),
-                                 varx = as.numeric(),
-                                 vary = as.numeric(),
-                                 covxy = as.numeric())
+    tmp_data <- data.table(
+      posID = as.integer(),
+      tag = as.character(),
+      time = as.numeric(),
+      datetime = as.POSIXct(NA),
+      x = as.numeric(),
+      y = as.numeric(),
+      nbs = as.integer(),
+      varx = as.numeric(),
+      vary = as.numeric(),
+      covxy = as.numeric()
     )
   }
 }

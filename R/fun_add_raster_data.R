@@ -80,5 +80,5 @@ atl_add_raster_data <- function(data = NULL,
     data[, (new_name) := data_extract[, get(var_name)] * change_unit]
   }
 
-  return(data)
+  data
 }

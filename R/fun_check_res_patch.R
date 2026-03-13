@@ -314,7 +314,7 @@ atl_check_res_patch <- function(data,
   # return or save
   if (is.null(filename)) {
     # return if no filename provided
-    return(p)
+    p
   } else {
     # save the plot if filename provided
     agg_png(

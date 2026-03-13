@@ -1,5 +1,5 @@
 ---
-title: "Literature"
+title: "Research & Publications"
 output: rmarkdown::html_vignette
 bibliography: literature.bib  
 link-citations: true
@@ -33,11 +33,6 @@ knitr::opts_chunk$set(
 # Additionally titles are printed in bold (edited with edit style)
 ```
 
-
-**This bibliography contains all peer-reviewed publications and PhD-dissertations linked to WATLAS**
-
-The `.bib` file containing the full bibliography in `BibTeX` can be downloaded [here](https://github.com/allertbijleveld/tools4watlas/blob/master/vignettes/literature/literature.bib).
-
 ## Introduction 
 
 Tracking animal movement is crucial for understanding interactions with changing environments and predicting the effects of anthropogenic activities, particularly in ecologically significant areas like the Wadden Sea. The WATLAS system (i.e. the Wadden Sea deployment of ATLAS - Advanced Tracking and Localisation of Animals in real life Systems) enables high-resolution monitoring of small bird movements, offering insights into space use, individual variation, and social networks, thereby supporting research and conservation efforts in the region. A detailed description of WATLAS can be found in **@bijleveld2022**.
@@ -56,7 +51,7 @@ Having deployed the same tracking and resouce sampling methods in Mauritania and
 
 For a broader review on circadian rhythms, we re-analysed the high resolution tracking data from Red Knots in Mauritanie. We revealed individual differences in tidal and circadian foraging rhythms and highlight potential fruitful avenues for further studies **[@bulla2017]**.
 
-## WATLAS papers
+## WATLAS research
 
 After an intitial development starting in 2016, we first deployed WATLAS as a pilot study near Griend with 5 receivers in 2017. After its succes, we deployed 15 recievers in 2018 and scaled-up to almost 30 receivers in 2019 covering a large part of the Western Dutch Wadden Sea. From 2025 onwards, WATLAS will be further developed to cover the entire Dutch Wadden Sea.  
 
@@ -95,7 +90,16 @@ With the climiate crisis, extreme wind speeds are predicted to occur more freque
 ## PhD-dissertations
 The pre-WATLAS insights were also published within the dissertations of Thomas Oudman **[@oudmanthesis]** and Allert Bijleveld **[@bijleveldthesis]**. so far, WATLAS has been part of the dissertations of Eva Kok **[@kokthesis]**, Selin Erosy **[@ersoythesis]**, and Emma Penning **[@penningthesis]**.
 
+## Published Code
+Some code used in the analyses associated with these publications is publicly available on GitHub and collected in the [teamWATLAS repository](https://github.com/teamwatlas).
+
 ## Bibliography
+
+**This bibliography contains all peer-reviewed publications and PhD-dissertations linked to WATLAS**
+
+The `.bib` file containing the full bibliography in `BibTeX` can be downloaded [here](https://github.com/allertbijleveld/tools4watlas/blob/master/vignettes/literature/literature.bib).
+
+<p>&nbsp;</p>
 
 ---
 nocite: '@*'
