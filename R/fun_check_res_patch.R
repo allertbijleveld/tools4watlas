@@ -139,7 +139,7 @@ atl_check_res_patch <- function(data,
   dp_sf <- atl_as_sf(ds, option = "res_patches", buffer = buffer_res_patches)
 
   # add duration
-  dp_sf <- dp_sf %>%
+  dp_sf <- dp_sf |>
     dplyr::left_join(dp[, .(tag, patch, duration)], by = c("tag", "patch"))
 
   # set time without patch to 0

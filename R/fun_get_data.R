@@ -133,7 +133,7 @@ atl_get_data <- function(tag,
   # recalculate time to seconds (instead of milliseconds)
   # and add a column with time-stamp in UTC
   if (nrow(tmp_data) > 0) {
-    tmp_data <- tmp_data %>%
+    tmp_data <- tmp_data |>
       dplyr::mutate(
         TIME = TIME / 1000,
         datetime = as.POSIXct(TIME,

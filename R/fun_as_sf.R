@@ -153,12 +153,12 @@ atl_as_sf <- function(data,
     },
     lines = {
       # Return sf with lines
-      d_sf %>%
-        dplyr::group_by(!!tag_col_group) %>%
+      d_sf |>
+        dplyr::group_by(!!tag_col_group) |>
         dplyr::summarise(
           do_union = FALSE,
           dplyr::across(dplyr::all_of(additional_cols), first)
-        ) %>%
+        ) |>
         sf::st_cast("LINESTRING")
     },
     table = {
@@ -167,16 +167,16 @@ atl_as_sf <- function(data,
     },
     res_patches = {
       # Return sf with residency patches and buffer
-      d_sf %>%
-        dplyr::filter(!is.na(patch)) %>% # remove NA patches (not part of patch)
-        dplyr::group_by(tag, patch) %>% # group by patch
+      d_sf |>
+        dplyr::filter(!is.na(patch)) |> # remove NA patches (not part of patch)
+        dplyr::group_by(tag, patch) |> # group by patch
         # Buffer each point
-        dplyr::reframe(geometry = sf::st_buffer(geometry, dist = buffer)) %>%
-        dplyr::group_by(tag, patch) %>%
+        dplyr::reframe(geometry = sf::st_buffer(geometry, dist = buffer)) |>
+        dplyr::group_by(tag, patch) |>
         # Union buffered geometries
         dplyr::summarise(
           geometry = sf::st_union(geometry), .groups = "drop"
-        ) %>%
+        ) |>
         sf::st_as_sf()
     },
     stop("Invalid option")
@@ -198,5 +198,5 @@ atl_as_sf <- function(data,
     }
   }
 
-  return(return_data)
+  return_data
 }
