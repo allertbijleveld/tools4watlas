@@ -18,7 +18,7 @@ template:
 
 navbar:
   structure:
-    left:  [home, reference, articles, literature]
+    left:  [home, reference, articles, research_and_publications]
     right: [search, github]
   components:
     articles:
@@ -53,15 +53,15 @@ navbar:
         href: articles/visualization_tutorials/animate_data.html
       - text: "--------"
       - text: Package development
-      - text: "Package maintenance"
-        href: articles/package_development/package_maintenance.html
-      - text: "Basemap data"
-        href: articles/package_development/basemap_data.html
+      - text: "Contributing to tools4watlas"
+        href: articles/package_development/contributing_to_tools4watlas.html
+      - text: "Extract basemap data"
+        href: articles/package_development/extract_basemap_data.html
       - text: "tools4watlas logo"
         href: articles/package_development/package_logo.html
-    literature:
+    research_and_publications:
       text: Research & Publications
-      href: articles/literature/literature.html
+      href: articles/research_and_publications/research_and_publications.html
     
 reference:
   - title: "Load and check data"

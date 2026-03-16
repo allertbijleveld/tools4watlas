@@ -1,5 +1,5 @@
 ---
-title: "Package maintenance"
+title: "Contributing to tools4watlas"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Package maintenance}
@@ -13,8 +13,6 @@ knitr::opts_chunk$set(
   message = FALSE
 )
 ```
-
-## Contributing to `tools4watlas`
 
 If you want to contribute to `tools4watlas` [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) the repository on GitHub and then submit a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Besides clear bug fixes, it is best to discuss potential changes or additions with [Allert Bijleveld](mailto:allert.bijleveld@nioz.nl) first. 
 
