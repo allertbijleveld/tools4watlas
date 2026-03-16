@@ -2,7 +2,7 @@
 title: "Contributing to tools4watlas"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Package maintenance}
+  %\VignetteIndexEntry{Contributing to tools4watlas}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

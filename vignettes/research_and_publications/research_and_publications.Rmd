@@ -5,7 +5,7 @@ bibliography: literature.bib
 link-citations: true
 csl: literature_style.csl
 vignette: >
-  %\VignetteIndexEntry{Literature}
+  %\VignetteIndexEntry{Research & Publications}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

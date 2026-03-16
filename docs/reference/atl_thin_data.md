@@ -95,6 +95,7 @@ data[, datetime := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
 #> 19:      2 1696218801 10.688640 16.51647 2023-10-02 03:53:21
 #> 20:      2 1696218811 10.553918 13.45125 2023-10-02 03:53:31
 #>        tag       time         x        y            datetime
+#>     <char>      <num>     <num>    <num>              <POSc>
 
 # Thin the data by aggregation with a 60-second interval
 thinned_aggregated <- atl_thin_data(

@@ -2,7 +2,7 @@
 title: "Extract basemap data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Basemap data}
+  %\VignetteIndexEntry{Extract basemap data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

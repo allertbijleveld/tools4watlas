@@ -58,7 +58,7 @@ The `tools4watlas` package is thoroughly documented on the [**official package w
    - [**Plot data in loop**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_in_loop.html) -
    quick way to make plots by tag ID.
 
-  - [**Fast plotting with ggplot2**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/fast_plotting.html)
+  - [**Plot data faster**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_faster.html)
   
   - [**Plot data interactively**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_interactively.html)
 
@@ -66,9 +66,9 @@ The `tools4watlas` package is thoroughly documented on the [**official package w
 
 **Package development**:
 
-  - [**Package maintenance**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_maintenance.html) - describes how to work on `tools4watlas`.
+  - [**Contributing to tools4watlas**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/contributing_to_tools4watlas.html) - describes how to work on `tools4watlas`.
 
-  - [**Basemap data***](https://allertbijleveld.github.io/tools4watlas/articles/package_development/basemap_data.html) - 
+  - [**Extract basemap data***](https://allertbijleveld.github.io/tools4watlas/articles/package_development/extract_basemap_data.html) - 
   describes how the basemap data were extracted and can guide the user in creating customized base maps.
 
   - [**tools4watlas logo**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_logo.html) - describes how the `tools4watlas` logo is made.
@@ -132,7 +132,7 @@ We are working on the following articles at the moment:
 
 ### **Contribute**
 
-If you want to contribute to `tools4watlas` [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) the repository on GitHub and then submit a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Besides clear bug fixes, it is best to discuss potential changes or additions with [Allert Bijleveld](mailto:allert.bijleveld@nioz.nl). Check the article [Package maintenance](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_maintenance.html) for more details.
+If you want to contribute to `tools4watlas` [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) the repository on GitHub and then submit a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Besides clear bug fixes, it is best to discuss potential changes or additions with [Allert Bijleveld](mailto:allert.bijleveld@nioz.nl). Check the article [Contributing to tools4watlas](https://allertbijleveld.github.io/tools4watlas/articles/package_development/contributing_to_tools4watlas.html) for more details.
 
 ### **Acknowledgements**
 Many people and organisations are involved in developing and maintaining WATLAS. We particularly thank Sivan Toledo and Ran Nathan for the initial development of ATLAS, and Frank van Maarseveen and Bas Denissen for the initial development of the Wadden Sea ATLAS (WATLAS). Additionally, we thank Remko de Haan, Aris van der Vis, Yetzo de Hoo, and NMF colleagues for further developments, assemblage and support. Anne Dekinga is crucial for the field deployment and logistical solutions. We thank our colleagues from COS for help catching birds, especially Job ten Horn, Anne Dekinga, and Luc de Monte. Also, we thank all partners and stakeholders for hosting equipment and for access to their sites. Lastly, we thank the crews of the RV Wim Wolff and Wim-Jan Boon of the RV Adriaen Coenen for their help in the field, Marten Tacoma for visualizing the tracking data in real time on <https://www.nioz.nl/watlas>, and the many other NIOZ staff and volunteers that facilitated this work.

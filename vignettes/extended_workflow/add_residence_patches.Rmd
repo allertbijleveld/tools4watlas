@@ -141,7 +141,7 @@ foreach(i = seq_len(nrow(idc))) %dofuture% {
     data[tag == idc$tag[i]],
     tide_data = tidal_pattern,
     tide = idc$tideID[i], offset = 30,
-    buffer_res_patches = 75,
+    buffer_res_patches = 75 / 2,
     filename = paste0(
       "./outputs/res_patch_check/",
       idc$species[i], "_tag_", idc$tag[i], "_tide_", idc$tideID[i]
@@ -189,12 +189,12 @@ head(data_summary) |> knitr::kable(digits = 2)
 |**y_mean**        | Mean Y-coordinate in meters (UTM 31 N)                                       |
 |**y_median**      | Median Y-coordinate in meters (UTM 31 N)                                     |
 |**y_start**       | Y-coordinate at the start of the residence patch (UTM 31 N)                  |
-|**y_end**         | Y-coordinate at the end of the residence patch (UTM 31 N)        			  |
+|**y_end**         | Y-coordinate at the end of the residence patch (UTM 31 N)        			      |
 |**time_mean**     | Mean UNIX time (seconds) of the positions in the residence patch             |
 |**time_median**   | Median UNIX time (seconds) of the positions in the residence patch           |
 |**time_start**    | Start UNIX time (seconds) of the patch                                       |
 |**time_end**      | End UNIX time (seconds) of the patch                                         |
-|**dist_in_patch** | Total distance (in meters) travelled within the patch (cummulative distance) |
+|**dist_in_patch** | Total distance (in meters) travelled within the patch (cumulative distance)  |
 |**dist_bw_patch** | Distance (in meters) between end of previous and start of current patch      |
 |**time_bw_patch** | Time (in seconds) between end of previous and start of current patch         |
 |**disp_in_patch** | Straight-line displacement (in meters) between start and end of the patch    |
@@ -202,7 +202,7 @@ head(data_summary) |> knitr::kable(digits = 2)
 
 
 
-## Plot the residence pathes
+## Plot the residence patches
 It might also be useful to plot the residence patches using `ggplot2`. 
 
 ### Plot by tag
@@ -262,19 +262,19 @@ bm +
   # add patch polygons
   geom_sf(data = d_sf, aes(fill = patch), alpha = 0.2) +
   # add track and points
-    geom_path(
-      data = data_subset, aes(x, y),
-      linewidth = 0.5, alpha = 0.5
-    ) +
-    geom_point(
-      data = data_subset[is.na(patch)], aes(x, y),
-      size = 0.5, alpha = 0.5, color = "grey20",
-      show.legend = FALSE
-    ) +
-    geom_point(
-      data = data_subset[!is.na(patch)], aes(x, y, color = patch),
-      size = 0.5, show.legend = FALSE
-    ) +
+  geom_path(
+    data = data_subset, aes(x, y),
+    linewidth = 0.5, alpha = 0.5
+  ) +
+  geom_point(
+    data = data_subset[is.na(patch)], aes(x, y),
+    size = 0.5, alpha = 0.5, color = "grey20",
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = data_subset[!is.na(patch)], aes(x, y, color = patch),
+    size = 0.5, show.legend = FALSE
+  ) +
   # set extend again (overwritten by geom_sf)
   coord_sf(
     xlim = c(bbox["xmin"], bbox["xmax"]),
