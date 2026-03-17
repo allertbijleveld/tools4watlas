@@ -1,88 +1,92 @@
 #' Detect position intersections with a polygon
 #'
-#' @description Detects which positions intersect a \code{sfc_*POLYGON}. Tested
-#' only for single polygon objects.
+#' @description Detects which positions intersect a polygon sf object.
 #'
-#' @param data A dataframe or similar containg at least X and Y coordinates.
-#' @param x The name of the X coordinate, assumed by default to be "x".
-#' @param y The Y coordinate as above, default "y".
-#' @param polygon An \code{sfc_*POLYGON} object which must have a defined CRS.
-#' The polygon CRS is assumed to be appropriate for the positions as well, and
-#' is assigned to the coordinates when determining the intersection.
+#' @author Johannes Krietsch
+#' @param data A `data.table` or similar containing at least x and
+#' y coordinates.
+#' @param x The name of the x coordinate, default "x".
+#' @param y The name of the y coordinate, default "y".
+#' @param polygon An `sf` polygon object with a EPSG:32631 (UTM zone 31N) as
+#' CRS.
+#' @param col_name The name of the output column added to `data`. Defaults
+#' to the name of the polygon object passed in.
 #'
-#' @return Row numbers of positions which are inside the polygon.
+#' @return The original `data` with an added logical column indicating
+#' whether each position intersects the polygon.
 #'
+#' @examples
+#' # packages
+#' library(tools4watlas)
+#' library(sf)
+#' 
+#' # load example data
+#' data <- data_example
+#' 
+#' # create basemap
+#' bm <- atl_create_bm(data, buffer = 800)
+#' 
+#' # create a bounding box to filter data
+#' griend_east <- st_sfc(st_point(c(5.275, 53.2523)), crs = st_crs(4326)) |>
+#'   st_transform(crs = st_crs(32631))
+#' 
+#' # define bbox to crop data
+#' bbox_crop <- atl_bbox(griend_east, asp = "16:9", buffer = 2000)
+#' bbox_sf <- st_as_sfc(bbox_crop) # just for plotting as sf object
+#' 
+#' # geom_sf overwrites the coordinate system, so we need to set the limits again
+#' bbox <- atl_bbox(data, buffer = 800)
+#' 
+#' 
+#' data <- atl_within_polygon(data, polygon = bbox_sf)
+#' @export
 atl_within_polygon <- function(data,
                                x = "x",
                                y = "y",
-                               polygon) {
-  ptid <- NULL
-  # check input type
-  assertthat::assert_that("data.frame" %in% class(data),
-    msg = "filter_bbox: input not a dataframe object!"
-  )
-
-  assertthat::assert_that("sf" %in% class(polygon),
-    msg = "filter_polygon: given spatial is not class sf"
-  )
-  # check polygon type
+                               polygon,
+                               col_name = deparse(substitute(polygon))) {
+  # check inputs
   assertthat::assert_that(
-    any(stringr::str_detect(
-      sf::st_geometry_type(polygon),
-      pattern = "(POLYGON)"
-    )),
-    msg = "filter_polygon: given sf is not *POLYGON"
+    "data.frame" %in% class(data),
+    msg = "atl_within_polygon: input not a dataframe object!"
+  )
+  assertthat::assert_that(
+    any(c("sf", "sfc") %in% class(polygon)),
+    msg = "atl_within_polygon: polygon is not class sf or sfc"
+  )
+  assertthat::assert_that(
+    any(stringr::str_detect(sf::st_geometry_type(polygon), "(POLYGON)")),
+    msg = "atl_within_polygon: polygon geometry is not *POLYGON"
+  )
+  assertthat::assert_that(
+    !is.na(sf::st_crs(polygon)),
+    msg = "atl_within_polygon: polygon has no CRS"
+  )
+  assertthat::assert_that(
+    sf::st_crs(polygon) == sf::st_crs(32631),
+    msg = "atl_within_polygon: polygon CRS is not EPSG:32631 (UTM zone 31N)"
   )
 
-  # check for crs
-  assertthat::assert_that(!is.na(sf::st_crs(polygon)))
-
-  # get bounding box of polygon
+  # pre-filter by bounding box for speed
   bbox <- sf::st_bbox(polygon)
+  in_bbox <- data.table::between(data[[x]], bbox["xmin"], bbox["xmax"]) &
+    data.table::between(data[[y]], bbox["ymin"], bbox["ymax"])
+  rows <- which(in_bbox)
 
-  # get bbox filter string
-  filter_string <- c(
-    sprintf(
-      "data.table::between(%s, %f, %f)",
-      x, bbox["xmin"], bbox["xmax"]
-    ),
-    sprintf(
-      "data.table::between(%s, %f, %f)",
-      y, bbox["ymin"], bbox["ymax"]
-    )
-  )
-
-  # filter data on bbox first
-  data[, ptid := seq_len(nrow(data))]
-  data <- tools4watlas::atl_filter_covariates(
-    data = data,
-    filters = c(filter_string)
-  )
-  # get remaining rows
-  rows <- data$ptid
-
-  # set ptid to NULL
-  data[, ptid := NULL]
-
-  # get coordinates
-  coord_cols <- c(x, y)
-  data <- data[, coord_cols, with = FALSE]
-  # make sf
-  data <- sf::st_as_sf(data,
+  # convert bbox-filtered subset to sf and check intersection
+  data_sf <- sf::st_as_sf(
+    data[rows, .SD, .SDcols = c(x, y)],
     coords = c(x, y),
     crs = sf::st_crs(polygon)
   )
-
-  # get intersection
-  poly_intersections <- apply(sf::st_intersects(data, polygon), 1, any)
-
-  # add asserts
-  assertthat::assert_that(is.logical(poly_intersections),
-    msg = "filter_polygon: logical not returned"
+  in_polygon <- apply(
+    sf::st_intersects(data_sf, polygon, sparse = FALSE), 1, any
   )
 
-  # return rows
-  rows[poly_intersections]
-}
+  # add result column to original data
+  # (FALSE by default, TRUE where intersecting)
+  data[, (col_name) := FALSE]
+  data[rows[in_polygon], (col_name) := TRUE]
 
-# ends here
+  data
+}
