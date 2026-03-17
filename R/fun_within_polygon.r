@@ -19,25 +19,26 @@
 #' # packages
 #' library(tools4watlas)
 #' library(sf)
-#' 
+#' library(ggplot2)
+#'
 #' # load example data
 #' data <- data_example
-#' 
+#'
 #' # create basemap
 #' bm <- atl_create_bm(data, buffer = 800)
-#' 
+#'
 #' # create a bounding box to filter data
 #' griend_east <- st_sfc(st_point(c(5.275, 53.2523)), crs = st_crs(4326)) |>
 #'   st_transform(crs = st_crs(32631))
-#' 
+#'
 #' # define bbox to crop data
 #' bbox_crop <- atl_bbox(griend_east, asp = "16:9", buffer = 2000)
 #' bbox_sf <- st_as_sfc(bbox_crop) # just for plotting as sf object
-#' 
-#' # geom_sf overwrites the coordinate system, so we need to set the limits again
+#'
+#' # geom_sf overwrites coordinate system, so we need to set the limits again
 #' bbox <- atl_bbox(data, buffer = 800)
-#' 
-#' 
+#'
+#'
 #' data <- atl_within_polygon(data, polygon = bbox_sf)
 #' @export
 atl_within_polygon <- function(data,

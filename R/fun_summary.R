@@ -1,15 +1,15 @@
-#' Summary of localization data
+#' Summary of position data
 #'
-#' This function generates a summary of localization data by calculating the
+#' This function generates a summary of position data by calculating the
 #' total number of positions, first and last data, days of data and time gaps
 #' between localizations, as well as  data coverage. It returns a summary for
 #' each unique ID specified in `id_columns`.
 #'
 #' @author Johannes Krietsch
-#' @param data A data.table containing localization data with columns for
+#' @param data A data.table containing position data with columns for
 #'        ID, x, y coordinates, time, and datetime.
 #' @param id_columns A character vector specifying the column(s) to group by.
-#'        Defaults to "tag".
+#'        Defaults to `"tag"`.
 #' @returns A data.table with summary statistics for each ID group, including
 #' the total number of positions, first and last data, days of data and time
 #' gaps between localizations, as well as  data coverage.

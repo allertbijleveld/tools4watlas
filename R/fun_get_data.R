@@ -1,12 +1,12 @@
 #' Get data from a SQLite-database
 #'
-#' this function can be used to obtain data from a local or remote SQLite
-#' database. If the full path with filename is provided in 'SQLiteDB', it will
-#' look for that SQLite-file locally. If 'SQLiteDB' is NULL it will establish a
-#' connection with a remote server. There is also functionality to use an
+#' This function can be used to obtain data from a local or remote SQLite
+#' database. If the full path with filename is provided in `SQLiteDB`, it will
+#' look for that SQLite-file locally. If `SQLiteDB` is `NULL` it will establish
+#' a connection with a remote server. There is also functionality to use an
 #' existing opened data base connection that can be provided in
-#' 'use_connection'. For instance, when creating residence patches within a
-#' loop of tags and tide ID's. Because establishing a conncection within a
+#' `use_connection`. For instance, when creating residence patches within a
+#' loop of tags and tide ID's. Because establishing a connection within a
 #' for-loop takes a long time, an established connection can be used.
 #' @author Pratik R. Gupte & Allert I. Bijleveld & Johannes Krietsch
 #' @param tag An number representing the WATLAS tag (either in short format
@@ -31,15 +31,16 @@
 #'  user = 'username', password = 'password', dbname = 'database',
 #'  host = 'host')}. This argument overrules making a connection to a
 #'  local host \code{SQLiteDB} or a remote host.
-#' @returns A data.table of localizations of the specified tag, filtered between
+#' @returns A data.table of positions of the specified tag, filtered between
 #' the start and end times.\cr
-#' posID	  =	Unique number for localizations \cr
+#' posID	  =	Unique number for positions \cr
 #' tag		  =	4 digit tag number (character) \cr
 #' time		  =	UNIX time (seconds) \cr
 #' datetime = Timestamp in POSIXct (UTC) \cr
 #' x		    =	x-ccordinates in meters (UTM 31 N) \cr
 #' y		    =	y-ccordinates in meters (UTM 31 N) \cr
-#' nbs		  =	Number of Base Stations used in calculating coordinates \cr
+#' nbs		  =	Number of Base Stations (receivers) used in calculating
+#' coordinates \cr
 #' varx		  =	Variance in estimating x-coordinates \cr
 #' vary		  =	Variance in estimating y-coordinates \cr
 #' covxy	  =	Co-variance between y- and y-coordinates \cr

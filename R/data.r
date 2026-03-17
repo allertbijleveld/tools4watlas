@@ -19,6 +19,14 @@
 #' @source <https://www.openstreetmap.org>
 "lakes"
 
+#' Grienderwaard
+#'
+#' @format sf object of the Grienderwaard
+#'
+#' @source Manually created based on openstreetmap data and -161 cm NAP polygon.
+"grienderwaard"
+
+
 #' Data from two red knots and one redshank
 #'
 #' @format data.table of watlas data with tide data added

@@ -137,6 +137,9 @@ testthat::test_that("atl_get_data gives correct warning", {
     regexp = "No data available for tag 0001 in this time period."
   )
   
+  # close connection
+  RSQLite::dbDisconnect(con)
+  
   # Validate result is an empty data.table with correct columns
   expected_cols <- c("posID", "tag", "time", "datetime", "x", "y", "nbs", "varx", "vary", "covxy")
   expect_true(is.data.table(result))

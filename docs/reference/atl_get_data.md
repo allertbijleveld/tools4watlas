@@ -1,12 +1,12 @@
 # Get data from a SQLite-database
 
-this function can be used to obtain data from a local or remote SQLite
-database. If the full path with filename is provided in 'SQLiteDB', it
-will look for that SQLite-file locally. If 'SQLiteDB' is NULL it will
+This function can be used to obtain data from a local or remote SQLite
+database. If the full path with filename is provided in `SQLiteDB`, it
+will look for that SQLite-file locally. If `SQLiteDB` is `NULL` it will
 establish a connection with a remote server. There is also functionality
 to use an existing opened data base connection that can be provided in
-'use_connection'. For instance, when creating residence patches within a
-loop of tags and tide ID's. Because establishing a conncection within a
+`use_connection`. For instance, when creating residence patches within a
+loop of tags and tide ID's. Because establishing a connection within a
 for-loop takes a long time, an established connection can be used.
 
 ## Usage
@@ -82,15 +82,16 @@ atl_get_data(
 
 ## Value
 
-A data.table of localizations of the specified tag, filtered between the
+A data.table of positions of the specified tag, filtered between the
 start and end times.  
-posID = Unique number for localizations  
+posID = Unique number for positions  
 tag = 4 digit tag number (character)  
 time = UNIX time (seconds)  
 datetime = Timestamp in POSIXct (UTC)  
 x = x-ccordinates in meters (UTM 31 N)  
 y = y-ccordinates in meters (UTM 31 N)  
-nbs = Number of Base Stations used in calculating coordinates  
+nbs = Number of Base Stations (receivers) used in calculating
+coordinates  
 varx = Variance in estimating x-coordinates  
 vary = Variance in estimating y-coordinates  
 covxy = Co-variance between y- and y-coordinates  

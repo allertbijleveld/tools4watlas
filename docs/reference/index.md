@@ -7,7 +7,7 @@ Functions to load data from SQLlite or remote SQL database
 - [`atl_get_data()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_get_data.md)
   : Get data from a SQLite-database
 - [`atl_summary()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_summary.md)
-  : Summary of localization data
+  : Summary of position data
 - [`atl_format_time()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_format_time.md)
   : Format time in easy readable interval
 - [`atl_check_data()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_check_data.md)
@@ -133,3 +133,5 @@ Example and map data provided with the package
   : Mudflats polygons within the Dutch Wadden Sea
 - [`lakes`](https://allertbijleveld.github.io/tools4watlas/reference/lakes.md)
   : Lake on Griend
+- [`grienderwaard`](https://allertbijleveld.github.io/tools4watlas/reference/grienderwaard.md)
+  : Grienderwaard

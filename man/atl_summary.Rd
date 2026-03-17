@@ -2,16 +2,16 @@
 % Please edit documentation in R/fun_summary.R
 \name{atl_summary}
 \alias{atl_summary}
-\title{Summary of localization data}
+\title{Summary of position data}
 \usage{
 atl_summary(data, id_columns = c("tag"))
 }
 \arguments{
-\item{data}{A data.table containing localization data with columns for
+\item{data}{A data.table containing position data with columns for
 ID, x, y coordinates, time, and datetime.}
 
 \item{id_columns}{A character vector specifying the column(s) to group by.
-Defaults to "tag".}
+Defaults to \code{"tag"}.}
 }
 \value{
 A data.table with summary statistics for each ID group, including
@@ -19,7 +19,7 @@ the total number of positions, first and last data, days of data and time
 gaps between localizations, as well as  data coverage.
 }
 \description{
-This function generates a summary of localization data by calculating the
+This function generates a summary of position data by calculating the
 total number of positions, first and last data, days of data and time gaps
 between localizations, as well as  data coverage. It returns a summary for
 each unique ID specified in \code{id_columns}.

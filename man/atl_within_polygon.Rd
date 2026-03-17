@@ -4,23 +4,61 @@
 \alias{atl_within_polygon}
 \title{Detect position intersections with a polygon}
 \usage{
-atl_within_polygon(data, x = "x", y = "y", polygon)
+atl_within_polygon(
+  data,
+  x = "x",
+  y = "y",
+  polygon,
+  col_name = deparse(substitute(polygon))
+)
 }
 \arguments{
-\item{data}{A dataframe or similar containg at least X and Y coordinates.}
+\item{data}{A \code{data.table} or similar containing at least x and
+y coordinates.}
 
-\item{x}{The name of the X coordinate, assumed by default to be "x".}
+\item{x}{The name of the x coordinate, default "x".}
 
-\item{y}{The Y coordinate as above, default "y".}
+\item{y}{The name of the y coordinate, default "y".}
 
-\item{polygon}{An \code{sfc_*POLYGON} object which must have a defined CRS.
-The polygon CRS is assumed to be appropriate for the positions as well, and
-is assigned to the coordinates when determining the intersection.}
+\item{polygon}{An \code{sf} polygon object with a EPSG:32631 (UTM zone 31N) as
+CRS.}
+
+\item{col_name}{The name of the output column added to \code{data}. Defaults
+to the name of the polygon object passed in.}
 }
 \value{
-Row numbers of positions which are inside the polygon.
+The original \code{data} with an added logical column indicating
+whether each position intersects the polygon.
 }
 \description{
-Detects which positions intersect a \code{sfc_*POLYGON}. Tested
-only for single polygon objects.
+Detects which positions intersect a polygon sf object.
+}
+\examples{
+# packages
+library(tools4watlas)
+library(sf)
+library(ggplot2)
+
+# load example data
+data <- data_example
+
+# create basemap
+bm <- atl_create_bm(data, buffer = 800)
+
+# create a bounding box to filter data
+griend_east <- st_sfc(st_point(c(5.275, 53.2523)), crs = st_crs(4326)) |>
+  st_transform(crs = st_crs(32631))
+
+# define bbox to crop data
+bbox_crop <- atl_bbox(griend_east, asp = "16:9", buffer = 2000)
+bbox_sf <- st_as_sfc(bbox_crop) # just for plotting as sf object
+
+# geom_sf overwrites coordinate system, so we need to set the limits again
+bbox <- atl_bbox(data, buffer = 800)
+
+
+data <- atl_within_polygon(data, polygon = bbox_sf)
+}
+\author{
+Johannes Krietsch
 }

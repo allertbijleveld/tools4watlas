@@ -129,7 +129,7 @@ tracks](plot_data_faster_files/figure-html/unnamed-chunk-3-1.png)
 round(Sys.time() - st, 2)
 ```
 
-    ## Time difference of 6.35 secs
+    ## Time difference of 5.93 secs
 
 ## `ggplot2` with points as pch = “.”
 
@@ -158,7 +158,7 @@ tracks](plot_data_faster_files/figure-html/unnamed-chunk-4-1.png)
 round(Sys.time() - st, 2)
 ```
 
-    ## Time difference of 2.11 secs
+    ## Time difference of 2.05 secs
 
 ## `ggplot2` with points as geom_scattermore()
 
@@ -187,7 +187,7 @@ tracks](plot_data_faster_files/figure-html/unnamed-chunk-5-1.png)
 round(Sys.time() - st, 2)
 ```
 
-    ## Time difference of 1.72 secs
+    ## Time difference of 1.61 secs
 
 ## `ggplot2` heat map
 
@@ -228,7 +228,7 @@ map](plot_data_faster_files/figure-html/unnamed-chunk-6-1.png)
 round(Sys.time() - st, 2)
 ```
 
-    ## Time difference of 0.33 secs
+    ## Time difference of 0.32 secs
 
 ## Fast saving with `ragg`
 
