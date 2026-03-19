@@ -46,6 +46,34 @@
 #' @importFrom ggtext element_markdown
 #' @importFrom ragg agg_png
 #' @importFrom grDevices dev.off
+#' 
+#' @examples
+#' # packages
+#' library(tools4watlas)
+#' 
+#' # load example data
+#' data <- data_example
+#' 
+#' # load example tide pattern data
+#' data_path <- system.file(
+#'   "extdata", "example-tidalPattern-west_terschelling-UTC.csv",
+#'   package = "tools4watlas"
+#' )
+#' tidal_pattern <- fread(data_path, yaml = TRUE)
+#' 
+#' # calculate residence patches for one red knot
+#' data <- atl_res_patch(
+#'   data[tag == "3038"],
+#'   max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
+#'   min_fixes = 3, min_duration = 120
+#' )
+#' 
+#' # plot example
+#' atl_check_res_patch(
+#'   data[tag == "3038"], tide_data = tidal_pattern,
+#'   tide = "2023513", offset = 30,
+#'   buffer_res_patches = 75 / 2
+#' )
 #' @export
 
 atl_check_res_patch <- function(data,

@@ -3,11 +3,11 @@
 #' Gets the relative heading between two track segments (three localizations)
 #' using the law of cosines.
 #' The turning angle is returned in degrees.
-#' Adds the column `angle` to a data.table with tracking data.
+#' Adds the column `angle` to a `data.table` with tracking data.
 #' Note that with smoothed data NaN values may occur (when subsequent
 #' localizations are at the same place).
 #'
-#' @author Pratik R. Gupte & Allert Bijleveld & Johannes Krietsch
+#' @author Pratik R. Gupte, Allert Bijleveld & Johannes Krietsch
 #' @param data A dataframe or similar which must have the columns
 #' specified by \code{x}, \code{y}, and \code{time}.
 #' @param tag The tag ID.
@@ -16,15 +16,23 @@
 #' @param time The timestamp in seconds since the UNIX epoch.
 #' @return A a data.table with added turning angles in degrees.
 #' Negative degrees indicate 'left' turns. There are two fewer
-#' angles than the number of rows in the dataframe.
+#' angles than the number of rows in the `data.table`.
 #'
 #' @examples
-#' \dontrun{
+#' # packages
+#' library(tools4watlas)
+#' 
+#' # load example data
+#' data <- data_example
+#' 
+#' # calculate turning angle
 #' data <- atl_turning_angle(
 #'   data,
 #'   tag = "tag", x = "x", y = "y", time = "time"
 #' )
-#' }
+#' 
+#' # check data
+#' data[, .(tag, datetime, x, y, angle)]
 #' @export
 atl_turning_angle <- function(data,
                               tag = "tag",
