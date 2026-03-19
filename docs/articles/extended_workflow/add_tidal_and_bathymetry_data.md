@@ -30,10 +30,10 @@ your user in the
 [`atl_file_path()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.md)
 function.
 
-Here we show how to add tide data (tideID - a unique tide identifier,
-tidaltime and time2lowtide - time from high tide and time to low tide in
-minutes, waterlevel - as measured from the tide gauge station with
-offset) in cm NAP.
+Here we show how to add tide data (`tideID` - a unique tide identifier,
+`tidaltime` and `time2lowtide` - time from high tide and time to low
+tide in minutes, `waterlevel` - as measured from the tide gauge station
+with offset) in cm NAP.
 
 ``` r
 # file path to WATLAS teams data folder

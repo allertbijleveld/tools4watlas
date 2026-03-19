@@ -41,66 +41,66 @@
 #' library(tools4watlas)
 #' library(ggplot2)
 #' library(mapview)
-#' 
+#'
 #' # load example data
 #' data <- data_example
-#' 
+#'
 #' ### example "points" and "lines"
-#' 
+#'
 #' # subset data one tag and tide
 #' data_subset <- data[tag == "3063" & tideID == "2023513"]
-#' 
+#'
 #' # make data spatial
 #' d_sf <- atl_as_sf(
 #'   data_subset,
 #'   additional_cols = c("species", "datetime", "speed_in")
 #' )
-#' 
+#'
 #' # add track
 #' d_sf_lines <- atl_as_sf(
 #'   data_subset,
 #'   additional_cols = c("species", "datetime", "speed_in"),
 #'   option = "lines"
 #' )
-#' 
+#'
 #' # plot interactive map
 #' mapview(d_sf_lines, zcol = "speed_in", legend = FALSE) +
 #'   mapview(d_sf, zcol = "speed_in")
-#' 
-#' 
+#'
+#'
 #' ### example "lines"
-#' 
+#'
 #' ### example "table"
-#' 
+#'
 #' # create sf table with spatial points
 #' sf_table <- atl_as_sf(data, x = "x", y = "y", tag = "tag", option = "table")
 #' sf_table
-#' 
+#'
 #' ### example "res_patches"
-#' 
+#'
 #' # calculate residence patches for one red knot
 #' data <- atl_res_patch(
 #'   data[tag == "3038"],
 #'   max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
 #'   min_fixes = 3, min_duration = 120
 #' )
-#' 
+#'
 #' # create polygons around residence patches
 #' d_sf <- atl_as_sf(
 #'   data,
 #'   additional_cols = "patch",
 #'   option = "res_patches", buffer = 75 / 2
 #' )
-#' 
+#'
 #' # summary of residence patches
 #' data_summary <- atl_res_patch_summary(data)
-#' 
+#'
 #' # create basemap
 #' bm <- atl_create_bm(data, buffer = 500)
-#' 
-#' # geom_sf overwrites the coordinate system, so we need to set the limits again
+#'
+#' # geom_sf overwrites coordinate system, so we need to set the limits again
 #' bbox <- atl_bbox(data, buffer = 500)
-#' 
+#'
 #' # plot polygons around residence patches
 #' bm +
 #'   # add patch polygons

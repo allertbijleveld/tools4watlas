@@ -39,7 +39,7 @@ data <- fread(data_path, yaml = TRUE)
 
 Tide data are from West-Terschelling and prepared by Allert. They are located in the "WATLAS" SharePoint folder: `Documents/data/`. Either specify the path to your local copy of this folder or add the path for your user in the `atl_file_path()` function.
 
-Here we show how to add tide data (tideID - a unique tide identifier, tidaltime and time2lowtide - time from high tide and time to low tide in minutes, waterlevel - as measured from the tide gauge station with offset) in cm NAP.
+Here we show how to add tide data (`tideID` - a unique tide identifier, `tidaltime` and `time2lowtide` - time from high tide and time to low tide in minutes, `waterlevel` - as measured from the tide gauge station with offset) in cm NAP.
 
 ```{r}
 # file path to WATLAS teams data folder

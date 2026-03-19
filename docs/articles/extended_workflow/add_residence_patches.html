@@ -92,8 +92,8 @@
     
 <p>In this vignette, we provide a general workflow to group WATLAS
 position data into so-called ‘residence patches’. Note that the
-parameter settings can/should be adapted for different species’
-behaviour and data quality.</p>
+parameter settings should be adapted for different species’ behaviour
+and data quality.</p>
 <div class="section level2">
 <h2 id="background-and-parameter-explanation">Background and parameter explanation<a class="anchor" aria-label="anchor" href="#background-and-parameter-explanation"></a>
 </h2>
@@ -113,13 +113,14 @@ smaller than <code>max_speed</code>, a distance smaller than
 <code>lim_time_indep</code>, they are assigned to the same proto patch.
 Proto-patches with fewer than <code>min_fixes</code> positions are
 filtered out.</p>
-<p>For each proto patch, the median position is calculated as well as
-the time between two subsequent proto-patches (time between last
-location and first location of the next proto-patch). Proto patches are
-merged into residence patches, if the distance between the median
-positions of two subsequent proto-patches is smaller than
-<code>lim_spat_indep</code> and the time between the proto-patch is less
-then <code>lim_time_indep</code>.</p>
+<p>For each proto-</p>
+<p>patch, the median position is calculated as well as the time between
+two subsequent proto-patches (time between last location and first
+location of the next proto-patch). Proto patches are merged into
+residence patches, if the distance between the median positions of two
+subsequent proto-patches is smaller than <code>lim_spat_indep</code> and
+the time between the proto-patch is less then
+<code>lim_time_indep</code>.</p>
 <p>Lastly, a unique patch ID is assigned to each residence patch ordered
 by time from 1 to n.</p>
 <p>Note that without cleaning the data or having short intervals (e.g. 3

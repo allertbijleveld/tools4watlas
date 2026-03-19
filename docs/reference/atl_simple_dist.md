@@ -14,21 +14,21 @@ atl_simple_dist(data, x = "x", y = "y", lag = 1)
 - data:
 
   A dataframe object of or extending the class data.frame, which must
-  contain two coordinate columns for the X and Y coordinates.
+  contain two coordinate columns for the x and y coordinates.
 
 - x:
 
-  A column name in a data.frame object that contains the numeric X
+  A column name in a `data.table` object that contains the numeric x
   coordinate.
 
 - y:
 
-  A column name in a data.frame object that contains the numeric Y
+  A column name in a `data.table` object that contains the numeric y
   coordinate.
 
 - lag:
 
-  The lag (in number of localizations) over which to calculate distance
+  The lag (in number of localizations) over which to calculate distance.
 
 ## Value
 
@@ -36,4 +36,73 @@ Returns a vector of distances between consecutive points.
 
 ## Author
 
-Pratik R. Gupte & Allert Bijleveld
+Pratik R. Gupte, Allert Bijleveld & Johannes Krietsch
+
+## Examples
+
+``` r
+# packages
+library(tools4watlas)
+
+# load example data
+data <- data_example
+
+# calculate distance
+data[, dist := atl_simple_dist(data, x = "x", y = "y", lag = 1)]
+#> Index: <tag>
+#>           species posID    tag       time            datetime        x       y
+#>            <char> <int> <char>      <num>              <POSc>    <num>   <num>
+#>     1:   redshank     2   3027 1695438805 2023-09-23 03:13:25 650705.6 5902556
+#>     2:   redshank     3   3027 1695438808 2023-09-23 03:13:28 650705.6 5902556
+#>     3:   redshank     4   3027 1695439189 2023-09-23 03:19:49 650721.0 5902559
+#>     4:   redshank     5   3027 1695439192 2023-09-23 03:19:52 650721.1 5902559
+#>     5:   redshank     6   3027 1695439195 2023-09-23 03:19:55 650723.1 5902564
+#>    ---                                                                        
+#> 84411: sanderling  8126   3288 1695513564 2023-09-23 23:59:24 650178.5 5902404
+#> 84412: sanderling  8127   3288 1695513570 2023-09-23 23:59:30 650178.5 5902404
+#> 84413: sanderling  8128   3288 1695513576 2023-09-23 23:59:36 650178.5 5902404
+#> 84414: sanderling  8129   3288 1695513582 2023-09-23 23:59:42 650178.2 5902403
+#> 84415: sanderling  8130   3288 1695513588 2023-09-23 23:59:48 650177.5 5902403
+#>          nbs      varx       vary      covxy  speed_in speed_out    x_raw
+#>        <int>     <num>      <num>      <num>     <num>     <num>    <num>
+#>     1:     3 49.090805 460.836304 141.214539 0.0000000 0.3238910 650705.6
+#>     2:     3 58.183502 471.808105 155.888260 0.0000000 1.9851646 650691.6
+#>     3:     3 49.968266 441.456970 138.204239 0.0000000 0.3227225 650728.6
+#>     4:     3  5.342943  28.163733   8.582236 0.2251024 0.0000000 650721.0
+#>     5:     3  5.548222  35.032780  10.426281 0.0000000 0.8369818 650721.1
+#>    ---                                                                   
+#> 84411:     3 19.730513  12.872843  -1.360448 0.0000000 0.0000000 650184.0
+#> 84412:     3 12.930080   4.513436   1.932977 1.7745534 0.0000000 650178.5
+#> 84413:     3 20.655415  10.068294   5.556414 0.0000000 0.0000000 650179.7
+#> 84414:     3 26.344803  17.227232   6.836256 0.0000000 0.0000000 650178.2
+#> 84415:     3 26.837191  13.242077   7.571170 0.0000000 0.0000000 650177.5
+#>          y_raw  tideID tidaltime time2lowtide waterlevel bathymetry        dist
+#>          <num>   <int>     <num>        <num>      <num>      <num>       <num>
+#>     1: 5902576 2023513  526.6940     146.6940       24.5   84.29087          NA
+#>     2: 5902536 2023513  526.8940     146.8940       24.5   84.29087  0.00000000
+#>     3: 5902571 2023513  548.4425     168.4425       34.2   86.83250 15.74415703
+#>     4: 5902556 2023513  548.6425     168.6425       34.6   86.83250  0.04238396
+#>     5: 5902559 2023513  548.7925     168.7925       34.6   86.83250  5.21449860
+#>    ---                                                                         
+#> 84411: 5902405 2023514  636.7035     266.7035       61.1   99.64340  0.05320166
+#> 84412: 5902406 2023514  637.2035     267.2035       61.1   99.64340  0.00000000
+#> 84413: 5902401 2023514  638.0034     268.0034       61.4   99.64340  0.00000000
+#> 84414: 5902398 2023514  638.6034     268.6034       61.7   99.64340  1.03028738
+#> 84415: 5902408 2023514  639.2034     269.2034       61.7   99.64340  0.67039227
+
+# check data
+data[, .(tag, datetime, x, y, dist)]
+#>           tag            datetime        x       y        dist
+#>        <char>              <POSc>    <num>   <num>       <num>
+#>     1:   3027 2023-09-23 03:13:25 650705.6 5902556          NA
+#>     2:   3027 2023-09-23 03:13:28 650705.6 5902556  0.00000000
+#>     3:   3027 2023-09-23 03:19:49 650721.0 5902559 15.74415703
+#>     4:   3027 2023-09-23 03:19:52 650721.1 5902559  0.04238396
+#>     5:   3027 2023-09-23 03:19:55 650723.1 5902564  5.21449860
+#>    ---                                                        
+#> 84411:   3288 2023-09-23 23:59:24 650178.5 5902404  0.05320166
+#> 84412:   3288 2023-09-23 23:59:30 650178.5 5902404  0.00000000
+#> 84413:   3288 2023-09-23 23:59:36 650178.5 5902404  0.00000000
+#> 84414:   3288 2023-09-23 23:59:42 650178.2 5902403  1.03028738
+#> 84415:   3288 2023-09-23 23:59:48 650177.5 5902403  0.67039227
+```

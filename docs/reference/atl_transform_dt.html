@@ -129,6 +129,22 @@ transformed coordinates.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># add transformed coordinates in projection of the base map (EPSG:4326)</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">atl_transform_dt</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># check data</span></span></span>
+<span class="r-in"><span><span class="va">data</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">x_4326</span>, <span class="va">y_4326</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           tag            datetime        x       y   x_4326   y_4326</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;char&gt;              &lt;POSc&gt;    &lt;num&gt;   &lt;num&gt;    &lt;num&gt;    &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1:   3027 2023-09-23 03:13:25 650705.6 5902556 5.258917 53.25084</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2:   3027 2023-09-23 03:13:28 650705.6 5902556 5.258917 53.25084</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3:   3027 2023-09-23 03:19:49 650721.0 5902559 5.259149 53.25087</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4:   3027 2023-09-23 03:19:52 650721.1 5902559 5.259150 53.25087</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5:   3027 2023-09-23 03:19:55 650723.1 5902564 5.259183 53.25091</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84411:   3288 2023-09-23 23:59:24 650178.5 5902404 5.250951 53.24963</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84412:   3288 2023-09-23 23:59:30 650178.5 5902404 5.250951 53.24963</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84413:   3288 2023-09-23 23:59:36 650178.5 5902404 5.250951 53.24963</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84414:   3288 2023-09-23 23:59:42 650178.2 5902403 5.250946 53.24962</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84415:   3288 2023-09-23 23:59:48 650177.5 5902403 5.250936 53.24962</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -20,21 +20,21 @@
 #' library(tools4watlas)
 #' library(sf)
 #' library(ggplot2)
-#' 
+#'
 #' # load example data
 #' data <- data_example
-#' 
+#'
 #' # assign positions within the polygon of Grienderwaard
 #' data <- atl_within_polygon(
 #'   data, polygon = grienderwaard, col_name = "on_grienderwaard"
 #' )
-#' 
+#'
 #' # new bounding box using Grienderwaard for plot
 #' bbox <- atl_bbox(grienderwaard, buffer = 1500)
-#' 
+#'
 #' # create a base map for background
 #' bm <- atl_create_bm(bbox)
-#' 
+#'
 #' # plot points on and out of Grienderwaard
 #' bm +
 #'   geom_path(

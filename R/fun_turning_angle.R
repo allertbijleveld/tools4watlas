@@ -21,16 +21,16 @@
 #' @examples
 #' # packages
 #' library(tools4watlas)
-#' 
+#'
 #' # load example data
 #' data <- data_example
-#' 
+#'
 #' # calculate turning angle
 #' data <- atl_turning_angle(
 #'   data,
 #'   tag = "tag", x = "x", y = "y", time = "time"
 #' )
-#' 
+#'
 #' # check data
 #' data[, .(tag, datetime, x, y, angle)]
 #' @export

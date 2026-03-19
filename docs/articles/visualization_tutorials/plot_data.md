@@ -141,8 +141,11 @@ labels](plot_data_files/figure-html/unnamed-chunk-3-1.png)
 ## Plot by species
 
 Here, we show how to plot movement data grouped and coloured by species.
-`tools4watlas` includes specific species colours in the atl_spec_cols()
-function and species labels in the atl_spec_labs() function.
+`tools4watlas` includes specific species colours in the
+[`atl_spec_cols()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_spec_cols.md)
+function and species labels in the
+[`atl_spec_labs()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_spec_labs.md)
+function.
 
 ``` r
 # load example data

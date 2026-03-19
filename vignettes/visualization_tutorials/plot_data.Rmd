@@ -127,7 +127,7 @@ bm +
 
 ## Plot by species
 
-Here, we show how to plot movement data grouped and coloured by species. `tools4watlas` includes specific species colours in the atl_spec_cols() function and species labels in the atl_spec_labs() function.
+Here, we show how to plot movement data grouped and coloured by species. `tools4watlas` includes specific species colours in the `atl_spec_cols()` function and species labels in the `atl_spec_labs()` function.
 
 ```{r, fig.alt = "Points and tracks of multiple species on a basemap", fig.align = "center", fig.width = 7.87, fig.height = 5}
 # load example data

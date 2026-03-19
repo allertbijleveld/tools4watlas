@@ -109,8 +109,8 @@
 </h2>
 <p>To reduce error in the position data, a basic smoother such as a
 median filter can be applied. the function
-<code>atl_median_smooth</code> calculates the median coordinates within
-a window of positions set by <code>moving window</code>.</p>
+<code><a href="../reference/atl_median_smooth.html">atl_median_smooth()</a></code> calculates the median coordinates
+within a window of positions set by <code>moving window</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Smooth the data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_median_smooth.html">atl_median_smooth</a></span><span class="op">(</span><span class="va">data</span>, moving_window <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>

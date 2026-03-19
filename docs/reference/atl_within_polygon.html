@@ -113,27 +113,45 @@ whether each position intersects the polygon.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># packages</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Linking to GEOS 3.13.1, GDAL 3.11.4, PROJ 9.7.0; sf_use_s2() is TRUE</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># load example data</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># create basemap</span></span></span>
-<span class="r-in"><span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data</span>, buffer <span class="op">=</span> <span class="fl">800</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># assign positions within the polygon of Grienderwaard</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">atl_within_polygon</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">data</span>, polygon <span class="op">=</span> <span class="va">grienderwaard</span>, col_name <span class="op">=</span> <span class="st">"on_grienderwaard"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># create a bounding box to filter data</span></span></span>
-<span class="r-in"><span><span class="va">griend_east</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html" class="external-link">st_sfc</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html" class="external-link">st_point</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.275</span>, <span class="fl">53.2523</span><span class="op">)</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="fl">4326</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="fl">32631</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># new bounding box using Grienderwaard for plot</span></span></span>
+<span class="r-in"><span><span class="va">bbox</span> <span class="op">&lt;-</span> <span class="fu"><a href="atl_bbox.html">atl_bbox</a></span><span class="op">(</span><span class="va">grienderwaard</span>, buffer <span class="op">=</span> <span class="fl">1500</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># define bbox to crop data</span></span></span>
-<span class="r-in"><span><span class="va">bbox_crop</span> <span class="op">&lt;-</span> <span class="fu"><a href="atl_bbox.html">atl_bbox</a></span><span class="op">(</span><span class="va">griend_east</span>, asp <span class="op">=</span> <span class="st">"16:9"</span>, buffer <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">bbox_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sfc.html" class="external-link">st_as_sfc</a></span><span class="op">(</span><span class="va">bbox_crop</span><span class="op">)</span> <span class="co"># just for plotting as sf object</span></span></span>
+<span class="r-in"><span><span class="co"># create a base map for background</span></span></span>
+<span class="r-in"><span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># geom_sf overwrites coordinate system, so we need to set the limits again</span></span></span>
-<span class="r-in"><span><span class="va">bbox</span> <span class="op">&lt;-</span> <span class="fu"><a href="atl_bbox.html">atl_bbox</a></span><span class="op">(</span><span class="va">data</span>, buffer <span class="op">=</span> <span class="fl">800</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">atl_within_polygon</span><span class="op">(</span><span class="va">data</span>, polygon <span class="op">=</span> <span class="va">bbox_sf</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># plot points on and out of Grienderwaard</span></span></span>
+<span class="r-in"><span><span class="va">bm</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">on_grienderwaard</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    linewidth <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">0.1</span>, show.legend <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, colour <span class="op">=</span> <span class="va">on_grienderwaard</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">1</span>, show.legend <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_colour_discrete.html" class="external-link">scale_color_discrete</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="co"># add Grienderwaard polygon</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">grienderwaard</span>, color <span class="op">=</span> <span class="st">"firebrick"</span>, fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="co"># set extend again (overwritten by geom_sf)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">coord_sf</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">[</span><span class="st">"xmin"</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="st">"xmax"</span><span class="op">]</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">[</span><span class="st">"ymin"</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="st">"ymax"</span><span class="op">]</span><span class="op">)</span>, expand <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Coordinate system already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Adding new coordinate system, which will replace the existing one.</span>
+<span class="r-plt img"><img src="atl_within_polygon-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

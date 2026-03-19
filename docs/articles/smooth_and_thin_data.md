@@ -20,8 +20,10 @@ data <- fread(data_path, yaml = TRUE)
 ## Median smooth data
 
 To reduce error in the position data, a basic smoother such as a median
-filter can be applied. the function `atl_median_smooth` calculates the
-median coordinates within a window of positions set by `moving window`.
+filter can be applied. the function
+[`atl_median_smooth()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_median_smooth.md)
+calculates the median coordinates within a window of positions set by
+`moving window`.
 
 ``` r
 # Smooth the data

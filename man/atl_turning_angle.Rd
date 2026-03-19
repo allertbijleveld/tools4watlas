@@ -21,24 +21,32 @@ specified by \code{x}, \code{y}, and \code{time}.}
 \value{
 A a data.table with added turning angles in degrees.
 Negative degrees indicate 'left' turns. There are two fewer
-angles than the number of rows in the dataframe.
+angles than the number of rows in the \code{data.table}.
 }
 \description{
 Gets the relative heading between two track segments (three localizations)
 using the law of cosines.
 The turning angle is returned in degrees.
-Adds the column \code{angle} to a data.table with tracking data.
+Adds the column \code{angle} to a \code{data.table} with tracking data.
 Note that with smoothed data NaN values may occur (when subsequent
 localizations are at the same place).
 }
 \examples{
-\dontrun{
+# packages
+library(tools4watlas)
+
+# load example data
+data <- data_example
+
+# calculate turning angle
 data <- atl_turning_angle(
   data,
   tag = "tag", x = "x", y = "y", time = "time"
 )
-}
+
+# check data
+data[, .(tag, datetime, x, y, angle)]
 }
 \author{
-Pratik R. Gupte & Allert Bijleveld & Johannes Krietsch
+Pratik R. Gupte, Allert Bijleveld & Johannes Krietsch
 }

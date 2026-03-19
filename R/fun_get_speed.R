@@ -20,13 +20,13 @@
 #' @examples
 #' # packages
 #' library(tools4watlas)
-#' 
+#'
 #' # load example data
 #' data <- data_example
-#' 
+#'
 #' # remove speed columns
 #' data[, c("speed_in", "speed_out") := NULL]
-#' 
+#'
 #' # calculate speed
 #' data <- atl_get_speed(data,
 #'                       tag = "tag",
@@ -35,7 +35,7 @@
 #'                       time = "time",
 #'                       type = c("in", "out")
 #' )
-#' 
+#'
 #' # check data
 #' data[, .(tag, datetime, x, y, speed_in, speed_out)]
 #' @export

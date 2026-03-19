@@ -87,37 +87,106 @@ Johannes Krietsch
 ## Examples
 
 ``` r
-library(data.table)
+# packages
+library(tools4watlas)
+library(ggplot2)
+library(mapview)
 
-# Example data
-data <- data.table(
-  tag = c("A", "A", "B", "B"),
-  x = c(10, 20, 30, 40),
-  y = c(50, 60, 70, 80),
-  value = c(100, 200, 300, 400)
+# load example data
+data <- data_example
+
+### example "points" and "lines"
+
+# subset data one tag and tide
+data_subset <- data[tag == "3063" & tideID == "2023513"]
+
+# make data spatial
+d_sf <- atl_as_sf(
+  data_subset,
+  additional_cols = c("species", "datetime", "speed_in")
 )
 
-# Convert to sf points with custom CRS and retain the "value" column
-sf_points <- atl_as_sf(data,
-  x = "x", y = "y", tag = "tag",
-  projection = sf::st_crs(4326),
-  additional_cols = "value"
+# add track
+d_sf_lines <- atl_as_sf(
+  data_subset,
+  additional_cols = c("species", "datetime", "speed_in"),
+  option = "lines"
 )
-plot(sf_points)
+
+# plot interactive map
+mapview(d_sf_lines, zcol = "speed_in", legend = FALSE) +
+  mapview(d_sf, zcol = "speed_in")
 
 
-# Convert to sf lines
-sf_lines <- atl_as_sf(data, x = "x", y = "y", tag = "tag", option = "lines")
-plot(sf_lines)
+### example "lines"
 
+### example "table"
 
-# Convert to a data.table with coordinates column
+# create sf table with spatial points
 sf_table <- atl_as_sf(data, x = "x", y = "y", tag = "tag", option = "table")
-print(sf_table)
-#>       tag      geometry
-#>    <char>   <sfc_POINT>
-#> 1:      A POINT (10 50)
-#> 2:      A POINT (20 60)
-#> 3:      B POINT (30 70)
-#> 4:      B POINT (40 80)
+sf_table
+#>           tag                 geometry
+#>        <char>              <sfc_POINT>
+#>     1:   3212 POINT (650151.6 5902407)
+#>     2:   3158   POINT (649975 5902425)
+#>     3:   3288 POINT (650188.7 5902413)
+#>     4:   3038 POINT (650120.1 5902400)
+#>     5:   3038 POINT (650120.1 5902400)
+#>    ---                                
+#> 84411:   3212 POINT (650183.4 5902397)
+#> 84412:   3158 POINT (650004.4 5902405)
+#> 84413:   3038 POINT (650159.1 5902391)
+#> 84414:   3158 POINT (650004.4 5902405)
+#> 84415:   3038 POINT (650159.1 5902391)
+
+### example "res_patches"
+
+# calculate residence patches for one red knot
+data <- atl_res_patch(
+  data[tag == "3038"],
+  max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
+  min_fixes = 3, min_duration = 120
+)
+
+# create polygons around residence patches
+d_sf <- atl_as_sf(
+  data,
+  additional_cols = "patch",
+  option = "res_patches", buffer = 75 / 2
+)
+
+# summary of residence patches
+data_summary <- atl_res_patch_summary(data)
+
+# create basemap
+bm <- atl_create_bm(data, buffer = 500)
+
+# geom_sf overwrites coordinate system, so we need to set the limits again
+bbox <- atl_bbox(data, buffer = 500)
+
+# plot polygons around residence patches
+bm +
+  # add patch polygons
+  geom_sf(data = d_sf, aes(fill = as.character(patch)), alpha = 0.2) +
+  # add track and points
+  geom_path(
+    data = data, aes(x, y),
+    linewidth = 0.1, alpha = 0.5
+  ) +
+  geom_point(
+    data = data[is.na(patch)], aes(x, y),
+    size = 0.1, alpha = 0.5, color = "grey20",
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = data[!is.na(patch)], aes(x, y, color = as.character(patch)),
+    size = 0.5, show.legend = FALSE
+  ) +
+  # set extend again (overwritten by geom_sf)
+  coord_sf(
+    xlim = c(bbox["xmin"], bbox["xmax"]),
+    ylim = c(bbox["ymin"], bbox["ymax"]), expand = FALSE
+  )
+#> Coordinate system already present.
+#> ℹ Adding new coordinate system, which will replace the existing one.
 ```

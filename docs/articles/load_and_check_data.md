@@ -1,5 +1,7 @@
 # Loading and checking data
 
+This vignette shows how to load and check WATLAS data.
+
 #### Good to know
 
 `tools4watlas` is based on `data.table` to be fast and efficient. A key
@@ -113,12 +115,13 @@ password = "password"
 Sys.getenv("variable_name")
 ```
 
-Connecting to a remote database with `atl_get_data` is similar to
-connecting with a local SQLite database. In this example (chunk not run
-and only shown), we load the last three days of data from all tags of
-2024. Note that the host, username and password are specified as
-environmental variables in this example, but can also be specified
-directly.
+Connecting to a remote database with
+[`atl_get_data()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_get_data.md)
+is similar to connecting with a local SQLite database. In this example
+(chunk not run and only shown), we load the last three days of data from
+all tags of 2024. Note that the host, username and password are
+specified as environmental variables in this example, but can also be
+specified directly.
 
 Connecting to the remote database is normally restricted to current
 group members that also have access to the NIOZ/Bijleveld Teams
@@ -256,10 +259,12 @@ data[, c("rings", "crc", "catch_location") := NULL]
 
 At this point it might be good to save the raw data for further
 analyses, as extracting the data from the database can take a long time
-with big datasets. A convenient and fast way is to use `fwrite` from the
+with big datasets. A convenient and fast way is to use
+[`fwrite()`](https://rdrr.io/pkg/data.table/man/fwrite.html) from the
 `data.table` package. By including `yaml = TRUE` we make sure the data
-stays in the same format, when we load it again. Note that the file path
-needs to be changed when running this example.
+stays in the same format, when we load it again with
+`fread(filepath, yaml = TRUE)`. Note that the file path needs to be
+changed when running this example.
 
 ``` r
 # save data

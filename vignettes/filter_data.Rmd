@@ -170,9 +170,9 @@ bm +
 
 ## Temporal filtering
 
-Here, we show examples of filtering the data by timestamp. First, we want to filter all positions of the tag before the bird was released. Becasue the birds need to adjust after being caught and fitted with a tag, we additionally exclude the first 24 hours after release. Similarly, we can exclude positions at the end, e.g. after the tag fell off, or the bird died, etc. To identify such circumstances, it can be helpful to plot the last 1,000 positions for each tag (see vignette: plotting data). 
+Here, we show examples of filtering the data by timestamp. Because the birds need to adjust after being caught and fitted with a tag, we exclude the first 24 hours after release. Similarly, we can exclude positions at the end, e.g. after the tag fell off, or the bird died, etc. To identify such circumstances, it can be helpful to plot the last 1,000 positions for each tag (see vignette: plotting data). 
 
-Some tagged birds might not provide a lot of data, for instance, becasue they left the study area directly after release. For robust analyses, it might therefore be useful to exclude birds with few data. Below, we will exclude tags with less than 100 positions, but note that none of the birds in the example data is actually filtered out. 
+Some tagged birds might not provide a lot of data, for instance, because they left the study area directly after release. For robust analyses, it might therefore be useful to exclude birds with few data. Below, we will exclude tags with less than 100 positions, but note that none of the birds in the example data is actually filtered out. 
 
 ```{r, message=FALSE, results='hide'}
 # load meta data
@@ -209,7 +209,7 @@ data[, N := NULL]
 
 ## Filtering location errors
 
-Here, we will show two ways of filtering the data by positioning errors. First, by the size of the error estimate as provided by the algorithm for caluclating positions. Second, based on unreleastic speeds between sequential positions.  
+Here, we will show two ways of filtering the data by positioning errors. First, by the size of the error estimate as provided by the algorithm for calculating positions. Second, based on unreleastic speeds between sequential positions.  
 
 ### Based on WATLAS error estimate
 
@@ -230,9 +230,9 @@ data <- atl_filter_covariates(
 
 ### Based on speed
 
-A bird's speed can be calculated from sequential positions and used for filtering unrealisticly high speeds. This is straightforward for positions with very high speeds between itself and the positions before and after (the so-called incoming and outgoing speed, respectively). See **[Gupte et al. 2022](https://doi.org/10.1111/1365-2656.13610)** for more background.
+A bird's speed can be calculated from sequential positions and used for filtering unrealistic high speeds. This is straightforward for positions with very high speeds between itself and the positions before and after (the so-called incoming and outgoing speed, respectively). See **[Gupte et al. 2022](https://doi.org/10.1111/1365-2656.13610)** for more background.
 
-To choose a maximum speed threshold, it is important to plot the distribution of speed. We found that its better to have a large maximum speed threshold and only filter out extreme speeds. Remaining erroneous positions can be filter out by smoothing the data (e.g. by [median smoothing](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html#median-smooth-data)).
+To choose a maximum speed threshold, it is important to plot the distribution of speed and best also the tracks around the outliers using `atl_check_tag(highlight_outliers = TRUE)`. We found that its better to have a large maximum speed threshold and only filter out extreme speeds. Remaining erroneous positions can be filter out by smoothing the data (e.g. by [median smoothing](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html#median-smooth-data)).
 
 ```{r, fig.cap = "Histogram of speed moved from all data", fig.align = "center"}
 # calculate speed

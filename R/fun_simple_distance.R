@@ -13,17 +13,17 @@
 #' @param lag The lag (in number of localizations) over which to calculate
 #' distance.
 #' @return Returns a vector of distances between consecutive points.
-#' 
+#'
 #' @examples
 #' # packages
 #' library(tools4watlas)
-#' 
+#'
 #' # load example data
 #' data <- data_example
-#' 
+#'
 #' # calculate distance
 #' data[, dist := atl_simple_dist(data, x = "x", y = "y", lag = 1)]
-#' 
+#'
 #' # check data
 #' data[, .(tag, datetime, x, y, dist)]
 #' @export

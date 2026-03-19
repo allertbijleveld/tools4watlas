@@ -8,16 +8,16 @@ atl_simple_dist(data, x = "x", y = "y", lag = 1)
 }
 \arguments{
 \item{data}{A dataframe object of or extending the class data.frame,
-which must contain two coordinate columns for the X and Y coordinates.}
+which must contain two coordinate columns for the x and y coordinates.}
 
-\item{x}{A column name in a data.frame object that contains the numeric X
+\item{x}{A column name in a \code{data.table} object that contains the numeric x
 coordinate.}
 
-\item{y}{A column name in a data.frame object that contains the numeric Y
+\item{y}{A column name in a \code{data.table} object that contains the numeric y
 coordinate.}
 
 \item{lag}{The lag (in number of localizations) over which to calculate
-distance}
+distance.}
 }
 \value{
 Returns a vector of distances between consecutive points.
@@ -26,6 +26,19 @@ Returns a vector of distances between consecutive points.
 Gets the euclidean distance between consecutive localization in a coordinate
 reference system in metres, i.e., UTM systems.
 }
+\examples{
+# packages
+library(tools4watlas)
+
+# load example data
+data <- data_example
+
+# calculate distance
+data[, dist := atl_simple_dist(data, x = "x", y = "y", lag = 1)]
+
+# check data
+data[, .(tag, datetime, x, y, dist)]
+}
 \author{
-Pratik R. Gupte & Allert Bijleveld
+Pratik R. Gupte, Allert Bijleveld & Johannes Krietsch
 }
