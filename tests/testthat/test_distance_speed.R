@@ -101,3 +101,18 @@ testthat::test_that("simple distance is correct", {
     test_speed_out$speed_out
   )
 })
+
+testthat::test_that("atl_simple_dist() returns NA when nrow(data) <= lag", {
+  skip_if_not_installed("tools4watlas")
+  
+  # nrow == lag: exactly at the boundary
+  data_eq <- data.table::data.table(x = 1, y = 1)
+  result_eq <- tools4watlas::atl_simple_dist(data_eq, lag = 1)
+  expect_equal(result_eq, NA_real_)
+  
+  # nrow < lag: below the boundary
+  data_lt <- data.table::data.table(x = c(1, 2), y = c(1, 2))
+  result_lt <- tools4watlas::atl_simple_dist(data_lt, lag = 3)
+  expect_equal(result_lt, rep(NA_real_, 3))
+  expect_length(result_lt, 3)
+})

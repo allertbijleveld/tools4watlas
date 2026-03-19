@@ -98,3 +98,25 @@ testthat::test_that(
     testthat::expect_null(attr(res, "crs"))
   }
 )
+
+testthat::test_that("atl_transform_dt() stops when target CRS has no EPSG code", {
+  
+  data <- data.table::data.table(
+    x = c(663000, 664000),
+    y = c(5905000, 5906000)
+  )
+  
+  # create a CRS without an EPSG code using a WKT proj string
+  crs_no_epsg <- sf::st_crs(
+    "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000"
+  )
+  
+  expect_error(
+    tools4watlas::atl_transform_dt(
+      data = data,
+      from = sf::st_crs(32631),
+      to = crs_no_epsg
+    ),
+    "Target CRS has no EPSG code."
+  )
+})

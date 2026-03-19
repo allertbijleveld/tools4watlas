@@ -79,14 +79,14 @@ test_that("atl_add_tidal_data handles empty input gracefully", {
   )
 
   # Mock tidal data
-  tide_data <- data.table(
+  tide_data <- data.frame(
     high_start_time = as.POSIXct(character(0)),
     low_time = as.POSIXct(character(0)),
     tideID = numeric(0)
   )
 
   # Mock high-resolution tidal data
-  tide_data_highres <- data.table(
+  tide_data_highres <- data.frame(
     dateTime = as.POSIXct(character(0)),
     waterlevel = numeric(0)
   )

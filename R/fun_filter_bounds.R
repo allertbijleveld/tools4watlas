@@ -149,30 +149,27 @@ atl_filter_bounds <- function(data,
 
   # filter for spatial extent either inside or outside
   if (remove_inside) {
-    # KEEPS DATA OUTSIDE THE BOUNDING BOX AND POLYGON
-    # filter by bounding box
-    keep <- !(data.table::between(
-      data[[x]], x_range[1], x_range[2],
-      NAbounds = TRUE
-    ) &
-      data.table::between(data[[y]], y_range[1], y_range[2],
-        NAbounds = TRUE
-      ))
-    # filter by bbox first
-    # this is where the first copy is made
-    # because the number of rows is reduced
-    data_ <- data[keep, ]
-
-    # filter by polygon
+    # KEEPS DATA OUTSIDE THE BOUNDING BOX OR OUTSIDE THE POLYGON
     if (!is.null(sf_polygon)) {
+      # polygon provided: ignore bbox, filter only by polygon
       data_ <- atl_within_polygon(
-        data = data_,
+        data = data,
         x = x, y = y,
         polygon = sf_polygon,
         col_name = ".in_polygon"
       )
       data_ <- data_[(.in_polygon) == FALSE]
       data_[, .in_polygon := NULL]
+    } else {
+      # no polygon: filter by bbox only
+      outside_bbox <- !(data.table::between(
+        data[[x]], x_range[1], x_range[2],
+        NAbounds = TRUE
+      ) &
+        data.table::between(
+          data[[y]], y_range[1], y_range[2], NAbounds = TRUE
+        ))
+      data_ <- data[outside_bbox, ]
     }
   } else {
     # KEEPS DATA INSIDE THE BOUNDING BOX AND POLYGON

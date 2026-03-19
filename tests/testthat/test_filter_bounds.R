@@ -131,3 +131,141 @@ testthat::test_that("data filtered correctly by polygon only", {
   expect_equal(filtered_inside$Y, c(2, 3, 4))
   
 })
+
+testthat::test_that("remove_inside = TRUE with polygon removes points inside polygon", {
+  
+  data <- data.table::copy(tools4watlas::data_example)
+  
+  # get bbox of data to keep all points in bbox filter
+  x_range <- range(data$x, na.rm = TRUE)
+  y_range <- range(data$y, na.rm = TRUE)
+  
+  result <- tools4watlas::atl_filter_bounds(
+    data = data,
+    x = "x",
+    y = "y",
+    sf_polygon = tools4watlas::grienderwaard,
+    remove_inside = TRUE
+  )
+  
+  # use atl_within_polygon to independently check no points inside remain
+  result <- tools4watlas::atl_within_polygon(
+    result,
+    polygon = tools4watlas::grienderwaard,
+    col_name = "on_grienderwaard"
+  )
+  
+  expect_true(all(result$on_grienderwaard == FALSE))
+  expect_lt(nrow(result), nrow(data))
+})
+
+# Test: data.frame input is returned as data.frame (was_df path)
+testthat::test_that("data.frame input is returned as data.frame", {
+  test_data <- data.frame(
+    X = as.double(1:10),
+    Y = as.double(1:10)
+  )
+  
+  result <- tools4watlas::atl_filter_bounds(
+    data = test_data,
+    x = "X",
+    y = "Y",
+    x_range = c(1, 10),
+    y_range = c(1, 10),
+    remove_inside = FALSE
+  )
+  
+  expect_s3_class(result, "data.frame")
+})
+
+# Test: warning when all rows are removed
+testthat::test_that("warning issued when all rows removed", {
+  test_data <- data.table::data.table(
+    X = as.double(1:5),
+    Y = as.double(1:5)
+  )
+  
+  expect_warning(
+    tools4watlas::atl_filter_bounds(
+      data = test_data,
+      x = "X",
+      y = "Y",
+      x_range = c(100, 200),
+      y_range = c(100, 200),
+      remove_inside = FALSE
+    ),
+    "cleaned data has no rows remaining"
+  )
+})
+
+# Test: error on non-dataframe input
+testthat::test_that("error on non-dataframe input", {
+  expect_error(
+    tools4watlas::atl_filter_bounds(
+      data = "not_a_dataframe",
+      x_range = c(1, 10),
+      y_range = c(1, 10)
+    ),
+    "input not a dataframe object"
+  )
+})
+
+# Test: error when remove_inside is not logical
+testthat::test_that("error when remove_inside is not logical", {
+  test_data <- data.table::data.table(X = as.double(1:5), Y = as.double(1:5))
+  
+  expect_error(
+    tools4watlas::atl_filter_bounds(
+      data = test_data,
+      x_range = c(1, 10),
+      y_range = c(1, 10),
+      remove_inside = "yes"
+    ),
+    "remove inside needs TRUE/FALSE"
+  )
+})
+
+# Test: error when required x/y columns are missing
+testthat::test_that("error when x or y columns missing from data", {
+  test_data <- data.table::data.table(A = as.double(1:5), B = as.double(1:5))
+  
+  expect_error(
+    tools4watlas::atl_filter_bounds(
+      data = test_data,
+      x = "X",
+      y = "Y",
+      x_range = c(1, 10),
+      y_range = c(1, 10)
+    )
+  )
+})
+
+# Test: error when no bounds or polygon supplied
+testthat::test_that("error when no bounds or polygon supplied", {
+  test_data <- data.table::data.table(X = as.double(1:5), Y = as.double(1:5))
+  
+  expect_error(
+    tools4watlas::atl_filter_bounds(
+      data = test_data,
+      x = "X",
+      y = "Y"
+    )
+  )
+})
+
+# Test: error when bound lengths are not 2
+testthat::test_that("error on incorrect bound lengths", {
+  test_data <- data.table::data.table(X = as.double(1:5), Y = as.double(1:5))
+  
+  expect_error(
+    tools4watlas::atl_filter_bounds(
+      data = test_data,
+      x = "X",
+      y = "Y",
+      x_range = c(1, 5, 10),
+      y_range = c(1, 5)
+    ),
+    "incorrect bound lengths"
+  )
+})
+

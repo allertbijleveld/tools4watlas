@@ -75,7 +75,6 @@
 #'   buffer_res_patches = 75 / 2
 #' )
 #' @export
-
 atl_check_res_patch <- function(data,
                                 tide_data,
                                 tide_data_highres,
