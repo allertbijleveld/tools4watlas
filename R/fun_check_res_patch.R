@@ -35,6 +35,8 @@
 #' @param mudflat_colour Mudflat colour (default "#faf5ef")
 #' @param mudflat_fill Mudflat fill (default "#faf5ef")
 #' @param mudflat_alpha Mudflat alpha (default 0.6)
+#' @param roosts Logical. Whether to add the roost polygon around Griend or not
+#' (default: FALSE).
 #' @param filename Character (or NULL). If provided, the plot is saved as a
 #'   `.png` file to this path and with this name; otherwise, the function
 #'   returns the plot.
@@ -97,6 +99,7 @@ atl_check_res_patch <- function(data,
                                 mudflat_colour = "#faf5ef",
                                 mudflat_fill = "#faf5ef",
                                 mudflat_alpha = 0.6,
+                                roosts = FALSE,
                                 filename = NULL,
                                 png_width = 3840,
                                 png_height = 2160) {
@@ -199,6 +202,12 @@ atl_check_res_patch <- function(data,
     buffer = buffer_bm
   )
   bbox <- atl_bbox(ds, buffer = buffer_bm, asp = "4:3")
+
+  # if roosts = TRUE add roost polygon
+  if (roosts == TRUE) {
+    bm <- bm +
+      geom_sf(data = roosts_griend, fill = NA, color = "black")
+  }
 
   # plot on map
   p1 <- bm +

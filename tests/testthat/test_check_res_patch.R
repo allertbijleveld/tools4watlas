@@ -46,7 +46,8 @@ test_that("atl_check_res_patch() works with example data files", {
     tide_data_highres = tide_data_highres,
     tide = tide_id,
     buffer_res_patches = 30,
-    filename = NULL
+    filename = NULL,
+    roosts = TRUE
   )
   
   # Check output type

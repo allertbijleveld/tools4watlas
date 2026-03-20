@@ -27,6 +27,7 @@ atl_check_res_patch(
   mudflat_colour = "#faf5ef",
   mudflat_fill = "#faf5ef",
   mudflat_alpha = 0.6,
+  roosts = FALSE,
   filename = NULL,
   png_width = 3840,
   png_height = 2160
@@ -85,6 +86,9 @@ give a warning message, but works if desired.}
 \item{mudflat_fill}{Mudflat fill (default "#faf5ef")}
 
 \item{mudflat_alpha}{Mudflat alpha (default 0.6)}
+
+\item{roosts}{Logical. Whether to add the roost polygon around Griend or not
+(default: FALSE).}
 
 \item{filename}{Character (or NULL). If provided, the plot is saved as a
 \code{.png} file to this path and with this name; otherwise, the function
