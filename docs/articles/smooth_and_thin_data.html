@@ -57,12 +57,12 @@
     <li><a class="dropdown-item" href="../articles/visualization_tutorials/animate_data.html">Animate data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
-    <li><a class="dropdown-item" href="../articles/package_development/package_maintenance.html">Package maintenance</a></li>
-    <li><a class="dropdown-item" href="../articles/package_development/basemap_data.html">Basemap data</a></li>
+    <li><a class="dropdown-item" href="../articles/package_development/contributing_to_tools4watlas.html">Contributing to tools4watlas</a></li>
+    <li><a class="dropdown-item" href="../articles/package_development/extract_basemap_data.html">Extract basemap data</a></li>
     <li><a class="dropdown-item" href="../articles/package_development/package_logo.html">tools4watlas logo</a></li>
   </ul>
 </li>
-<li class="nav-item"><a class="nav-link" href="../articles/literature/literature.html">Literature</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/research_and_publications/research_and_publications.html">Research &amp; Publications</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -109,8 +109,8 @@
 </h2>
 <p>To reduce error in the position data, a basic smoother such as a
 median filter can be applied. the function
-<code>atl_median_smooth</code> calculates the median coordinates within
-a window of positions set by <code>moving window</code>.</p>
+<code><a href="../reference/atl_median_smooth.html">atl_median_smooth()</a></code> calculates the median coordinates
+within a window of positions set by <code>moving window</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Smooth the data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/atl_median_smooth.html">atl_median_smooth</a></span><span class="op">(</span><span class="va">data</span>, moving_window <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
@@ -163,7 +163,7 @@ track.</p>
 <span>    color <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">1</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="smooth_and_thin_data_files/figure-html/unnamed-chunk-4-1.png" alt="Smoothed track (black) on top of raw track (red)" width="100%"><p class="caption">
+<img src="smooth_and_thin_data_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="Smoothed track (black) on top of raw track (red)" width="100%"><p class="caption">
 Smoothed track (black) on top of raw track (red)
 </p>
 </div>
@@ -373,7 +373,7 @@ was sampled.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

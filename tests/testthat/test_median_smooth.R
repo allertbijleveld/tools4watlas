@@ -6,7 +6,7 @@ testthat::test_that("cleaning raw data works", {
   message(glue::glue("starttime = {starttime} and \\
                      starttime num = {starttime_num}"))
 
-  test_data <- data.table::data.table(
+  test_data <- data.frame(
     x = cumsum(runif(
       n = 1e3,
       min = 0, max = 1
@@ -65,4 +65,26 @@ testthat::test_that("cleaning raw data works", {
 
   # check that no rows are removed
   testthat::expect_equal(nrow(test_data), nrow(test_output))
+})
+
+testthat::test_that("atl_median_smooth() warns and returns NULL when data has no rows", {
+  skip_if_not_installed("tools4watlas")
+  
+  # create empty data.table with correct columns
+  empty_data <- data.table::data.table(
+    tag = character(0),
+    x = double(0),
+    y = double(0),
+    time = double(0)
+  )
+  
+  expect_warning(
+    result <- tools4watlas::atl_median_smooth(
+      data = empty_data,
+      moving_window = 3
+    ),
+    "no data remaining"
+  )
+  
+  expect_null(result)
 })

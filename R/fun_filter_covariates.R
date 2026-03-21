@@ -1,52 +1,67 @@
 #' Filter data by position covariates
 #'
-#' The atlastools function \code{atl_filter_covariates} allows convenient
+#' The atlastools function `atl_filter_covariates` allows convenient
 #' filtering of a dataset by any number of logical filters.
 #' This function can be used to easily filter timestamps in a range, as well as
 #' combine simple spatial and temporal filters.
-#' It accepts a character vector of \code{R} expressions that each return a
-#' logical vector (i.e., \code{TRUE} or \code{FALSE}).
+#' It accepts a character vector of `R` expressions that each return a
+#' logical vector (i.e. `TRUE` or `FALSE`).
 #' Each filtering condition is interpreted in the context of the dataset
 #' supplied, and used to filter for rows that satisfy each of the filter
 #' conditions.
 #' Users must make sure that the filtering variables exist in their dataset in
 #' order to avoid errors.
 #'
-#' @author Pratik R. Gupte
-#' @param data A dataframe or similar containing the variables to be filtered.
+#' @author Pratik R. Gupte and Johannes Krietsch
+#' @param data A `data.table` or similar containing the variables to be
+#' filtered.
 #' @param filters A character vector of filter expressions. An example might be
-#' \code{"speed < 20"}. The filtering variables must be in the dataframe.
+#' \code{"speed < 20"}. The filtering variables must be in the `data.table`.
 #' The function will not explicitly check whether the filtering variables are
 #' present; this makes it flexible, allowing expressions such as
 #' \code{"between(speed, 2, 20)"}, but also something to use at your own risk.
 #' A missing filter variables \emph{will} result in an empty data frame.
-#' @param quietly If TRUE returns percentage and number of positions filtered,
-#' if FALSE functions runs quietly
+#' @param quietly If `TRUE` returns percentage and number of positions filtered,
+#' if `FALSE` functions runs quietly
 #'
 #' @return A dataframe filtered using the filters specified.
 #' @examples
-#' \dontrun{
+#' # packages
+#' library(tools4watlas)
+#'
+#' # load example data
+#' data <- data_example
+#'
+#' # filter data at night
+#' # extract hour of the day
+#' data[, hour := as.integer(format(datetime, "%H"))]
+#'
 #' night_data <- atl_filter_covariates(
-#'   data = dataset,
+#'   data = data,
 #'   filters = c("!inrange(hour, 6, 18)")
 #' )
 #'
-#' data_in_area <- atl_filter_covariates(
-#'   data = dataset,
-#'   filters = c(
-#'     "between(time, t_min, t_max)",
-#'     "between(x, x_min, x_max)"
-#'   )
-#' )
-#' filtered_data <- atl_filter_covariates(
+#' # filter on the variance of the estimated x- and y-coordinates
+#' var_max <- 5000 # in meters squared
+#'
+#' data_filtered <- atl_filter_covariates(
 #'   data = data,
 #'   filters = c(
-#'     "NBS > 3",
-#'     "SD < 100",
-#'     "between(day, 5, 8)"
+#'     sprintf("varx < %s", var_max),
+#'     sprintf("vary < %s", var_max)
 #'   )
 #' )
-#' }
+#'
+#' # filter by speed
+#' speed_max <- 35 # m/s (126 km/h)
+#'
+#' data <- atl_filter_covariates(
+#'   data = data,
+#'   filters = c(
+#'     sprintf("speed_in < %s | is.na(speed_in)", speed_max),
+#'     sprintf("speed_out < %s | is.na(speed_out)", speed_max)
+#'   )
+#' )
 #' @export
 atl_filter_covariates <- function(data,
                                   filters = c(),

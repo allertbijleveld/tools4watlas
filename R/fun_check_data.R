@@ -5,7 +5,7 @@
 #'
 #' @author Pratik R. Gupte
 #' @param data The tracking data to check for required columns. Must be in the
-#' form of a data.frame or similar, which can be handled by the function
+#' form of a `data.frame` or `data.table`, which can be handled by the function
 #' colnames.
 #' @param names_expected The names expected as a character vector.
 #' By default, checks for the column names \code{x, y, time}.

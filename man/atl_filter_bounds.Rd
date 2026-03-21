@@ -15,46 +15,107 @@ atl_filter_bounds(
 )
 }
 \arguments{
-\item{data}{A dataframe or extension which contains X and Y coordinates.}
+\item{data}{A \code{data.table} or extension which contains x- and y-coordinates.}
 
-\item{x}{The X coordinate column.}
+\item{x}{The x coordinate column.}
 
-\item{y}{The Y coordinate column.}
+\item{y}{The y coordinate column.}
 
-\item{x_range}{The range of X coordinates.}
+\item{x_range}{The range of x coordinates.}
 
-\item{y_range}{The range of Y coordinates.}
+\item{y_range}{The range of y coordinates.}
 
-\item{sf_polygon}{\code{sfc_*POLYGON} object which must have a defined CRS.
+\item{sf_polygon}{\code{sfc_POLYGON} object which must have a defined CRS.
 The polygon CRS is assumed to be appropriate for the positions as well, and
 is assigned to the coordinates when determining the intersection.}
 
 \item{remove_inside}{Whether to remove points from within the range.
 Setting \code{negate = TRUE} removes positions within the bounding
-box specified by the X and Y ranges.}
+box specified by the x- and y-ranges.}
 }
 \value{
-A data frame of tracking locations with attractor points removed.
+A \code{data.table} of tracking locations with attractor points removed.
 }
 \description{
 Filters out positions lying inside or outside an area.
-The area can be defined in two ways, either by its X and Y coordinate
-ranges, or by an \code{sf-*POLYGON} object.
+The area can be defined in two ways, either by its x- and y-coordinate
+ranges, or by an \code{sf-POLYGON} object.
 \code{MULTIPOLYGON} objects are supported by the internal function
 \code{atl_within_polygon}.
 }
 \examples{
-\dontrun{
-filtered_data <- atl_filter_bounds(
+# packages
+library(tools4watlas)
+library(sf)
+library(ggplot2)
+
+# load example data
+data <- data_example
+
+# create basemap
+bm <- atl_create_bm(data, buffer = 800)
+
+# create a bounding box to filter data
+griend_east <- st_sfc(st_point(c(5.275, 53.2523)), crs = st_crs(4326)) |>
+  st_transform(crs = st_crs(32631))
+
+# define bbox to crop data
+bbox_crop <- atl_bbox(griend_east, asp = "16:9", buffer = 2000)
+bbox_sf <- st_as_sfc(bbox_crop) # just for plotting as sf object
+
+# geom_sf overwrites coordinate system, so we need to set the limits again
+bbox <- atl_bbox(data, buffer = 800)
+
+# plot points and tracks with standard ggplot colours
+bm +
+  geom_path(
+    data = data, aes(x, y, colour = tag),
+    linewidth = 0.5, alpha = 0.1, show.legend = TRUE
+  ) +
+  geom_point(
+    data = data, aes(x, y, colour = tag),
+    size = 0.5, alpha = 1, show.legend = TRUE
+  ) +
+  geom_sf(data = bbox_sf, color = "firebrick", fill = NA) +
+  scale_color_discrete(name = paste("N = ", length(unique(data$tag)))) +
+  theme(legend.position = "top") +
+  # set extend again (overwritten by geom_sf)
+  coord_sf(
+    xlim = c(bbox["xmin"], bbox["xmax"]),
+    ylim = c(bbox["ymin"], bbox["ymax"]), expand = FALSE
+  )
+
+# filter data with bounding box
+# note: when filtering with a rectangle bounding box
+# and large datasets, using th range is faster than sf_polygon
+data_filtered <- atl_filter_bounds(
   data = data,
-  x = "X", y = "Y",
-  x_range = c(x_min, x_max),
-  y_range = c(y_min, y_max),
-  sf_polygon = your_polygon,
+  x = "x",
+  y = "y",
+  x_range = c(bbox_crop["xmin"], bbox_crop["xmax"]),
+  y_range = c(bbox_crop["ymin"], bbox_crop["ymax"]),
   remove_inside = FALSE
 )
-}
+
+# plot cropped data
+bm +
+  geom_path(
+    data = data_filtered, aes(x, y, colour = tag),
+    linewidth = 0.5, alpha = 0.1, show.legend = TRUE
+  ) +
+  geom_point(
+    data = data_filtered, aes(x, y, colour = tag),
+    size = 0.5, alpha = 1, show.legend = TRUE
+  ) +
+  geom_sf(data = bbox_sf, color = "firebrick", fill = NA) +
+  scale_color_discrete(name = paste("N = ", length(unique(data$tag)))) +
+  theme(legend.position = "top") +
+  # set extend again (overwritten by geom_sf)
+  coord_sf(
+    xlim = c(bbox["xmin"], bbox["xmax"]),
+    ylim = c(bbox["ymin"], bbox["ymax"]), expand = FALSE
+  )
 }
 \author{
-Pratik R. Gupte
+Pratik R. Gupte and Johannes Krietsch
 }

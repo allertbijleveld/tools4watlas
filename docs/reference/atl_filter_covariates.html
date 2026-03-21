@@ -4,7 +4,7 @@ filtering of a dataset by any number of logical filters.
 This function can be used to easily filter timestamps in a range, as well as
 combine simple spatial and temporal filters.
 It accepts a character vector of R expressions that each return a
-logical vector (i.e., TRUE or FALSE).
+logical vector (i.e. TRUE or FALSE).
 Each filtering condition is interpreted in the context of the dataset
 supplied, and used to filter for rows that satisfy each of the filter
 conditions.
@@ -14,7 +14,7 @@ filtering of a dataset by any number of logical filters.
 This function can be used to easily filter timestamps in a range, as well as
 combine simple spatial and temporal filters.
 It accepts a character vector of R expressions that each return a
-logical vector (i.e., TRUE or FALSE).
+logical vector (i.e. TRUE or FALSE).
 Each filtering condition is interpreted in the context of the dataset
 supplied, and used to filter for rows that satisfy each of the filter
 conditions.
@@ -45,8 +45,7 @@ order to avoid errors."><meta property="og:image" content="https://allertbijleve
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
-    <li><a class="dropdown-item" href="../articles/extended_workflow/add_residency_patches.html">Add residency patches</a></li>
-    <li><a class="dropdown-item" href="../articles/extended_workflow/add_SIBES_data.html">Add SIBES data</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/add_residence_patches.html">Add residence patches</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
     <li><a class="dropdown-item" href="../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
@@ -57,11 +56,11 @@ order to avoid errors."><meta property="og:image" content="https://allertbijleve
     <li><a class="dropdown-item" href="../articles/visualization_tutorials/animate_data.html">Animate data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
-    <li><a class="dropdown-item" href="../articles/package_development/package_maintenance.html">Package maintenance</a></li>
-    <li><a class="dropdown-item" href="../articles/package_development/basemap_data.html">Basemap data</a></li>
+    <li><a class="dropdown-item" href="../articles/package_development/contributing_to_tools4watlas.html">Contributing to tools4watlas</a></li>
+    <li><a class="dropdown-item" href="../articles/package_development/extract_basemap_data.html">Extract basemap data</a></li>
     <li><a class="dropdown-item" href="../articles/package_development/package_logo.html">tools4watlas logo</a></li>
   </ul></li>
-<li class="nav-item"><a class="nav-link" href="../articles/literature/literature.html">Literature</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/research_and_publications/research_and_publications.html">Research &amp; Publications</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/allertbijleveld/tools4watlas/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -83,7 +82,7 @@ filtering of a dataset by any number of logical filters.
 This function can be used to easily filter timestamps in a range, as well as
 combine simple spatial and temporal filters.
 It accepts a character vector of <code>R</code> expressions that each return a
-logical vector (i.e., <code>TRUE</code> or <code>FALSE</code>).
+logical vector (i.e. <code>TRUE</code> or <code>FALSE</code>).
 Each filtering condition is interpreted in the context of the dataset
 supplied, and used to filter for rows that satisfy each of the filter
 conditions.
@@ -101,12 +100,13 @@ order to avoid errors.</p>
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>A dataframe or similar containing the variables to be filtered.</p></dd>
+<dd><p>A <code>data.table</code> or similar containing the variables to be
+filtered.</p></dd>
 
 
 <dt id="arg-filters">filters<a class="anchor" aria-label="anchor" href="#arg-filters"></a></dt>
 <dd><p>A character vector of filter expressions. An example might be
-<code>"speed &lt; 20"</code>. The filtering variables must be in the dataframe.
+<code>"speed &lt; 20"</code>. The filtering variables must be in the <code>data.table</code>.
 The function will not explicitly check whether the filtering variables are
 present; this makes it flexible, allowing expressions such as
 <code>"between(speed, 2, 20)"</code>, but also something to use at your own risk.
@@ -114,8 +114,8 @@ A missing filter variables <em>will</em> result in an empty data frame.</p></dd>
 
 
 <dt id="arg-quietly">quietly<a class="anchor" aria-label="anchor" href="#arg-quietly"></a></dt>
-<dd><p>If TRUE returns percentage and number of positions filtered,
-if FALSE functions runs quietly</p></dd>
+<dd><p>If <code>TRUE</code> returns percentage and number of positions filtered,
+if <code>FALSE</code> functions runs quietly</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -124,33 +124,89 @@ if FALSE functions runs quietly</p></dd>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
-    <p>Pratik R. Gupte</p>
+    <p>Pratik R. Gupte and Johannes Krietsch</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># packages</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># load example data</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># filter data at night</span></span></span>
+<span class="r-in"><span><span class="co"># extract hour of the day</span></span></span>
+<span class="r-in"><span><span class="va">data</span><span class="op">[</span>, <span class="va">hour</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">datetime</span>, <span class="st">"%H"</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           species posID    tag       time            datetime        x       y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;char&gt; &lt;int&gt; &lt;char&gt;      &lt;num&gt;              &lt;POSc&gt;    &lt;num&gt;   &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1:   redshank     2   3027 1695438805 2023-09-23 03:13:25 650705.6 5902556</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2:   redshank     3   3027 1695438808 2023-09-23 03:13:28 650705.6 5902556</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3:   redshank     4   3027 1695439189 2023-09-23 03:19:49 650721.0 5902559</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4:   redshank     5   3027 1695439192 2023-09-23 03:19:52 650721.1 5902559</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5:   redshank     6   3027 1695439195 2023-09-23 03:19:55 650723.1 5902564</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84411: sanderling  8126   3288 1695513564 2023-09-23 23:59:24 650178.5 5902404</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84412: sanderling  8127   3288 1695513570 2023-09-23 23:59:30 650178.5 5902404</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84413: sanderling  8128   3288 1695513576 2023-09-23 23:59:36 650178.5 5902404</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84414: sanderling  8129   3288 1695513582 2023-09-23 23:59:42 650178.2 5902403</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84415: sanderling  8130   3288 1695513588 2023-09-23 23:59:48 650177.5 5902403</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          nbs      varx       vary      covxy    speed_in  speed_out    x_raw</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt;     &lt;num&gt;      &lt;num&gt;      &lt;num&gt;       &lt;num&gt;      &lt;num&gt;    &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1:     3 49.090805 460.836304 141.214539 0.000000000 0.00000000 650705.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2:     3 58.183502 471.808105 155.888260 0.000000000 0.04132607 650691.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3:     3 49.968266 441.456970 138.204239 0.041326067 0.01412799 650728.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4:     3  5.342943  28.163733   8.582236 0.014127986 1.73816620 650721.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5:     3  5.548222  35.032780  10.426281 1.738166199 0.00000000 650721.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84411:     3 19.730513  12.872843  -1.360448 0.008866944 0.00000000 650184.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84412:     3 12.930080   4.513436   1.932977 0.000000000 0.00000000 650178.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84413:     3 20.655415  10.068294   5.556414 0.000000000 0.17174318 650179.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84414:     3 26.344803  17.227232   6.836256 0.171743185 0.11173205 650178.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84415:     3 26.837191  13.242077   7.571170 0.111732046 0.11966308 650177.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          y_raw  tideID tidaltime time2lowtide waterlevel bathymetry  hour</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          &lt;num&gt;   &lt;int&gt;     &lt;num&gt;        &lt;num&gt;      &lt;num&gt;      &lt;num&gt; &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1: 5902576 2023513  133.4210    -246.5790       49.9   84.29087     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2: 5902536 2023513  133.4710    -246.5290       49.9   84.29087     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3: 5902571 2023513  139.8205    -240.1795       45.0   86.83250     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4: 5902556 2023513  139.8705    -240.1295       45.0   86.83250     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5: 5902559 2023513  139.9205    -240.0795       45.0   86.83250     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84411: 5902405 2023514  639.4034     269.4034       61.7   99.64340    23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84412: 5902406 2023514  639.5034     269.5034       62.0   99.64340    23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84413: 5902401 2023514  639.6034     269.6034       62.0   99.64340    23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84414: 5902398 2023514  639.7033     269.7033       62.0   99.64340    23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84415: 5902408 2023514  639.8033     269.8033       62.0   99.64340    23</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">night_data</span> <span class="op">&lt;-</span> <span class="fu">atl_filter_covariates</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">dataset</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">data</span>,</span></span>
 <span class="r-in"><span>  filters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"!inrange(hour, 6, 18)"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Note: 66.3% of the dataset was filtered out, corresponding to 55969 positions.</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">data_in_area</span> <span class="op">&lt;-</span> <span class="fu">atl_filter_covariates</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">dataset</span>,</span></span>
-<span class="r-in"><span>  filters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="st">"between(time, t_min, t_max)"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"between(x, x_min, x_max)"</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">filtered_data</span> <span class="op">&lt;-</span> <span class="fu">atl_filter_covariates</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="co"># filter on the variance of the estimated x- and y-coordinates</span></span></span>
+<span class="r-in"><span><span class="va">var_max</span> <span class="op">&lt;-</span> <span class="fl">5000</span> <span class="co"># in meters squared</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">data_filtered</span> <span class="op">&lt;-</span> <span class="fu">atl_filter_covariates</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">data</span>,</span></span>
 <span class="r-in"><span>  filters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="st">"NBS &gt; 3"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"SD &lt; 100"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"between(day, 5, 8)"</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"varx &lt; %s"</span>, <span class="va">var_max</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"vary &lt; %s"</span>, <span class="va">var_max</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Note: 0% of the dataset was filtered out, corresponding to 0 positions.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># filter by speed</span></span></span>
+<span class="r-in"><span><span class="va">speed_max</span> <span class="op">&lt;-</span> <span class="fl">35</span> <span class="co"># m/s (126 km/h)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">atl_filter_covariates</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">data</span>,</span></span>
+<span class="r-in"><span>  filters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"speed_in &lt; %s | is.na(speed_in)"</span>, <span class="va">speed_max</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"speed_out &lt; %s | is.na(speed_out)"</span>, <span class="va">speed_max</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Note: 0% of the dataset was filtered out, corresponding to 0 positions.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -158,11 +214,11 @@ if FALSE functions runs quietly</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, <a href="https://github.com/pratikunterwegs" class="external-link">Pratik Gupte</a>, <a href="https://github.com/CBeardsworth" class="external-link">Christine Beardsworth</a>, <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>.</p>
+  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

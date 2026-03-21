@@ -8,7 +8,7 @@ atl_check_data(data, names_expected = c("x", "y", "time"))
 }
 \arguments{
 \item{data}{The tracking data to check for required columns. Must be in the
-form of a data.frame or similar, which can be handled by the function
+form of a \code{data.frame} or \code{data.table}, which can be handled by the function
 colnames.}
 
 \item{names_expected}{The names expected as a character vector.

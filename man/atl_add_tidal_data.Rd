@@ -44,6 +44,44 @@ and waterlevel with reference to NAP (cm).
 Adds a unique tide identifier, waterlevel, time from high tide and time to
 low tide for tracking data (both in minutes).
 }
+\examples{
+# packages
+library(tools4watlas)
+
+# load example data
+data <- data_example
+
+# delete existing tide data columns to show how they are added
+data[, c("tideID", "tidaltime", "time2lowtide", "waterlevel") := NULL]
+
+# sub path to tide data
+tidal_pattern_fp <- system.file(
+  "extdata", "example-tidalPattern-west_terschelling-UTC.csv",
+  package = "tools4watlas"
+)
+measured_water_height_fp <- system.file(
+  "extdata", "example-gemeten_waterhoogte-west_terschelling-clean-UTC.csv",
+  package = "tools4watlas"
+)
+
+# load tide data
+tidal_pattern <- fread(tidal_pattern_fp)
+measured_water_height <- fread(measured_water_height_fp)
+
+# add tide data to movement data
+# The offset of 30 minutes is set to match Griend.
+data <- atl_add_tidal_data(
+  data = data,
+  tide_data = tidal_pattern,
+  tide_data_highres = measured_water_height,
+  waterdata_resolution = "10 min",
+  waterdata_interpolation = "1 min",
+  offset = 30
+)
+
+# show first 5 rows (subset of columns to show additional ones)
+head(data[, .(tag, datetime, tideID, tidaltime, time2lowtide, waterlevel)])
+}
 \author{
 Pratik Gupte & Allert Bijleveld & Johannes Krietsch
 }

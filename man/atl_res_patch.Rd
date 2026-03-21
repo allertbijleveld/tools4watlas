@@ -55,7 +55,25 @@ positions can help in removing bias due to short stops, but if such short
 stops are also of interest, they can be included by reducing the
 \code{min_fixes} argument.
 }
+\examples{
+# packages
+library(tools4watlas)
+
+# load example data
+data <- data_example
+
+# calculate residence patches for one red knot
+data <- atl_res_patch(
+  data[tag == "3038"],
+  max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
+  min_fixes = 3, min_duration = 120
+)
+
+# summary of residence patches
+data_summary <- atl_res_patch_summary(data)
+data_summary
+}
 \author{
-Pratik R. Gupte, Christine E. Beardsworth & Allert I. Bijleveld &
+Pratik R. Gupte, Christine E. Beardsworth, Allert I. Bijleveld &
 Johannes Krietsch
 }

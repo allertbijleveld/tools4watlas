@@ -5,3 +5,8 @@ pre, code {
 a {
   color: steelblue;
 }
+
+.dropdown-menu {
+  max-height: none !important;
+  overflow-y: visible !important;
+}

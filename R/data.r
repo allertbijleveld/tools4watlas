@@ -19,6 +19,21 @@
 #' @source <https://www.openstreetmap.org>
 "lakes"
 
+#' Grienderwaard
+#'
+#' @format sf object of the Grienderwaard
+#'
+#' @source Manually created based on openstreetmap data and -161 cm NAP polygon.
+"grienderwaard"
+
+#' Roosts around Griend
+#'
+#' @format sf object of the pre-roosts and roosts around Griend
+#'
+#' @source Buffered and smoothed around 60 cm NAP polygon.
+"roosts_griend"
+
+
 #' Data from two red knots and one redshank
 #'
 #' @format data.table of watlas data with tide data added

@@ -23,6 +23,44 @@
 #' since high tide in minutes), time2lowtide (time to low tide in minutes),
 #' and waterlevel with reference to NAP (cm).
 #' @import data.table
+#'
+#' @examples
+#' # packages
+#' library(tools4watlas)
+#'
+#' # load example data
+#' data <- data_example
+#'
+#' # delete existing tide data columns to show how they are added
+#' data[, c("tideID", "tidaltime", "time2lowtide", "waterlevel") := NULL]
+#'
+#' # sub path to tide data
+#' tidal_pattern_fp <- system.file(
+#'   "extdata", "example-tidalPattern-west_terschelling-UTC.csv",
+#'   package = "tools4watlas"
+#' )
+#' measured_water_height_fp <- system.file(
+#'   "extdata", "example-gemeten_waterhoogte-west_terschelling-clean-UTC.csv",
+#'   package = "tools4watlas"
+#' )
+#'
+#' # load tide data
+#' tidal_pattern <- fread(tidal_pattern_fp)
+#' measured_water_height <- fread(measured_water_height_fp)
+#'
+#' # add tide data to movement data
+#' # The offset of 30 minutes is set to match Griend.
+#' data <- atl_add_tidal_data(
+#'   data = data,
+#'   tide_data = tidal_pattern,
+#'   tide_data_highres = measured_water_height,
+#'   waterdata_resolution = "10 min",
+#'   waterdata_interpolation = "1 min",
+#'   offset = 30
+#' )
+#'
+#' # show first 5 rows (subset of columns to show additional ones)
+#' head(data[, .(tag, datetime, tideID, tidaltime, time2lowtide, waterlevel)])
 #' @export
 atl_add_tidal_data <- function(data,
                                tide_data,
@@ -49,6 +87,18 @@ atl_add_tidal_data <- function(data,
 
   # check if datetime is POSIXct
   assertthat::assert_that("POSIXct" %in% class(data$datetime))
+
+  # check columns are not present already
+  cols_tidal <- c("tideID", "tidaltime", "time2lowtide", "waterlevel")
+  cols_exist <- cols_tidal[cols_tidal %in% names(data)]
+  assertthat::assert_that(
+    length(cols_exist) == 0,
+    msg = paste(
+      "Columns",
+      paste(cols_exist, collapse = ", "),
+      "exist already, water data already present?"
+    )
+  )
 
   # convert to data.table if not
   if (data.table::is.data.table(data) != TRUE) {

@@ -1,8 +1,8 @@
-# Summary of localization data
+# Summary of position data
 
-This function generates a summary of localization data by calculating
-the total number of positions, first and last data, days of data and
-time gaps between localizations, as well as data coverage. It returns a
+This function generates a summary of position data by calculating the
+total number of positions, first and last data, days of data and time
+gaps between localizations, as well as data coverage. It returns a
 summary for each unique ID specified in `id_columns`.
 
 ## Usage
@@ -15,13 +15,13 @@ atl_summary(data, id_columns = c("tag"))
 
 - data:
 
-  A data.table containing localization data with columns for ID, x, y
+  A data.table containing position data with columns for ID, x, y
   coordinates, time, and datetime.
 
 - id_columns:
 
   A character vector specifying the column(s) to group by. Defaults to
-  "tag".
+  `"tag"`.
 
 ## Value
 

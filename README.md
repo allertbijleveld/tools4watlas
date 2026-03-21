@@ -85,8 +85,8 @@ local NIOZ file server is required.
   loop**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_in_loop.html) -
   quick way to make plots by tag ID.
 
-- [**Fast plotting with
-  ggplot2**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/fast_plotting.html)
+- [**Plot data
+  faster**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_faster.html)
 
 - [**Plot data
   interactively**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_interactively.html)
@@ -96,12 +96,12 @@ local NIOZ file server is required.
 
 **Package development**:
 
-- [**Package
-  maintenance**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_maintenance.html) -
+- [**Contributing to
+  tools4watlas**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/contributing_to_tools4watlas.html) -
   describes how to work on `tools4watlas`.
 
-- [**Basemap
-  data**\*](https://allertbijleveld.github.io/tools4watlas/articles/package_development/basemap_data.html) -
+- [**Extract basemap
+  data**\*](https://allertbijleveld.github.io/tools4watlas/articles/package_development/extract_basemap_data.html) -
   describes how the basemap data were extracted and can guide the user
   in creating customized base maps.
 
@@ -163,6 +163,7 @@ bm +
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" alt="Example tracks with one individual by species for two tide cycles" width="100%" />
 <p class="caption">
+
 Example tracks with one individual by species for two tide cycles
 </p>
 
@@ -187,8 +188,8 @@ the repository on GitHub and then submit a [pull
 request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
 Besides clear bug fixes, it is best to discuss potential changes or
 additions with [Allert Bijleveld](mailto:allert.bijleveld@nioz.nl).
-Check the article [Package
-maintenance](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_maintenance.html)
+Check the article [Contributing to
+tools4watlas](https://allertbijleveld.github.io/tools4watlas/articles/package_development/contributing_to_tools4watlas.html)
 for more details.
 
 ### **Acknowledgements**
@@ -210,6 +211,7 @@ for visualizing the tracking data in real time on
 volunteers that facilitated this work.
 
 <p align="middle">
+
 <a href="https://www.nioz.nl/en">
 <img src="man/figures/NIOZ_logo_ENG_RGB.png" align="middle" height="150" alt="nioz website" />
 </a>

@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
+This vignette shows how to load and check WATLAS data.
 
 #### Good to know
 
@@ -121,7 +122,7 @@ Sys.getenv("variable_name")
 # nolint end: assignment_linter.
 ```
 
-Connecting to a remote database with `atl_get_data` is similar to connecting with a local SQLite database. In this example (chunk not run and only shown), we load the last three days of data from all tags of 2024. Note that the host, username and password are specified as environmental variables in this example, but can also be specified directly.
+Connecting to a remote database with `atl_get_data()` is similar to connecting with a local SQLite database. In this example (chunk not run and only shown), we load the last three days of data from all tags of 2024. Note that the host, username and password are specified as environmental variables in this example, but can also be specified directly.
 
 Connecting to the remote database is normally restricted to current group members that also have access to the NIOZ/Bijleveld Teams environment. To use the most recent metadata stored online, we first load the `tags_watlas_all.xlsx` from the “WATLAS” SharePoint folder: `Documents/data/`. Either specify the path to your local copy of this folder or add the path for your user in the `atl_file_path()` function.
 
@@ -231,7 +232,7 @@ data[, c("rings", "crc", "catch_location") := NULL]
 
 ## Save data
 
-At this point it might be good to save the raw data for further analyses, as extracting the data from the database can take a long time with big datasets. A convenient and fast way is to use `fwrite` from the `data.table` package. By including `yaml = TRUE` we make sure the data stays in the same format, when we load it again. Note that the file path needs to be changed when running this example.
+At this point it might be good to save the raw data for further analyses, as extracting the data from the database can take a long time with big datasets. A convenient and fast way is to use `fwrite()` from the `data.table` package. By including `yaml = TRUE` we make sure the data stays in the same format, when we load it again with `fread(filepath, yaml = TRUE)`. Note that the file path needs to be changed when running this example.
 
 ```{r, eval = FALSE}
 # save data

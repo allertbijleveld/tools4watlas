@@ -40,7 +40,7 @@ atl_add_raster_data <- function(data = NULL,
   }
 
   # Check if any NA
-  if (anyNA(x) || anyNA(y)) {
+  if (anyNA(data[[x]]) || anyNA(data[[y]])) {
     stop("Specified x or y columns contain NA, but should not.")
   }
 

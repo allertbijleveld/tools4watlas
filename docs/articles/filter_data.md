@@ -77,7 +77,11 @@ bm +
     labels = trans_format("log10", math_format(10^.x)),
     direction = -1
   ) +
-  coord_sf(expand = FALSE)
+  # set extend again (overwritten by geom_sf) with 1 km buffer around bbox
+  coord_sf(
+    xlim = c(bbox["xmin"] - 1000, bbox["xmax"] + 1000),
+    ylim = c(bbox["ymin"] - 1000, bbox["ymax"] + 1000), expand = FALSE
+  )
 ```
 
 ![Heatmap of all positions with bounding box
@@ -126,21 +130,66 @@ bm +
     data = data_removed, aes(x, y), color = "firebrick",
     size = 0.5, alpha = 1, show.legend = FALSE
   ) +
-  geom_sf(data = bbox_sf, color = "firebrick", fill = NA)
+  geom_sf(data = bbox_sf, color = "firebrick", fill = NA) +
+  # set extend again (overwritten by geom_sf) with 1 km buffer around bbox
+  coord_sf(
+    xlim = c(bbox["xmin"] - 1000, bbox["xmax"] + 1000),
+    ylim = c(bbox["ymin"] - 1000, bbox["ymax"] + 1000), expand = FALSE
+  )
 ```
+
+On a finer level, depending on the analysis, one might want to assign
+all positions that are within a certain polygon. This can be done with
+[`atl_within_polygon()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_within_polygon.md).
+In this example we assign a new column logic column with
+`"on_grienderwaard` to distinguish all positions on the mudflats around
+Griend.
+
+``` r
+# assign positions within the polygon of Grienderwaard
+data <- atl_within_polygon(
+  data, polygon = grienderwaard, col_name = "on_grienderwaard"
+)
+
+# new bounding box using Grienderwaard for plot
+bbox <- atl_bbox(grienderwaard, buffer = 1500)
+
+# plot points on and out of Grienderwaard
+bm +
+  geom_path(
+    data = data, aes(x, y, colour = on_grienderwaard),
+    linewidth = 0.5, alpha = 0.1, show.legend = TRUE
+  ) +
+  geom_point(
+    data = data, aes(x, y, colour = on_grienderwaard),
+    size = 0.5, alpha = 1, show.legend = TRUE
+  ) +
+  scale_color_discrete() +
+  theme(legend.position = "top") +
+  # add Grienderwaard polygon
+  geom_sf(data = grienderwaard, color = "firebrick", fill = NA) +
+  # set extend again (overwritten by geom_sf)
+  coord_sf(
+    xlim = c(bbox["xmin"], bbox["xmax"]),
+    ylim = c(bbox["ymin"], bbox["ymax"]), expand = FALSE
+  )
+```
+
+![Plot with positions within and outside of
+Grienderwaard](filter_data_files/figure-html/unnamed-chunk-4-1.png)
+
+Plot with positions within and outside of Grienderwaard
 
 ## Temporal filtering
 
-Here, we show examples of filtering the data by timestamp. First, we
-want to filter all positions of the tag before the bird was released.
-Becasue the birds need to adjust after being caught and fitted with a
-tag, we additionally exclude the first 24 hours after release.
-Similarly, we can exclude positions at the end, e.g. after the tag fell
-off, or the bird died, etc. To identify such circumstances, it can be
-helpful to plot the last 1,000 positions for each tag (see vignette:
-plotting data).
+Here, we show examples of filtering the data by timestamp. Because the
+birds need to adjust after being caught and fitted with a tag, we
+exclude the first 24 hours after release. Similarly, we can exclude
+positions at the end, e.g. after the tag fell off, or the bird died,
+etc. To identify such circumstances, it can be helpful to plot the last
+1,000 positions for each tag (see vignette: plotting data).
 
-Some tagged birds might not provide a lot of data, for instance, becasue
+Some tagged birds might not provide a lot of data, for instance, because
 they left the study area directly after release. For robust analyses, it
 might therefore be useful to exclude birds with few data. Below, we will
 exclude tags with less than 100 positions, but note that none of the
@@ -183,7 +232,7 @@ data[, N := NULL]
 
 Here, we will show two ways of filtering the data by positioning errors.
 First, by the size of the error estimate as provided by the algorithm
-for caluclating positions. Second, based on unreleastic speeds between
+for calculating positions. Second, based on unreleastic speeds between
 sequential positions.
 
 ### Based on WATLAS error estimate
@@ -218,16 +267,18 @@ data <- atl_filter_covariates(
 ### Based on speed
 
 A bird’s speed can be calculated from sequential positions and used for
-filtering unrealisticly high speeds. This is straightforward for
-positions with very high speeds between itself and the positions before
-and after (the so-called incoming and outgoing speed, respectively). See
-**[Gupte et al. 2022](https://doi.org/10.1111/1365-2656.13610)** for
-more background.
+filtering unrealistic high speeds. This is straightforward for positions
+with very high speeds between itself and the positions before and after
+(the so-called incoming and outgoing speed, respectively). See **[Gupte
+et al. 2022](https://doi.org/10.1111/1365-2656.13610)** for more
+background.
 
 To choose a maximum speed threshold, it is important to plot the
-distribution of speed. We found that its better to have a large maximum
-speed threshold and only filter out extreme speeds. Remaining erroneous
-positions can be filter out by smoothing the data (e.g. by [median
+distribution of speed and best also the tracks around the outliers using
+`atl_check_tag(highlight_outliers = TRUE)`. We found that its better to
+have a large maximum speed threshold and only filter out extreme speeds.
+Remaining erroneous positions can be filter out by smoothing the data
+(e.g. by [median
 smoothing](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html#median-smooth-data)).
 
 ``` r
@@ -242,7 +293,7 @@ ggplot(data = data[!is.na(speed_in) & speed_in > 5 & speed_in < 100]) +
 ```
 
 ![Histogram of speed moved from all
-data](filter_data_files/figure-html/unnamed-chunk-6-1.png)
+data](filter_data_files/figure-html/unnamed-chunk-7-1.png)
 
 Histogram of speed moved from all data
 

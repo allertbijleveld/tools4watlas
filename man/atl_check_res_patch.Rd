@@ -27,6 +27,7 @@ atl_check_res_patch(
   mudflat_colour = "#faf5ef",
   mudflat_fill = "#faf5ef",
   mudflat_alpha = 0.6,
+  roosts = FALSE,
   filename = NULL,
   png_width = 3840,
   png_height = 2160
@@ -86,6 +87,9 @@ give a warning message, but works if desired.}
 
 \item{mudflat_alpha}{Mudflat alpha (default 0.6)}
 
+\item{roosts}{Logical. Whether to add the roost polygon around Griend or not
+(default: FALSE).}
+
 \item{filename}{Character (or NULL). If provided, the plot is saved as a
 \code{.png} file to this path and with this name; otherwise, the function
 returns the plot.}
@@ -100,6 +104,34 @@ A ggplot object or a saved PNG file.
 \description{
 Generates a \code{ggplot2} showing bird residence patches per tideID, including
 movement paths, patch durations, and an inset overview map.
+}
+\examples{
+# packages
+library(tools4watlas)
+
+# load example data
+data <- data_example
+
+# load example tide pattern data
+data_path <- system.file(
+  "extdata", "example-tidalPattern-west_terschelling-UTC.csv",
+  package = "tools4watlas"
+)
+tidal_pattern <- fread(data_path, yaml = TRUE)
+
+# calculate residence patches for one red knot
+data <- atl_res_patch(
+  data[tag == "3038"],
+  max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
+  min_fixes = 3, min_duration = 120
+)
+
+# plot example
+atl_check_res_patch(
+  data[tag == "3038"], tide_data = tidal_pattern,
+  tide = "2023513", offset = 30,
+  buffer_res_patches = 75 / 2
+)
 }
 \author{
 Johannes Krietsch

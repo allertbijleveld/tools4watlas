@@ -1,5 +1,7 @@
 # Loading and checking data
 
+This vignette shows how to load and check WATLAS data.
+
 #### Good to know
 
 `tools4watlas` is based on `data.table` to be fast and efficient. A key
@@ -113,12 +115,13 @@ password = "password"
 Sys.getenv("variable_name")
 ```
 
-Connecting to a remote database with `atl_get_data` is similar to
-connecting with a local SQLite database. In this example (chunk not run
-and only shown), we load the last three days of data from all tags of
-2024. Note that the host, username and password are specified as
-environmental variables in this example, but can also be specified
-directly.
+Connecting to a remote database with
+[`atl_get_data()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_get_data.md)
+is similar to connecting with a local SQLite database. In this example
+(chunk not run and only shown), we load the last three days of data from
+all tags of 2024. Note that the host, username and password are
+specified as environmental variables in this example, but can also be
+specified directly.
 
 Connecting to the remote database is normally restricted to current
 group members that also have access to the NIOZ/Bijleveld Teams
@@ -171,27 +174,27 @@ following columns:
 head(data) |> knitr::kable(digits = 2)
 ```
 
-| posID | tag  |       time | datetime            |        x |       y | nbs |  varx |   vary |  covxy |
-|------:|:-----|-----------:|:--------------------|---------:|--------:|----:|------:|-------:|-------:|
-|     1 | 3027 | 1695438802 | 2023-09-23 03:13:22 | 650692.8 | 5902549 |   3 | 46.97 | 392.42 | 126.62 |
-|     2 | 3027 | 1695438805 | 2023-09-23 03:13:25 | 650705.6 | 5902576 |   3 | 49.09 | 460.84 | 141.21 |
-|     3 | 3027 | 1695438808 | 2023-09-23 03:13:28 | 650691.6 | 5902536 |   3 | 58.18 | 471.81 | 155.89 |
-|     4 | 3027 | 1695439189 | 2023-09-23 03:19:49 | 650728.6 | 5902571 |   3 | 49.97 | 441.46 | 138.20 |
-|     5 | 3027 | 1695439192 | 2023-09-23 03:19:52 | 650721.0 | 5902556 |   3 |  5.34 |  28.16 |   8.58 |
-|     6 | 3027 | 1695439195 | 2023-09-23 03:19:55 | 650721.1 | 5902559 |   3 |  5.55 |  35.03 |  10.43 |
+| posID | tag | time | datetime | x | y | nbs | varx | vary | covxy |
+|---:|:---|---:|:---|---:|---:|---:|---:|---:|---:|
+| 1 | 3027 | 1695438802 | 2023-09-23 03:13:22 | 650692.8 | 5902549 | 3 | 46.97 | 392.42 | 126.62 |
+| 2 | 3027 | 1695438805 | 2023-09-23 03:13:25 | 650705.6 | 5902576 | 3 | 49.09 | 460.84 | 141.21 |
+| 3 | 3027 | 1695438808 | 2023-09-23 03:13:28 | 650691.6 | 5902536 | 3 | 58.18 | 471.81 | 155.89 |
+| 4 | 3027 | 1695439189 | 2023-09-23 03:19:49 | 650728.6 | 5902571 | 3 | 49.97 | 441.46 | 138.20 |
+| 5 | 3027 | 1695439192 | 2023-09-23 03:19:52 | 650721.0 | 5902556 | 3 | 5.34 | 28.16 | 8.58 |
+| 6 | 3027 | 1695439195 | 2023-09-23 03:19:55 | 650721.1 | 5902559 | 3 | 5.55 | 35.03 | 10.43 |
 
-| Column       | Description                                                               |
-|--------------|---------------------------------------------------------------------------|
-| **posID**    | Unique identifier for positions                                           |
-| **tag**      | 4 digit tag number (character), i.e. last 4 digits of the full tag number |
-| **time**     | UNIX time (seconds)                                                       |
-| **datetime** | Datetime in POSIXct (UTC)                                                 |
-| **x**        | X-coordinates in meters (UTM 31 N)                                        |
-| **y**        | Y-coordinates in meters (UTM 31 N)                                        |
-| **nbs**      | Number of Base Stations used for estimating the positions                 |
-| **varx**     | Variance in estimating X-coordinates                                      |
-| **vary**     | Variance in estimating Y-coordinates                                      |
-| **covxy**    | Co-variance between X- and Y-coordinates                                  |
+| Column | Description |
+|----|----|
+| **posID** | Unique identifier for positions |
+| **tag** | 4 digit tag number (character), i.e. last 4 digits of the full tag number |
+| **time** | UNIX time (seconds) |
+| **datetime** | Datetime in POSIXct (UTC) |
+| **x** | X-coordinates in meters (UTM 31 N) |
+| **y** | Y-coordinates in meters (UTM 31 N) |
+| **nbs** | Number of Base Stations used for estimating the positions |
+| **varx** | Variance in estimating X-coordinates |
+| **vary** | Variance in estimating Y-coordinates |
+| **covxy** | Co-variance between X- and Y-coordinates |
 
 ### Remove data before release
 
@@ -256,10 +259,12 @@ data[, c("rings", "crc", "catch_location") := NULL]
 
 At this point it might be good to save the raw data for further
 analyses, as extracting the data from the database can take a long time
-with big datasets. A convenient and fast way is to use `fwrite` from the
+with big datasets. A convenient and fast way is to use
+[`fwrite()`](https://rdrr.io/pkg/data.table/man/fwrite.html) from the
 `data.table` package. By including `yaml = TRUE` we make sure the data
-stays in the same format, when we load it again. Note that the file path
-needs to be changed when running this example.
+stays in the same format, when we load it again with
+`fread(filepath, yaml = TRUE)`. Note that the file path needs to be
+changed when running this example.
 
 ``` r
 # save data
@@ -307,29 +312,29 @@ data_summary[, .N, by = species]
 data_summary |> knitr::kable(digits = 2)
 ```
 
-| species           | tag  | n_positions | first_data          | last_data           | days_data | min_gap | max_gap | max_gap_factor | fix_rate |
-|:------------------|:-----|------------:|:--------------------|:--------------------|----------:|--------:|--------:|:---------------|---------:|
-| bar-tailed godwit | 3063 |       12614 | 2023-09-23 03:27:49 | 2023-09-23 22:24:55 |       0.8 |       3 |    2541 | 42.4 min       |     0.55 |
-| curlew            | 3100 |        8423 | 2023-09-23 04:21:46 | 2023-09-23 21:41:16 |       0.7 |       3 |   16145 | 4.5 hours      |     0.41 |
-| dunlin            | 3212 |        3856 | 2023-09-23 00:00:00 | 2023-09-23 23:59:56 |       1.0 |       8 |    4784 | 1.3 hours      |     0.36 |
-| oystercatcher     | 3158 |       12533 | 2023-09-23 00:00:01 | 2023-09-23 23:59:57 |       1.0 |       3 |    3060 | 51 min         |     0.44 |
-| red knot          | 3038 |       15959 | 2023-09-23 00:00:01 | 2023-09-23 23:59:57 |       1.0 |       3 |    2850 | 47.5 min       |     0.55 |
-| redshank          | 3027 |       15859 | 2023-09-23 03:13:22 | 2023-09-23 22:24:26 |       0.8 |       3 |    2523 | 42 min         |     0.69 |
-| sanderling        | 3288 |        8131 | 2023-09-23 00:00:03 | 2023-09-23 23:59:54 |       1.0 |       6 |    2622 | 43.7 min       |     0.56 |
-| turnstone         | 3188 |       10195 | 2023-09-23 00:00:45 | 2023-09-23 23:41:50 |       1.0 |       3 |    5742 | 1.6 hours      |     0.36 |
+| species | tag | n_positions | first_data | last_data | days_data | min_gap | max_gap | max_gap_factor | fix_rate |
+|:---|:---|---:|:---|:---|---:|---:|---:|:---|---:|
+| bar-tailed godwit | 3063 | 12614 | 2023-09-23 03:27:49 | 2023-09-23 22:24:55 | 0.8 | 3 | 2541 | 42.4 min | 0.55 |
+| curlew | 3100 | 8423 | 2023-09-23 04:21:46 | 2023-09-23 21:41:16 | 0.7 | 3 | 16145 | 4.5 hours | 0.41 |
+| dunlin | 3212 | 3856 | 2023-09-23 00:00:00 | 2023-09-23 23:59:56 | 1.0 | 8 | 4784 | 1.3 hours | 0.36 |
+| oystercatcher | 3158 | 12533 | 2023-09-23 00:00:01 | 2023-09-23 23:59:57 | 1.0 | 3 | 3060 | 51 min | 0.44 |
+| red knot | 3038 | 15959 | 2023-09-23 00:00:01 | 2023-09-23 23:59:57 | 1.0 | 3 | 2850 | 47.5 min | 0.55 |
+| redshank | 3027 | 15859 | 2023-09-23 03:13:22 | 2023-09-23 22:24:26 | 0.8 | 3 | 2523 | 42 min | 0.69 |
+| sanderling | 3288 | 8131 | 2023-09-23 00:00:03 | 2023-09-23 23:59:54 | 1.0 | 6 | 2622 | 43.7 min | 0.56 |
+| turnstone | 3188 | 10195 | 2023-09-23 00:00:45 | 2023-09-23 23:41:50 | 1.0 | 3 | 5742 | 1.6 hours | 0.36 |
 
-| Column             | Description                                                                                      |
-|--------------------|--------------------------------------------------------------------------------------------------|
-| **species**        | Species                                                                                          |
-| **tag**            | Tag number                                                                                       |
-| **n_positions**    | Number of positions                                                                              |
-| **first_data**     | Datetime of first position (UTC)                                                                 |
-| **last_data**      | Datetime of last position (UTC)                                                                  |
-| **days_data**      | Days of data                                                                                     |
-| **min_gap**        | Minimum time interval between positions (should be the interval of the tag in seconds)           |
-| **max_gap**        | Maximum time interval between positions (largest gap in seconds)                                 |
-| **max_gap_factor** | Maximum time interval between positions as factor (in seconds, minutes, hours, or days)          |
-| **fix_rate**       | The average fix rate (=1 if every `min_gap` has a position between `first_data` and `last_data`) |
+| Column | Description |
+|----|----|
+| **species** | Species |
+| **tag** | Tag number |
+| **n_positions** | Number of positions |
+| **first_data** | Datetime of first position (UTC) |
+| **last_data** | Datetime of last position (UTC) |
+| **days_data** | Days of data |
+| **min_gap** | Minimum time interval between positions (should be the interval of the tag in seconds) |
+| **max_gap** | Maximum time interval between positions (largest gap in seconds) |
+| **max_gap_factor** | Maximum time interval between positions as factor (in seconds, minutes, hours, or days) |
+| **fix_rate** | The average fix rate (=1 if every `min_gap` has a position between `first_data` and `last_data`) |
 
 Plot the number of positions by day. Here, we use the example data that
 only has one day, but this graph is particularly convenient to obtain a

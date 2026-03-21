@@ -34,6 +34,9 @@
 #'
 #' # add transformed coordinates in projection of the base map (EPSG:4326)
 #' data <- atl_transform_dt(data)
+#'
+#' # check data
+#' data[, .(tag, datetime, x, y, x_4326, y_4326)]
 atl_transform_dt <- function(data,
                              x = "x",
                              y = "y",
@@ -52,7 +55,7 @@ atl_transform_dt <- function(data,
 
     # extract EPSG code for automatic naming
     epsg_to <- to$epsg
-    if (is.null(epsg_to)) stop("Target CRS has no EPSG code.")
+    if (is.na(epsg_to)) stop("Target CRS has no EPSG code.")
 
     # construct new column names
     x_trans <- paste0(x, "_", epsg_to)

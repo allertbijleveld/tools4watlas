@@ -37,7 +37,7 @@ data <- fread(data_path, yaml = TRUE)
 
 ## Median smooth data
 
-To reduce error in the position data, a basic smoother such as a median filter can be applied. the function `atl_median_smooth` calculates the median coordinates within a window of positions set by `moving window`.  
+To reduce error in the position data, a basic smoother such as a median filter can be applied. the function `atl_median_smooth()` calculates the median coordinates within a window of positions set by `moving window`.  
 
 ```{r echo=T, results='hide'}		
 # Smooth the data

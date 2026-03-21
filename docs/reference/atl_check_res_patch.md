@@ -156,3 +156,39 @@ A ggplot object or a saved PNG file.
 ## Author
 
 Johannes Krietsch
+
+## Examples
+
+``` r
+# packages
+library(tools4watlas)
+
+# load example data
+data <- data_example
+
+# load example tide pattern data
+data_path <- system.file(
+  "extdata", "example-tidalPattern-west_terschelling-UTC.csv",
+  package = "tools4watlas"
+)
+tidal_pattern <- fread(data_path, yaml = TRUE)
+
+# calculate residence patches for one red knot
+data <- atl_res_patch(
+  data[tag == "3038"],
+  max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
+  min_fixes = 3, min_duration = 120
+)
+
+# plot example
+atl_check_res_patch(
+  data[tag == "3038"], tide_data = tidal_pattern,
+  tide = "2023513", offset = 30,
+  buffer_res_patches = 75 / 2
+)
+#> Warning: Some of the residency patch are split in MULTIPOLYGON geometries. If this is not desired, increase the buffer to half of `lim_spat_indep` (see function description)
+#> Coordinate system already present.
+#> ℹ Adding new coordinate system, which will replace the existing one.
+#> Coordinate system already present.
+#> ℹ Adding new coordinate system, which will replace the existing one.
+```

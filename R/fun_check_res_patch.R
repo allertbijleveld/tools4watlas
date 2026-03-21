@@ -35,6 +35,8 @@
 #' @param mudflat_colour Mudflat colour (default "#faf5ef")
 #' @param mudflat_fill Mudflat fill (default "#faf5ef")
 #' @param mudflat_alpha Mudflat alpha (default 0.6)
+#' @param roosts Logical. Whether to add the roost polygon around Griend or not
+#' (default: FALSE).
 #' @param filename Character (or NULL). If provided, the plot is saved as a
 #'   `.png` file to this path and with this name; otherwise, the function
 #'   returns the plot.
@@ -46,8 +48,35 @@
 #' @importFrom ggtext element_markdown
 #' @importFrom ragg agg_png
 #' @importFrom grDevices dev.off
+#'
+#' @examples
+#' # packages
+#' library(tools4watlas)
+#'
+#' # load example data
+#' data <- data_example
+#'
+#' # load example tide pattern data
+#' data_path <- system.file(
+#'   "extdata", "example-tidalPattern-west_terschelling-UTC.csv",
+#'   package = "tools4watlas"
+#' )
+#' tidal_pattern <- fread(data_path, yaml = TRUE)
+#'
+#' # calculate residence patches for one red knot
+#' data <- atl_res_patch(
+#'   data[tag == "3038"],
+#'   max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
+#'   min_fixes = 3, min_duration = 120
+#' )
+#'
+#' # plot example
+#' atl_check_res_patch(
+#'   data[tag == "3038"], tide_data = tidal_pattern,
+#'   tide = "2023513", offset = 30,
+#'   buffer_res_patches = 75 / 2
+#' )
 #' @export
-
 atl_check_res_patch <- function(data,
                                 tide_data,
                                 tide_data_highres,
@@ -70,6 +99,7 @@ atl_check_res_patch <- function(data,
                                 mudflat_colour = "#faf5ef",
                                 mudflat_fill = "#faf5ef",
                                 mudflat_alpha = 0.6,
+                                roosts = FALSE,
                                 filename = NULL,
                                 png_width = 3840,
                                 png_height = 2160) {
@@ -139,7 +169,7 @@ atl_check_res_patch <- function(data,
   dp_sf <- atl_as_sf(ds, option = "res_patches", buffer = buffer_res_patches)
 
   # add duration
-  dp_sf <- dp_sf %>%
+  dp_sf <- dp_sf |>
     dplyr::left_join(dp[, .(tag, patch, duration)], by = c("tag", "patch"))
 
   # set time without patch to 0
@@ -172,6 +202,12 @@ atl_check_res_patch <- function(data,
     buffer = buffer_bm
   )
   bbox <- atl_bbox(ds, buffer = buffer_bm, asp = "4:3")
+
+  # if roosts = TRUE add roost polygon
+  if (roosts == TRUE) {
+    bm <- bm +
+      geom_sf(data = roosts_griend, fill = NA, color = "black")
+  }
 
   # plot on map
   p1 <- bm +

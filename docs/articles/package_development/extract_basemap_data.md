@@ -1,30 +1,24 @@
----
-title: "Basemap data"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Basemap data}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
+# Extract basemap data
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  out.width = "100%",
-  fig.width = 8.89, fig.height = 5,
-  dpi = 300,
-  dev = "ragg_png",
-  message = FALSE,
-  warning = FALSE
-)
-```
+This script shows how to extract the basemap data of `tools4watlas`,
+which are a land polygon of the Dutch Wadden Sea, the mudflats of North
+Holland and Friesland and waterbodies on Griend. These data were choosen
+provide a simple map with relevant data allowing fast plotting.
+Customized basemap data could be created in a similar way and could
+additional contain buildings, roads, lakes, rivers etc. All data can be
+found in the “Birds, fish ’n chips” SharePoint folder:
+`Documents/data/GIS/shapefiles/`. To run the script set the file path
+(`fp`) to the local copy of the folder on your computer.
 
-This script shows how to create the basemap data of `tools4watlas`, which are a land polygon of the Dutch Wadden Sea, the mudflats of North Holland and Friesland and waterbodies on Griend. These data were choosen provide a simple map with relevant data allowing fast plotting. Customized basemap data could be created in a similar way and could additional contain buildings, roads, lakes, rivers etc. All data can be found in the "Birds, fish 'n chips" SharePoint folder: `Documents/data/GIS/shapefiles/`. To run the script set the file path (`fp`) to the local copy of the folder on your computer. 
-
-The `OpenStreetMap` land polygon can also be downloaded from [`osmdata`](https://osmdata.openstreetmap.de/data/land-polygons.html) and the regional data of the Netherlands (here used are North Holland and Friesland) can be downloaded from [`Geofabrik`](https://download.geofabrik.de/europe/netherlands.html). 
+The `OpenStreetMap` land polygon can also be downloaded from
+[`osmdata`](https://osmdata.openstreetmap.de/data/land-polygons.html)
+and the regional data of the Netherlands (here used are North Holland
+and Friesland) can be downloaded from
+[`Geofabrik`](https://download.geofabrik.de/europe/netherlands.html).
 
 #### Load packages and specify path to local data
- 
-```{r}
+
+``` r
 # packages
 library(data.table)
 library(tools4watlas)
@@ -41,7 +35,7 @@ fp <- atl_file_path("shapefiles")
 
 First define a bounding box which is used to crop the land polygon data.
 
-```{r, fig.cap="Bounding box around the Dutch Wadden Sea"}
+``` r
 # get data from the Netherlands
 netherlands <- ne_countries(
   country = "netherlands", scale = "large", returnclass = "sf"
@@ -66,9 +60,14 @@ ggplot() +
   )
 ```
 
+![Bounding box around the Dutch Wadden
+Sea](extract_basemap_data_files/figure-html/unnamed-chunk-2-1.png)
+
+Bounding box around the Dutch Wadden Sea
+
 ## Extract the land polygon data from this bounding box
 
-```{r, fig.cap="Cropped land polygon around the Dutch Wadden Sea"}
+``` r
 # load osm land polygon
 land_ <- st_read(quiet = TRUE, paste0(
   fp, "open_street_map/land-polygons-complete-4326/land_polygons.shp"
@@ -94,20 +93,26 @@ ggplot() +
   )
 ```
 
+![Cropped land polygon around the Dutch Wadden
+Sea](extract_basemap_data_files/figure-html/unnamed-chunk-3-1.png)
+
+Cropped land polygon around the Dutch Wadden Sea
+
 ### Save data
 
 Includes data in the package, if `tools4watlas` is opened as project.
 
-```{r, eval=FALSE}
+``` r
 # save data
 save(land, file = "../../data/land.rda", compress = "xz")
 ```
 
 ## Define a polygon of the Dutch Wadden Sea
 
-To simplify the basemap we only want the mudflats from within the Wadden Sea, otherwise *fclass* also includes other wetlands.  
+To simplify the basemap we only want the mudflats from within the Wadden
+Sea, otherwise *fclass* also includes other wetlands.
 
-```{r, fig.cap="Polygon of the Dutch Wadden Sea"}
+``` r
 # load polygon of Wadden sea
 wadden_sea <- st_read(quiet = TRUE, paste0(
   fp, "wadden_area_legally/pkb_gebied_derde_nota_waddenzee.shp"
@@ -127,11 +132,16 @@ ggplot() +
   geom_sf(data = ws_buffer, color = "firebrick", fill = NA)
 ```
 
+![Polygon of the Dutch Wadden
+Sea](extract_basemap_data_files/figure-html/unnamed-chunk-5-1.png)
+
+Polygon of the Dutch Wadden Sea
+
 ## Extract mudflats and lakes from within the Wadden Sea
 
-We only take the lakes from Griend to not blow up the data. 
+We only take the lakes from Griend to not blow up the data.
 
-```{r, fig.cap="Final basemap data of the Dutch Wadden Sea"}
+``` r
 # Friesland
 lakes_fr <- st_read(quiet = TRUE, paste0(
   fp, "open_street_map/friesland-latest-free.shp/gis_osm_water_a_free_1.shp"
@@ -197,13 +207,63 @@ ggplot() +
   )
 ```
 
+![Final basemap data of the Dutch Wadden
+Sea](extract_basemap_data_files/figure-html/unnamed-chunk-6-1.png)
+
+Final basemap data of the Dutch Wadden Sea
+
 ### Save data
 
 Includes data in the package, if `tools4watlas` is opened as project.
 
-```{r, eval=FALSE}
+``` r
 # save data
 save(mudflats, file = "../../data/muddflats.rda", compress = "xz")
 save(lakes, file = "../../data/lakes.rda", compress = "xz")
 ```
 
+## Load Grinderwaard data
+
+Polygon made to capture all mudflat areas associated to the
+Grienderwaard based on OSM, but smoothed to capture most low tides (-161
+cm NAP).
+
+``` r
+# Grienderwaard
+grienderwaard <- st_read(quiet = TRUE, paste0(
+  fp, "open_street_map/grienderwaard/grienderwaard_161mNAP.shp"
+))
+
+# point of Griend (and a bit east)
+griend <- st_sfc(st_point(c(5.2525, 53.2523)), crs = st_crs(4326)) |>
+  st_transform(crs = st_crs(32631))
+
+# define bbox
+bbox <- atl_bbox(griend, buffer = 8000)
+
+# create basemap
+bm <- atl_create_bm(bbox)
+
+# plot
+bm +
+  geom_sf(data = grienderwaard, fill = NA, color = "black") +
+  # set extend again (overwritten by geom_sf)
+  coord_sf(
+    xlim = c(bbox["xmin"], bbox["xmax"]),
+    ylim = c(bbox["ymin"], bbox["ymax"]), expand = FALSE
+  )
+```
+
+![Map with Grienderwaard
+polygon](extract_basemap_data_files/figure-html/unnamed-chunk-8-1.png)
+
+Map with Grienderwaard polygon
+
+### Save data
+
+Includes data in the package, if `tools4watlas` is opened as project.
+
+``` r
+# save data
+save(grienderwaard, file = "../../data/grienderwaard.rda", compress = "xz")
+```

@@ -45,6 +45,24 @@
 #'   \item \code{duration}: Duration spent (in sec) within the patch.
 #' }
 #' @import data.table
+#'
+#' @examples
+#' # packages
+#' library(tools4watlas)
+#'
+#' # load example data
+#' data <- data_example
+#'
+#' # calculate residence patches for one red knot
+#' data <- atl_res_patch(
+#'   data[tag == "3038"],
+#'   max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
+#'   min_fixes = 3, min_duration = 120
+#' )
+#'
+#' # summary of residence patches
+#' data_summary <- atl_res_patch_summary(data)
+#' data_summary
 #' @export
 
 atl_res_patch_summary <- function(data,

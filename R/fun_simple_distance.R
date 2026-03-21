@@ -3,18 +3,30 @@
 #' Gets the euclidean distance between consecutive localization in a coordinate
 #' reference system in metres, i.e., UTM systems.
 #'
-#' @author Pratik R. Gupte & Allert Bijleveld
-#' @param x A column name in a data.frame object that contains the numeric X
+#' @author Pratik R. Gupte, Allert Bijleveld & Johannes Krietsch
+#' @param x A column name in a `data.table` object that contains the numeric x
 #' coordinate.
-#' @param y A column name in a data.frame object that contains the numeric Y
+#' @param y A column name in a `data.table` object that contains the numeric y
 #' coordinate.
 #' @param data A dataframe object of or extending the class data.frame,
-#' which must contain two coordinate columns for the X and Y coordinates.
+#' which must contain two coordinate columns for the x and y coordinates.
 #' @param lag The lag (in number of localizations) over which to calculate
-#' distance
+#' distance.
 #' @return Returns a vector of distances between consecutive points.
-#' @export
 #'
+#' @examples
+#' # packages
+#' library(tools4watlas)
+#'
+#' # load example data
+#' data <- data_example
+#'
+#' # calculate distance
+#' data[, dist := atl_simple_dist(data, x = "x", y = "y", lag = 1)]
+#'
+#' # check data
+#' data[, .(tag, datetime, x, y, dist)]
+#' @export
 atl_simple_dist <- function(data, x = "x", y = "y", lag = 1) {
   # check for basic assumptions
   atl_check_data(data, names_expected = c(x, y))

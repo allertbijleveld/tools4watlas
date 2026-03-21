@@ -1,39 +1,99 @@
 #' Filter positions by an area
 #'
 #' Filters out positions lying inside or outside an area.
-#' The area can be defined in two ways, either by its X and Y coordinate
-#' ranges, or by an \code{sf-*POLYGON} object.
+#' The area can be defined in two ways, either by its x- and y-coordinate
+#' ranges, or by an \code{sf-POLYGON} object.
 #' \code{MULTIPOLYGON} objects are supported by the internal function
 #' \code{atl_within_polygon}.
 #'
-#' @author Pratik R. Gupte
-#' @param data A dataframe or extension which contains X and Y coordinates.
-#' @param x The X coordinate column.
-#' @param y The Y coordinate column.
-#' @param x_range The range of X coordinates.
-#' @param y_range The range of Y coordinates.
-#' @param sf_polygon \code{sfc_*POLYGON} object which must have a defined CRS.
+#' @author Pratik R. Gupte and Johannes Krietsch
+#' @param data A `data.table` or extension which contains x- and y-coordinates.
+#' @param x The x coordinate column.
+#' @param y The y coordinate column.
+#' @param x_range The range of x coordinates.
+#' @param y_range The range of y coordinates.
+#' @param sf_polygon \code{sfc_POLYGON} object which must have a defined CRS.
 #' The polygon CRS is assumed to be appropriate for the positions as well, and
 #' is assigned to the coordinates when determining the intersection.
 #' @param remove_inside Whether to remove points from within the range.
 #' Setting \code{negate = TRUE} removes positions within the bounding
-#' box specified by the X and Y ranges.
+#' box specified by the x- and y-ranges.
 #'
 #'
-#' @return A data frame of tracking locations with attractor points removed.
+#' @return A `data.table` of tracking locations with attractor points removed.
 #' @examples
-#' \dontrun{
-#' filtered_data <- atl_filter_bounds(
+#' # packages
+#' library(tools4watlas)
+#' library(sf)
+#' library(ggplot2)
+#'
+#' # load example data
+#' data <- data_example
+#'
+#' # create basemap
+#' bm <- atl_create_bm(data, buffer = 800)
+#'
+#' # create a bounding box to filter data
+#' griend_east <- st_sfc(st_point(c(5.275, 53.2523)), crs = st_crs(4326)) |>
+#'   st_transform(crs = st_crs(32631))
+#'
+#' # define bbox to crop data
+#' bbox_crop <- atl_bbox(griend_east, asp = "16:9", buffer = 2000)
+#' bbox_sf <- st_as_sfc(bbox_crop) # just for plotting as sf object
+#'
+#' # geom_sf overwrites coordinate system, so we need to set the limits again
+#' bbox <- atl_bbox(data, buffer = 800)
+#'
+#' # plot points and tracks with standard ggplot colours
+#' bm +
+#'   geom_path(
+#'     data = data, aes(x, y, colour = tag),
+#'     linewidth = 0.5, alpha = 0.1, show.legend = TRUE
+#'   ) +
+#'   geom_point(
+#'     data = data, aes(x, y, colour = tag),
+#'     size = 0.5, alpha = 1, show.legend = TRUE
+#'   ) +
+#'   geom_sf(data = bbox_sf, color = "firebrick", fill = NA) +
+#'   scale_color_discrete(name = paste("N = ", length(unique(data$tag)))) +
+#'   theme(legend.position = "top") +
+#'   # set extend again (overwritten by geom_sf)
+#'   coord_sf(
+#'     xlim = c(bbox["xmin"], bbox["xmax"]),
+#'     ylim = c(bbox["ymin"], bbox["ymax"]), expand = FALSE
+#'   )
+#'
+#' # filter data with bounding box
+#' # note: when filtering with a rectangle bounding box
+#' # and large datasets, using th range is faster than sf_polygon
+#' data_filtered <- atl_filter_bounds(
 #'   data = data,
-#'   x = "X", y = "Y",
-#'   x_range = c(x_min, x_max),
-#'   y_range = c(y_min, y_max),
-#'   sf_polygon = your_polygon,
+#'   x = "x",
+#'   y = "y",
+#'   x_range = c(bbox_crop["xmin"], bbox_crop["xmax"]),
+#'   y_range = c(bbox_crop["ymin"], bbox_crop["ymax"]),
 #'   remove_inside = FALSE
 #' )
-#' }
-#' @export
 #'
+#' # plot cropped data
+#' bm +
+#'   geom_path(
+#'     data = data_filtered, aes(x, y, colour = tag),
+#'     linewidth = 0.5, alpha = 0.1, show.legend = TRUE
+#'   ) +
+#'   geom_point(
+#'     data = data_filtered, aes(x, y, colour = tag),
+#'     size = 0.5, alpha = 1, show.legend = TRUE
+#'   ) +
+#'   geom_sf(data = bbox_sf, color = "firebrick", fill = NA) +
+#'   scale_color_discrete(name = paste("N = ", length(unique(data$tag)))) +
+#'   theme(legend.position = "top") +
+#'   # set extend again (overwritten by geom_sf)
+#'   coord_sf(
+#'     xlim = c(bbox["xmin"], bbox["xmax"]),
+#'     ylim = c(bbox["ymin"], bbox["ymax"]), expand = FALSE
+#'   )
+#' @export
 atl_filter_bounds <- function(data,
                               x = "x",
                               y = "y",
@@ -41,6 +101,9 @@ atl_filter_bounds <- function(data,
                               y_range = NA,
                               sf_polygon = NULL,
                               remove_inside = TRUE) {
+  # Global variables to suppress notes in data.table
+  ".in_polygon" <- NULL
+
   # check input type
   assertthat::assert_that(
     "data.frame" %in% class(data),
@@ -86,28 +149,27 @@ atl_filter_bounds <- function(data,
 
   # filter for spatial extent either inside or outside
   if (remove_inside) {
-    # KEEPS DATA OUTSIDE THE BOUNDING BOX AND POLYGON
-    # filter by bounding box
-    keep <- !(data.table::between(
-      data[[x]], x_range[1], x_range[2],
-      NAbounds = TRUE
-    ) &
-      data.table::between(data[[y]], y_range[1], y_range[2],
-        NAbounds = TRUE
-      ))
-    # filter by bbox first
-    # this is where the first copy is made
-    # because the number of rows is reduced
-    data_ <- data[keep, ]
-
-    # filter by polygon
+    # KEEPS DATA OUTSIDE THE BOUNDING BOX OR OUTSIDE THE POLYGON
     if (!is.null(sf_polygon)) {
-      keep <- atl_within_polygon(
-        data = data_,
+      # polygon provided: ignore bbox, filter only by polygon
+      data_ <- atl_within_polygon(
+        data = data,
         x = x, y = y,
-        polygon = sf_polygon
+        polygon = sf_polygon,
+        col_name = ".in_polygon"
       )
-      data_ <- data_[!keep, ]
+      data_ <- data_[(.in_polygon) == FALSE]
+      data_[, .in_polygon := NULL]
+    } else {
+      # no polygon: filter by bbox only
+      outside_bbox <- !(data.table::between(
+        data[[x]], x_range[1], x_range[2],
+        NAbounds = TRUE
+      ) &
+        data.table::between(
+          data[[y]], y_range[1], y_range[2], NAbounds = TRUE
+        ))
+      data_ <- data[outside_bbox, ]
     }
   } else {
     # KEEPS DATA INSIDE THE BOUNDING BOX AND POLYGON
@@ -123,12 +185,14 @@ atl_filter_bounds <- function(data,
 
     # filter to KEEP those inside polygon
     if (!is.null(sf_polygon)) {
-      keep <- atl_within_polygon(
+      data_ <- atl_within_polygon(
         data = data_,
         x = x, y = y,
-        polygon = sf_polygon
+        polygon = sf_polygon,
+        col_name = ".in_polygon"
       )
-      data_ <- data_[keep, ]
+      data_ <- data_[(.in_polygon) == TRUE]
+      data_[, .in_polygon := NULL]
     }
   }
 
@@ -140,7 +204,7 @@ atl_filter_bounds <- function(data,
 
   assertthat::assert_that(
     "data.frame" %in% class(data_),
-    msg = "filter_bbox: cleaned data is not a dataframe object!"
+    msg = "filter_bbox: cleaned data is not a data.frame or data.table object!"
   )
 
   # print warning if all rows are removed

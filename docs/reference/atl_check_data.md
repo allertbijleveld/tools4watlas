@@ -14,8 +14,8 @@ atl_check_data(data, names_expected = c("x", "y", "time"))
 - data:
 
   The tracking data to check for required columns. Must be in the form
-  of a data.frame or similar, which can be handled by the function
-  colnames.
+  of a `data.frame` or `data.table`, which can be handled by the
+  function colnames.
 
 - names_expected:
 

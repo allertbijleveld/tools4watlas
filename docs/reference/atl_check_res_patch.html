@@ -38,11 +38,11 @@ movement paths, patch durations, and an inset overview map."><meta property="og:
     <li><a class="dropdown-item" href="../articles/visualization_tutorials/animate_data.html">Animate data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Package development</h6></li>
-    <li><a class="dropdown-item" href="../articles/package_development/package_maintenance.html">Package maintenance</a></li>
-    <li><a class="dropdown-item" href="../articles/package_development/basemap_data.html">Basemap data</a></li>
+    <li><a class="dropdown-item" href="../articles/package_development/contributing_to_tools4watlas.html">Contributing to tools4watlas</a></li>
+    <li><a class="dropdown-item" href="../articles/package_development/extract_basemap_data.html">Extract basemap data</a></li>
     <li><a class="dropdown-item" href="../articles/package_development/package_logo.html">tools4watlas logo</a></li>
   </ul></li>
-<li class="nav-item"><a class="nav-link" href="../articles/literature/literature.html">Literature</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/research_and_publications/research_and_publications.html">Research &amp; Publications</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/allertbijleveld/tools4watlas/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -218,6 +218,42 @@ returns the plot.</p></dd>
     <p>Johannes Krietsch</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># packages</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># load example data</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># load example tide pattern data</span></span></span>
+<span class="r-in"><span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"extdata"</span>, <span class="st">"example-tidalPattern-west_terschelling-UTC.csv"</span>,</span></span>
+<span class="r-in"><span>  package <span class="op">=</span> <span class="st">"tools4watlas"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tidal_pattern</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">data_path</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># calculate residence patches for one red knot</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="atl_res_patch.html">atl_res_patch</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">data</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="st">"3038"</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>  max_speed <span class="op">=</span> <span class="fl">3</span>, lim_spat_indep <span class="op">=</span> <span class="fl">75</span>, lim_time_indep <span class="op">=</span> <span class="fl">180</span>,</span></span>
+<span class="r-in"><span>  min_fixes <span class="op">=</span> <span class="fl">3</span>, min_duration <span class="op">=</span> <span class="fl">120</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># plot example</span></span></span>
+<span class="r-in"><span><span class="fu">atl_check_res_patch</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">data</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="st">"3038"</span><span class="op">]</span>, tide_data <span class="op">=</span> <span class="va">tidal_pattern</span>,</span></span>
+<span class="r-in"><span>  tide <span class="op">=</span> <span class="st">"2023513"</span>, offset <span class="op">=</span> <span class="fl">30</span>,</span></span>
+<span class="r-in"><span>  buffer_res_patches <span class="op">=</span> <span class="fl">75</span> <span class="op">/</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Some of the residency patch are split in MULTIPOLYGON geometries. If this is not desired, increase the buffer to half of `lim_spat_indep` (see function description)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Coordinate system already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Adding new coordinate system, which will replace the existing one.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Coordinate system already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Adding new coordinate system, which will replace the existing one.</span>
+<span class="r-plt img"><img src="atl_check_res_patch-1.png" alt="" width="700" height="433"></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

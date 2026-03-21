@@ -37,7 +37,7 @@ testthat::test_that("angles are calculated", {
   )
 
   # check no data case
-  test_df <- data.table::data.table(
+  test_df <- data.frame(
     tag = 1234,
     y = seq_len(1),
     x = seq_len(1),
