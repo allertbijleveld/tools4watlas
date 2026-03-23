@@ -48,6 +48,11 @@ If there is actually no measure of error, the function simply returns the
 averaged position and covariates in each time interval.
 Grouping variables' names (such as animal identity) may be passed as a
 character vector to the \code{id_columns} argument.
+If \code{patch} is among the columns, it will be converted to numeric for
+aggregation and rounded back to the nearest integer, then converted back to
+character to match the original type. This ensures that the most common
+patch ID is retained after aggregation (e.g. 2 positions with patch ID 5
+and 20 with patch ID 6 will aggregate to patch ID 6).
 }
 \examples{
 library(data.table)

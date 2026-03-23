@@ -76,7 +76,7 @@ atl_thin_data <- function(data,
                           id_columns = NULL,
                           method = c("subsample", "aggregate")) {
   # Global variables to suppress notes in data.table
-  varx <- vary <- x <- NULL
+  varx <- vary <- x <- patch <- NULL
   time <- time_agg <- time_diff <- datetime <- NULL
 
   # Input validation
@@ -159,15 +159,17 @@ atl_thin_data <- function(data,
       .SDcols = num_cols
       ]
     }
-    
+
     # Join back non-numeric columns using first value per group
     if (length(non_num_cols) > 0) {
       non_num_vals <- data[, lapply(.SD, data.table::first),
-                           by = c("time_agg", id_columns),
-                           .SDcols = non_num_cols]
+        by = c("time_agg", id_columns),
+        .SDcols = non_num_cols
+      ]
       data_s <- merge(
-        data_s, non_num_vals, by = c("time_agg", id_columns), sort = FALSE
-        )
+        data_s, non_num_vals,
+        by = c("time_agg", id_columns), sort = FALSE
+      )
     }
 
     # Recalculate datetime and clean up columns
@@ -209,10 +211,12 @@ atl_thin_data <- function(data,
     lag <- data_s[!is.na(time_diff)]$time_diff
     data_s[, time_diff := NULL]
   }
-  
+
   # Round patch back to nearest integer and convert to character
   if ("patch" %in% names(data_s)) {
-    data_s[, patch := as.character(round(patch))]
+    data_s[, patch := fifelse(
+      is.na(patch), NA_character_, as.character(round(patch))
+    )]
   }
 
   # Check if intervalls are correct
