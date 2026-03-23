@@ -208,6 +208,9 @@ atl_res_patch <- function(data,
 
     # Remove row_id
     data_original[, row_id := NULL]
+  
+    # make patch a factor
+    data_original[, patch := as.character(patch)]
 
     return(data_original)
   }, error = function(e) {
