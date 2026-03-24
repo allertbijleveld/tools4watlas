@@ -1,5 +1,5 @@
-# library(tools4watlas)
-# library(testthat)
+library(tools4watlas)
+library(testthat)
 
 test_that("atl_interpolate_track works correctly", {
   # prepare example data
@@ -104,7 +104,7 @@ test_that("atl_interpolate_track works correctly", {
   
   # max_dist = NULL skips distance filter and dist_next column is absent
   data_int_nodist <- atl_interpolate_track(
-    data = data,
+    data = as.data.frame(data),
     tag = "tag", x = "x", y = "y", time = "time",
     patch = "patch", interp_interval = 60,
     max_gap = 60 * 15, max_dist = NULL,
@@ -122,3 +122,34 @@ test_that("atl_interpolate_track works correctly", {
   )
 })
 
+test_that("atl_interpolate_track handles tags with fewer than 2 rows", {
+  # prepare example data
+  data <- data_example[tag == "3038"]
+  data <- data[, .(species, posID, tag, time, datetime, x, y, tideID)]
+  data <- atl_res_patch(
+    data,
+    max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
+    min_fixes = 3, min_duration = 120
+  )
+  data <- atl_thin_data(
+    data = data,
+    interval = 60,
+    id_columns = c("tag", "species"),
+    method = "aggregate"
+  )
+  
+  # tag with only 1 row triggers warning and is skipped,
+  # and since no tags remain, a second warning is also thrown
+  expect_warning(
+    expect_warning(
+      atl_interpolate_track(
+        data = single_row,
+        tag = "tag", x = "x", y = "y", time = "time",
+        patch = "patch", max_gap = 300000, patches_only = TRUE
+      ),
+      regexp = "fewer than 2 rows"
+    ),
+    regexp = "No tags with sufficient data"
+  )
+
+})
