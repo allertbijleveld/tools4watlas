@@ -1,5 +1,5 @@
-library(tools4watlas)
-library(testthat)
+# library(tools4watlas)
+# library(testthat)
 
 test_that("atl_interpolate_track works correctly", {
   # prepare example data
@@ -137,6 +137,8 @@ test_that("atl_interpolate_track handles tags with fewer than 2 rows", {
     id_columns = c("tag", "species"),
     method = "aggregate"
   )
+  
+  single_row <- data[1]
   
   # tag with only 1 row triggers warning and is skipped,
   # and since no tags remain, a second warning is also thrown
