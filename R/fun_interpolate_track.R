@@ -8,10 +8,10 @@
 #' specify a maximal distance between positions (`max_dist`) to restrict
 #' interpolation to more local movements. If `patches_only = TRUE`,
 #' interpolation is further restricted to only gaps within residence patches.
-#' 
+#'
 #' Best to use with already thinned data (e.g. with `atl_thin_data()`) to avoid
 #' unnecessary interpolation of very fine-scale data and to speed up processing.
-#' 
+#'
 #' @author Johannes Krietsch
 #' @param data A `data.frame` or `data.table` containing tracking data.
 #' @param tag Character. Name of the column containing tag or individual IDs.
@@ -35,12 +35,73 @@
 #' @param patches_only Logical. If `TRUE` (default), interpolation is
 #'   restricted to gaps within the same patch ID. Requires the column specified
 #'   in `patch` to be present in `data`.
+#' @param quietly If `TRUE` returns percentage and number of positions filtered,
+#' if `FALSE` functions runs quietly
 #'
 #' @return A `data.table` with the same columns as the input, plus `datetime`
 #'   (POSIXct timestamp in UTC), `gap_next` (time in seconds to the next
 #'   observed position), `interpolated` (logical, `TRUE` for interpolated
 #'   rows), and optionally `dist_next` (distance to the next observed position,
 #'   if `max_dist` is set). Rows are ordered by tag and time.
+#'
+#' @examples
+#' # packages
+#' library(tools4watlas)
+#' library(ggplot2)
+#'
+#' # load example data of one red knot
+#' data <- data_example[tag == "3038"]
+#'
+#' # calculate residence patches
+#' data <- atl_res_patch(
+#'   data,
+#'   max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
+#'   min_fixes = 3, min_duration = 120
+#' )
+#'
+#' # thin dataa to 1 min intervall
+#' data <- atl_thin_data(
+#'   data = data,
+#'   interval = 60,
+#'   id_columns = c("tag", "species"),
+#'   method = "aggregate"
+#' )
+#'
+#' # interpolate data within residence patches
+#' data_int <- atl_interpolate_track(
+#'   data = data,
+#'   tag = "tag",
+#'   x = "x",
+#'   y = "y",
+#'   time = "time",
+#'   patch = "patch",
+#'   interp_interval = 60,
+#'   max_gap = 3600 * 8,
+#'   max_dist = NULL,
+#'   patches_only = TRUE
+#' )
+#'
+#' # check data
+#' head(data_int)
+#'
+#' ### plot data to check results
+#' # create basemap
+#' bm <- atl_create_bm(data_int, buffer = 800)
+#'
+#' # plot points and tracks with standard ggplot colours
+#' bm +
+#'   geom_path(
+#'     data = data_int, aes(x, y),
+#'     linewidth = 0.5, alpha = 0.1, show.legend = FALSE
+#'   ) +
+#'   geom_point(
+#'     data = data_int, aes(x, y, colour = patch),
+#'     size = 1, alpha = 1, show.legend = FALSE
+#'   ) +
+#'   geom_point(
+#'     data = data_int[interpolated == TRUE], aes(x, y), color = "black",
+#'     size = 0.5, alpha = 1, show.legend = FALSE
+#'   )
 #'
 #' @export
 atl_interpolate_track <- function(data,
@@ -52,7 +113,12 @@ atl_interpolate_track <- function(data,
                                   interp_interval = 60,
                                   max_gap = NULL,
                                   max_dist = NULL,
-                                  patches_only = TRUE) {
+                                  patches_only = TRUE,
+                                  quietly = FALSE) {
+  # global variables
+  N <- gap_next <- time_ <- tag_ <- x_ <- y_ <- . <- NULL # nolint
+  interpolated <- patch_ <- datetime <- dist_next <- NULL
+
   # convert to data.table if not already
   if (!is.data.table(data)) {
     data <- data.table::setDT(data)
@@ -106,12 +172,12 @@ atl_interpolate_track <- function(data,
   # copy to avoid col name issues
   cols_to_copy <- c(tag_col, t_col, x_col, y_col)
   new_names    <- c("tag_", "time_", "x_", "y_")
-  
+
   if (patches_only == TRUE) {
     cols_to_copy <- c(cols_to_copy, patch_col)
     new_names    <- c(new_names, "patch_")
   }
-  
+
   d <- data[, .SD, .SDcols = cols_to_copy]
   setnames(d, new_names)
 
@@ -143,7 +209,7 @@ atl_interpolate_track <- function(data,
 
   # fill NA values by tag_ with next non NA
   d[, gap_next := nafill(gap_next, type = "nocb"), by = tag_]
-  
+
   # fill patch ID's when NA in-between (if patches_only = TRUE)
   # and remove rows without patch ID's
   if (patches_only == TRUE) {
@@ -152,16 +218,17 @@ atl_interpolate_track <- function(data,
       bwd <- zoo::na.locf(patch_, fromLast = TRUE, na.rm = FALSE)
       ifelse(is.na(patch_) & fwd == bwd, fwd, patch_)
     }, by = tag_]
-    
+
     # remove rows without patch ID's
     d <- d[!(interpolated == TRUE & is.na(patch_))]
   }
- 
+
   # remove rows where gap_next is larger than max_gap
   d <- d[!(interpolated == TRUE & gap_next > max_gap)]
 
   # if max_dist is set, remove rows where distance is larger than max_dist
   if (!is.null(max_dist)) {
+    d[, dist_next := nafill(dist_next, type = "nocb"), by = tag_]
     d <- d[!(interpolated == TRUE & dist_next > max_dist)]
   }
 
@@ -171,7 +238,7 @@ atl_interpolate_track <- function(data,
 
   # add datetime in UTC
   d[, datetime := as.POSIXct(time_, origin = "1970-01-01", tz = "UTC")]
-  
+
   # restore original column names
   new_names <- c(
     tag_col, t_col, x_col, y_col, patch_col,
@@ -192,135 +259,20 @@ atl_interpolate_track <- function(data,
   )
   setorderv(d, c(tag_col, t_col))
 
+  # how much was interpolated?
+  nrow_before <- nrow(data)
+  nrow_after <- nrow(d)
+  nrows_added <- nrow_after - nrow_before
+  percentage_increase <- (nrows_added / nrow_before) * 100
+  percentage_increase <- round(percentage_increase, 2)
+
+  if (nrow(d) > 0 && quietly == FALSE) {
+    message(glue::glue(
+      "Note: Interpolation added {nrows_added} positions ",
+      "({percentage_increase}% increase)."
+    ))
+  }
+
   # return interpolated data
   d
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# packages
-library(tools4watlas)
-library(ggplot2)
-
-data <- data_example[tag == "3038"]
-data <- data[, .(species, posID, tag, time, datetime, x, y, tideID)]
-data <- atl_res_patch(
-  data,
-  max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
-  min_fixes = 3, min_duration = 120
-)
-data <- atl_thin_data(
-  data = data,
-  interval = 60,
-  id_columns = c("tag", "species"),
-  method = "aggregate"
-)
-
-tag = "tag"
-x = "x"
-y = "y"
-time = "time"
-patch = "patch"
-interp_interval = 60
-max_gap = 60*100
-max_dist = 10000
-patches_only = TRUE
-
-result <- atl_interpolate_track(
-  data = data,
-  tag = "tag",
-  x = "x",
-  y = "y",
-  time = "time",
-  patch = "patch",
-  interp_interval = 60,
-  max_gap = 60*100,
-  max_dist = NULL,
-  patches_only = FALSE
-)
-
-
-
-# subset one tag
-ds <- data[tag == "3288"]
-dsr <- result[tag == "3288"]
-
-
-# create basemap
-bm <- atl_create_bm(ds, buffer = 800)
-
-# plot points and tracks with standard ggplot colours
-bm +
-  # geom_path(
-  #   data = dsr, aes(x, y, colour = patch),
-  #   linewidth = 0.5, alpha = 0.1, show.legend = TRUE
-  # ) +
-  # geom_point(
-  #   data = dsr, aes(x, y, colour = patch),
-  #   size = 0.5, alpha = 1, show.legend = TRUE
-  # ) +
-  geom_path(
-    data = ds, aes(x, y, colour = patch),
-    linewidth = 0.5, alpha = 0.1, show.legend = TRUE
-  ) +
-  geom_point(
-    data = ds, aes(x, y, colour = patch),
-    size = 1, alpha = 1, show.legend = TRUE
-  ) +
-  theme(legend.position = "top")
-
-
-# track with residence patches coloured
-bm +
-  geom_path(data = ds, aes(x, y), alpha = 0.1) +
-  geom_point(
-    data = ds, aes(x, y), color = "grey", size = 0.5,
-    show.legend = FALSE
-  ) +
-  geom_point(
-    data = ds[!is.na(patch)], aes(x, y, color = patch),
-    size = 0.5, show.legend = FALSE
-  )
-
-p <-
-bm +
-  geom_path(data = dsr, aes(x, y), alpha = 0.1) +
-  geom_point(
-    data = dsr, aes(x, y), color = "grey", size = 0.5,
-    show.legend = FALSE
-  ) +
-  geom_point(
-    data = dsr[!is.na(patch)], aes(x, y, color = patch),
-    size = 0.5, show.legend = FALSE
-  )
-
-
-
-library(plotly)
-# plot interactively
-ggplotly(p, tooltip = c("tag", "x", "y", "patch"))
-
-
-
-
-
-
-
-
-
-
