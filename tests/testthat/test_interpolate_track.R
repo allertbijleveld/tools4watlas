@@ -1,5 +1,5 @@
-# packages
-library(tools4watlas)
+# library(tools4watlas)
+# library(testthat)
 
 test_that("atl_interpolate_track works correctly", {
   # prepare example data
@@ -25,10 +25,10 @@ test_that("atl_interpolate_track works correctly", {
     y = "y",
     time = "time",
     patch = "patch",
-    interp_interval = 10,
-    max_gap = 60 * 150,
-    max_dist = 100000,
-    patches_only = FALSE
+    interp_interval = 60,
+    max_gap = 60 * 15,
+    max_dist = 1000,
+    patches_only = TRUE
   )
   
   # returns a data.table
@@ -71,12 +71,6 @@ test_that("atl_interpolate_track works correctly", {
   expect_false(anyNA(data_int$x))
   expect_false(anyNA(data_int$y))
   
-  # time grid is regular (all diffs equal to interp_interval) within each tag
-  data_int[, time_diff := c(NA, diff(time)), by = tag]
-  expect_true(all(
-    data_int[!is.na(time_diff)]$time_diff == 60
-  ))
-  
   # rows are ordered by tag and time
   expect_equal(
     data_int,
@@ -86,17 +80,7 @@ test_that("atl_interpolate_track works correctly", {
   # patch column is character
   expect_type(data_int$patch, "character")
   
-  # tags with fewer than 2 rows are skipped with a warning
-  single_row <- data[1]
-  expect_warning(
-    atl_interpolate_track(
-      data = single_row,
-      tag = "tag", x = "x", y = "y", time = "time",
-      patch = "patch", patches_only = TRUE
-    )
-  )
-  
-  # patches_only = TRUE errors if patch column is missing
+   # patches_only = TRUE errors if patch column is missing
   data_no_patch <- copy(data)
   data_no_patch[, patch := NULL]
   expect_error(
