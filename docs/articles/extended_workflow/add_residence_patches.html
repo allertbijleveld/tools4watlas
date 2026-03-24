@@ -47,6 +47,7 @@
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_residence_patches.html">Add residence patches</a></li>
+    <li><a class="dropdown-item" href="../../articles/extended_workflow/interpolate_data.html">Interpolate data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
     <li><a class="dropdown-item" href="../../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
@@ -113,20 +114,19 @@ smaller than <code>max_speed</code>, a distance smaller than
 <code>lim_time_indep</code>, they are assigned to the same proto patch.
 Proto-patches with fewer than <code>min_fixes</code> positions are
 filtered out.</p>
-<p>For each proto-</p>
-<p>patch, the median position is calculated as well as the time between
-two subsequent proto-patches (time between last location and first
-location of the next proto-patch). Proto patches are merged into
-residence patches, if the distance between the median positions of two
-subsequent proto-patches is smaller than <code>lim_spat_indep</code> and
-the time between the proto-patch is less then
-<code>lim_time_indep</code>.</p>
+<p>For each proto-patch, the median position is calculated as well as
+the time between two subsequent proto-patches (time between last
+location and first location of the next proto-patch). Proto patches are
+merged into residence patches, if the distance between the median
+positions of two subsequent proto-patches is smaller than
+<code>lim_spat_indep</code> and the time between the proto-patch is less
+then <code>lim_time_indep</code>.</p>
 <p>Lastly, a unique patch ID is assigned to each residence patch ordered
 by time from 1 to n.</p>
 <p>Note that without cleaning the data or having short intervals (e.g. 3
 sec), position error can lead to speed outliers, which affects the
 creation of proto-patches. When calculating residence patches, it is
-therefor recommended to first filter (<code>var_max &lt; 5000</code>)
+therefore recommended to first filter (<code>var_max &lt; 5000</code>)
 and smooth (<code>moving_window = 5</code>) the data. Depending on the
 species’ behaviour or quality of the data, the <code>max_speed</code>
 can also be set to a higher value, or the data can be thinned first.
@@ -176,7 +176,7 @@ the data quality and species behaviour.</p>
 possible in between walking and flying speeds. A good starting point is
 <strong>3 m/s</strong>, but could be reduced if it prevents the creation
 of proto-patches, or increased if too many proto-patches are created.
-Having too many proto-patches is not alwasy an issue becasue subsequent
+Having too many proto-patches is not always an issue becasue subsequent
 proto-patches can be merged if the distance between them is small enough
 (set by <code>lim_spat_indep</code>). Likewise, errors in positiong data
 can inflate the creation of proto patches, but these will be corrected
@@ -286,7 +286,7 @@ table, which provides the assigned patch ID’s for the positions.</p>
 <th align="right">x</th>
 <th align="right">y</th>
 <th align="right">tideID</th>
-<th align="right">patch</th>
+<th align="left">patch</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -298,7 +298,7 @@ table, which provides the assigned patch ID’s for the positions.</p>
 <td align="right">650705.6</td>
 <td align="right">5902556</td>
 <td align="right">2023513</td>
-<td align="right">1</td>
+<td align="left">1</td>
 </tr>
 <tr class="even">
 <td align="left">redshank</td>
@@ -309,7 +309,7 @@ table, which provides the assigned patch ID’s for the positions.</p>
 <td align="right">650705.6</td>
 <td align="right">5902556</td>
 <td align="right">2023513</td>
-<td align="right">1</td>
+<td align="left">1</td>
 </tr>
 <tr class="odd">
 <td align="left">redshank</td>
@@ -320,7 +320,7 @@ table, which provides the assigned patch ID’s for the positions.</p>
 <td align="right">650721.0</td>
 <td align="right">5902559</td>
 <td align="right">2023513</td>
-<td align="right">1</td>
+<td align="left">1</td>
 </tr>
 <tr class="even">
 <td align="left">redshank</td>
@@ -331,7 +331,7 @@ table, which provides the assigned patch ID’s for the positions.</p>
 <td align="right">650721.1</td>
 <td align="right">5902559</td>
 <td align="right">2023513</td>
-<td align="right">1</td>
+<td align="left">1</td>
 </tr>
 <tr class="odd">
 <td align="left">redshank</td>
@@ -342,7 +342,7 @@ table, which provides the assigned patch ID’s for the positions.</p>
 <td align="right">650723.1</td>
 <td align="right">5902564</td>
 <td align="right">2023513</td>
-<td align="right">1</td>
+<td align="left">1</td>
 </tr>
 <tr class="even">
 <td align="left">redshank</td>
@@ -353,7 +353,7 @@ table, which provides the assigned patch ID’s for the positions.</p>
 <td align="right">650723.1</td>
 <td align="right">5902564</td>
 <td align="right">2023513</td>
-<td align="right">1</td>
+<td align="left">1</td>
 </tr>
 </tbody>
 </table>
@@ -478,7 +478,7 @@ desired columns back to our full data table.</p>
 </colgroup>
 <thead><tr class="header">
 <th align="left">tag</th>
-<th align="right">patch</th>
+<th align="left">patch</th>
 <th align="right">nfixes</th>
 <th align="right">x_mean</th>
 <th align="right">x_median</th>
@@ -501,7 +501,7 @@ desired columns back to our full data table.</p>
 <tbody>
 <tr class="odd">
 <td align="left">3027</td>
-<td align="right">1</td>
+<td align="left">1</td>
 <td align="right">52</td>
 <td align="right">650705.5</td>
 <td align="right">650702.8</td>
@@ -523,7 +523,7 @@ desired columns back to our full data table.</p>
 </tr>
 <tr class="even">
 <td align="left">3027</td>
-<td align="right">2</td>
+<td align="left">2</td>
 <td align="right">60</td>
 <td align="right">650776.6</td>
 <td align="right">650776.6</td>
@@ -545,7 +545,7 @@ desired columns back to our full data table.</p>
 </tr>
 <tr class="odd">
 <td align="left">3027</td>
-<td align="right">3</td>
+<td align="left">3</td>
 <td align="right">2456</td>
 <td align="right">650760.9</td>
 <td align="right">650762.0</td>
@@ -567,7 +567,7 @@ desired columns back to our full data table.</p>
 </tr>
 <tr class="even">
 <td align="left">3027</td>
-<td align="right">4</td>
+<td align="left">4</td>
 <td align="right">64</td>
 <td align="right">648364.2</td>
 <td align="right">648362.5</td>
@@ -589,7 +589,7 @@ desired columns back to our full data table.</p>
 </tr>
 <tr class="odd">
 <td align="left">3027</td>
-<td align="right">5</td>
+<td align="left">5</td>
 <td align="right">41</td>
 <td align="right">648059.6</td>
 <td align="right">648058.4</td>
@@ -611,7 +611,7 @@ desired columns back to our full data table.</p>
 </tr>
 <tr class="even">
 <td align="left">3027</td>
-<td align="right">6</td>
+<td align="left">6</td>
 <td align="right">316</td>
 <td align="right">647775.8</td>
 <td align="right">647776.4</td>

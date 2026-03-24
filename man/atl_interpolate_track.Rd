@@ -14,7 +14,8 @@ atl_interpolate_track(
   interp_interval = 60,
   max_gap = NULL,
   max_dist = NULL,
-  patches_only = TRUE
+  patches_only = TRUE,
+  quietly = FALSE
 )
 }
 \arguments{
@@ -49,6 +50,9 @@ between two observed positions for which interpolation is performed. If
 \item{patches_only}{Logical. If \code{TRUE} (default), interpolation is
 restricted to gaps within the same patch ID. Requires the column specified
 in \code{patch} to be present in \code{data}.}
+
+\item{quietly}{If \code{TRUE} returns percentage and number of positions filtered,
+if \code{FALSE} functions runs quietly}
 }
 \value{
 A \code{data.table} with the same columns as the input, plus \code{datetime}
@@ -70,6 +74,66 @@ interpolation is further restricted to only gaps within residence patches.
 \details{
 Best to use with already thinned data (e.g. with \code{atl_thin_data()}) to avoid
 unnecessary interpolation of very fine-scale data and to speed up processing.
+}
+\examples{
+# packages
+library(tools4watlas)
+library(ggplot2)
+
+# load example data of one red knot
+data <- data_example[tag == "3038"]
+
+# calculate residence patches
+data <- atl_res_patch(
+  data,
+  max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
+  min_fixes = 3, min_duration = 120
+)
+
+# thin dataa to 1 min intervall
+data <- atl_thin_data(
+  data = data,
+  interval = 60,
+  id_columns = c("tag", "species"),
+  method = "aggregate"
+)
+
+# interpolate data within residence patches
+data_int <- atl_interpolate_track(
+  data = data,
+  tag = "tag",
+  x = "x",
+  y = "y",
+  time = "time",
+  patch = "patch",
+  interp_interval = 60,
+  max_gap = 3600 * 8,
+  max_dist = NULL,
+  patches_only = TRUE
+)
+
+# check data
+head(data_int)
+
+### plot data to check results
+# create basemap
+bm <- atl_create_bm(data_int, buffer = 800)
+
+# plot points and tracks with standard ggplot colours
+bm +
+  geom_path(
+    data = data_int, aes(x, y),
+    linewidth = 0.5, alpha = 0.1, show.legend = FALSE
+  ) +
+  geom_point(
+    data = data_int, aes(x, y, colour = patch),
+    size = 1, alpha = 1, show.legend = FALSE
+  ) +
+  geom_point(
+    data = data_int[interpolated == TRUE], aes(x, y), color = "black",
+    size = 0.5, alpha = 1, show.legend = FALSE
+  )
+
 }
 \author{
 Johannes Krietsch

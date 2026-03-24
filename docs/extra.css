@@ -6,6 +6,7 @@ a {
   color: steelblue;
 }
 
+/* Ensure dropdown is fully shown */
 .dropdown-menu {
   max-height: none !important;
   overflow-y: visible !important;

@@ -9,6 +9,7 @@ articles:
   visualization_tutorials/create_basemap: visualization_tutorials/create_basemap.html
   package_development/extract_basemap_data: package_development/extract_basemap_data.html
   filter_data: filter_data.html
+  extended_workflow/interpolate_data: extended_workflow/interpolate_data.html
   load_and_check_data: load_and_check_data.html
   package_development/package_logo: package_development/package_logo.html
   visualization_tutorials/plot_data: visualization_tutorials/plot_data.html
@@ -17,7 +18,7 @@ articles:
   visualization_tutorials/plot_data_interactively: visualization_tutorials/plot_data_interactively.html
   research_and_publications/research_and_publications: research_and_publications/research_and_publications.html
   smooth_and_thin_data: smooth_and_thin_data.html
-last_built: 2026-03-17T08:48Z
+last_built: 2026-03-24T10:47Z
 urls:
   reference: https://allertbijleveld.github.io/tools4watlas/reference
   article: https://allertbijleveld.github.io/tools4watlas/articles

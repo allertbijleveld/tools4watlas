@@ -27,14 +27,12 @@ time gap smaller than `lim_time_indep`, they are assigned to the same
 proto patch. Proto-patches with fewer than `min_fixes` positions are
 filtered out.
 
-For each proto-
-
-patch, the median position is calculated as well as the time between two
-subsequent proto-patches (time between last location and first location
-of the next proto-patch). Proto patches are merged into residence
-patches, if the distance between the median positions of two subsequent
-proto-patches is smaller than `lim_spat_indep` and the time between the
-proto-patch is less then `lim_time_indep`.
+For each proto-patch, the median position is calculated as well as the
+time between two subsequent proto-patches (time between last location
+and first location of the next proto-patch). Proto patches are merged
+into residence patches, if the distance between the median positions of
+two subsequent proto-patches is smaller than `lim_spat_indep` and the
+time between the proto-patch is less then `lim_time_indep`.
 
 Lastly, a unique patch ID is assigned to each residence patch ordered by
 time from 1 to n.
@@ -42,7 +40,7 @@ time from 1 to n.
 Note that without cleaning the data or having short intervals (e.g. 3
 sec), position error can lead to speed outliers, which affects the
 creation of proto-patches. When calculating residence patches, it is
-therefor recommended to first filter (`var_max < 5000`) and smooth
+therefore recommended to first filter (`var_max < 5000`) and smooth
 (`moving_window = 5`) the data. Depending on the species’ behaviour or
 quality of the data, the `max_speed` can also be set to a higher value,
 or the data can be thinned first. Keep in mind that smoothing and
@@ -85,7 +83,7 @@ quality and species behaviour.
   flying speeds. A good starting point is **3 m/s**, but could be
   reduced if it prevents the creation of proto-patches, or increased if
   too many proto-patches are created. Having too many proto-patches is
-  not alwasy an issue becasue subsequent proto-patches can be merged if
+  not always an issue becasue subsequent proto-patches can be merged if
   the distance between them is small enough (set by `lim_spat_indep`).
   Likewise, errors in positiong data can inflate the creation of proto
   patches, but these will be corrected in the procedure.
@@ -169,7 +167,7 @@ head(data) |> knitr::kable(digits = 2)
 ```
 
 | species | posID | tag | time | datetime | x | y | tideID | patch |
-|:---|---:|:---|---:|:---|---:|---:|---:|---:|
+|:---|---:|:---|---:|:---|---:|---:|---:|:---|
 | redshank | 2 | 3027 | 1695438805 | 2023-09-23 03:13:25 | 650705.6 | 5902556 | 2023513 | 1 |
 | redshank | 3 | 3027 | 1695438808 | 2023-09-23 03:13:28 | 650705.6 | 5902556 | 2023513 | 1 |
 | redshank | 4 | 3027 | 1695439189 | 2023-09-23 03:19:49 | 650721.0 | 5902559 | 2023513 | 1 |
@@ -279,7 +277,7 @@ head(data_summary) |> knitr::kable(digits = 2)
 ```
 
 | tag | patch | nfixes | x_mean | x_median | x_start | x_end | y_mean | y_median | y_start | y_end | time_mean | time_median | time_start | time_end | dist_in_patch | dist_bw_patch | time_bw_patch | disp_in_patch | duration |
-|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+|:---|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | 3027 | 1 | 52 | 650705.5 | 650702.8 | 650705.6 | 650701.9 | 5902566 | 5902562 | 5902556 | 5902570 | 1695439841 | 1695439509 | 1695438805 | 1695442747 | 178.36 | NA | NA | 14.61 | 65.70 |
 | 3027 | 2 | 60 | 650776.6 | 650776.6 | 650778.7 | 650771.9 | 5902216 | 5902217 | 5902216 | 5902206 | 1695443135 | 1695443132 | 1695443041 | 1695443230 | 51.41 | 362.21 | 293.98 | 12.29 | 3.15 |
 | 3027 | 3 | 2456 | 650760.9 | 650762.0 | 650778.4 | 650699.8 | 5901722 | 5901737 | 5902014 | 5901490 | 1695447498 | 1695447344 | 1695443257 | 1695451884 | 1968.58 | 192.16 | 27.00 | 530.22 | 143.79 |
