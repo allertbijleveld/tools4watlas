@@ -63,7 +63,8 @@ Functions to calculate residence patches
 
 ## Spatial functions
 
-Transform data to sf object and get a bounding box
+Transform data to sf object, change projections, get a bounding box or
+interpolate tracks
 
 - [`atl_as_sf()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_as_sf.md)
   : Convert a data.frame or data.table to an simple feature (sf) object
@@ -72,6 +73,8 @@ Transform data to sf object and get a bounding box
   columns
 - [`atl_bbox()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_bbox.md)
   : Create a bounding box with specified aspect ratio and buffer
+- [`atl_interpolate_track()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_interpolate_track.md)
+  : Interpolate a tracking data
 
 ## Plotting functions
 
@@ -135,3 +138,5 @@ Example and map data provided with the package
   : Lake on Griend
 - [`grienderwaard`](https://allertbijleveld.github.io/tools4watlas/reference/grienderwaard.md)
   : Grienderwaard
+- [`roosts_griend`](https://allertbijleveld.github.io/tools4watlas/reference/roosts_griend.md)
+  : Roosts around Griend

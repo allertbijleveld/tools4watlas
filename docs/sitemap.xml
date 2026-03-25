@@ -4,6 +4,7 @@
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residency_patches.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_SIBES_data.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/interpolate_data.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/index.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/articles/literature/literature.html</loc></url>
@@ -43,6 +44,7 @@
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/atl_full_tag_id.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/atl_get_data.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/atl_get_speed.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/reference/atl_interpolate_track.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/atl_median_smooth.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/atl_patch_dist.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/atl_patch_summary.html</loc></url>
@@ -74,5 +76,6 @@
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/land.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/mudflats.html</loc></url>
 <url><loc>https://allertbijleveld.github.io/tools4watlas/reference/pipe.html</loc></url>
+<url><loc>https://allertbijleveld.github.io/tools4watlas/reference/roosts_griend.html</loc></url>
 </urlset>
 

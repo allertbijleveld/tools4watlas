@@ -206,7 +206,7 @@ atl_check_res_patch <- function(data,
   # if roosts = TRUE add roost polygon
   if (roosts == TRUE) {
     bm <- bm +
-      geom_sf(data = roosts_griend, fill = NA, color = "black")
+      geom_sf(data = tools4watlas::roosts_griend, fill = NA, color = "black")
   }
 
   # plot on map

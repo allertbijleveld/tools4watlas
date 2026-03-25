@@ -56,6 +56,9 @@ local NIOZ file server is required.
 - [**Add residence
   patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residence_patches.html)
 
+- [**Interpolate
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/interpolate_data.html)
+
 **Visualization tutorials**:
 
 - [**Create a
@@ -258,7 +261,8 @@ Functions to calculate residence patches
 
 ## Spatial functions
 
-Transform data to sf object and get a bounding box
+Transform data to sf object, change projections, get a bounding box or
+interpolate tracks
 
 - [`atl_as_sf()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_as_sf.md)
   : Convert a data.frame or data.table to an simple feature (sf) object
@@ -267,6 +271,8 @@ Transform data to sf object and get a bounding box
   columns
 - [`atl_bbox()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_bbox.md)
   : Create a bounding box with specified aspect ratio and buffer
+- [`atl_interpolate_track()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_interpolate_track.md)
+  : Interpolate a tracking data
 
 ## Plotting functions
 
@@ -330,6 +336,8 @@ Example and map data provided with the package
   : Lake on Griend
 - [`grienderwaard`](https://allertbijleveld.github.io/tools4watlas/reference/grienderwaard.md)
   : Grienderwaard
+- [`roosts_griend`](https://allertbijleveld.github.io/tools4watlas/reference/roosts_griend.md)
+  : Roosts around Griend
 
 # Articles
 
@@ -349,6 +357,8 @@ Example and map data provided with the package
   data](https://allertbijleveld.github.io/tools4watlas/articles/package_development/extract_basemap_data.md):
 - [Filter
   data](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.md):
+- [Interpolate
+  data](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/interpolate_data.md):
 - [Loading and checking
   data](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.md):
 - [tools4watlas

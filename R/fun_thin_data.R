@@ -20,6 +20,11 @@
 #' averaged position and covariates in each time interval.
 #' Grouping variables' names (such as animal identity) may be passed as a
 #' character vector to the \code{id_columns} argument.
+#' If `patch` is among the columns, it will be converted to numeric for
+#' aggregation and rounded back to the nearest integer, then converted back to
+#' character to match the original type. This ensures that the most common
+#' patch ID is retained after aggregation (e.g. 2 positions with patch ID 5
+#' and 20 with patch ID 6 will aggregate to patch ID 6).
 #'
 #' @author Pratik Gupte & Allert Bijleveld & Johannes Krietsch
 #' @param data Tracking data to aggregate. Must have columns \code{x} and
@@ -71,7 +76,7 @@ atl_thin_data <- function(data,
                           id_columns = NULL,
                           method = c("subsample", "aggregate")) {
   # Global variables to suppress notes in data.table
-  varx <- vary <- x <- NULL
+  varx <- vary <- x <- patch <- NULL
   time <- time_agg <- time_diff <- datetime <- NULL
 
   # Input validation
@@ -112,6 +117,23 @@ atl_thin_data <- function(data,
   # Round time to the nearest interval
   data[, time_agg := floor(as.numeric(time) / interval) * interval]
 
+  # Identify numeric and non-numeric columns (excluding grouping/key columns)
+  num_cols <- setdiff(
+    names(data)[sapply(data, is.numeric)],
+    c("time_agg", id_columns)
+  )
+  non_num_cols <- setdiff(
+    names(data),
+    c(num_cols, "time_agg", id_columns)
+  )
+
+  # If patch column exists, convert to numeric and move to num_cols
+  if ("patch" %in% names(data)) {
+    data[, patch := as.numeric(patch)]
+    non_num_cols <- setdiff(non_num_cols, "patch")
+    num_cols <- union(num_cols, "patch")
+  }
+
   # Handle method: aggregate or subsample
   if (method == "aggregate") {
     if (all(c("varx", "vary") %in% colnames(data))) {
@@ -133,8 +155,21 @@ atl_thin_data <- function(data,
         lapply(.SD, mean, na.rm = TRUE),
         n_aggregated = length(x)
       ),
-      by = c("time_agg", id_columns)
+      by = c("time_agg", id_columns),
+      .SDcols = num_cols
       ]
+    }
+
+    # Join back non-numeric columns using first value per group
+    if (length(non_num_cols) > 0) {
+      non_num_vals <- data[, lapply(.SD, data.table::first),
+        by = c("time_agg", id_columns),
+        .SDcols = non_num_cols
+      ]
+      data_s <- merge(
+        data_s, non_num_vals,
+        by = c("time_agg", id_columns), sort = FALSE
+      )
     }
 
     # Recalculate datetime and clean up columns
@@ -175,6 +210,13 @@ atl_thin_data <- function(data,
     data_s[, time_diff := c(NA, diff(time)), by = c(id_columns)]
     lag <- data_s[!is.na(time_diff)]$time_diff
     data_s[, time_diff := NULL]
+  }
+
+  # Round patch back to nearest integer and convert to character
+  if ("patch" %in% names(data_s)) {
+    data_s[, patch := fifelse(
+      is.na(patch), NA_character_, as.character(round(patch))
+    )]
   }
 
   # Check if intervalls are correct

@@ -29,6 +29,7 @@ atl_check_res_patch(
   mudflat_colour = "#faf5ef",
   mudflat_fill = "#faf5ef",
   mudflat_alpha = 0.6,
+  roosts = FALSE,
   filename = NULL,
   png_width = 3840,
   png_height = 2160
@@ -134,6 +135,11 @@ atl_check_res_patch(
 - mudflat_alpha:
 
   Mudflat alpha (default 0.6)
+
+- roosts:
+
+  Logical. Whether to add the roost polygon around Griend or not
+  (default: FALSE).
 
 - filename:
 

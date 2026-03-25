@@ -37,6 +37,8 @@ navbar:
         href: articles/extended_workflow/add_tidal_and_bathymetry_data.html
       - text: "Add residence patches"
         href: articles/extended_workflow/add_residence_patches.html
+      - text: "Interpolate data"
+        href: articles/extended_workflow/interpolate_data.html
       - text: "--------"
       - text: Visualization tutorials
       - text: "Create a basemap"
@@ -98,11 +100,12 @@ reference:
      - atl_res_patch_summary
      - atl_check_res_patch
   - title: "Spatial functions"
-    desc: "Transform data to sf object and get a bounding box"
+    desc: "Transform data to sf object, change projections, get a bounding box or interpolate tracks"
     contents:
      - atl_as_sf
      - atl_transform_dt
      - atl_bbox
+     - atl_interpolate_track
   - title: "Plotting functions"
     desc: "Functions to plot the data"
     contents:

@@ -54,6 +54,7 @@ min_fixes argument."><meta property="og:image" content="https://allertbijleveld.
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_residence_patches.html">Add residence patches</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/interpolate_data.html">Interpolate data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
     <li><a class="dropdown-item" href="../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
@@ -153,7 +154,7 @@ residence patches.</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A data.table that has the added column
-<code>patch</code> indicating the patch ID.</p>
+<code>patch</code> as character indicating the patch ID.</p>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -179,31 +180,31 @@ Johannes Krietsch</p>
 <span class="r-in"><span><span class="co"># summary of residence patches</span></span></span>
 <span class="r-in"><span><span class="va">data_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="atl_res_patch_summary.html">atl_res_patch_summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">data_summary</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        tag patch nfixes   x_mean x_median  x_start    x_end  y_mean y_median</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;int&gt;  &lt;int&gt;    &lt;num&gt;    &lt;num&gt;    &lt;num&gt;    &lt;num&gt;   &lt;num&gt;    &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   3038     1    218 650118.2 650143.9 650120.1 649896.0 5902387  5902399</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   3038     2    204 650378.7 650378.4 650372.3 650384.2 5902349  5902368</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   3038     3    172 650263.5 650251.5 650254.3 650313.1 5902163  5902170</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   3038     4     67 650471.0 650457.7 650410.7 650530.4 5901984  5901998</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   3038     5    190 650765.0 650765.1 650722.6 650748.1 5901930  5901928</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   3038     6     90 650804.9 650799.0 650857.1 650766.2 5901892  5901893</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   3038     7     27 650740.2 650739.5 650766.6 650738.8 5901749  5901747</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:   3038     8    103 650661.8 650673.3 650696.7 650620.4 5901843  5901845</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:   3038     9    210 650965.7 650994.0 651071.8 650865.5 5901982  5901989</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   3038    10    257 650728.6 650728.2 650761.8 650705.0 5902000  5902013</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:   3038    11     15 650883.6 650881.3 650896.3 650871.3 5902117  5902115</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:   3038    12     73 651514.7 651536.8 651557.2 651428.6 5902163  5902148</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13:   3038    13     46 651415.0 651412.4 651422.3 651432.0 5902456  5902446</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14:   3038    14     21 651498.8 651500.7 651457.8 651496.5 5903028  5903027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15:   3038    15      3 650723.2 650743.0 650756.3 650670.3 5903119  5903114</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16:   3038    16     54 650213.1 650223.0 650259.9 650216.7 5902177  5902191</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:   3038    17     38 650062.7 650063.7 650080.3 650055.9 5902048  5902043</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:   3038    18    201 650232.5 650236.3 650180.9 650257.9 5902030  5902023</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:   3038    19     19 650421.0 650421.3 650400.5 650425.8 5901725  5901723</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20:   3038    20    603 650577.0 650576.7 650608.5 650304.4 5902112  5902115</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21:   3038    21    201 650155.1 650155.2 650152.0 650159.6 5902363  5902361</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        tag patch nfixes   x_mean x_median  x_start    x_end  y_mean y_median</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;int&gt;  &lt;int&gt;    &lt;num&gt;    &lt;num&gt;    &lt;num&gt;    &lt;num&gt;   &lt;num&gt;    &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        tag  patch nfixes   x_mean x_median  x_start    x_end  y_mean y_median</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;char&gt;  &lt;int&gt;    &lt;num&gt;    &lt;num&gt;    &lt;num&gt;    &lt;num&gt;   &lt;num&gt;    &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   3038      1    218 650118.2 650143.9 650120.1 649896.0 5902387  5902399</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   3038      2    204 650378.7 650378.4 650372.3 650384.2 5902349  5902368</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   3038      3    172 650263.5 650251.5 650254.3 650313.1 5902163  5902170</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   3038      4     67 650471.0 650457.7 650410.7 650530.4 5901984  5901998</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   3038      5    190 650765.0 650765.1 650722.6 650748.1 5901930  5901928</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   3038      6     90 650804.9 650799.0 650857.1 650766.2 5901892  5901893</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   3038      7     27 650740.2 650739.5 650766.6 650738.8 5901749  5901747</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:   3038      8    103 650661.8 650673.3 650696.7 650620.4 5901843  5901845</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:   3038      9    210 650965.7 650994.0 651071.8 650865.5 5901982  5901989</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   3038     10    257 650728.6 650728.2 650761.8 650705.0 5902000  5902013</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:   3038     11     15 650883.6 650881.3 650896.3 650871.3 5902117  5902115</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:   3038     12     73 651514.7 651536.8 651557.2 651428.6 5902163  5902148</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:   3038     13     46 651415.0 651412.4 651422.3 651432.0 5902456  5902446</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:   3038     14     21 651498.8 651500.7 651457.8 651496.5 5903028  5903027</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:   3038     15      3 650723.2 650743.0 650756.3 650670.3 5903119  5903114</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:   3038     16     54 650213.1 650223.0 650259.9 650216.7 5902177  5902191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:   3038     17     38 650062.7 650063.7 650080.3 650055.9 5902048  5902043</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:   3038     18    201 650232.5 650236.3 650180.9 650257.9 5902030  5902023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:   3038     19     19 650421.0 650421.3 650400.5 650425.8 5901725  5901723</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:   3038     20    603 650577.0 650576.7 650608.5 650304.4 5902112  5902115</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:   3038     21    201 650155.1 650155.2 650152.0 650159.6 5902363  5902361</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        tag  patch nfixes   x_mean x_median  x_start    x_end  y_mean y_median</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;char&gt;  &lt;int&gt;    &lt;num&gt;    &lt;num&gt;    &lt;num&gt;    &lt;num&gt;   &lt;num&gt;    &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     y_start   y_end  time_mean time_median time_start   time_end dist_in_patch</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;num&gt;   &lt;num&gt;      &lt;num&gt;       &lt;num&gt;      &lt;num&gt;      &lt;num&gt;         &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1: 5902400 5902365 1695433162  1695432962 1695430807 1695435943    1281.06282</span>

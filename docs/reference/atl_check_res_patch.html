@@ -28,6 +28,7 @@ movement paths, patch durations, and an inset overview map."><meta property="og:
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_residence_patches.html">Add residence patches</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/interpolate_data.html">Interpolate data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
     <li><a class="dropdown-item" href="../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
@@ -88,6 +89,7 @@ movement paths, patch durations, and an inset overview map.</p>
 <span>  mudflat_colour <span class="op">=</span> <span class="st">"#faf5ef"</span>,</span>
 <span>  mudflat_fill <span class="op">=</span> <span class="st">"#faf5ef"</span>,</span>
 <span>  mudflat_alpha <span class="op">=</span> <span class="fl">0.6</span>,</span>
+<span>  roosts <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  filename <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  png_width <span class="op">=</span> <span class="fl">3840</span>,</span>
 <span>  png_height <span class="op">=</span> <span class="fl">2160</span></span>
@@ -193,6 +195,11 @@ give a warning message, but works if desired.</p></dd>
 
 <dt id="arg-mudflat-alpha">mudflat_alpha<a class="anchor" aria-label="anchor" href="#arg-mudflat-alpha"></a></dt>
 <dd><p>Mudflat alpha (default 0.6)</p></dd>
+
+
+<dt id="arg-roosts">roosts<a class="anchor" aria-label="anchor" href="#arg-roosts"></a></dt>
+<dd><p>Logical. Whether to add the roost polygon around Griend or not
+(default: FALSE).</p></dd>
 
 
 <dt id="arg-filename">filename<a class="anchor" aria-label="anchor" href="#arg-filename"></a></dt>

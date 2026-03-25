@@ -18,7 +18,12 @@ is no measure of error, and drops those columns.
 If there is actually no measure of error, the function simply returns the
 averaged position and covariates in each time interval.
 Grouping variables' names (such as animal identity) may be passed as a
-character vector to the id_columns argument."><meta property="og:description" content="Uniformly reduce data volumes with either aggregation or resampling
+character vector to the id_columns argument.
+If patch is among the columns, it will be converted to numeric for
+aggregation and rounded back to the nearest integer, then converted back to
+character to match the original type. This ensures that the most common
+patch ID is retained after aggregation (e.g. 2 positions with patch ID 5
+and 20 with patch ID 6 will aggregate to patch ID 6)."><meta property="og:description" content="Uniformly reduce data volumes with either aggregation or resampling
 (specified by the method argument) over an interval specified in
 seconds using the interval argument.
 Both options make two important assumptions:
@@ -37,7 +42,12 @@ is no measure of error, and drops those columns.
 If there is actually no measure of error, the function simply returns the
 averaged position and covariates in each time interval.
 Grouping variables' names (such as animal identity) may be passed as a
-character vector to the id_columns argument."><meta property="og:image" content="https://allertbijleveld.github.io/tools4watlas/logo.png"></head><body>
+character vector to the id_columns argument.
+If patch is among the columns, it will be converted to numeric for
+aggregation and rounded back to the nearest integer, then converted back to
+character to match the original type. This ensures that the most common
+patch ID is retained after aggregation (e.g. 2 positions with patch ID 5
+and 20 with patch ID 6 will aggregate to patch ID 6)."><meta property="og:image" content="https://allertbijleveld.github.io/tools4watlas/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -64,6 +74,7 @@ character vector to the id_columns argument."><meta property="og:image" content=
     <li><h6 class="dropdown-header" data-toc-skip>Extended workflow</h6></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_residence_patches.html">Add residence patches</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/interpolate_data.html">Interpolate data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
     <li><a class="dropdown-item" href="../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
@@ -114,7 +125,12 @@ is no measure of error, and drops those columns.
 If there is actually no measure of error, the function simply returns the
 averaged position and covariates in each time interval.
 Grouping variables' names (such as animal identity) may be passed as a
-character vector to the <code>id_columns</code> argument.</p>
+character vector to the <code>id_columns</code> argument.
+If <code>patch</code> is among the columns, it will be converted to numeric for
+aggregation and rounded back to the nearest integer, then converted back to
+character to match the original type. This ensures that the most common
+patch ID is retained after aggregation (e.g. 2 positions with patch ID 5
+and 20 with patch ID 6 will aggregate to patch ID 6).</p>
     </div>
 
     <div class="section level2">
@@ -174,26 +190,26 @@ mean is taken.</p></dd>
 <span class="r-in"><span><span class="va">data</span><span class="op">[</span>, <span class="va">datetime</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="va">time</span>, origin <span class="op">=</span> <span class="st">"1970-01-01"</span>, tz <span class="op">=</span> <span class="st">"UTC"</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        tag       time         x        y            datetime</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt;      &lt;num&gt;     &lt;num&gt;    &lt;num&gt;              &lt;POSc&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:      1 1696218721  8.033383 14.93809 2023-10-02 03:52:01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:      1 1696218731 10.701356 14.69404 2023-10-02 03:52:11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:      1 1696218741  9.527209 14.61953 2023-10-02 03:52:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:      1 1696218751  8.932176 14.30529 2023-10-02 03:52:31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:      1 1696218761  9.782025 14.79208 2023-10-02 03:52:41</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:      1 1696218771  8.973996 13.73460 2023-10-02 03:52:51</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:      1 1696218781  9.271109 17.16896 2023-10-02 03:53:01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:      1 1696218791  9.374961 16.20796 2023-10-02 03:53:11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:      1 1696218801  8.313307 13.87689 2023-10-02 03:53:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:      1 1696218811 10.837787 14.59712 2023-10-02 03:53:31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:      2 1696218721 10.153373 14.53334 2023-10-02 03:52:01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:      2 1696218731  8.861863 15.77997 2023-10-02 03:52:11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13:      2 1696218741 11.253815 14.91663 2023-10-02 03:52:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14:      2 1696218751 10.426464 15.25332 2023-10-02 03:52:31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15:      2 1696218761  9.704929 14.97145 2023-10-02 03:52:41</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16:      2 1696218771 10.895126 14.95713 2023-10-02 03:52:51</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:      2 1696218781 10.878133 16.36860 2023-10-02 03:53:01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:      2 1696218791 10.821581 14.77423 2023-10-02 03:53:11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:      2 1696218801 10.688640 16.51647 2023-10-02 03:53:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20:      2 1696218811 10.553918 13.45125 2023-10-02 03:53:31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:      1 1696218721 10.606748 14.64564 2023-10-02 03:52:01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:      1 1696218731  9.890064 15.94635 2023-10-02 03:52:11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:      1 1696218741 10.172182 16.31683 2023-10-02 03:52:21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:      1 1696218751  9.909673 14.70336 2023-10-02 03:52:31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:      1 1696218761 11.924343 14.61279 2023-10-02 03:52:41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:      1 1696218771 11.298393 14.21457 2023-10-02 03:52:51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:      1 1696218781 10.748791 13.94326 2023-10-02 03:53:01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:      1 1696218791 10.556224 14.20446 2023-10-02 03:53:11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:      1 1696218801  9.451743 13.24372 2023-10-02 03:53:21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:      1 1696218811 11.110535 14.30946 2023-10-02 03:53:31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:      2 1696218721  7.387666 14.44146 2023-10-02 03:52:01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:      2 1696218731  9.844306 14.46334 2023-10-02 03:52:11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:      2 1696218741 10.433890 15.22713 2023-10-02 03:52:21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:      2 1696218751  9.618049 15.97845 2023-10-02 03:52:31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:      2 1696218761 10.424188 14.79112 2023-10-02 03:52:41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:      2 1696218771 11.063102 13.60059 2023-10-02 03:52:51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:      2 1696218781 11.048713 15.25854 2023-10-02 03:53:01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:      2 1696218791  9.961897 14.55820 2023-10-02 03:53:11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:      2 1696218801 10.486149 15.56860 2023-10-02 03:53:21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:      2 1696218811 11.672883 17.12685 2023-10-02 03:53:31</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        tag       time         x        y            datetime</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt;      &lt;num&gt;     &lt;num&gt;    &lt;num&gt;              &lt;POSc&gt;</span>
 <span class="r-in"><span></span></span>
@@ -215,19 +231,19 @@ mean is taken.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># View results</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">thinned_aggregated</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       tag       time         x        y            datetime n_aggregated</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;char&gt;      &lt;num&gt;     &lt;num&gt;    &lt;num&gt;              &lt;POSc&gt;        &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      1 1696218720  9.325024 14.51394 2023-10-02 03:52:00            6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:      1 1696218780  9.449291 15.46273 2023-10-02 03:53:00            4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:      2 1696218720 10.215928 15.06864 2023-10-02 03:52:00            6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:      2 1696218780 10.735568 15.27764 2023-10-02 03:53:00            4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       tag       time        x        y            datetime n_aggregated</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;char&gt;      &lt;num&gt;    &lt;num&gt;    &lt;num&gt;              &lt;POSc&gt;        &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      1 1696218720 10.63357 15.07325 2023-10-02 03:52:00            6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:      1 1696218780 10.46682 13.92523 2023-10-02 03:53:00            4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:      2 1696218720  9.79520 14.75035 2023-10-02 03:52:00            6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:      2 1696218780 10.79241 15.62805 2023-10-02 03:53:00            4</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">thinned_subsampled</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       tag       time         x        y            datetime n_subsampled</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;char&gt;      &lt;num&gt;     &lt;num&gt;    &lt;num&gt;              &lt;POSc&gt;        &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      1 1696218721  8.033383 14.93809 2023-10-02 03:52:01            6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:      1 1696218781  9.271109 17.16896 2023-10-02 03:53:01            4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:      2 1696218721 10.153373 14.53334 2023-10-02 03:52:01            6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:      2 1696218781 10.878133 16.36860 2023-10-02 03:53:01            4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      1 1696218721 10.606748 14.64564 2023-10-02 03:52:01            6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:      1 1696218781 10.748791 13.94326 2023-10-02 03:53:01            4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:      2 1696218721  7.387666 14.44146 2023-10-02 03:52:01            6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:      2 1696218781 11.048713 15.25854 2023-10-02 03:53:01            4</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

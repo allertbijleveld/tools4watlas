@@ -71,6 +71,9 @@ local NIOZ file server is required.
 - [**Add residence
   patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residence_patches.html)
 
+- [**Interpolate
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/interpolate_data.html)
+
 **Visualization tutorials**:
 
 - [**Create a

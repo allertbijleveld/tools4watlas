@@ -267,3 +267,49 @@ Includes data in the package, if `tools4watlas` is opened as project.
 # save data
 save(grienderwaard, file = "../../data/grienderwaard.rda", compress = "xz")
 ```
+
+## Load roost sites around Griend data
+
+Polygon made to capture all pre-roost and roost sites around Griend.
+Based on a polygon of 60 cm NAP, but smoothed and extended a bit to
+capture all pre-roost sites.
+
+``` r
+# roosts and pre-roost sites around Griend
+roosts_griend <- st_read(quiet = TRUE, paste0(
+  fp, "open_street_map/grienderwaard/roosts_smoothed.shp"
+))
+
+# point of Griend (and a bit east)
+griend <- st_sfc(st_point(c(5.2525, 53.2523)), crs = st_crs(4326)) |>
+  st_transform(crs = st_crs(32631))
+
+# define bbox
+bbox <- atl_bbox(griend, buffer = 8000)
+
+# create basemap
+bm <- atl_create_bm(bbox)
+
+# plot
+bm +
+  geom_sf(data = roosts_griend, fill = NA, color = "black") +
+  # set extend again (overwritten by geom_sf)
+  coord_sf(
+    xlim = c(bbox["xmin"], bbox["xmax"]),
+    ylim = c(bbox["ymin"], bbox["ymax"]), expand = FALSE
+  )
+```
+
+![Map with roosts around Griend
+polygon](extract_basemap_data_files/figure-html/unnamed-chunk-10-1.png)
+
+Map with roosts around Griend polygon
+
+### Save data
+
+Includes data in the package, if `tools4watlas` is opened as project.
+
+``` r
+# save data
+save(roosts_griend, file = "../../data/roosts_griend.rda", compress = "xz")
+```

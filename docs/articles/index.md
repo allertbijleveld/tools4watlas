@@ -16,6 +16,8 @@
   data](https://allertbijleveld.github.io/tools4watlas/articles/package_development/extract_basemap_data.md):
 - [Filter
   data](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.md):
+- [Interpolate
+  data](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/interpolate_data.md):
 - [Loading and checking
   data](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.md):
 - [tools4watlas
