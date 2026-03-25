@@ -91,21 +91,21 @@
 
     
     
-<p>This article shows how to interpolate WATLAS data and how to create
-relative distributions. Interpolation should be used mindful and with
-consideration of the data and research question. Some analysis need
-regular spaced data and given temporal and spatial restrictions,
-interpolation can be a useful tool to fill in gaps in the data. For
-example, if the data are collected at irregular intervals, interpolation
-can be used to create a regular time series of positions. For example,
-within residence patches, when birds are on the ground, especially when
-roosting, it is likely that the bird is not moving much and in this case
-an interpolation can be useful to create data that better describe the
-space use in association with time. One could also simply use the median
-residency patch position and the time spent in the patch, but this would
-not allow to capture the space use within the residence patch.</p>
+<p>This article shows how to interpolate between positions thus filling
+gaps in the WATLAS data. Under some circumstances this can be useful,
+but one should be cautious and mindful of the data and research
+question.</p>
+<p>For some analyses, gaps in positioning data can bias the results and
+interpolating positions across small gaps can be necesarry. For example,
+if birds move some distance within residence patches, the median
+position in the patch does not properly reflect space use. Moreover,
+within residence patches, especially when birds are on the ground
+roosting, it is likely that birds do not move much and interpolation
+between positions can be done safely.</p>
+<p>Here, we show how to interpolate and fill small data gaps within
+residence patches.</p>
 <div class="section level2">
-<h2 id="load-packages-and-required-data">Load packages and required data<a class="anchor" aria-label="anchor" href="#load-packages-and-required-data"></a>
+<h2 id="load-packages-and-data">Load packages and data<a class="anchor" aria-label="anchor" href="#load-packages-and-data"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># packages</span></span>
@@ -119,11 +119,13 @@ not allow to capture the space use within the residence patch.</p>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="prepare-data-by-calculating-residence-patches-and-thinning">Prepare data by calculating residence patches and thinning<a class="anchor" aria-label="anchor" href="#prepare-data-by-calculating-residence-patches-and-thinning"></a>
+<h2 id="prepare-data">Prepare data<a class="anchor" aria-label="anchor" href="#prepare-data"></a>
 </h2>
-<p>We first need to calculate residence patches as described in the
-article <a href="https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residence_patches.html">“Add
-residence patches”</a> and thin the data to a regular interval as
+<p>To interpolate positions within residence patches, we first need to
+calculate residence patches as described in the article <a href="https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residence_patches.html">“Add
+residence patches”</a>.</p>
+<p>For convenience and to avoid interpolating many (superfluous)
+positions, we suggest aggregating the data into regular intervals as
 described in the article <a href="https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html">“Smooth
 and thin data”</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -152,7 +154,7 @@ and thin data”</a>.</p>
 <span><span class="co"># summary of residence patches</span></span>
 <span><span class="va">data_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_res_patch_summary.html">atl_res_patch_summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># thin the data to 1 min intervall</span></span>
+<span><span class="co"># thin the data to 1 min interval</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_thin_data.html">atl_thin_data</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data</span>,</span>
 <span>  interval <span class="op">=</span> <span class="fl">60</span>,</span>
@@ -162,11 +164,12 @@ and thin data”</a>.</p>
 <div class="section level3">
 <h3 id="check-data">Check data<a class="anchor" aria-label="anchor" href="#check-data"></a>
 </h3>
-<p>Before interpolation, it is good to have an look at the residence
-patch summary to understand the data and to check whether interpolation
-is appropriate. For example, if the maximum duration of residence
-patches is very long, there might be a mistake in the residence patch
-calculation.</p>
+<p>Before interpolation, it is good inspect the residence patch summary
+and check whether interpolating positions is appropriate. For example,
+if the residence patches are overly elongated there might be a mistake
+in the residence patch calculation. Likewise, if there are large spatial
+or temporal gaps between postions, interpolating might be
+inapproriate.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># merge species to data_summary</span></span>
 <span><span class="va">data_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">data_summary</span>, <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">species</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></span>
@@ -190,16 +193,16 @@ long, but possible.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="interpolate-data-within-patch">Interpolate data within patch<a class="anchor" aria-label="anchor" href="#interpolate-data-within-patch"></a>
+<h2 id="interpolate-between-positions">Interpolate between positions<a class="anchor" aria-label="anchor" href="#interpolate-between-positions"></a>
 </h2>
-<p>In these case, we trust the residence patch calculation and we want
-to interpolate the data to 1 min intervals only within residence
-patches. We set the <code>max_gap</code> to 8 h, which is longer than
-the longest residence patch duration, so that all residence patches are
-interpolated and we set <code>patches_only</code> to <code>TRUE</code>,
-so that only data within residence patches are interpolated.</p>
+<p>In this example, we trust the residence patch calculation and we want
+to interpolate the data to 1 min intervals within residence patches. We
+set the <code>max_gap</code> to 8 h, which is longer than the longest
+residence patch duration, so that all residence patches are interpolated
+and we set <code>patches_only</code> to <code>TRUE</code>, so that only
+data within residence patches are interpolated.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># interpolate data to 1 min intervals only within residence patches</span></span>
+<code class="sourceCode R"><span><span class="co"># interpolate data to 1 min intervals - only within residence patches</span></span>
 <span><span class="va">data_int</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_interpolate_track.html">atl_interpolate_track</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data</span>,</span>
 <span>  tag <span class="op">=</span> <span class="st">"tag"</span>,</span>
@@ -301,10 +304,10 @@ so that only data within residence patches are interpolated.</p>
 </tbody>
 </table>
 <div class="section level3">
-<h3 id="plot-the-data-to-check-interpolated-points">Plot the data to check interpolated points<a class="anchor" aria-label="anchor" href="#plot-the-data-to-check-interpolated-points"></a>
+<h3 id="plot-data-and-check-interpolation">Plot data and check interpolation<a class="anchor" aria-label="anchor" href="#plot-data-and-check-interpolation"></a>
 </h3>
-<p>Plot one tag as example. The points are coloured by residence patch
-and the interpolated points are shown in black.</p>
+<p>Here, we plot one tag as an example. The positions are coloured by
+residence patch, and the interpolated points are shown in black.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># subset one tag</span></span>
 <span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data_int</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="st">"3288"</span><span class="op">]</span></span>
@@ -326,8 +329,8 @@ and the interpolated points are shown in black.</p>
 <span>    data <span class="op">=</span> <span class="va">data_subset</span><span class="op">[</span><span class="va">interpolated</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">]</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"black"</span>,</span>
 <span>    size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">1</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="interpolate_data_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" alt="" width="100%">
-Looks good!</p>
+<p><img src="interpolate_data_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" alt="" width="100%"></p>
+<p>Looks good!</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -1,12 +1,12 @@
-# Interpolate a tracking data
+# Interpolate tracking data
 
 This function interpolates gaps in the tracking data within a set time
 interval (`interp_interval`) and within defined temporal and spatial
-restrictions. Cooridnates in gaps a filled with a simple linear
+restrictions. Coordinates in gaps are filled with a simple linear
 interpolation using
 [`zoo::na.approx()`](https://rdrr.io/pkg/zoo/man/na.approx.html). One is
-required to specify the maximal time gap (`max_gap`) between positions
-that will be interpolated and can additionally specify a maximal
+required to specify the maximum time gap (`max_gap`) between positions
+that will be interpolated and can additionally specify a maximum
 distance between positions (`max_dist`) to restrict interpolation to
 more local movements. If `patches_only = TRUE`, interpolation is further
 restricted to only gaps within residence patches.
@@ -145,19 +145,19 @@ data_int <- atl_interpolate_track(
   max_dist = NULL,
   patches_only = TRUE
 )
-#> Note: Interpolation added 207 positions (22.45% increase).
+#> Note: Interpolation added 241 positions (25.32% increase).
 
 # check data
 head(data_int)
 #> Key: <tag, time>
 #>       tag       time            datetime        x       y  patch gap_next
 #>    <char>      <num>              <POSc>    <num>   <num> <char>    <num>
-#> 1:   3038 1695430800 2023-09-23 01:00:00 650123.1 5902399      1        0
-#> 2:   3038 1695430860 2023-09-23 01:01:00 650125.5 5902398      1       60
-#> 3:   3038 1695430920 2023-09-23 01:02:00 650117.7 5902400      1       60
-#> 4:   3038 1695430980 2023-09-23 01:03:00 650123.5 5902399      1       60
-#> 5:   3038 1695431040 2023-09-23 01:04:00 650123.1 5902399      1       60
-#> 6:   3038 1695431100 2023-09-23 01:05:00 650125.2 5902399      1       60
+#> 1:   3038 1695430800 2023-09-23 01:00:00 650123.5 5902399      1        0
+#> 2:   3038 1695430860 2023-09-23 01:01:00 650125.2 5902398      1       60
+#> 3:   3038 1695430920 2023-09-23 01:02:00 650117.9 5902400      1       60
+#> 4:   3038 1695430980 2023-09-23 01:03:00 650123.9 5902399      1       60
+#> 5:   3038 1695431040 2023-09-23 01:04:00 650123.6 5902399      1       60
+#> 6:   3038 1695431100 2023-09-23 01:05:00 650123.4 5902399      1       60
 #>    interpolated
 #>          <lgcl>
 #> 1:        FALSE

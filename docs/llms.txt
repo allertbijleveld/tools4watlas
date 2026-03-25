@@ -272,7 +272,7 @@ interpolate tracks
 - [`atl_bbox()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_bbox.md)
   : Create a bounding box with specified aspect ratio and buffer
 - [`atl_interpolate_track()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_interpolate_track.md)
-  : Interpolate a tracking data
+  : Interpolate tracking data
 
 ## Plotting functions
 

@@ -1,20 +1,22 @@
 # Interpolate data
 
-This article shows how to interpolate WATLAS data and how to create
-relative distributions. Interpolation should be used mindful and with
-consideration of the data and research question. Some analysis need
-regular spaced data and given temporal and spatial restrictions,
-interpolation can be a useful tool to fill in gaps in the data. For
-example, if the data are collected at irregular intervals, interpolation
-can be used to create a regular time series of positions. For example,
-within residence patches, when birds are on the ground, especially when
-roosting, it is likely that the bird is not moving much and in this case
-an interpolation can be useful to create data that better describe the
-space use in association with time. One could also simply use the median
-residency patch position and the time spent in the patch, but this would
-not allow to capture the space use within the residence patch.
+This article shows how to interpolate between positions thus filling
+gaps in the WATLAS data. Under some circumstances this can be useful,
+but one should be cautious and mindful of the data and research
+question.
 
-## Load packages and required data
+For some analyses, gaps in positioning data can bias the results and
+interpolating positions across small gaps can be necesarry. For example,
+if birds move some distance within residence patches, the median
+position in the patch does not properly reflect space use. Moreover,
+within residence patches, especially when birds are on the ground
+roosting, it is likely that birds do not move much and interpolation
+between positions can be done safely.
+
+Here, we show how to interpolate and fill small data gaps within
+residence patches.
+
+## Load packages and data
 
 ``` r
 # packages
@@ -28,13 +30,15 @@ library(doFuture)
 data <- data_example
 ```
 
-## Prepare data by calculating residence patches and thinning
+## Prepare data
 
-We first need to calculate residence patches as described in the article
-[“Add residence
-patches”](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residence_patches.html)
-and thin the data to a regular interval as described in the article
-[“Smooth and thin
+To interpolate positions within residence patches, we first need to
+calculate residence patches as described in the article [“Add residence
+patches”](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residence_patches.html).
+
+For convenience and to avoid interpolating many (superfluous) positions,
+we suggest aggregating the data into regular intervals as described in
+the article [“Smooth and thin
 data”](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html).
 
 ``` r
@@ -63,7 +67,7 @@ plan(sequential)
 # summary of residence patches
 data_summary <- atl_res_patch_summary(data)
 
-# thin the data to 1 min intervall
+# thin the data to 1 min interval
 data <- atl_thin_data(
   data = data,
   interval = 60,
@@ -74,11 +78,11 @@ data <- atl_thin_data(
 
 ### Check data
 
-Before interpolation, it is good to have an look at the residence patch
-summary to understand the data and to check whether interpolation is
-appropriate. For example, if the maximum duration of residence patches
-is very long, there might be a mistake in the residence patch
-calculation.
+Before interpolation, it is good inspect the residence patch summary and
+check whether interpolating positions is appropriate. For example, if
+the residence patches are overly elongated there might be a mistake in
+the residence patch calculation. Likewise, if there are large spatial or
+temporal gaps between postions, interpolating might be inapproriate.
 
 ``` r
 # merge species to data_summary
@@ -104,17 +108,17 @@ data_summary[, .(
 The oystercatcher spent 7.6 h in a residence patch, which is quite long,
 but possible.
 
-## Interpolate data within patch
+## Interpolate between positions
 
-In these case, we trust the residence patch calculation and we want to
-interpolate the data to 1 min intervals only within residence patches.
-We set the `max_gap` to 8 h, which is longer than the longest residence
-patch duration, so that all residence patches are interpolated and we
-set `patches_only` to `TRUE`, so that only data within residence patches
-are interpolated.
+In this example, we trust the residence patch calculation and we want to
+interpolate the data to 1 min intervals within residence patches. We set
+the `max_gap` to 8 h, which is longer than the longest residence patch
+duration, so that all residence patches are interpolated and we set
+`patches_only` to `TRUE`, so that only data within residence patches are
+interpolated.
 
 ``` r
-# interpolate data to 1 min intervals only within residence patches
+# interpolate data to 1 min intervals - only within residence patches
 data_int <- atl_interpolate_track(
   data = data,
   tag = "tag",
@@ -145,10 +149,10 @@ head(data_int) |> knitr::kable(digits = 2)
 | 3027 | 1695439020 | 2023-09-23 03:17:00 | 650716.6 | 5902560 | 1 | 360 | TRUE |
 | 3027 | 1695439080 | 2023-09-23 03:18:00 | 650719.3 | 5902561 | 1 | 360 | TRUE |
 
-### Plot the data to check interpolated points
+### Plot data and check interpolation
 
-Plot one tag as example. The points are coloured by residence patch and
-the interpolated points are shown in black.
+Here, we plot one tag as an example. The positions are coloured by
+residence patch, and the interpolated points are shown in black.
 
 ``` r
 # subset one tag
@@ -173,5 +177,6 @@ bm +
   )
 ```
 
-![](interpolate_data_files/figure-html/unnamed-chunk-5-1.png) Looks
-good!
+![](interpolate_data_files/figure-html/unnamed-chunk-5-1.png)
+
+Looks good!

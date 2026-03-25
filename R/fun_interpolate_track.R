@@ -1,11 +1,11 @@
-#' Interpolate a tracking data
+#' Interpolate tracking data
 #'
 #' This function interpolates gaps in the tracking data within a set time
 #' interval (`interp_interval`) and within defined temporal and spatial
-#' restrictions. Cooridnates in gaps a filled with a simple linear interpolation
-#' using `zoo::na.approx()`. One is required to specify the maximal time gap
+#' restrictions. Coordinates in gaps are filled with a simple linear interpolation
+#' using `zoo::na.approx()`. One is required to specify the maximum time gap
 #' (`max_gap`) between positions that will be interpolated and can additionally
-#' specify a maximal distance between positions (`max_dist`) to restrict
+#' specify a maximum distance between positions (`max_dist`) to restrict
 #' interpolation to more local movements. If `patches_only = TRUE`,
 #' interpolation is further restricted to only gaps within residence patches.
 #'
