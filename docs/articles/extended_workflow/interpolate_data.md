@@ -82,28 +82,30 @@ Before interpolation, it is good inspect the residence patch summary and
 check whether interpolating positions is appropriate. For example, if
 the residence patches are overly elongated there might be a mistake in
 the residence patch calculation. Likewise, if there are large spatial or
-temporal gaps between postions, interpolating might be inapproriate.
+temporal gaps between positions, interpolating might be inappropriate.
 
 ``` r
 # merge species to data_summary
 data_summary <- merge(data_summary, unique(data[, .(tag, species)]), by = "tag")
 
-# look at the maximal length of residence patches per species
+# look at the maximal time spent within residence patches and
+# the maximal distance between the start and end position of residence patches
 data_summary[, .(
-  max_duration = max(duration) |> atl_format_time()
+  max_duration = max(duration) |> atl_format_time(),
+  max_dist_start_end = max(dist_start_end)
 ), by = species]
 ```
 
-    ##              species max_duration
-    ##               <char>       <char>
-    ## 1:          redshank    2.7 hours
-    ## 2:          red knot    5.1 hours
-    ## 3: bar-tailed godwit    3.4 hours
-    ## 4:            curlew    2.4 hours
-    ## 5:     oystercatcher    7.6 hours
-    ## 6:         turnstone    3.4 hours
-    ## 7:            dunlin      2 hours
-    ## 8:        sanderling      3 hours
+    ##              species max_duration max_dist_start_end
+    ##               <char>       <char>              <num>
+    ## 1:          redshank    2.7 hours           662.0937
+    ## 2:          red knot    5.1 hours           500.7616
+    ## 3: bar-tailed godwit    3.4 hours           380.3197
+    ## 4:            curlew    2.4 hours           574.9359
+    ## 5:     oystercatcher    7.6 hours           306.8486
+    ## 6:         turnstone    3.4 hours           252.4050
+    ## 7:            dunlin      2 hours           261.2333
+    ## 8:        sanderling      3 hours           634.8439
 
 The oystercatcher spent 7.6 h in a residence patch, which is quite long,
 but possible.

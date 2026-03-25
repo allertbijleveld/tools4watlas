@@ -276,14 +276,14 @@ data[data_summary, on = c("tag", "patch"), `:=`(
 head(data_summary) |> knitr::kable(digits = 2)
 ```
 
-| tag | patch | nfixes | x_mean | x_median | x_start | x_end | y_mean | y_median | y_start | y_end | time_mean | time_median | time_start | time_end | dist_in_patch | dist_bw_patch | time_bw_patch | disp_in_patch | duration |
-|:---|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 3027 | 1 | 52 | 650705.5 | 650702.8 | 650705.6 | 650701.9 | 5902566 | 5902562 | 5902556 | 5902570 | 1695439841 | 1695439509 | 1695438805 | 1695442747 | 178.36 | NA | NA | 14.61 | 65.70 |
-| 3027 | 2 | 60 | 650776.6 | 650776.6 | 650778.7 | 650771.9 | 5902216 | 5902217 | 5902216 | 5902206 | 1695443135 | 1695443132 | 1695443041 | 1695443230 | 51.41 | 362.21 | 293.98 | 12.29 | 3.15 |
-| 3027 | 3 | 2456 | 650760.9 | 650762.0 | 650778.4 | 650699.8 | 5901722 | 5901737 | 5902014 | 5901490 | 1695447498 | 1695447344 | 1695443257 | 1695451884 | 1968.58 | 192.16 | 27.00 | 530.22 | 143.79 |
-| 3027 | 4 | 64 | 648364.2 | 648362.5 | 648360.7 | 648365.8 | 5901596 | 5901590 | 5901578 | 5901620 | 1695452281 | 1695452282 | 1695452178 | 1695452382 | 79.03 | 2340.88 | 293.98 | 42.01 | 3.40 |
-| 3027 | 5 | 41 | 648059.6 | 648058.4 | 648059.7 | 648058.4 | 5902193 | 5902192 | 5902184 | 5902204 | 1695452509 | 1695452511 | 1695452439 | 1695452577 | 48.94 | 641.75 | 57.00 | 19.69 | 2.30 |
-| 3027 | 6 | 316 | 647775.8 | 647776.4 | 647771.5 | 647775.4 | 5902555 | 5902555 | 5902560 | 5902546 | 1695453152 | 1695453155 | 1695452625 | 1695453663 | 452.32 | 456.97 | 48.00 | 13.69 | 17.30 |
+| tag | patch | nfixes | x_mean | x_median | x_start | x_end | y_mean | y_median | y_start | y_end | time_mean | time_median | time_start | time_end | dist_start_end | dist_in_patch | dist_bw_patch | time_bw_patch | disp_in_patch | duration |
+|:---|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|:---|:---|:---|:---|---:|---:|---:|---:|---:|---:|
+| 3027 | 1 | 52 | 650705.5 | 650702.8 | 650705.6 | 650701.9 | 5902566 | 5902562 | 5902556 | 5902570 | 2023-09-23 03:30:41 | 2023-09-23 03:25:08 | 2023-09-23 03:13:25 | 2023-09-23 04:19:06 | 14.61 | 178.36 | NA | NA | 14.61 | 65.70 |
+| 3027 | 2 | 60 | 650776.6 | 650776.6 | 650778.7 | 650771.9 | 5902216 | 5902217 | 5902216 | 5902206 | 2023-09-23 04:25:34 | 2023-09-23 04:25:32 | 2023-09-23 04:24:00 | 2023-09-23 04:27:09 | 12.29 | 51.41 | 362.21 | 293.98 | 12.29 | 3.15 |
+| 3027 | 3 | 2456 | 650760.9 | 650762.0 | 650778.4 | 650699.8 | 5901722 | 5901737 | 5902014 | 5901490 | 2023-09-23 05:38:18 | 2023-09-23 05:35:44 | 2023-09-23 04:27:36 | 2023-09-23 06:51:24 | 530.22 | 1968.58 | 192.16 | 27.00 | 530.22 | 143.79 |
+| 3027 | 4 | 64 | 648364.2 | 648362.5 | 648360.7 | 648365.8 | 5901596 | 5901590 | 5901578 | 5901620 | 2023-09-23 06:58:00 | 2023-09-23 06:58:01 | 2023-09-23 06:56:18 | 2023-09-23 06:59:42 | 42.01 | 79.03 | 2340.88 | 293.98 | 42.01 | 3.40 |
+| 3027 | 5 | 41 | 648059.6 | 648058.4 | 648059.7 | 648058.4 | 5902193 | 5902192 | 5902184 | 5902204 | 2023-09-23 07:01:48 | 2023-09-23 07:01:51 | 2023-09-23 07:00:39 | 2023-09-23 07:02:57 | 19.69 | 48.94 | 641.75 | 57.00 | 19.69 | 2.30 |
+| 3027 | 6 | 316 | 647775.8 | 647776.4 | 647771.5 | 647775.4 | 5902555 | 5902555 | 5902560 | 5902546 | 2023-09-23 07:12:32 | 2023-09-23 07:12:34 | 2023-09-23 07:03:45 | 2023-09-23 07:21:03 | 13.69 | 452.32 | 456.97 | 48.00 | 13.69 | 17.30 |
 
 | Column | Description |
 |----|----|
@@ -298,11 +298,12 @@ head(data_summary) |> knitr::kable(digits = 2)
 | **y_median** | Median Y-coordinate in meters (UTM 31 N) |
 | **y_start** | Y-coordinate at the start of the residence patch (UTM 31 N) |
 | **y_end** | Y-coordinate at the end of the residence patch (UTM 31 N) |
-| **time_mean** | Mean UNIX time (seconds) of the positions in the residence patch |
-| **time_median** | Median UNIX time (seconds) of the positions in the residence patch |
-| **time_start** | Start UNIX time (seconds) of the patch |
-| **time_end** | End UNIX time (seconds) of the patch |
-| **dist_in_patch** | Total distance (in meters) travelled within the patch (cumulative distance) |
+| **time_mean** | Mean datetime of the positions in the residence patch |
+| **time_median** | Median datetime of the positions in the residence patch |
+| **time_start** | Start datetime of the patch |
+| **time_end** | End datetime of the patch |
+| **dist_start_end** | Distance (in meters) between first and last position |
+| **dist_in_patch** | Distance (in meters) travelled within the patch (cumulative distance) |
 | **dist_bw_patch** | Distance (in meters) between end of previous and start of current patch |
 | **time_bw_patch** | Time (in seconds) between end of previous and start of current patch |
 | **disp_in_patch** | Straight-line displacement (in meters) between start and end of the patch |

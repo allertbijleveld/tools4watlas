@@ -34,6 +34,8 @@
 #'   \code{time_end}: Summary stats of time.
 #'   \item Additional summaries from \code{summary_variables} and
 #'   \code{summary_functions}.
+#'   \item \code{dist_start_end}:
+#'   Straight-line (in m) distance between start and end of patch.
 #'   \item \code{dist_in_patch}:
 #'   Total distance (in m) travelled within the patch.
 #'   \item \code{dist_bw_patch}:
@@ -74,6 +76,7 @@ atl_res_patch_summary <- function(data,
   x <- y <- tag <- .  <- patch <- disp_in_patch <- median <- NULL
   time_end <- time_start <- i.dist_in_patch <- time <- NULL # nolint
   x_end <- x_start <- y_end <- y_start <- time_bw_patch <- NULL
+  dist_start_end <- time_mean <- time_median <- NULL
 
   # Validate input
   assertthat::assert_that(is.data.frame(data),
@@ -110,6 +113,9 @@ atl_res_patch_summary <- function(data,
     time_end = last(time)
   ), by = .(tag, patch)]
 
+  # Distance between start and end location
+  ds[, dist_start_end := sqrt((x_end - x_start)^2 + (y_end - y_start)^2)]
+
   # Distances inside patch
   dist_in_patch_dt <- d[, .(
     dist_in_patch = sum(sqrt(diff(x)^2 + diff(y)^2), na.rm = TRUE)
@@ -126,6 +132,24 @@ atl_res_patch_summary <- function(data,
   # Displacement and duration
   ds[, disp_in_patch := sqrt((x_end - x_start)^2 + (y_end - y_start)^2)]
   ds[, duration := time_end - time_start]
+
+  # Format times as POSIXct
+  ds[, time_mean := as.POSIXct(
+    time_mean,
+    origin = "1970-01-01", tz = "UTC"
+  )]
+  ds[, time_median := as.POSIXct(
+    time_median,
+    origin = "1970-01-01", tz = "UTC"
+  )]
+  ds[, time_start := as.POSIXct(
+    time_start,
+    origin = "1970-01-01", tz = "UTC"
+  )]
+  ds[, time_end := as.POSIXct(
+    time_end,
+    origin = "1970-01-01", tz = "UTC"
+  )]
 
   # Additional summaries with multiple variables × functions
   if (length(summary_variables) > 0 && length(summary_functions) > 0) {

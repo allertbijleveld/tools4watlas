@@ -122,6 +122,9 @@ You can install the latest version of `tools4watlas` from
 ``` r
 library(remotes)
 install_github("allertbijleveld/tools4watlas")
+
+# additional installs packages used in articles, but not needed by the package
+install_github("allertbijleveld/tools4watlas", dependencies = TRUE)
 ```
 
 ### **Example data**

@@ -453,28 +453,29 @@ desired columns back to our full data table.</p>
 <span></span>
 <span><span class="co"># show head of the summary table</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data_summary</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
+<table style="width:100%;" class="table">
 <colgroup>
+<col width="2%">
+<col width="2%">
 <col width="2%">
 <col width="3%">
 <col width="3%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="5%">
+<col width="3%">
+<col width="3%">
+<col width="3%">
+<col width="3%">
+<col width="3%">
+<col width="3%">
+<col width="8%">
+<col width="8%">
+<col width="8%">
+<col width="8%">
 <col width="6%">
 <col width="5%">
 <col width="5%">
-<col width="7%">
-<col width="7%">
-<col width="7%">
-<col width="7%">
-<col width="4%">
+<col width="5%">
+<col width="5%">
+<col width="3%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">tag</th>
@@ -488,10 +489,11 @@ desired columns back to our full data table.</p>
 <th align="right">y_median</th>
 <th align="right">y_start</th>
 <th align="right">y_end</th>
-<th align="right">time_mean</th>
-<th align="right">time_median</th>
-<th align="right">time_start</th>
-<th align="right">time_end</th>
+<th align="left">time_mean</th>
+<th align="left">time_median</th>
+<th align="left">time_start</th>
+<th align="left">time_end</th>
+<th align="right">dist_start_end</th>
 <th align="right">dist_in_patch</th>
 <th align="right">dist_bw_patch</th>
 <th align="right">time_bw_patch</th>
@@ -511,10 +513,11 @@ desired columns back to our full data table.</p>
 <td align="right">5902562</td>
 <td align="right">5902556</td>
 <td align="right">5902570</td>
-<td align="right">1695439841</td>
-<td align="right">1695439509</td>
-<td align="right">1695438805</td>
-<td align="right">1695442747</td>
+<td align="left">2023-09-23 03:30:41</td>
+<td align="left">2023-09-23 03:25:08</td>
+<td align="left">2023-09-23 03:13:25</td>
+<td align="left">2023-09-23 04:19:06</td>
+<td align="right">14.61</td>
 <td align="right">178.36</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
@@ -533,10 +536,11 @@ desired columns back to our full data table.</p>
 <td align="right">5902217</td>
 <td align="right">5902216</td>
 <td align="right">5902206</td>
-<td align="right">1695443135</td>
-<td align="right">1695443132</td>
-<td align="right">1695443041</td>
-<td align="right">1695443230</td>
+<td align="left">2023-09-23 04:25:34</td>
+<td align="left">2023-09-23 04:25:32</td>
+<td align="left">2023-09-23 04:24:00</td>
+<td align="left">2023-09-23 04:27:09</td>
+<td align="right">12.29</td>
 <td align="right">51.41</td>
 <td align="right">362.21</td>
 <td align="right">293.98</td>
@@ -555,10 +559,11 @@ desired columns back to our full data table.</p>
 <td align="right">5901737</td>
 <td align="right">5902014</td>
 <td align="right">5901490</td>
-<td align="right">1695447498</td>
-<td align="right">1695447344</td>
-<td align="right">1695443257</td>
-<td align="right">1695451884</td>
+<td align="left">2023-09-23 05:38:18</td>
+<td align="left">2023-09-23 05:35:44</td>
+<td align="left">2023-09-23 04:27:36</td>
+<td align="left">2023-09-23 06:51:24</td>
+<td align="right">530.22</td>
 <td align="right">1968.58</td>
 <td align="right">192.16</td>
 <td align="right">27.00</td>
@@ -577,10 +582,11 @@ desired columns back to our full data table.</p>
 <td align="right">5901590</td>
 <td align="right">5901578</td>
 <td align="right">5901620</td>
-<td align="right">1695452281</td>
-<td align="right">1695452282</td>
-<td align="right">1695452178</td>
-<td align="right">1695452382</td>
+<td align="left">2023-09-23 06:58:00</td>
+<td align="left">2023-09-23 06:58:01</td>
+<td align="left">2023-09-23 06:56:18</td>
+<td align="left">2023-09-23 06:59:42</td>
+<td align="right">42.01</td>
 <td align="right">79.03</td>
 <td align="right">2340.88</td>
 <td align="right">293.98</td>
@@ -599,10 +605,11 @@ desired columns back to our full data table.</p>
 <td align="right">5902192</td>
 <td align="right">5902184</td>
 <td align="right">5902204</td>
-<td align="right">1695452509</td>
-<td align="right">1695452511</td>
-<td align="right">1695452439</td>
-<td align="right">1695452577</td>
+<td align="left">2023-09-23 07:01:48</td>
+<td align="left">2023-09-23 07:01:51</td>
+<td align="left">2023-09-23 07:00:39</td>
+<td align="left">2023-09-23 07:02:57</td>
+<td align="right">19.69</td>
 <td align="right">48.94</td>
 <td align="right">641.75</td>
 <td align="right">57.00</td>
@@ -621,10 +628,11 @@ desired columns back to our full data table.</p>
 <td align="right">5902555</td>
 <td align="right">5902560</td>
 <td align="right">5902546</td>
-<td align="right">1695453152</td>
-<td align="right">1695453155</td>
-<td align="right">1695452625</td>
-<td align="right">1695453663</td>
+<td align="left">2023-09-23 07:12:32</td>
+<td align="left">2023-09-23 07:12:34</td>
+<td align="left">2023-09-23 07:03:45</td>
+<td align="left">2023-09-23 07:21:03</td>
+<td align="right">13.69</td>
 <td align="right">452.32</td>
 <td align="right">456.97</td>
 <td align="right">48.00</td>
@@ -690,43 +698,45 @@ number</td>
 </tr>
 <tr class="even">
 <td><strong>time_mean</strong></td>
-<td>Mean UNIX time (seconds) of the positions in the residence
-patch</td>
+<td>Mean datetime of the positions in the residence patch</td>
 </tr>
 <tr class="odd">
 <td><strong>time_median</strong></td>
-<td>Median UNIX time (seconds) of the positions in the residence
-patch</td>
+<td>Median datetime of the positions in the residence patch</td>
 </tr>
 <tr class="even">
 <td><strong>time_start</strong></td>
-<td>Start UNIX time (seconds) of the patch</td>
+<td>Start datetime of the patch</td>
 </tr>
 <tr class="odd">
 <td><strong>time_end</strong></td>
-<td>End UNIX time (seconds) of the patch</td>
+<td>End datetime of the patch</td>
 </tr>
 <tr class="even">
-<td><strong>dist_in_patch</strong></td>
-<td>Total distance (in meters) travelled within the patch (cumulative
-distance)</td>
+<td><strong>dist_start_end</strong></td>
+<td>Distance (in meters) between first and last position</td>
 </tr>
 <tr class="odd">
+<td><strong>dist_in_patch</strong></td>
+<td>Distance (in meters) travelled within the patch (cumulative
+distance)</td>
+</tr>
+<tr class="even">
 <td><strong>dist_bw_patch</strong></td>
 <td>Distance (in meters) between end of previous and start of current
 patch</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><strong>time_bw_patch</strong></td>
 <td>Time (in seconds) between end of previous and start of current
 patch</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><strong>disp_in_patch</strong></td>
 <td>Straight-line displacement (in meters) between start and end of the
 patch</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><strong>duration</strong></td>
 <td>Time duration (in seconds) between first and last position in
 patch</td>

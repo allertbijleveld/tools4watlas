@@ -64,12 +64,13 @@ if \code{max_dist} is set). Rows are ordered by tag and time.
 \description{
 This function interpolates gaps in the tracking data within a set time
 interval (\code{interp_interval}) and within defined temporal and spatial
-restrictions. Coordinates in gaps are filled with a simple linear interpolation
-using \code{zoo::na.approx()}. One is required to specify the maximum time gap
-(\code{max_gap}) between positions that will be interpolated and can additionally
-specify a maximum distance between positions (\code{max_dist}) to restrict
-interpolation to more local movements. If \code{patches_only = TRUE},
-interpolation is further restricted to only gaps within residence patches.
+restrictions. Coordinates in gaps are filled with a simple linear
+interpolation using \code{zoo::na.approx()}. One is required to specify the
+maximum time gap (\code{max_gap}) between positions that will be interpolated
+and can additionally specify a maximum distance between positions
+(\code{max_dist}) to restrict interpolation to more local movements.
+If \code{patches_only = TRUE}, interpolation is further restricted to only gaps
+within residence patches.
 }
 \details{
 Best to use with already thinned data (e.g. with \code{atl_thin_data()}) to avoid
