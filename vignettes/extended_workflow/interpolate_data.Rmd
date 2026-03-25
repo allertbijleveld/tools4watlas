@@ -79,15 +79,17 @@ data <- atl_thin_data(
 
 ### Check data
 
-Before interpolation, it is good inspect the residence patch summary and check whether interpolating positions is appropriate. For example, if the residence patches are overly elongated there might be a mistake in the residence patch calculation. Likewise, if there are large spatial or temporal gaps between postions, interpolating might be inapproriate.
+Before interpolation, it is good inspect the residence patch summary and check whether interpolating positions is appropriate. For example, if the residence patches are overly elongated there might be a mistake in the residence patch calculation. Likewise, if there are large spatial or temporal gaps between positions, interpolating might be inappropriate.
 
 ```{r echo=T, warning=FALSE}
 # merge species to data_summary
 data_summary <- merge(data_summary, unique(data[, .(tag, species)]), by = "tag")
 
-# look at the maximal length of residence patches per species
+# look at the maximal time spent within residence patches and
+# the maximal distance between the start and end position of residence patches
 data_summary[, .(
-  max_duration = max(duration) |> atl_format_time()
+  max_duration = max(duration) |> atl_format_time(),
+  max_dist_start_end = max(dist_start_end)
 ), by = species]
 ```
 

@@ -190,11 +190,12 @@ head(data_summary) |> knitr::kable(digits = 2)
 |**y_median**      | Median Y-coordinate in meters (UTM 31 N)                                     |
 |**y_start**       | Y-coordinate at the start of the residence patch (UTM 31 N)                  |
 |**y_end**         | Y-coordinate at the end of the residence patch (UTM 31 N)        			      |
-|**time_mean**     | Mean UNIX time (seconds) of the positions in the residence patch             |
-|**time_median**   | Median UNIX time (seconds) of the positions in the residence patch           |
-|**time_start**    | Start UNIX time (seconds) of the patch                                       |
-|**time_end**      | End UNIX time (seconds) of the patch                                         |
-|**dist_in_patch** | Total distance (in meters) travelled within the patch (cumulative distance)  |
+|**time_mean**     | Mean datetime of the positions in the residence patch                        |
+|**time_median**   | Median datetime of the positions in the residence patch                      |
+|**time_start**    | Start datetime of the patch                                                  |
+|**time_end**      | End datetime of the patch                                                    |
+|**dist_start_end**| Distance (in meters) between first and last position                         |
+|**dist_in_patch** | Distance (in meters) travelled within the patch (cumulative distance)        |
 |**dist_bw_patch** | Distance (in meters) between end of previous and start of current patch      |
 |**time_bw_patch** | Time (in seconds) between end of previous and start of current patch         |
 |**disp_in_patch** | Straight-line displacement (in meters) between start and end of the patch    |

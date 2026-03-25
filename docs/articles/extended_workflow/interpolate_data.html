@@ -168,26 +168,28 @@ and thin data”</a>.</p>
 and check whether interpolating positions is appropriate. For example,
 if the residence patches are overly elongated there might be a mistake
 in the residence patch calculation. Likewise, if there are large spatial
-or temporal gaps between postions, interpolating might be
-inapproriate.</p>
+or temporal gaps between positions, interpolating might be
+inappropriate.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># merge species to data_summary</span></span>
 <span><span class="va">data_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">data_summary</span>, <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">species</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># look at the maximal length of residence patches per species</span></span>
+<span><span class="co"># look at the maximal time spent within residence patches and</span></span>
+<span><span class="co"># the maximal distance between the start and end position of residence patches</span></span>
 <span><span class="va">data_summary</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span></span>
-<span>  max_duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">duration</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../../reference/atl_format_time.html">atl_format_time</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  max_duration <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">duration</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../../reference/atl_format_time.html">atl_format_time</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  max_dist_start_end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">dist_start_end</span><span class="op">)</span></span>
 <span><span class="op">)</span>, by <span class="op">=</span> <span class="va">species</span><span class="op">]</span></span></code></pre></div>
-<pre><code><span><span class="co">##              species max_duration</span></span>
-<span><span class="co">##               &lt;char&gt;       &lt;char&gt;</span></span>
-<span><span class="co">## 1:          redshank    2.7 hours</span></span>
-<span><span class="co">## 2:          red knot    5.1 hours</span></span>
-<span><span class="co">## 3: bar-tailed godwit    3.4 hours</span></span>
-<span><span class="co">## 4:            curlew    2.4 hours</span></span>
-<span><span class="co">## 5:     oystercatcher    7.6 hours</span></span>
-<span><span class="co">## 6:         turnstone    3.4 hours</span></span>
-<span><span class="co">## 7:            dunlin      2 hours</span></span>
-<span><span class="co">## 8:        sanderling      3 hours</span></span></code></pre>
+<pre><code><span><span class="co">##              species max_duration max_dist_start_end</span></span>
+<span><span class="co">##               &lt;char&gt;       &lt;char&gt;              &lt;num&gt;</span></span>
+<span><span class="co">## 1:          redshank    2.7 hours           662.0937</span></span>
+<span><span class="co">## 2:          red knot    5.1 hours           500.7616</span></span>
+<span><span class="co">## 3: bar-tailed godwit    3.4 hours           380.3197</span></span>
+<span><span class="co">## 4:            curlew    2.4 hours           574.9359</span></span>
+<span><span class="co">## 5:     oystercatcher    7.6 hours           306.8486</span></span>
+<span><span class="co">## 6:         turnstone    3.4 hours           252.4050</span></span>
+<span><span class="co">## 7:            dunlin      2 hours           261.2333</span></span>
+<span><span class="co">## 8:        sanderling      3 hours           634.8439</span></span></code></pre>
 <p>The oystercatcher spent 7.6 h in a residence patch, which is quite
 long, but possible.</p>
 </div>

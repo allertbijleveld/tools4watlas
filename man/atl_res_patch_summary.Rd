@@ -31,6 +31,8 @@ stats of y.
 \code{time_end}: Summary stats of time.
 \item Additional summaries from \code{summary_variables} and
 \code{summary_functions}.
+\item \code{dist_start_end}:
+Straight-line (in m) distance between start and end of patch.
 \item \code{dist_in_patch}:
 Total distance (in m) travelled within the patch.
 \item \code{dist_bw_patch}:
