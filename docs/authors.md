@@ -18,16 +18,16 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/allertbijleveld/tools4watlas/blob/HEAD/DESCRIPTION)
+[`inst/CITATION`](https://github.com/allertbijleveld/tools4watlas/blob/HEAD/inst/CITATION)
 
-Krietsch J, Bijleveld A (2026). *tools4watlas: Tools for Processing
-WATLAS Tracking Data*. R package version 2.0,
-<https://allertbijleveld.github.io/tools4watlas/>.
+Krietsch J, Bijleveld A (2026). *tools4watlas: An R package for
+processing and visualizing high-throughput tracking data*. R package
+version 2.0, <https://github.com/allertbijleveld/tools4watlas>.
 
     @Manual{,
-      title = {tools4watlas: Tools for Processing WATLAS Tracking Data},
+      title = {tools4watlas: An R package for processing and visualizing high-throughput tracking data},
       author = {Johannes Krietsch and Allert Bijleveld},
       year = {2026},
       note = {R package version 2.0},
-      url = {https://allertbijleveld.github.io/tools4watlas/},
+      url = {https://github.com/allertbijleveld/tools4watlas},
     }

@@ -13,6 +13,7 @@ v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org
 [![R-CMD-check](https://github.com/allertbijleveld/tools4watlas/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/allertbijleveld/tools4watlas/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/allertbijleveld/tools4watlas/graph/badge.svg)](https://app.codecov.io/gh/allertbijleveld/tools4watlas)
+[![status](https://joss.theoj.org/papers/fbe563e4d4b41e0d07c3b45a9a8d3507/status.svg)](https://joss.theoj.org/papers/fbe563e4d4b41e0d07c3b45a9a8d3507)
 <!-- badges: end -->
 
 The goal of `tools4watlas` is to provide tools for getting, processing
