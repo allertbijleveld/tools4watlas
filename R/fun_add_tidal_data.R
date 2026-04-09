@@ -140,7 +140,7 @@ atl_add_tidal_data <- function(data,
     datetime, datetime[1],
     units = "mins"
   )), by = tideID]
-  temp_data <- temp_data[stats::complete.cases(temp_data)]
+  temp_data <- temp_data[!is.na(row_id)]
 
   # add time2lowtide
   temp_data[tide_data,
