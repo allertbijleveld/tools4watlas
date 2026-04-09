@@ -199,7 +199,7 @@ atl_interpolate_track <- function(data,
   d <- merge(
     grid, d,
     by = c("tag_", "time_"),
-    all.x = TRUE
+    all = TRUE
   )
 
   # assign real and interpolated rows
