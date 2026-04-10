@@ -1,0 +1,13 @@
+citHeader("To cite", sQuote("tools4watlas"), "in publications, please use the citation below for now. The package is submitted to JOSS and once accepted there, please update the citation:")
+
+bibentry(
+  bibtype  = "Manual",
+  title    = "tools4watlas: An R package for processing and visualizing high-throughput tracking data",
+  author   =c(person("Johannes", "Krietsch", , "johannes.krietsch@nioz.nl", role = "aut",
+              comment = c(ORCID = "0000-0002-8080-1734")),
+              person("Allert", "Bijleveld", , "allert.bijleveld@nioz.nl", role = c("aut", "cre"),
+              comment = c(ORCID = "0000-0002-3159-8944"))),
+  year     = format(Sys.Date(), "%Y"),
+  note     = paste("R package version", packageVersion("tools4watlas")),
+  url      = "https://github.com/allertbijleveld/tools4watlas"
+)
