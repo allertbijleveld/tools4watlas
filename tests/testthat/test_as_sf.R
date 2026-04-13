@@ -174,36 +174,6 @@ testthat::test_that("atl_as_sf handles missing additional columns gracefully", {
   testthat::expect_equal(names(d_sf), c("tag", "geometry"))
 })
 
-
-test_that("atl_as_sf triggers warning for MULTIPOLYGON in res_patches", {
-  # Create example data with multiple points per patch that will generate MULTIPOLYGON
-  test_data <- data.table(
-    tag = rep("A", 4),
-    x = c(0, 0.1, 5, 5.1),
-    y = c(0, 0.1, 5, 5.1),
-    patch = c(1, 1, 1, 1)
-  )
-  
-  # Expect warning when converting to res_patches with small buffer
-  expect_warning(
-    sf_result <- atl_as_sf(
-      data = test_data,
-      x = "x",
-      y = "y",
-      tag = "tag",
-      option = "res_patches",
-      buffer = 0.05
-    ),
-    "Some of the residency patch are split in MULTIPOLYGON geometries"
-  )
-  
-  # Check that the output is an sf object
-  expect_s3_class(sf_result, "sf")
-  # Check that geometry is MULTIPOLYGON
-  expect_true(any(sf::st_geometry_type(sf_result) == "MULTIPOLYGON"))
-})
-
-
 test_that("atl_as_sf stops if tag column does not exist", {
   df <- data.table(x = 1:3, y = 4:6)
   

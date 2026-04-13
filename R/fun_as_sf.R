@@ -135,7 +135,7 @@ atl_as_sf <- function(data,
                       buffer) {
 
   # Global variables to suppress notes in data.table
-  tag_dummy <- patch <- geometry <- NULL
+  tag_dummy <- patch <- geometry <- n <- NULL
 
   # Convert to data.table if not already
   if (!is.data.table(data)) {
@@ -228,18 +228,45 @@ atl_as_sf <- function(data,
       data.table::data.table(d_sf)
     },
     res_patches = {
-      # Return sf with residency patches and buffer
-      d_sf |>
-        dplyr::filter(!is.na(patch)) |> # remove NA patches (not part of patch)
-        dplyr::group_by(tag, patch) |> # group by patch
-        # Buffer each point
+      # first buffer points (faster than buffering lines)
+      d_patches <- d_sf |>
+        dplyr::filter(!is.na(patch)) |>
+        dplyr::group_by(tag, patch) |>
         dplyr::reframe(geometry = sf::st_buffer(geometry, dist = buffer)) |>
         dplyr::group_by(tag, patch) |>
-        # Union buffered geometries
         dplyr::summarise(
           geometry = sf::st_union(geometry), .groups = "drop"
         ) |>
         sf::st_as_sf()
+
+      # identify multipolygons
+      is_multi <- sf::st_geometry_type(d_patches) == "MULTIPOLYGON"
+
+      # redo buffer for multipolygons using line approach
+      if (any(is_multi)) {
+        d_patches[is_multi, ] <- d_sf |>
+          dplyr::filter(!is.na(patch)) |>
+          dplyr::semi_join(
+            d_patches[is_multi, ] |> sf::st_drop_geometry(),
+            by = c("tag", "patch")
+          ) |>
+          dplyr::distinct(tag, patch, geometry) |>
+          dplyr::group_by(tag, patch) |>
+          dplyr::summarise(
+            n = dplyr::n(),
+            geometry = sf::st_combine(geometry),
+            .groups = "drop"
+          ) |>
+          dplyr::mutate(
+            geometry = purrr::map2(geometry, n, \(geom, n) {
+              if (n > 1) geom <- sf::st_cast(geom, "LINESTRING")
+              sf::st_buffer(geom, dist = buffer)
+            }) |> sf::st_sfc(crs = sf::st_crs(d_sf))
+          ) |>
+          dplyr::select(-n)
+      }
+
+      d_patches
     },
     stop("Invalid option")
   )
@@ -247,17 +274,6 @@ atl_as_sf <- function(data,
   # Delete dummy tag column again
   if (tag == "tag_dummy") {
     data[, tag_dummy := NULL]
-  }
-
-  # Check for MULTIPOLYGON in res_patches
-  if (option == "res_patches") {
-    if (any(sf::st_geometry_type(return_data) == "MULTIPOLYGON")) {
-      warning(
-        "Some of the residency patch are split in MULTIPOLYGON geometries. ",
-        "If this is not desired, increase the buffer to half of ",
-        "`lim_spat_indep` (see function description)"
-      )
-    }
   }
 
   return_data
