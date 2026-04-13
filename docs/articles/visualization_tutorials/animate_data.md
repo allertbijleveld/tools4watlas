@@ -24,9 +24,16 @@ library(mapmate)
 
 # additional to add for water data
 library(terra)
+```
+
+    ## Warning: package 'terra' was built under R version 4.5.3
+
+``` r
 library(tidyterra)
 library(sf)
 ```
+
+    ## Warning: package 'sf' was built under R version 4.5.3
 
 ## Setup animation
 

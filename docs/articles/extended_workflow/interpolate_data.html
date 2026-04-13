@@ -133,7 +133,7 @@ and thin data”</a>.</p>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">species</span>, <span class="va">posID</span>, <span class="va">tag</span>, <span class="va">time</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">tideID</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># extract the unique tag IDs</span></span>
-<span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">tag</span><span class="op">)</span></span>
+<span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">tag</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># register cores and backend for parallel processing</span></span>
 <span><span class="fu"><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -172,7 +172,7 @@ or temporal gaps between positions, interpolating might be
 inappropriate.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># merge species to data_summary</span></span>
-<span><span class="va">data_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">data_summary</span>, <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">species</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></span>
+<span><span class="va">data_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">data_summary</span>, <span class="fu"><a href="https://rspatial.github.io/terra/reference/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">species</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># look at the maximal time spent within residence patches and</span></span>
 <span><span class="co"># the maximal distance between the start and end position of residence patches</span></span>
@@ -220,7 +220,7 @@ data within residence patches are interpolated.</p>
 <pre><code><span><span class="co">## Note: Interpolation added 1919 positions (28.74% increase).</span></span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># show head of the table</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data_int</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data_int</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="6%">

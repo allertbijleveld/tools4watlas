@@ -52,7 +52,8 @@ Johannes Krietsch
 
 ``` r
 library(sf)
-#> Linking to GEOS 3.13.1, GDAL 3.11.4, PROJ 9.7.0; sf_use_s2() is TRUE
+#> Warning: package 'sf' was built under R version 4.5.3
+#> Linking to GEOS 3.14.1, GDAL 3.12.1, PROJ 9.7.1; sf_use_s2() is TRUE
 
 # Create a simple geometry
 geom <- st_as_sfc("POLYGON((0 0, 1 0, 1 2, 0 2, 0 0))")
