@@ -48,6 +48,7 @@
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/add_residence_patches.html">Add residence patches</a></li>
     <li><a class="dropdown-item" href="../../articles/extended_workflow/interpolate_data.html">Interpolate data</a></li>
+    <li><a class="dropdown-item" href="../../articles/extended_workflow/add_sun_and_moon_data.html">Add sun and moon data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
     <li><a class="dropdown-item" href="../../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
@@ -114,9 +115,12 @@ necesarry to install <code>mapmate</code> from GitHub:
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://leonawicz.github.io/mapmate" class="external-link">mapmate</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># additional to add for water data</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dieghernan.github.io/tidyterra/" class="external-link">tidyterra</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: package 'terra' was built under R version 4.5.3</span></span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dieghernan.github.io/tidyterra/" class="external-link">tidyterra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: package 'sf' was built under R version 4.5.3</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="setup-animation">Setup animation<a class="anchor" aria-label="anchor" href="#setup-animation"></a>
@@ -127,7 +131,7 @@ necesarry to install <code>mapmate</code> from GitHub:
 <p>The movement data should be filtered and smoothed before (not shown
 here) and it makes sense to aggregate the data to a desired interval
 somewhat matching the time steps.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load example data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
 <span></span>
@@ -148,7 +152,7 @@ somewhat matching the time steps.</p>
 <p>For more details, see function descriptions of the functions.
 Obviously, more settings can be adjusted but here we cover the
 basics.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># time steps and output path (atl_time_steps):</span></span>
 <span><span class="va">cfg_time_interval</span> <span class="op">&lt;-</span> <span class="st">"1 min"</span> <span class="co"># time interval for animation steps</span></span>
 <span><span class="va">cfg_output_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
@@ -194,7 +198,7 @@ basics.</p>
 </h3>
 <p>Create time steps with the desired interval (e.g. 1 min), define the
 folder path where the png’s are created, delete existing files.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># delete existing files (if any)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">cfg_output_path</span>, <span class="st">"/*"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -217,7 +221,7 @@ folder path where the png’s are created, delete existing files.</p>
 <p>Make a basemap as desired and plot with all data to check the
 outcome, scalebar and time stamp. Adjust everything as desired (check
 with saving png in the defined size).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create basemap</span></span>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">)</span></span>
 <span></span>
@@ -259,7 +263,7 @@ h). Then we use <code><a href="../../reference/atl_alpha_along.html">atl_alpha_a
 and <code><a href="../../reference/atl_size_along.html">atl_size_along()</a></code> to make a comet shape - adjust
 parameters as desired (see function description for more details).
 Afterwards we add this path to the basemap and add the time stamp.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># register cores and backend for parallel processing</span></span>
 <span><span class="fu"><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
@@ -337,7 +341,7 @@ Afterwards we add this path to the basemap and add the time stamp.</p>
 <p>We add water level data to <code>ts</code> to know the water level at
 each step and crop the bathymetry data to the extend of the map (use
 same buffer as for basemap).</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load tide data</span></span>
 <span><span class="va">tidal_pattern</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">tidal_pattern_fp</span><span class="op">)</span></span>
 <span><span class="va">measured_water_height</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">measured_water_height_fp</span><span class="op">)</span></span>
@@ -370,7 +374,7 @@ same buffer as for basemap).</p>
 <p>Make a basemap as desired and plot with all data to check the
 outcome, scalebar and time stamp. Adjust everything as desired (check
 with saving png in the defined size).</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create basemap</span></span>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span></span>
 <span>  <span class="va">bbox</span>, raster_data <span class="op">=</span> <span class="va">bat_c</span>, option <span class="op">=</span> <span class="st">"bathymetry"</span>, scalebar <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -429,7 +433,7 @@ with saving png in the defined size).</p>
 </h3>
 <p>Same as above just with added water level polygon and scale bar
 (needs to be added above water).</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># register cores and backend for parallel processing</span></span>
 <span><span class="fu"><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
@@ -538,7 +542,7 @@ By running atl_time_steps() above, a file <code>total_frames.txt</code>
 is created in the output path which contains the total number of frames
 that will be created - this is read automatically by
 <code><a href="../../reference/atl_progress_bar.html">atl_progress_bar()</a></code> if <code>total = NULL</code>.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># set output path again in new session (same as above)</span></span>
 <span><span class="va">cfg_output_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
 <span>  <span class="st">"C:/Users/"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"user"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"/temp/animation"</span></span>
@@ -559,7 +563,7 @@ the frames saved as <code>.png</code> files. The frame rate
 (<code>rate</code>) can be adjusted as desired (depending on the time
 step interval). The output file is created in the same path, but this
 can also be changed as desired.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># make animation</span></span>
 <span><span class="fu"><a href="https://leonawicz.github.io//reference/ffmpeg.html" class="external-link">ffmpeg</a></span><span class="op">(</span></span>
 <span>  dir <span class="op">=</span> <span class="va">cfg_output_path</span>, output_dir <span class="op">=</span> <span class="va">cfg_output_path</span>,</span>

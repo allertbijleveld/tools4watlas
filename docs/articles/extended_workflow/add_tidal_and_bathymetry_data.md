@@ -9,6 +9,11 @@ bathymetry.
 ``` r
 library(tools4watlas)
 library(terra)
+```
+
+    ## Warning: package 'terra' was built under R version 4.5.3
+
+``` r
 library(ggplot2)
 
 # path to csv with aggregated data
@@ -69,12 +74,12 @@ head(data[, .(tag, datetime, tideID, tidaltime, time2lowtide, waterlevel)]) |>
 
 | tag  | datetime            |  tideID | tidaltime | time2lowtide | waterlevel |
 |:-----|:--------------------|--------:|----------:|-------------:|-----------:|
+| 3027 | 2023-09-23 03:13:22 | 2023513 |    133.37 |      -246.63 |       49.9 |
 | 3027 | 2023-09-23 03:13:25 | 2023513 |    133.42 |      -246.58 |       49.9 |
 | 3027 | 2023-09-23 03:13:28 | 2023513 |    133.47 |      -246.53 |       49.9 |
 | 3027 | 2023-09-23 03:19:49 | 2023513 |    139.82 |      -240.18 |       45.0 |
 | 3027 | 2023-09-23 03:19:52 | 2023513 |    139.87 |      -240.13 |       45.0 |
 | 3027 | 2023-09-23 03:19:55 | 2023513 |    139.92 |      -240.08 |       45.0 |
-| 3027 | 2023-09-23 03:19:58 | 2023513 |    139.97 |      -240.03 |       45.0 |
 
 ## Add bathymetry data
 
@@ -106,12 +111,12 @@ head(data[, .(tag, datetime, bathymetry)]) |>
 
 | tag  | datetime            | bathymetry |
 |:-----|:--------------------|-----------:|
+| 3027 | 2023-09-23 03:13:22 |      84.29 |
 | 3027 | 2023-09-23 03:13:25 |      84.29 |
 | 3027 | 2023-09-23 03:13:28 |      84.29 |
 | 3027 | 2023-09-23 03:19:49 |      86.83 |
 | 3027 | 2023-09-23 03:19:52 |      86.83 |
 | 3027 | 2023-09-23 03:19:55 |      86.83 |
-| 3027 | 2023-09-23 03:19:58 |      86.83 |
 
 ## Examples
 
@@ -133,7 +138,7 @@ data_subset <- atl_filter_covariates(
 )
 ```
 
-    ## Note: 50.18% of the dataset was filtered out, corresponding to 43596 positions.
+    ## Note: 50.19% of the dataset was filtered out, corresponding to 43611 positions.
 
 ### Plot movement data on top of bathymetry layer
 

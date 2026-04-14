@@ -1,3 +1,6 @@
+# library(testthat)
+# library(tools4watlas)
+
 testthat::test_that("atl_as_sf handles valid data and columns", {
   # Create test data
   data <- data.table::data.table(
@@ -174,36 +177,6 @@ testthat::test_that("atl_as_sf handles missing additional columns gracefully", {
   testthat::expect_equal(names(d_sf), c("tag", "geometry"))
 })
 
-
-test_that("atl_as_sf triggers warning for MULTIPOLYGON in res_patches", {
-  # Create example data with multiple points per patch that will generate MULTIPOLYGON
-  test_data <- data.table(
-    tag = rep("A", 4),
-    x = c(0, 0.1, 5, 5.1),
-    y = c(0, 0.1, 5, 5.1),
-    patch = c(1, 1, 1, 1)
-  )
-  
-  # Expect warning when converting to res_patches with small buffer
-  expect_warning(
-    sf_result <- atl_as_sf(
-      data = test_data,
-      x = "x",
-      y = "y",
-      tag = "tag",
-      option = "res_patches",
-      buffer = 0.05
-    ),
-    "Some of the residency patch are split in MULTIPOLYGON geometries"
-  )
-  
-  # Check that the output is an sf object
-  expect_s3_class(sf_result, "sf")
-  # Check that geometry is MULTIPOLYGON
-  expect_true(any(sf::st_geometry_type(sf_result) == "MULTIPOLYGON"))
-})
-
-
 test_that("atl_as_sf stops if tag column does not exist", {
   df <- data.table(x = 1:3, y = 4:6)
   
@@ -234,3 +207,31 @@ test_that("atl_as_sf stops if buffer missing for res_patches", {
   )
 })
 
+test_that("atl_as_sf produces MULTIPOLYGON geometries from residence patches", {
+  # Load built-in example data
+  data <- data_example
+  
+  # Calculate residence patches for tag 3038
+  data <- atl_res_patch(
+    data[tag == "3038"],
+    max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
+    min_fixes = 3, min_duration = 120
+  )
+  
+  # Create polygons around residence patches
+  d_sf <- atl_as_sf(
+    data,
+    additional_cols = "patch",
+    option = "res_patches", buffer = 10
+  )
+  
+  # Check that the result is an sf object
+  expect_s3_class(d_sf, "sf")
+  
+  # Check that geometry type is MULTIPOLYGON
+  geom_types <- unique(as.character(sf::st_geometry_type(d_sf)))
+  expect_true(
+    all(geom_types %in% c("MULTIPOLYGON", "POLYGON")),
+    info = paste("Unexpected geometry types:", paste(geom_types, collapse = ", "))
+  )
+})

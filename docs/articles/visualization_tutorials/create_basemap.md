@@ -243,7 +243,11 @@ does not always work.
 # additional packages
 library(OpenStreetMap)
 library(sf)
+```
 
+    ## Warning: package 'sf' was built under R version 4.5.3
+
+``` r
 # load example data
 data <- data_example
 

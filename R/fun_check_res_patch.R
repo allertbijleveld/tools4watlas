@@ -187,6 +187,8 @@ atl_check_res_patch <- function(data,
   first_data <- min(ds$datetime, na.rm = TRUE) |> format("%d %b %H:%M")
   last_data <- max(ds$datetime, na.rm = TRUE) |> format("%d %b %H:%M")
   n <- nrow(ds)
+  n_patches <- length(unique(dp$patch))
+  time_in_patches <- atl_format_time(sum(dp$duration) * 60)
 
   # create basemap and bounding box
   bm <- atl_create_bm(
@@ -336,7 +338,11 @@ atl_check_res_patch <- function(data,
         "<span style='white-space:pre;'>    </span>",
         "<b>Last:</b>", last_data,
         "<span style='white-space:pre;'>    </span>",
-        "<b>N localizations:</b>", n,
+        "<b>N pos:</b>", n,
+        "<span style='white-space:pre;'>    </span>",
+        "<b>N patches:</b>", n_patches,
+        "<span style='white-space:pre;'>    </span>",
+        "<b>T in patches:</b>", time_in_patches,
         "<span style='white-space:pre;'>    </span>",
         "<b>Waterlevel (HLH):</b>", dtp$high_start_level, " / ",
         dtp$low_level, " / ", dtp$high_end_level

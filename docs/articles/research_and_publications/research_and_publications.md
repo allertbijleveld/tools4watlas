@@ -263,8 +263,8 @@ high-throughput animal tracking data**. *Journal of Animal Ecology*,
 
 Keuning, T., Gobbens, E., Nathan, R., & Bijleveld, A. I. (2026). **Storm
 events will simultaneously reduce foraging opportunities and affect
-movements of red knots (calidris canutus) in the intertidal wadden sea**
-\[Journal Article\]. *Ibis*. <https://doi.org/10.1111/ibi.70028>
+movements of red knots (calidris canutus) in the intertidal wadden
+sea**. *Ibis*, *168*, 633–648. <https://doi.org/10.1111/ibi.70028>
 
 Kok, E. M. A. (2020). ***Why knot? Exploration of variation in
 long-distance migration*** \[Thesis\].

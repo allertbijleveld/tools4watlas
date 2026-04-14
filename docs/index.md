@@ -59,6 +59,9 @@ local NIOZ file server is required.
 - [**Interpolate
   data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/interpolate_data.html)
 
+- [**Add sun and moon
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_sun_and_moon_data.html)
+
 **Visualization tutorials**:
 
 - [**Create a

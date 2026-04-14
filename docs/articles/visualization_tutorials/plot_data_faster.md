@@ -49,6 +49,11 @@ before and is otherwise independent.
 library(tools4watlas)
 library(data.table)
 library(sf)
+```
+
+    ## Warning: package 'sf' was built under R version 4.5.3
+
+``` r
 library(ggplot2)
 library(scattermore)
 library(scales)
@@ -129,7 +134,7 @@ tracks](plot_data_faster_files/figure-html/unnamed-chunk-3-1.png)
 round(Sys.time() - st, 2)
 ```
 
-    ## Time difference of 6.21 secs
+    ## Time difference of 6.29 secs
 
 ## `ggplot2` with points as pch = “.”
 
@@ -158,7 +163,7 @@ tracks](plot_data_faster_files/figure-html/unnamed-chunk-4-1.png)
 round(Sys.time() - st, 2)
 ```
 
-    ## Time difference of 2.35 secs
+    ## Time difference of 2.37 secs
 
 ## `ggplot2` with points as geom_scattermore()
 
@@ -187,7 +192,7 @@ tracks](plot_data_faster_files/figure-html/unnamed-chunk-5-1.png)
 round(Sys.time() - st, 2)
 ```
 
-    ## Time difference of 1.73 secs
+    ## Time difference of 1.64 secs
 
 ## `ggplot2` heat map
 
@@ -228,7 +233,7 @@ map](plot_data_faster_files/figure-html/unnamed-chunk-6-1.png)
 round(Sys.time() - st, 2)
 ```
 
-    ## Time difference of 0.32 secs
+    ## Time difference of 0.35 secs
 
 ## Fast saving with `ragg`
 

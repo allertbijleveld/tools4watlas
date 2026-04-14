@@ -31,6 +31,7 @@ expand or contract the bounding box."><meta property="og:image" content="https:/
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_tidal_and_bathymetry_data.html">Add tidal and bathymetry data</a></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/add_residence_patches.html">Add residence patches</a></li>
     <li><a class="dropdown-item" href="../articles/extended_workflow/interpolate_data.html">Interpolate data</a></li>
+    <li><a class="dropdown-item" href="../articles/extended_workflow/add_sun_and_moon_data.html">Add sun and moon data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Visualization tutorials</h6></li>
     <li><a class="dropdown-item" href="../articles/visualization_tutorials/create_basemap.html">Create a basemap</a></li>
@@ -116,7 +117,8 @@ while negative values shrink it. Default is <code>0</code>.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Linking to GEOS 3.13.1, GDAL 3.11.4, PROJ 9.7.0; sf_use_s2() is TRUE</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>package 'sf' was built under R version 4.5.3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Linking to GEOS 3.14.1, GDAL 3.12.1, PROJ 9.7.1; sf_use_s2() is TRUE</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create a simple geometry</span></span></span>
 <span class="r-in"><span><span class="va">geom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sfc.html" class="external-link">st_as_sfc</a></span><span class="op">(</span><span class="st">"POLYGON((0 0, 1 0, 1 2, 0 2, 0 0))"</span><span class="op">)</span></span></span>

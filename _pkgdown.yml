@@ -39,6 +39,8 @@ navbar:
         href: articles/extended_workflow/add_residence_patches.html
       - text: "Interpolate data"
         href: articles/extended_workflow/interpolate_data.html
+      - text: "Add sun and moon data"
+        href: articles/extended_workflow/add_sun_and_moon_data.html
       - text: "--------"
       - text: Visualization tutorials
       - text: "Create a basemap"

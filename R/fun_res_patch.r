@@ -87,6 +87,12 @@ atl_res_patch <- function(data,
   }
   data.table::setorderv(data, "time")
 
+  # Delete existing 'patch' column if it exists to avoid conflicts
+  if ("patch" %in% names(data)) {
+    warning("Column 'patch' already existed and is overwritten.")
+    data[, patch := NULL]
+  }
+
   # Ensure data is ordered by time
   assertthat::assert_that(min(diff(data$time)) >= 0,
     msg = "Data for segmentation is not ordered by time"

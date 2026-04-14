@@ -192,7 +192,6 @@ atl_check_res_patch(
   tide = "2023513", offset = 30,
   buffer_res_patches = 75 / 2
 )
-#> Warning: Some of the residency patch are split in MULTIPOLYGON geometries. If this is not desired, increase the buffer to half of `lim_spat_indep` (see function description)
 #> Coordinate system already present.
 #> ℹ Adding new coordinate system, which will replace the existing one.
 #> Coordinate system already present.
