@@ -1,3 +1,6 @@
+# library(testthat)
+# library(tools4watlas)
+
 testthat::test_that("atl_as_sf handles valid data and columns", {
   # Create test data
   data <- data.table::data.table(
@@ -204,3 +207,31 @@ test_that("atl_as_sf stops if buffer missing for res_patches", {
   )
 })
 
+test_that("atl_as_sf produces MULTIPOLYGON geometries from residence patches", {
+  # Load built-in example data
+  data <- data_example
+  
+  # Calculate residence patches for tag 3038
+  data <- atl_res_patch(
+    data[tag == "3038"],
+    max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
+    min_fixes = 3, min_duration = 120
+  )
+  
+  # Create polygons around residence patches
+  d_sf <- atl_as_sf(
+    data,
+    additional_cols = "patch",
+    option = "res_patches", buffer = 10
+  )
+  
+  # Check that the result is an sf object
+  expect_s3_class(d_sf, "sf")
+  
+  # Check that geometry type is MULTIPOLYGON
+  geom_types <- unique(as.character(sf::st_geometry_type(d_sf)))
+  expect_true(
+    all(geom_types %in% c("MULTIPOLYGON", "POLYGON")),
+    info = paste("Unexpected geometry types:", paste(geom_types, collapse = ", "))
+  )
+})
