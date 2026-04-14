@@ -3,6 +3,7 @@ pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   extended_workflow/add_residence_patches: extended_workflow/add_residence_patches.html
+  extended_workflow/add_sun_and_moon_data: extended_workflow/add_sun_and_moon_data.html
   extended_workflow/add_tidal_and_bathymetry_data: extended_workflow/add_tidal_and_bathymetry_data.html
   visualization_tutorials/animate_data: visualization_tutorials/animate_data.html
   package_development/contributing_to_tools4watlas: package_development/contributing_to_tools4watlas.html
@@ -18,7 +19,7 @@ articles:
   visualization_tutorials/plot_data_interactively: visualization_tutorials/plot_data_interactively.html
   research_and_publications/research_and_publications: research_and_publications/research_and_publications.html
   smooth_and_thin_data: smooth_and_thin_data.html
-last_built: 2026-04-13T12:59Z
+last_built: 2026-04-14T10:56Z
 urls:
   reference: https://allertbijleveld.github.io/tools4watlas/reference
   article: https://allertbijleveld.github.io/tools4watlas/articles
