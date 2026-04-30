@@ -106,14 +106,14 @@ atl_check_res_patch <- function(data,
                                 buffer_overview = 10000,
                                 speed_threshold = 3,
                                 point_size = 1,
-                                point_alpha = 0.5,
+                                point_alpha = 0.9,
                                 path_linewidth = 0.5,
-                                path_alpha = 0.2,
+                                path_alpha = 0.9,
                                 patch_label_size = 4,
                                 patch_label_padding = 1,
                                 patch_alpha = 0.7,
                                 element_text_size = 11,
-                                water_fill = "#D7E7FF",
+                                water_fill = "white",
                                 water_colour = "grey80",
                                 land_fill = "#faf5ef",
                                 land_colour = "grey80",
@@ -264,7 +264,7 @@ atl_check_res_patch <- function(data,
     asp = "4:3",
     buffer = buffer_bm
   )
-  bbox <- atl_bbox(ds, buffer = buffer_bm, asp = "4:3")
+  bbox <- atl_bbox(ds, buffer = buffer_bm, asp = "4.3:3")
 
   # if roosts = TRUE add roost polygon
   if (roosts == TRUE) {
@@ -279,10 +279,15 @@ atl_check_res_patch <- function(data,
     bm +
       # add patch polygons
       geom_sf(
-        data = dp_sf, aes(fill = patch), alpha = patch_alpha,
+        data = dp_sf, aes(fill = duration, color = patch),
+        alpha = patch_alpha, linewidth = 1) +
+      viridis::scale_fill_viridis(
+        option = "A", direction = -1, begin = 0.1,
+        name = "Duration in\npatch (min)"
       ) +
-      scale_fill_manual(values = patch_colours, guide = "none") +
+      scale_color_manual(values = patch_colours, guide = "none") +
       # add track and points
+      ggnewscale::new_scale_colour() +
       geom_path(
         data = ds, aes(x, y, group = tag, colour = speed_in),
         linewidth = path_linewidth, alpha = path_alpha, show.legend = TRUE
@@ -300,7 +305,7 @@ atl_check_res_patch <- function(data,
         size = point_size, alpha = point_alpha, show.legend = TRUE
       ) +
       scale_colour_gradientn(
-        colours = c("#08519c", "#6baed6", "#cb181d", "#fcae91"),
+        colours = c("black", "grey", "#00CFFF", "dodgerblue4"),
         values  = scales::rescale(c(
           0,
           speed_threshold - 1e-9,
@@ -325,7 +330,7 @@ atl_check_res_patch <- function(data,
       # adjust legend position
       theme(
         legend.position = "inside",
-        legend.position.inside = c(.08, .18),
+        legend.position.inside = c(.08, .3),
         legend.background = element_rect(fill = "transparent"),
         legend.title = element_text(face = "bold"),
         legend.text = element_text(size = element_text_size)

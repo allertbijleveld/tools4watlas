@@ -14,3 +14,5 @@
 ^dummy_path.db$
 .lintr
 ^paper$
+^\.positai$
+^\.claude$
