@@ -109,6 +109,7 @@ quality and species behaviour.
 ### Load packages and required data
 
 ``` r
+
 # packages
 library(tools4watlas)
 library(ggplot2)
@@ -140,6 +141,7 @@ for each tag in parallel, which adds an additional column to the data
 table, called `patch`, which contains unique patch ID’s for each tag.
 
 ``` r
+
 # subset relevant columns
 data <- data[, .(species, posID, tag, time, datetime, x, y, tideID)]
 
@@ -196,6 +198,7 @@ Terschelling) and a buffer (in m) around the residency patch data to
 create a polygon. This buffer should best be `lim_spat_indep`.
 
 ``` r
+
 atl_check_res_patch(
   data[tag == "3038"], tide_data = tidal_pattern,
   tide = "2023513", offset = 30,
@@ -214,6 +217,7 @@ the choosen directory (e.g. `./outputs/res_patch_check/` - edit path as
 desired), which has to be created before running the code.
 
 ``` r
+
 # unique ID combinations
 idc <- unique(data[, c("species", "tag", "tideID")])
 
@@ -256,6 +260,7 @@ summarize the residency patches by tag and patch and merge desired
 columns back to our full data table.
 
 ``` r
+
 # summary of residency patches
 data_summary <- atl_res_patch_summary(data)
 
@@ -312,6 +317,7 @@ red knot (tag 3038). The residency patches are coloured by patch ID, and
 the points are plotted with a grey colour to show the track.
 
 ``` r
+
 # subset red knot
 data_subset <- data[tag == 3038]
 data_summary_subset <- data_summary[tag == 3038]
@@ -339,6 +345,7 @@ Or we could plot the residency patch at it’s median position with the
 duration in minutes as size and colour of the points.
 
 ``` r
+
 # plot residency patches itself by duration
 bm +
   geom_point(
@@ -360,6 +367,7 @@ done in the code below. The residency patches are coloured by species
 and sized by duration.
 
 ``` r
+
 # create basemap
 bm <- atl_create_bm(data, buffer = 500)
 

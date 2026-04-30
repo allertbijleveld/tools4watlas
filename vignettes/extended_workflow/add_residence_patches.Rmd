@@ -116,7 +116,7 @@ The function `atl_check_res_patch()` can be used to evaluate the residence patch
 
 We can select one tag and tide to plot. Additionally, we need to specify the offset for the tidal data we use (e.g. 30 min for West-Terschelling) and a buffer (in m) around the residence patch data to create the polygon. For data inspection it makes sense to set the buffer to half of `lim_spat_indep` (maximum distance between subsequent residence patches at which they will be considered independent), ensuring that the polygons around residence patches correspond to the spatial distance threshold used to merge residence patches. However, for analysis using the residence patch polygons in a biological context, it is better to set the buffer to appropiate scale. For example 15 m, will capture some error in positions and potential movements in between fixes.
 
-```{r, fig.align = "center", fig.alt = "Overview plot res patches one tide", fig.width = 10, fig.height = 6}
+```{r, fig.align = "center", fig.alt = "Overview plot res patches one tide", fig.width = 11.3, fig.height = 6.5}
 atl_check_res_patch(
   data[tag == "3038"],
   tide_data = tidal_pattern, tide_data_highres = measured_water_height,
@@ -127,7 +127,7 @@ atl_check_res_patch(
 
 Zoom in on specifc range of residence patches to inspect them in more detail.
 
-```{r, fig.align = "center", fig.alt = "Overview plot res patches one tide", fig.width = 10, fig.height = 6}
+```{r, fig.align = "center", fig.alt = "Overview plot res patches one tide", fig.width = 11.3, fig.height = 6.5}
 # set parameters for subsetting data
 tag_id <- "3038"
 tide_id <- "2023513"
@@ -147,6 +147,7 @@ atl_check_res_patch(
   tide_data = tidal_pattern, tide_data_highres = measured_water_height,
   tide = tide_id, offset = 30,
   buffer_res_patches = 15,
+  buffer_bm = 50,
   patch_label_padding = 2
 )
 ```

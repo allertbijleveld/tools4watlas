@@ -5,6 +5,7 @@
 This article shows how to plot WATLAS data with base R
 
 ``` r
+
 # packages
 library(tools4watlas)
 ```
@@ -24,6 +25,7 @@ is possible to save the plot as a .png. If necesarry, the legend can
 also be located elsewhere on the plot with Legend.
 
 ``` r
+
 # load example data
 data <- data_example[tag == data_example[1, tag]]
 
@@ -44,6 +46,7 @@ atl_plot_tag(
 Base R map
 
 ``` r
+
 # note: function opens device and therefore the plot is not shown in markdown
 ```
 
@@ -57,6 +60,7 @@ specifying a buffer (in meters) in the function atl_bbox The other
 options are similar to atl_plot_tag (see earlier).
 
 ``` r
+
 library(OpenStreetMap)
 library(sf)
 
