@@ -54,7 +54,7 @@
 #' @param png_height Height of saved PNG (default: 2160).
 #'
 #' @return A ggplot object or a saved PNG file.
-#' @import patchwork
+#' @import ggplot2 patchwork
 #' @importFrom ggtext element_markdown
 #' @importFrom ragg agg_png
 #' @importFrom grDevices dev.off
@@ -163,7 +163,7 @@ atl_check_res_patch <- function(data,
 
   # assign tag and tideID new to avoid confusion
   tag_id <- ds[1]$tag
-  tideID_id <- tide #nolint
+  tideID_id <- tide # nolint
 
   # create patch summary
   dp <- atl_res_patch_summary(ds)
@@ -280,7 +280,8 @@ atl_check_res_patch <- function(data,
       # add patch polygons
       geom_sf(
         data = dp_sf, aes(fill = duration, color = patch),
-        alpha = patch_alpha, linewidth = 1) +
+        alpha = patch_alpha, linewidth = 1
+      ) +
       viridis::scale_fill_viridis(
         option = "A", direction = -1, begin = 0.1,
         name = "Duration in\npatch (min)"
@@ -306,7 +307,7 @@ atl_check_res_patch <- function(data,
       ) +
       scale_colour_gradientn(
         colours = c("black", "grey", "#00CFFF", "dodgerblue4"),
-        values  = scales::rescale(c(
+        values = scales::rescale(c(
           0,
           speed_threshold - 1e-9,
           speed_threshold,
@@ -338,7 +339,9 @@ atl_check_res_patch <- function(data,
   )
 
   # add overview map
-  bbox_sf <- bbox |> sf::st_as_sfc() |> sf::st_set_crs(32631)
+  bbox_sf <- bbox |>
+    sf::st_as_sfc() |>
+    sf::st_set_crs(32631)
   bbox2 <- atl_bbox(ds, buffer = buffer_overview, asp = "1:1")
 
   bm2 <- atl_create_bm(ds, buffer = buffer_overview, asp = "1:1") +
@@ -404,7 +407,8 @@ atl_check_res_patch <- function(data,
       geom_text(
         data = dp,
         aes(
-          duration + 5, as.numeric(time_median), label = patch, colour = patch
+          duration + 5, as.numeric(time_median),
+          label = patch, colour = patch
         ),
         size = 4, fontface = "bold", show.legend = FALSE
       ) +

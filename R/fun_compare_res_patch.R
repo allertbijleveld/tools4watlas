@@ -168,8 +168,8 @@ atl_compare_res_patch_summary <- function(data_v1, data_v2) {
   cat("=== Patch changes summary ===\n")
   cat("Lost    (v1 patches gone in v2) :", nrow(lost_patches), "\n")
   cat("Gained  (new patches in v2)     :", nrow(gained_patches), "\n\n")
-  cat("Splits  (one v1 → multiple v2):", nrow(splits), "\n")
-  cat("Merges  (multiple v1 → one v2):", nrow(merges), "\n\n")
+  cat("Splits  (one v1 -> multiple v2):", nrow(splits), "\n")
+  cat("Merges  (multiple v1 -> one v2):", nrow(merges), "\n\n")
 
   # return
   change_summary
