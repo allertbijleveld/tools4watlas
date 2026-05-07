@@ -75,15 +75,18 @@ atl_compare_res_patch_summary <- function(data_v1, data_v2) {
   atl_check_data(data_v2, names_expected = required_columns)
 
   # comparison table
-  comparison <- data_v1[, .(posID, tag, tideID, datetime, x, y,
-    patch_v1 = patch,
-    patch_v2 = data_v2$patch
-  )]
+  comparison <- data_v1[, .(posID, tag, tideID, datetime, x, y, patch_v1 = patch)]
+  comparison <- merge(
+    comparison,
+    data_v2[, .(posID, tag, patch_v2 = patch)],
+    by = c("posID", "tag"),
+    all = TRUE
+  )
 
   # splits: one v1 patch → multiple v2 patches
   patch_identity <- comparison[!is.na(patch_v1),
     {
-      v2_patches <- unique(patch_v2)
+      v2_patches <- unique(patch_v2[!is.na(patch_v2)])
       .(n_v2_patches = length(v2_patches), v2_patches = list(v2_patches))
     },
     by = .(tag, tideID, patch_v1)

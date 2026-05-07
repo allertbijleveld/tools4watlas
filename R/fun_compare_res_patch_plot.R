@@ -155,21 +155,21 @@ atl_compare_res_patch_plot <- function(data_v1,
   # check period of interest
   if (all(is.na(v1_ids)) && !all(is.na(v2_ids))) {
     # only v2 has patches (gained)
-    from <- data_v2[patch %in% v2_ids, min(datetime)]
-    to <- data_v2[patch %in% v2_ids, max(datetime)]
+    from <- data_v2[tag == tag_id & patch %in% v2_ids, min(datetime)]
+    to <- data_v2[tag == tag_id & patch %in% v2_ids, max(datetime)]
   } else if (!all(is.na(v1_ids)) && all(is.na(v2_ids))) {
     # only v1 has patches (lost)
-    from <- data_v1[patch %in% v1_ids, min(datetime)]
-    to <- data_v1[patch %in% v1_ids, max(datetime)]
+    from <- data_v1[tag == tag_id & patch %in% v1_ids, min(datetime)]
+    to <- data_v1[tag == tag_id & patch %in% v1_ids, max(datetime)]
   } else {
     # both have patches (split, merge)
     from <- min(
-      data_v1[patch %in% v1_ids, min(datetime)],
-      data_v2[patch %in% v2_ids, min(datetime)]
+      data_v1[tag == tag_id & patch %in% v1_ids, min(datetime)],
+      data_v2[tag == tag_id & patch %in% v2_ids, min(datetime)]
     )
     to <- max(
-      data_v1[patch %in% v1_ids, max(datetime)],
-      data_v2[patch %in% v2_ids, max(datetime)]
+      data_v1[tag == tag_id & patch %in% v1_ids, max(datetime)],
+      data_v2[tag == tag_id & patch %in% v2_ids, max(datetime)]
     )
   }
 
