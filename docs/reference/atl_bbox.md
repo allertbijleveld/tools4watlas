@@ -55,7 +55,6 @@ Johannes Krietsch
 library(tools4watlas)
 library(ggplot2)
 library(sf)
-#> Warning: package 'sf' was built under R version 4.5.3
 #> Linking to GEOS 3.14.1, GDAL 3.12.1, PROJ 9.7.1; sf_use_s2() is TRUE
 
 # load example data

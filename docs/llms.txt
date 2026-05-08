@@ -266,6 +266,11 @@ Functions to calculate residence patches
   : Summary of patch data
 - [`atl_check_res_patch()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_check_res_patch.md)
   : Check the residence patches from one tag during one tide
+- [`atl_compare_res_patch_summary()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_compare_res_patch_summary.md)
+  : Compare residence patches between two parameter sets
+- [`atl_compare_res_patch_plot()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_compare_res_patch_plot.md)
+  : Plot residence patches to compare two versions of parameters for one
+  tag
 
 ## Spatial functions
 
