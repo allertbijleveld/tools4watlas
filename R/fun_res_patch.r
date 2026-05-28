@@ -32,6 +32,8 @@
 #' patch.
 #' @param min_duration The minimum duration (in seconds) for classifying
 #' residence patches.
+#' @param min_gap_fixes The maximum number of consecutive missing fixes allowed
+#' within a residence patch before it is split into separate patches.
 #'
 #' @return A data.table that has the added column
 #' \code{patch} as character indicating the patch ID.
@@ -48,7 +50,7 @@
 #' data <- atl_res_patch(
 #'   data[tag == "3038"],
 #'   max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
-#'   min_fixes = 3, min_duration = 120
+#'   min_fixes = 3, min_duration = 120, min_gap_fixes = 6
 #' )
 #'
 #' # summary of residence patches
@@ -60,11 +62,14 @@ atl_res_patch <- function(data,
                           lim_spat_indep = 75,
                           lim_time_indep = 180,
                           min_fixes = 3,
-                          min_duration = 120) {
+                          min_duration = 120,
+                          min_gap_fixes = 6) {
   # Initialize necessary variables to avoid NSE (Non-Standard Evaluation) issues
   row_id <- newpatch <- nfixes <- patch <- speed <- tag <- duration <- NULL
   patchdata <- spat_diff <- time_diff_end_start <- i.patch <- NULL # nolint
   time <- time_diff <- time_end <- time_start <- spat_diff_end_start <- NULL
+  patch_new <- patch_filled <- na_bout <- flight <- has_flight <- NULL
+  i.has_flight<- NULL # nolint
 
   # Validate input
   assertthat::assert_that(is.data.frame(data),
@@ -210,10 +215,58 @@ atl_res_patch <- function(data,
     bwd <- zoo::na.locf(data_original$patch, fromLast = TRUE, na.rm = FALSE)
 
     # Fill only where both directions agree
-    data_original[, patch := ifelse(is.na(patch) & fwd == bwd, fwd, patch)]
+    data_original[, patch_filled := ifelse(
+      is.na(patch) & fwd == bwd, fwd, patch
+    )]
 
-    # Remove row_id
+    # subset patch data and check for flights within patches
+    patch_data <- data_original[!is.na(patch_filled)]
+
+    # NA bouts
+    patch_data[, na_bout := rleid(is.na(patch))]
+    patch_data[!is.na(patch), na_bout := NA]
+
+    # Calculate spatial and time differences
+    patch_data[, `:=`(
+      spat_diff = atl_simple_dist(data = patch_data, x = "x", y = "y"),
+      time_diff = c(Inf, as.numeric(diff(time)))
+    )]
+    patch_data[1, c("spat_diff")] <- Inf
+    patch_data[, `:=`(speed = spat_diff / time_diff)]
+    patch_data[1, c("speed")] <- Inf
+
+    # Create flight patches based on thresholds
+    patch_data[, flight := rleid(speed > max_speed)]
+    patch_data[speed <= max_speed, flight := NA]
+
+    # assign flights when consecutive positions larger min_gap_fixes
+    patch_data[!is.na(flight), `:=`(nfixes, .N), by = c("tag", "flight")]
+    patch_data[nfixes < min_gap_fixes, flight := NA]
+
+    # assign na_bouts that contain any flight fix
+    patch_data[!is.na(na_bout), has_flight := any(!is.na(flight)), by = na_bout]
+
+    # Filter based bouts with flights
+    patch_data <- patch_data[has_flight == TRUE]
+
+    # Merge flight ID back to original data
+    data_original[patch_data, on = "row_id", has_flight := i.has_flight]
+
+    # Set patch to NA where there is a flight
+    data_original[!is.na(has_flight), patch_filled := NA]
+    data_original[, has_flight := NULL]
+
+    # Reassign patch ID's to take care of split patches
+    data_original[, patch_new := rleid(patch_filled)]
+    data_original[is.na(patch_filled), patch_new := NA]
+    data_original[, patch := match(
+      patch_new, unique(stats::na.omit(patch_new))
+    )]
+    data_original[, patch_new := NULL]
+
+    # Remove row_id and patch filled
     data_original[, row_id := NULL]
+    data_original[, patch_filled := NULL]
 
     # make patch a factor
     data_original[, patch := as.character(patch)]

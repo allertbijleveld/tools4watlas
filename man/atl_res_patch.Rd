@@ -10,7 +10,8 @@ atl_res_patch(
   lim_spat_indep = 75,
   lim_time_indep = 180,
   min_fixes = 3,
-  min_duration = 120
+  min_duration = 120,
+  min_gap_fixes = 6
 )
 }
 \arguments{
@@ -33,6 +34,9 @@ patch.}
 
 \item{min_duration}{The minimum duration (in seconds) for classifying
 residence patches.}
+
+\item{min_gap_fixes}{The maximum number of consecutive missing fixes allowed
+within a residence patch before it is split into separate patches.}
 }
 \value{
 A data.table that has the added column
@@ -66,7 +70,7 @@ data <- data_example
 data <- atl_res_patch(
   data[tag == "3038"],
   max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
-  min_fixes = 3, min_duration = 120
+  min_fixes = 3, min_duration = 120, min_gap_fixes = 6
 )
 
 # summary of residence patches
