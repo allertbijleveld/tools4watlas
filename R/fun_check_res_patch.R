@@ -165,12 +165,20 @@ atl_check_res_patch <- function(data,
   tag_id <- ds[1]$tag
   tideID_id <- tide # nolint
 
-  # create patch summary
-  dp <- atl_res_patch_summary(ds)
+  # create patch summary — empty data.table if no patches
+  no_patches <- all(is.na(ds$patch))
+  if (no_patches) {
+    dp <- data.table::data.table()
+  } else {
+    dp <- atl_res_patch_summary(ds)
+  }
 
   # subset all data linked to this tide
   ds <- ds[tideID == tideID_id]
-  dp <- dp[patch %in% unique(ds$patch)]
+  if (!no_patches) {
+    dp <- dp[patch %in% unique(ds$patch)]
+    no_patches <- nrow(dp) == 0
+  }
 
   # check if data for this period and tide
   if (nrow(ds) == 0) {
@@ -189,33 +197,39 @@ atl_check_res_patch <- function(data,
 
   # patch as factor
   ds[, patch := as.factor(patch)]
-  dp[, patch := as.factor(patch)]
+  if (!no_patches) dp[, patch := as.factor(patch)]
 
   # speed in
   ds <- atl_get_speed(ds, type = c("in"))
 
   # join duration to ds
-  ds[dp, on = .(tag, patch), `:=`(duration = i.duration)]
+  if (!no_patches) {
+    ds[dp, on = .(tag, patch), `:=`(duration = i.duration)]
+  } else {
+    ds[, duration := 0]
+  }
 
   # duration in mins
   ds[, duration := duration / 60]
-  dp[, duration := duration / 60]
+  if (!no_patches) dp[, duration := duration / 60]
 
-  # transform into sf object
-  dp_sf <- atl_as_sf(ds, option = "res_patches", buffer = buffer_res_patches)
-
-  # add duration
-  dp_sf <- dp_sf |>
-    dplyr::left_join(dp[, .(tag, patch, duration)], by = c("tag", "patch"))
+  # transform into sf object (only if patches exist)
+  if (!no_patches) {
+    dp_sf <- atl_as_sf(ds, option = "res_patches", buffer = buffer_res_patches)
+    dp_sf <- dp_sf |>
+      dplyr::left_join(dp[, .(tag, patch, duration)], by = c("tag", "patch"))
+  }
 
   # set time without patch to 0
   ds[is.na(duration), duration := 0]
 
   # median time as POSIXct
-  dp[, time_median := as.POSIXct(
-    time_median,
-    origin = "1970-01-01", tz = "UTC"
-  )]
+  if (!no_patches) {
+    dp[, time_median := as.POSIXct(
+      time_median,
+      origin = "1970-01-01", tz = "UTC"
+    )]
+  }
 
   # rescale waterlevel data
   wl_min <- ifelse(!is.na(waterlevel_min), waterlevel_min, min(dtf$waterlevel))
@@ -243,13 +257,18 @@ atl_check_res_patch <- function(data,
   first_data <- min(ds$datetime, na.rm = TRUE) |> format("%d %b %H:%M")
   last_data <- max(ds$datetime, na.rm = TRUE) |> format("%d %b %H:%M")
   n <- nrow(ds)
-  n_patches <- length(unique(dp$patch))
-  time_in_patches <- atl_format_time(sum(dp$duration) * 60)
-
-  # generate shuffled colour palette
-  set.seed(1)
-  patch_colours <- sample(scales::hue_pal()(n_patches))
-  names(patch_colours) <- unique(dp$patch)
+  n_patches <- if (no_patches) 0 else length(unique(dp$patch))
+  time_in_patches <- if (no_patches) {
+    "0s"
+  } else {
+    atl_format_time(sum(dp$duration) * 60)
+  }
+  # generate shuffled colour palette (only if patches exist)
+  if (!no_patches) {
+    set.seed(1)
+    patch_colours <- sample(scales::hue_pal()(n_patches))
+    names(patch_colours) <- unique(dp$patch)
+  }
 
   # create basemap and bounding box
   bm <- atl_create_bm(
@@ -277,16 +296,22 @@ atl_check_res_patch <- function(data,
   # plot on map
   p1 <- suppressMessages(
     bm +
-      # add patch polygons
-      geom_sf(
-        data = dp_sf, aes(fill = duration, color = patch),
-        alpha = patch_alpha, linewidth = 1
-      ) +
-      viridis::scale_fill_viridis(
-        option = "A", direction = -1, begin = 0.1,
-        name = "Duration in\npatch (min)"
-      ) +
-      scale_color_manual(values = patch_colours, guide = "none") +
+      # add patch polygons (only if patches exist)
+      {
+        if (!no_patches) {
+          list(
+            geom_sf(
+              data = dp_sf, aes(fill = duration, color = patch),
+              alpha = patch_alpha, linewidth = 1
+            ),
+            viridis::scale_fill_viridis(
+              option = "A", direction = -1, begin = 0.1,
+              name = "Duration in\npatch (min)"
+            ),
+            scale_color_manual(values = patch_colours, guide = "none")
+          )
+        }
+      } +
       # add track and points
       ggnewscale::new_scale_colour() +
       geom_path(
@@ -315,14 +340,20 @@ atl_check_res_patch <- function(data,
         )),
         name = "Speed (m/s)"
       ) +
-      # add labels for patches
-      ggnewscale::new_scale_colour() +
-      ggrepel::geom_text_repel(
-        data = dp, aes(x_median, y_median, label = patch, colour = patch),
-        size = patch_label_size, box.padding = patch_label_padding,
-        fontface = "bold", show.legend = FALSE
-      ) +
-      scale_colour_manual(values = patch_colours, guide = "none") +
+      # add labels for patches (only if patches exist)
+      {
+        if (!no_patches) {
+          list(
+            ggnewscale::new_scale_colour(),
+            ggrepel::geom_text_repel(
+              data = dp, aes(x_median, y_median, label = patch, colour = patch),
+              size = patch_label_size, box.padding = patch_label_padding,
+              fontface = "bold", show.legend = FALSE
+            ),
+            scale_colour_manual(values = patch_colours, guide = "none")
+          )
+        }
+      } +
       # set extend again (overwritten by geom_sf)
       coord_sf(
         xlim = c(bbox["xmin"], bbox["xmax"]),
@@ -398,20 +429,30 @@ atl_check_res_patch <- function(data,
         data = ds, aes(duration, time), color = "grey",
         show.legend = FALSE
       ) +
-      geom_point(
-        data = ds, aes(duration, time, color = patch),
-        size = point_size, alpha = 0.5, show.legend = FALSE
-      ) +
-      scale_color_manual(values = patch_colours) +
-      # add labels for patches
-      geom_text(
-        data = dp,
-        aes(
-          duration + 5, as.numeric(time_median),
-          label = patch, colour = patch
-        ),
-        size = 4, fontface = "bold", show.legend = FALSE
-      ) +
+      # points coloured by patch (if patches exist) or plain grey
+      {
+        if (!no_patches) {
+          list(
+            geom_point(
+              data = ds, aes(duration, time, color = patch),
+              size = point_size, alpha = 0.5, show.legend = FALSE
+            ),
+            scale_color_manual(values = patch_colours),
+            geom_text(
+              data = dp,
+              aes(duration + 5, as.numeric(time_median),
+                  label = patch, colour = patch),
+              size = 4, fontface = "bold", show.legend = FALSE
+            )
+          )
+        } else {
+          geom_point(
+            data = ds, aes(duration, time),
+            color = "grey50", size = point_size, alpha = 0.5,
+            show.legend = FALSE
+          )
+        }
+      } +
       # flip y axis
       scale_y_reverse(
         breaks = seq(
