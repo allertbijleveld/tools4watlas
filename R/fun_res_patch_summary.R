@@ -2,10 +2,10 @@
 #'
 #' Computes summary statistics of movement data grouped by patches for each
 #' individual tag. Calculates spatial and temporal summaries within each patch,
-#' distances traveled inside patches, distances and time intervals between
+#' distances travelled inside patches, distances and time intervals between
 #' patches, displacement within patches, and patch duration. Additional
 #' user-specified summary variables and functions can also be applied
-#' dynamically.
+#' dynamically. If species is a column, it will be kept.
 #'
 #' Converts input data to data.table if needed and filters out rows with missing
 #' patch assignments. All summaries are calculated by \code{tag} and
@@ -76,7 +76,7 @@ atl_res_patch_summary <- function(data,
   x <- y <- tag <- .  <- patch <- disp_in_patch <- median <- NULL
   time_end <- time_start <- i.dist_in_patch <- time <- NULL # nolint
   x_end <- x_start <- y_end <- y_start <- time_bw_patch <- NULL
-  dist_start_end <- time_mean <- time_median <- NULL
+  dist_start_end <- time_mean <- time_median <- species <- NULL
 
   # Validate input
   assertthat::assert_that(is.data.frame(data),
@@ -95,6 +95,13 @@ atl_res_patch_summary <- function(data,
 
   # Exclude NA
   d <- data[!is.na(patch)]
+  
+  # Determine grouping variables
+  by_vars <- if ("species" %in% names(d)) {
+    c("species", "tag", "patch")
+  } else {
+    c("tag", "patch")
+  }
 
   # Basic summaries
   ds <- d[, .(
@@ -111,7 +118,7 @@ atl_res_patch_summary <- function(data,
     time_median = median(time),
     time_start = first(time),
     time_end = last(time)
-  ), by = .(tag, patch)]
+  ), by = by_vars]
 
   # Distance between start and end location
   ds[, dist_start_end := sqrt((x_end - x_start)^2 + (y_end - y_start)^2)]
@@ -119,11 +126,11 @@ atl_res_patch_summary <- function(data,
   # Distances inside patch
   dist_in_patch_dt <- d[, .(
     dist_in_patch = sum(sqrt(diff(x)^2 + diff(y)^2), na.rm = TRUE)
-  ), by = .(tag, patch)]
+  ), by = by_vars]
   ds[dist_in_patch_dt, on = .(tag, patch), dist_in_patch := i.dist_in_patch]
 
   # Distances between patches, time between patches
-  setorder(ds, tag, time_start)
+  setorderv(ds, c("tag", "time_start"))
   ds[, dist_bw_patch :=
       sqrt((x_start - shift(x_end))^2 + (y_start - shift(y_end))^2), by = tag
   ]
@@ -163,9 +170,9 @@ atl_res_patch_summary <- function(data,
         }
       }
       out
-    }, by = .(tag, patch)]
+    }, by = by_vars]
 
-    ds <- merge(ds, extra_summaries, by = c("tag", "patch"), all.x = TRUE)
+    ds <- merge(ds, extra_summaries, by = by_vars, all.x = TRUE)
   }
 
   ds
