@@ -10,12 +10,12 @@ test_that("atl_compare_res_patch_summary works correctly", {
   data_v1 <- atl_res_patch(
     data[tag == "3038"],
     max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
-    min_fixes = 3, min_duration = 120, min_gap_fixes = 6
+    min_fixes = 3, min_duration = 120
   )
   data_v2 <- atl_res_patch(
     data[tag == "3038"],
     max_speed = 5, lim_spat_indep = 75, lim_time_indep = 180,
-    min_fixes = 3, min_duration = 120, min_gap_fixes = 6
+    min_fixes = 3, min_duration = 120
   )
   
   # run function

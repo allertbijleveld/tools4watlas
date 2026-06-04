@@ -10,8 +10,7 @@ atl_res_patch(
   lim_spat_indep = 75,
   lim_time_indep = 180,
   min_fixes = 3,
-  min_duration = 120,
-  min_gap_fixes = 6
+  min_duration = 120
 )
 }
 \arguments{
@@ -34,9 +33,6 @@ patch.}
 
 \item{min_duration}{The minimum duration (in seconds) for classifying
 residence patches.}
-
-\item{min_gap_fixes}{The maximum number of consecutive missing fixes allowed
-within a residence patch before it is split into separate patches.}
 }
 \value{
 A data.table that has the added column
@@ -51,13 +47,15 @@ at least the following columns, \code{x}, \code{y}, and \code{time},
 corresponding to the coordinates, and the time as \code{POSIXct}.
 \code{atl_res_patch} requires only three parameters: (1) the maximum
 speed threshold between localizations (called \code{max_speed}), (2) the
-distance threshold between clusters of positions (called
-\code{lim_spat_indep}), and (3) the time interval between clusters
-(called \code{lim_time_indep}).Clusters formed of fewer than a minimum
-number of positions can be excluded.The exclusion of clusters with few
-positions can help in removing bias due to short stops, but if such short
-stops are also of interest, they can be included by reducing the
-\code{min_fixes} argument.
+distance threshold between proto-patches of positions (called
+\code{lim_spat_indep}), and (3) the time interval between proto-patches
+(called \code{lim_time_indep}). As the code initially only looks at
+proto-patches, at the end it checks if positions within patches are
+interrupted by short flights (with a distance larger than
+\code{lim_spat_indep} to the last position of the proto-patch before and
+first position of the next proto-patch). If there are more than
+\code{min_fixes} in this bout, then the patch will be split. If there are
+less, we assume this to be single outliers and only assign no patch ID
 }
 \examples{
 # packages
@@ -70,7 +68,7 @@ data <- data_example
 data <- atl_res_patch(
   data[tag == "3038"],
   max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
-  min_fixes = 3, min_duration = 120, min_gap_fixes = 6
+  min_fixes = 3, min_duration = 120
 )
 
 # summary of residence patches
