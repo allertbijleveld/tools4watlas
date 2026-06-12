@@ -111,6 +111,7 @@ quality and species behaviour.
 ## Load packages and required data
 
 ``` r
+
 # packages
 library(tools4watlas)
 library(ggplot2)
@@ -124,10 +125,17 @@ data <- data_example
 # file path to WATLAS teams data folder
 fp <- atl_file_path("watlas_teams")
 
-# load tide pattern data
-tidal_pattern <- fread(paste0(
+# sub path to tide data
+tidal_pattern_fp <- paste0(
   fp, "waterdata/allYears-tidalPattern-west_terschelling-UTC.csv"
-))
+)
+measured_water_height_fp <- paste0(
+  fp, "waterdata/allYears-gemeten_waterhoogte-west_terschelling-clean-UTC.csv"
+)
+
+# load tide data
+tidal_pattern <- fread(tidal_pattern_fp)
+measured_water_height <- fread(measured_water_height_fp)
 ```
 
 ## Calculate residence patches by tag
@@ -140,6 +148,7 @@ for each tag ID in parallel. The column `patch` is added to the data
 table, which provides the assigned patch ID’s for the positions.
 
 ``` r
+
 # subset relevant columns
 data <- data[, .(species, posID, tag, time, datetime, x, y, tideID)]
 
@@ -193,15 +202,20 @@ corresponding tide.
 We can select one tag and tide to plot. Additionally, we need to specify
 the offset for the tidal data we use (e.g. 30 min for West-Terschelling)
 and a buffer (in m) around the residence patch data to create the
-polygon. This buffer should be set to half of `lim_spat_indep` (maximum
-distance between subsequent residence patches at which they will be
-considered independent), ensuring that the polygons around residence
-patches correspond to the spatial distance threshold used to merge
-residence patches.
+polygon. For data inspection it makes sense to set the buffer to half of
+`lim_spat_indep` (maximum distance between subsequent residence patches
+at which they will be considered independent), ensuring that the
+polygons around residence patches correspond to the spatial distance
+threshold used to merge residence patches. However, for analysis using
+the residence patch polygons in a biological context, it is better to
+set the buffer to appropiate scale. For example 15 m, will capture some
+error in positions and potential movements in between fixes.
 
 ``` r
+
 atl_check_res_patch(
-  data[tag == "3038"], tide_data = tidal_pattern,
+  data[tag == "3038"],
+  tide_data = tidal_pattern, tide_data_highres = measured_water_height,
   tide = "2023513", offset = 30,
   buffer_res_patches = 75 / 2
 )
@@ -209,6 +223,38 @@ atl_check_res_patch(
 
 ![Overview plot res patches one
 tide](add_residence_patches_files/figure-html/unnamed-chunk-3-1.png)
+
+Zoom in on specifc range of residence patches to inspect them in more
+detail.
+
+``` r
+
+# set parameters for subsetting data
+tag_id <- "3038"
+tide_id <- "2023513"
+from_patch <- 6
+to_patch <- 11
+
+atl_check_res_patch(
+  data[
+    tag == tag_id &
+      datetime >= data[
+        tag == tag_id & tideID == tide_id & patch == from_patch, min(datetime)
+      ] &
+      datetime <= data[
+        tag == tag_id & tideID == tide_id & patch == to_patch, max(datetime)
+      ]
+  ],
+  tide_data = tidal_pattern, tide_data_highres = measured_water_height,
+  tide = tide_id, offset = 30,
+  buffer_res_patches = 15,
+  buffer_bm = 50,
+  patch_label_padding = 2
+)
+```
+
+![Overview plot res patches one
+tide](add_residence_patches_files/figure-html/unnamed-chunk-4-1.png)
 
 ### Inspect many tags and tides
 
@@ -218,6 +264,7 @@ plots are saved in any directory (e.g. `./outputs/res_patch_check/`),
 which has to be created before running the code.
 
 ``` r
+
 # create table with data combinations to plot
 idc <- unique(data[, c("species", "tag", "tideID")])
 
@@ -236,6 +283,7 @@ foreach(i = seq_len(nrow(idc))) %dofuture% {
   atl_check_res_patch(
     data[tag == idc$tag[i]],
     tide_data = tidal_pattern,
+    tide_data_highres = measured_water_height,
     tide = idc$tideID[i], offset = 30,
     buffer_res_patches = 75 / 2,
     filename = paste0(
@@ -260,6 +308,7 @@ the residence patches by tag and patch ID and merge the desired columns
 back to our full data table.
 
 ``` r
+
 # summary of residence patches
 data_summary <- atl_res_patch_summary(data)
 
@@ -321,6 +370,7 @@ patch ID. To show the full track, the transient (unassigned) positions
 are plotted in grey.
 
 ``` r
+
 # subset red knot
 data_subset <- data[tag == 3038]
 data_summary_subset <- data_summary[tag == 3038]
@@ -342,13 +392,14 @@ bm +
 ```
 
 ![residence patches within track colored by
-ID](add_residence_patches_files/figure-html/unnamed-chunk-6-1.png)
+ID](add_residence_patches_files/figure-html/unnamed-chunk-7-1.png)
 
 In the second example, the residence patches are plotted at their median
 positions with the size and colour scaled to their duration (in
 minutes).
 
 ``` r
+
 # plot residence patches itself by duration
 bm +
   geom_point(
@@ -360,12 +411,13 @@ bm +
 ```
 
 ![residence patches by duration in
-patch](add_residence_patches_files/figure-html/unnamed-chunk-7-1.png)
+patch](add_residence_patches_files/figure-html/unnamed-chunk-8-1.png)
 
 In the third example, we will calculate polygons around the residence
 patches and plot them
 
 ``` r
+
 # make patch character for plotting
 data_subset[, patch := as.character(patch)]
 
@@ -405,7 +457,7 @@ bm +
 ```
 
 ![residence patches by duration in
-patch](add_residence_patches_files/figure-html/unnamed-chunk-8-1.png)
+patch](add_residence_patches_files/figure-html/unnamed-chunk-9-1.png)
 
 ### Plot by species
 
@@ -415,6 +467,7 @@ residence patches. The residence patches are coloured by species and
 scaled by duration (in minutes).
 
 ``` r
+
 # create basemap
 bm <- atl_create_bm(data, buffer = 500)
 
@@ -437,4 +490,4 @@ bm +
 ```
 
 ![residence patches colored by
-species](add_residence_patches_files/figure-html/unnamed-chunk-9-1.png)
+species](add_residence_patches_files/figure-html/unnamed-chunk-10-1.png)

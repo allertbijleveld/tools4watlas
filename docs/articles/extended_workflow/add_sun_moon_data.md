@@ -11,6 +11,7 @@ tides.
 ## Load packages and data
 
 ``` r
+
 # packages
 library(tools4watlas)
 library(suncalc)
@@ -29,6 +30,7 @@ position falls between sunrise and sunset. The function also offers many
 more options, see `getSunlightTimes` documentation for more details.
 
 ``` r
+
 # add transformed coordinates in EPSG:4326 (WGS 84)
 data <- atl_transform_dt(data, to = sf::st_crs(4326))
 
@@ -54,6 +56,7 @@ quarter. We then calculate the time to the next full moon and new moon
 in days, which can be useful to assign days around full and new moon.
 
 ``` r
+
 # add moon phase per datetime
 # 0 = new, 0.25 = first quarter, 0.5 = full, 0.75 = last quarter
 data[, c("moon_phase") := getMoonIllumination(

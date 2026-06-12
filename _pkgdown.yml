@@ -101,6 +101,8 @@ reference:
      - atl_patch_dist
      - atl_res_patch_summary
      - atl_check_res_patch
+     - atl_compare_res_patch_summary
+     - atl_compare_res_patch_plot
   - title: "Spatial functions"
     desc: "Transform data to sf object, change projections, get a bounding box or interpolate tracks"
     contents:

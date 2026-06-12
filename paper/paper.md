@@ -49,10 +49,10 @@ There is a huge body of R packages developed to analyze and visualize movement d
 
 # AI usage disclosure
 
-We used ChatGPT (GPT-4, OpenAI) to assist in drafting parts of the package testing structure and to support debugging of code. All outputs were reviewed, modified where necessary, and validated by the authors to ensure correctness, reliability, and consistency.
+We used ChatGPT (GPT-4, OpenAI) and Claude (Anthropic) to assist in drafting parts of the package testing structure and to support debugging of code. All outputs were reviewed, modified where necessary, and validated by the authors to ensure correctness, reliability, and consistency.
 
 # Acknowledgements
 
-We particularly thank Pratik Gupte for earlier code development, and Christine Beardsworth, Jet Carabain and Antsje van der Leij for testing and providing valuable feedback. We also thank Sivan Toledo and Ran Nathan for developing ATLAS, and all NIOZ colleagues for their continued support developing and deploying WATLAS. Particularly, Anne Dekinga, Frank van Maarseveen, Bas Denissen, Remko de Haan, Aris van der Vis, Yetzo de Hoo, and Wim Jan Boon.
+We particularly thank Pratik Gupte for earlier code development, and Christine Beardsworth, Jet Carabain, Antsje van der Leij Freddie Mckendrick and Hans Linssen for testing and providing valuable feedback. We also thank Sivan Toledo and Ran Nathan for developing ATLAS, and all NIOZ colleagues for their continued support developing and deploying WATLAS. Particularly, Anne Dekinga, Frank van Maarseveen, Bas Denissen, Remko de Haan, Aris van der Vis, Yetzo de Hoo, and Wim Jan Boon.
 
 # References

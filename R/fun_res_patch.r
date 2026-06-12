@@ -8,13 +8,15 @@
 #' corresponding to the coordinates, and the time as \code{POSIXct}.
 #' \code{atl_res_patch} requires only three parameters: (1) the maximum
 #' speed threshold between localizations (called \code{max_speed}), (2) the
-#' distance threshold between clusters of positions (called
-#' \code{lim_spat_indep}), and (3) the time interval between clusters
-#' (called \code{lim_time_indep}).Clusters formed of fewer than a minimum
-#' number of positions can be excluded.The exclusion of clusters with few
-#' positions can help in removing bias due to short stops, but if such short
-#'  stops are also of interest, they can be included by reducing the
-#'  \code{min_fixes} argument.
+#' distance threshold between proto-patches of positions (called
+#' \code{lim_spat_indep}), and (3) the time interval between proto-patches
+#' (called \code{lim_time_indep}). As the code initially only looks at
+#' proto-patches, at the end it checks if positions within patches are
+#' interrupted by short flights (with a distance larger than
+#' \code{lim_spat_indep} to the last position of the proto-patch before and
+#' first position of the next proto-patch). If there are more than
+#' \code{min_fixes} in this bout, then the patch will be split. If there are
+#' less, we assume this to be single outliers and only assign no patch ID
 #'
 #' @author Pratik R. Gupte, Christine E. Beardsworth, Allert I. Bijleveld &
 #' Johannes Krietsch
@@ -65,6 +67,10 @@ atl_res_patch <- function(data,
   row_id <- newpatch <- nfixes <- patch <- speed <- tag <- duration <- NULL
   patchdata <- spat_diff <- time_diff_end_start <- i.patch <- NULL # nolint
   time <- time_diff <- time_end <- time_start <- spat_diff_end_start <- NULL
+  patch_new <- patch_filled <- proto_bout <- far_pre <- far_post <- NULL
+  has_flight <- i.has_flight <- x <- y <- x_pre <- x_post <- NULL # nolint
+  dist_pre <- dist_post <- outlier <- i.outlier <- NULL # nolint
+  y_pre <- y_post <- n_beyond <- NULL
 
   # Validate input
   assertthat::assert_that(is.data.frame(data),
@@ -210,10 +216,74 @@ atl_res_patch <- function(data,
     bwd <- zoo::na.locf(data_original$patch, fromLast = TRUE, na.rm = FALSE)
 
     # Fill only where both directions agree
-    data_original[, patch := ifelse(is.na(patch) & fwd == bwd, fwd, patch)]
+    data_original[,
+      patch_filled := ifelse(is.na(patch) & fwd == bwd, fwd, patch)
+    ]
 
-    # Remove row_id
-    data_original[, row_id := NULL]
+    # subset patch data and check for flights within patches
+    patch_data <- data_original[!is.na(patch_filled)]
+
+    # NA bouts
+    patch_data[, proto_bout := rleid(is.na(patch))]
+
+    # calculate distance between last proto-patch position and every NA in gap
+    # reference positions: last before (locf) and first after (nocb) each NA row
+    patch_data[, `:=`(
+      x_pre = nafill(fifelse(is.na(patch), NA_real_, x), type = "locf"),
+      y_pre = nafill(fifelse(is.na(patch), NA_real_, y), type = "locf"),
+      x_post = nafill(fifelse(is.na(patch), NA_real_, x), type = "nocb"),
+      y_post = nafill(fifelse(is.na(patch), NA_real_, y), type = "nocb")
+    )]
+
+    # distances to reference positions
+    patch_data[is.na(patch), `:=`(
+      dist_pre  = sqrt((x - x_pre)^2  + (y - y_pre)^2),
+      dist_post = sqrt((x - x_post)^2 + (y - y_post)^2)
+    )]
+
+    # flag beyond threshold and count rows where both are beyond
+    patch_data[is.na(patch), `:=`(
+      far_pre  = dist_pre  > lim_spat_indep,
+      far_post = dist_post > lim_spat_indep
+    )]
+    patch_data[
+      is.na(patch), n_beyond := sum(far_pre & far_post),
+      by = proto_bout
+    ]
+
+    # flag more than min_fixes and single outliers
+    patch_data[
+      is.na(patch), has_flight := n_beyond > min_fixes,
+      by = proto_bout
+    ]
+    patch_data[is.na(patch) & !has_flight & far_pre & far_post, outlier := TRUE]
+
+    # Filter based bouts with flights and outliers
+    outliers_data <- patch_data[outlier == TRUE]
+    patch_data <- patch_data[has_flight == TRUE]
+
+    # Merge flight ID and outliers back to original data
+    data_original[patch_data, on = "row_id", has_flight := i.has_flight]
+
+    # Set patch to NA where there is a flight
+    data_original[!is.na(has_flight), patch_filled := NA]
+
+    # Reassign patch ID's to take care of split patches
+    data_original[, patch_new := rleid(patch_filled)]
+    data_original[is.na(patch_filled), patch_new := NA]
+    data_original[,
+      patch := match(patch_new, unique(stats::na.omit(patch_new)))
+    ]
+    data_original[, patch_new := NULL]
+
+    # Now remove outliers from patches
+    data_original[outliers_data, on = "row_id", outlier := i.outlier]
+    data_original[outlier == TRUE, patch := NA]
+
+    # Remove row_id and patch filled
+    data_original[,
+      c("row_id", "has_flight", "outlier", "patch_filled") := NULL
+    ]
 
     # make patch a factor
     data_original[, patch := as.character(patch)]

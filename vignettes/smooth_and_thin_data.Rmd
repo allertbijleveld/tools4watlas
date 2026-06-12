@@ -108,7 +108,7 @@ Depending on the desired analysis, it might make sense to thin data, either by a
 
 ### By aggregation
 
-Returns the mean of all columns for each time step. The additional column `n_aggregated` shows how many positions were aggregated for this position. Time and datetime are returned rounded down to the desired interval.
+Returns the mean of all columns for each time step. The additional column `n_aggregated` shows how many positions were aggregated for this position. Time and datetime are returned rounded down to the desired interval (in seconds).
 
 ```{r echo=T}		
 # Thin the data by aggregation with a 60-second interval

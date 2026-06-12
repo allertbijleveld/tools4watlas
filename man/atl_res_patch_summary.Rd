@@ -47,10 +47,10 @@ Straight-line (in m) displacement between start and end of patch.
 \description{
 Computes summary statistics of movement data grouped by patches for each
 individual tag. Calculates spatial and temporal summaries within each patch,
-distances traveled inside patches, distances and time intervals between
+distances travelled inside patches, distances and time intervals between
 patches, displacement within patches, and patch duration. Additional
 user-specified summary variables and functions can also be applied
-dynamically.
+dynamically. If species is a column, it will be kept.
 }
 \details{
 Converts input data to data.table if needed and filters out rows with missing
