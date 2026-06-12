@@ -229,7 +229,7 @@ atl_compare_res_patch_plot(
 
 
 # plot all changes in loop
-# for many changes, it pakes sense to set a filename to save the plots
+# for many changes, it makes sense to set a filename to save the plots
 foreach(i = 1:nrow(change_summary)) %do% {
   atl_compare_res_patch_plot(
     data_v1 = data_v1,

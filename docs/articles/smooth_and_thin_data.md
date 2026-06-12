@@ -114,7 +114,7 @@ steps (depending on the interval).
 Returns the mean of all columns for each time step. The additional
 column `n_aggregated` shows how many positions were aggregated for this
 position. Time and datetime are returned rounded down to the desired
-interval.
+interval (in seconds).
 
 ``` r
 

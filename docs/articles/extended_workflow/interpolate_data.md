@@ -88,9 +88,6 @@ temporal gaps between positions, interpolating might be inappropriate.
 
 ``` r
 
-# merge species to data_summary
-data_summary <- merge(data_summary, unique(data[, .(tag, species)]), by = "tag")
-
 # look at the maximal time spent within residence patches and
 # the maximal distance between the start and end position of residence patches
 data_summary[, .(
@@ -139,7 +136,7 @@ data_int <- atl_interpolate_track(
 )
 ```
 
-    ## Note: Interpolation added 1919 positions (28.74% increase).
+    ## Note: Interpolation added 1918 positions (28.73% increase).
 
 ``` r
 
