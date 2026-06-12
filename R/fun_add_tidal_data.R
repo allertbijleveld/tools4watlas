@@ -144,7 +144,7 @@ atl_add_tidal_data <- function(data,
 
   # add time2lowtide
   temp_data[tide_data,
-    time2lowtide := as.numeric(difftime(time, low_time, units = "mins")),
+    time2lowtide := as.numeric(difftime(datetime, low_time, units = "mins")),
     on = "tideID"
   ]
 

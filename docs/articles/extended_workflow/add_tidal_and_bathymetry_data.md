@@ -7,6 +7,7 @@ bathymetry.
 #### Load packages and movement data
 
 ``` r
+
 library(tools4watlas)
 library(terra)
 ```
@@ -14,6 +15,7 @@ library(terra)
     ## Warning: package 'terra' was built under R version 4.5.3
 
 ``` r
+
 library(ggplot2)
 
 # path to csv with aggregated data
@@ -41,6 +43,7 @@ tide in minutes, `waterlevel` - as measured from the tide gauge station
 with offset) in cm NAP.
 
 ``` r
+
 # file path to WATLAS teams data folder
 fp <- atl_file_path("watlas_teams")
 
@@ -93,6 +96,7 @@ Here, we show how to extract bathymetry data (cm NAP) for each WATLAS
 position.
 
 ``` r
+
 # file path to Birds, fish 'n chips GIS/rasters folder
 fp <- atl_file_path("rasters")
 
@@ -128,6 +132,7 @@ around low tide [(Bijleveld et
 al. 2016)](https://royalsocietypublishing.org/doi/10.1098/rspb.2015.1557):
 
 ``` r
+
 # select the low tide period for a particular tide as specified by tideID
 data_subset <- atl_filter_covariates(
   data = data,
@@ -143,6 +148,7 @@ data_subset <- atl_filter_covariates(
 ### Plot movement data on top of bathymetry layer
 
 ``` r
+
 # additional packages
 library(ggplot2)
 library(viridis)

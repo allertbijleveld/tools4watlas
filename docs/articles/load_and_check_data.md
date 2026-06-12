@@ -13,6 +13,7 @@ make a true copy of the data set. Basic knowledge about
 helpful, but not necessary, when working with `tools4watlas`.
 
 ``` r
+
 # packages
 library(tools4watlas)
 library(lubridate)
@@ -47,6 +48,7 @@ will provide a table with the following columns:
 #### Select the desired tags and time period
 
 ``` r
+
 # file path to the metadata
 fp <- system.file(
   "extdata", "tags_watlas_subset.xlsx", package = "tools4watlas"
@@ -73,6 +75,7 @@ database can be queried for the selected tags and period. Here, we will
 load the selected tagging data in a `data.table` object.
 
 ``` r
+
 # establish database connection
 sqlite_db <- system.file(
   "extdata", "watlas_example.SQLite", package = "tools4watlas"
@@ -103,6 +106,7 @@ restart R and access should be available and the scripts should run
 succesfully.
 
 ``` r
+
 # open .Renviron to edit
 file.edit("~/.Renviron")
 
@@ -133,6 +137,7 @@ folder or add the path for your user in the
 function.
 
 ``` r
+
 # file path to WATLAS teams data folder
 fp <- atl_file_path("watlas_teams")
 
@@ -170,6 +175,7 @@ The resulting loaded WATLAS data will be a `data.table` with the
 following columns:
 
 ``` r
+
 # show head of the table
 head(data) |> knitr::kable(digits = 2)
 ```
@@ -203,6 +209,7 @@ need to be removed. The release time stamp is specified in the metadata
 that was previously loaded in the object `all_tags`.
 
 ``` r
+
 # correct time zone to CET and change to UTC
 all_tags[, release_ts := force_tz(as_datetime(release_ts), tzone = "CET")]
 all_tags[, release_ts := with_tz(release_ts, tzone = "UTC")]
@@ -225,6 +232,7 @@ from the metadata. In this case, `species` is added as the first column
 of the `data.table`.
 
 ``` r
+
 # join with species data
 all_tags[, tag := as.character(tag)]
 data[all_tags, on = "tag", `:=`(species = i.species)]
@@ -243,6 +251,7 @@ done at any stage of the analyses. Here, after showing how to add
 columns, we delete them immediately because they are not necessary.
 
 ``` r
+
 # join with metal rings, color rings and catch location
 all_tags[, tag := as.character(tag)]
 data[all_tags, on = "tag", `:=`(
@@ -267,6 +276,7 @@ stays in the same format, when we load it again with
 changed when running this example.
 
 ``` r
+
 # save data
 fwrite(data, file = "../inst/extdata/watlas_data_raw.csv", yaml = TRUE)
 ```
@@ -279,6 +289,7 @@ Here, we inspect for how many individuals we have data within the
 selection, and how many positions we have per tag and date.
 
 ``` r
+
 # load data
 data <- fread("../inst/extdata/watlas_data_raw.csv", yaml = TRUE)
 
@@ -292,6 +303,7 @@ data_summary |> nrow()
     ## [1] 8
 
 ``` r
+
 # N by species
 data_summary[, .N, by = species]
 ```
@@ -308,6 +320,7 @@ data_summary[, .N, by = species]
     ## 8:         turnstone     1
 
 ``` r
+
 # show head of the table
 data_summary |> knitr::kable(digits = 2)
 ```
@@ -341,6 +354,7 @@ only has one day, but this graph is particularly convenient to obtain a
 quick overview of the data for an entire field season.
 
 ``` r
+
 # add date
 data[, date := as.Date(datetime)] |> invisible()
 
@@ -373,6 +387,7 @@ for example, please see the vignette [Plot
 data](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html).
 
 ``` r
+
 # create basemap
 bm <- atl_create_bm(data, buffer = 800)
 

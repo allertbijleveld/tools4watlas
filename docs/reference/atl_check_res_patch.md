@@ -12,17 +12,22 @@ atl_check_res_patch(
   tide_data_highres,
   tide,
   offset = 0,
+  waterlevel_min = -150,
+  waterlevel_max = 150,
+  waterlevel_line = 60,
   buffer_res_patches,
   buffer_bm = 250,
   buffer_overview = 10000,
+  speed_threshold = 3,
   point_size = 1,
-  point_alpha = 0.5,
+  point_alpha = 0.9,
   path_linewidth = 0.5,
-  path_alpha = 0.2,
+  path_alpha = 0.9,
   patch_label_size = 4,
   patch_label_padding = 1,
+  patch_alpha = 0.7,
   element_text_size = 11,
-  water_fill = "#D7E7FF",
+  water_fill = "white",
   water_colour = "grey80",
   land_fill = "#faf5ef",
   land_colour = "grey80",
@@ -64,13 +69,29 @@ atl_check_res_patch(
   tracking area. This value will be added to the timing of the water
   data.
 
+- waterlevel_min:
+
+  Numeric in cmNAP. Minimum water level to fix the axis, if NA (default)
+  it uses the minimum of the provided water level data. water level to
+  the duration range (default: NA, which uses the minimum of the
+  provided water level data).
+
+- waterlevel_max:
+
+  Numeric in cmNAP. Maximum water level to fix the axis, if NA (default)
+  it uses the minimum of the provided water level data.
+
+- waterlevel_line:
+
+  Numeric in cmNAP. The water level to add as a dotted line to the plot
+  (default: 60 cmNAP).
+
 - buffer_res_patches:
 
   A numeric value (in meters) specifying the buffer around the polygon
-  of each residence patch, which should be half of `lim_spat_indep` of
-  the residence patch calculation. If not the function can create
-  MULTIPOLGONS for single residence patches. That will give a warning
-  message, but works if desired.
+  of each residence patch. If set to half of `lim_spat_indep` of the
+  residence patch calculation it reflects the distance used to determine
+  spatial independence of patches.
 
 - buffer_bm:
 
@@ -79,6 +100,11 @@ atl_check_res_patch(
 - buffer_overview:
 
   Overview map buffer size (default: 10000).
+
+- speed_threshold:
+
+  Speed threshold in m/s for colour scale of movement speed (default: 3
+  m/s).
 
 - point_size:
 
@@ -103,6 +129,10 @@ atl_check_res_patch(
 - patch_label_padding:
 
   Padding for patch labels (default: 1).
+
+- patch_alpha:
+
+  Alpha for patch polygons (default: 0.7).
 
 - element_text_size:
 
@@ -172,12 +202,17 @@ library(tools4watlas)
 # load example data
 data <- data_example
 
-# load example tide pattern data
-data_path <- system.file(
+# load example tide pattern and waterlevel data
+tidal_pattern_fp <- system.file(
   "extdata", "example-tidalPattern-west_terschelling-UTC.csv",
   package = "tools4watlas"
 )
-tidal_pattern <- fread(data_path, yaml = TRUE)
+measured_water_height_fp <- system.file(
+  "extdata", "example-gemeten_waterhoogte-west_terschelling-clean-UTC.csv",
+  package = "tools4watlas"
+)
+tidal_pattern <- fread(tidal_pattern_fp, yaml = TRUE)
+measured_water_height <- fread(measured_water_height_fp)
 
 # calculate residence patches for one red knot
 data <- atl_res_patch(
@@ -188,12 +223,9 @@ data <- atl_res_patch(
 
 # plot example
 atl_check_res_patch(
-  data[tag == "3038"], tide_data = tidal_pattern,
+  data[tag == "3038"],
+  tide_data = tidal_pattern, tide_data_highres = measured_water_height,
   tide = "2023513", offset = 30,
   buffer_res_patches = 75 / 2
 )
-#> Coordinate system already present.
-#> ℹ Adding new coordinate system, which will replace the existing one.
-#> Coordinate system already present.
-#> ℹ Adding new coordinate system, which will replace the existing one.
 ```
