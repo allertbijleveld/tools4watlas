@@ -9,8 +9,8 @@ atl_res_patch(
   max_speed = 3,
   lim_spat_indep = 75,
   lim_time_indep = 180,
-  min_fixes = 3,
-  min_duration = 120
+  min_fixes = 2,
+  min_duration = 60
 )
 }
 \arguments{
@@ -68,7 +68,7 @@ data <- data_example
 data <- atl_res_patch(
   data[tag == "3038"],
   max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
-  min_fixes = 3, min_duration = 120
+  min_fixes = 2, min_duration = 60
 )
 
 # summary of residence patches

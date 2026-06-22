@@ -197,22 +197,22 @@ data <- data_example
 data_v1 <- atl_res_patch(
   data[tag == "3038"],
   max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
-  min_fixes = 3, min_duration = 120
+  min_fixes = 2, min_duration = 60
 )
 data_v2 <- atl_res_patch(
   data[tag == "3038"],
   max_speed = 5, lim_spat_indep = 75, lim_time_indep = 180,
-  min_fixes = 3, min_duration = 120
+  min_fixes = 2, min_duration = 60
 )
 
 # change summary
 change_summary <- atl_compare_res_patch_summary(data_v1, data_v2)
 #> === Patch changes summary ===
 #> Lost    (v1 patches gone in v2) : 0 
-#> Gained  (new patches in v2)     : 1 
+#> Gained  (new patches in v2)     : 0 
 #> 
 #> Splits  (one v1 -> multiple v2): 0 
-#> Merges  (multiple v1 -> one v2): 2 
+#> Merges  (multiple v1 -> one v2): 1 
 #> 
 
 # plot specific change
@@ -241,12 +241,6 @@ foreach(i = 1:nrow(change_summary)) %do% {
   )
 }
 #> [[1]]
-
-#> 
-#> [[2]]
-
-#> 
-#> [[3]]
 
 #> 
 ```

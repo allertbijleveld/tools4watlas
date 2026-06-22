@@ -59,26 +59,24 @@ data <- data_example
 data_v1 <- atl_res_patch(
   data[tag == "3038"],
   max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
-  min_fixes = 3, min_duration = 120
+  min_fixes = 2, min_duration = 60
 )
 data_v2 <- atl_res_patch(
   data[tag == "3038"],
   max_speed = 5, lim_spat_indep = 75, lim_time_indep = 180,
-  min_fixes = 3, min_duration = 120
+  min_fixes = 2, min_duration = 60
 )
 
 # change summary
 atl_compare_res_patch_summary(data_v1, data_v2)
 #> === Patch changes summary ===
 #> Lost    (v1 patches gone in v2) : 0 
-#> Gained  (new patches in v2)     : 1 
+#> Gained  (new patches in v2)     : 0 
 #> 
 #> Splits  (one v1 -> multiple v2): 0 
-#> Merges  (multiple v1 -> one v2): 2 
+#> Merges  (multiple v1 -> one v2): 1 
 #> 
 #>       tag  tideID change patch_v1 patch_v2
 #>    <char>   <int> <char>   <char>   <char>
-#> 1:   3038 2023513 gained     <NA>       16
-#> 2:   3038 2023513  merge     1, 2        1
-#> 3:   3038 2023514  merge   15, 16       14
+#> 1:   3038 2023514  merge   13, 14       13
 ```
