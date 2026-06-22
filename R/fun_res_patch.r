@@ -50,7 +50,7 @@
 #' data <- atl_res_patch(
 #'   data[tag == "3038"],
 #'   max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
-#'   min_fixes = 3, min_duration = 120
+#'   min_fixes = 2, min_duration = 60
 #' )
 #'
 #' # summary of residence patches
@@ -61,8 +61,8 @@ atl_res_patch <- function(data,
                           max_speed = 3,
                           lim_spat_indep = 75,
                           lim_time_indep = 180,
-                          min_fixes = 3,
-                          min_duration = 120) {
+                          min_fixes = 2,
+                          min_duration = 60) {
   # Initialize necessary variables to avoid NSE (Non-Standard Evaluation) issues
   row_id <- newpatch <- nfixes <- patch <- speed <- tag <- duration <- NULL
   patchdata <- spat_diff <- time_diff_end_start <- i.patch <- NULL # nolint
