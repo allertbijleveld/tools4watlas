@@ -1,0 +1,53 @@
+---
+source: R[v4.6.0]::data.table[v1.18.4]::fwrite
+creation_time_utc: 2026-06-22 13:45:35
+schema:
+  fields:
+  - name: param
+    type: character
+  - name: rating
+    type: factor
+  - name: score
+    type: character
+  - name: 'N'
+    type: integer
+  - name: pct
+    type: numeric
+header: yes
+sep: ','
+sep2:
+- ''
+- '|'
+- ''
+eol: "\r\n"
+na.strings: ''
+dec: '.'
+qmethod: double
+logical01: no
+---
+param,rating,score,N,pct
+speed,v2 much better,2 vs 3,209,69.7
+speed,v1 slightly better,2 vs 3,14,4.7
+speed,v2 slightly better,2 vs 3,14,4.7
+speed,v1 much better,2 vs 3,52,17.3
+speed,similar,2 vs 3,11,3.7
+speed,v1 much better,3 vs 4,153,51
+speed,v2 much better,3 vs 4,99,33
+speed,v2 slightly better,3 vs 4,19,6.3
+speed,similar,3 vs 4,13,4.3
+speed,v1 slightly better,3 vs 4,16,5.3
+speed,v2 much better,4 vs 5,82,27.3
+speed,v1 much better,4 vs 5,171,57
+speed,v2 slightly better,4 vs 5,18,6
+speed,v1 slightly better,4 vs 5,11,3.7
+speed,similar,4 vs 5,18,6
+distance,v2 much better,50 vs 75,189,63
+distance,v2 slightly better,50 vs 75,19,6.3
+distance,v1 much better,50 vs 75,75,25
+distance,similar,50 vs 75,9,3
+distance,v1 slightly better,50 vs 75,8,2.7
+distance,v1 much better,75 vs 100,147,49
+distance,similar,75 vs 100,14,4.7
+distance,v2 much better,75 vs 100,81,27
+distance,v2 slightly better,75 vs 100,33,11
+distance,v1 slightly better,75 vs 100,25,8.3
