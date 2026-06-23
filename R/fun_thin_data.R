@@ -20,11 +20,10 @@
 #' averaged position and covariates in each time interval.
 #' Grouping variables' names (such as animal identity) may be passed as a
 #' character vector to the \code{id_columns} argument.
-#' If `patch` is among the columns, it will be converted to numeric for
-#' aggregation and rounded back to the nearest integer, then converted back to
-#' character to match the original type. This ensures that the most common
-#' patch ID is retained after aggregation (e.g. 2 positions with patch ID 5
-#' and 20 with patch ID 6 will aggregate to patch ID 6).
+#' If `patch` is among the columns and the data are aggregated, only if the
+#' first and last point of the aggregation interval are from the same patch,
+#' this position will be assigned to the patch. With thinning the patch ID
+#' stays as it is for this position.
 #'
 #' @author Pratik Gupte & Allert Bijleveld & Johannes Krietsch
 #' @param data Tracking data to aggregate. Must have columns \code{x} and
@@ -127,15 +126,17 @@ atl_thin_data <- function(data,
     c(num_cols, "time_agg", id_columns)
   )
 
-  # If patch column exists, convert to numeric and move to num_cols
-  if ("patch" %in% names(data)) {
-    data[, patch := as.numeric(patch)]
-    non_num_cols <- setdiff(non_num_cols, "patch")
-    num_cols <- union(num_cols, "patch")
-  }
-
   # Handle method: aggregate or subsample
   if (method == "aggregate") {
+    # Only assign patch to aggregated window if first and last point are same
+    if ("patch" %in% names(data)) {
+      data[, patch := {
+        first_patch <- data.table::first(patch)
+        last_patch  <- data.table::last(patch)
+        fifelse(first_patch == last_patch, first_patch, NA_character_)
+      }, by = c("time_agg", id_columns)]
+    }
+
     if (all(c("varx", "vary") %in% colnames(data))) {
       # Aggregate with variance propagation
       # variance of an average is sum of variances sum(SD ^ 2)
@@ -147,7 +148,8 @@ atl_thin_data <- function(data,
         vary_agg = sum(vary, na.rm = TRUE) / (length(vary)^2),
         n_aggregated = length(x)
       ),
-      by = c("time_agg", id_columns)
+      by = c("time_agg", id_columns),
+      .SDcols = num_cols
       ]
     } else {
       # Simple aggregation
@@ -210,13 +212,6 @@ atl_thin_data <- function(data,
     data_s[, time_diff := c(NA, diff(time)), by = c(id_columns)]
     lag <- data_s[!is.na(time_diff)]$time_diff
     data_s[, time_diff := NULL]
-  }
-
-  # Round patch back to nearest integer and convert to character
-  if ("patch" %in% names(data_s)) {
-    data_s[, patch := fifelse(
-      is.na(patch), NA_character_, as.character(round(patch))
-    )]
   }
 
   # Check if intervalls are correct
