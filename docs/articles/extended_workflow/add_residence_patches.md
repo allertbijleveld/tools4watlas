@@ -24,8 +24,8 @@ The logic of the function is to first identify proto-patches
 (preliminary residence patches). When subsequent positions have a speed
 smaller than `max_speed`, a distance smaller than `lim_spat_indep` and a
 time gap smaller than `lim_time_indep`, they are assigned to the same
-proto patch. Proto-patches with fewer than `min_fixes` positions are
-filtered out.
+proto patch. Proto-patches with fewer than `min_fixes` positions and
+shorter `min_duration` are filtered out.
 
 For each proto-patch, the median position is calculated as well as the
 time between two subsequent proto-patches (time between last location
@@ -49,14 +49,23 @@ creation of residence patches.
 
 **Parameter overview:**
 
+Deciding on the optimal parameters for the residence patch
+classification is not a trivial task. The key is to find a good balance
+between true and false positives. See section below on how we decided on
+the standard parameter settings.
+
 - **`max_speed`:** A numeric value specifying the maximum speed (m/s)
   between two subsequent positions that would be considered
-  non-transitory.
+  non-transitory. **3 m/s** seems to be the best compromise. Higher
+  values often result in the merging of patches with clear flights in
+  between and with lower values clear foraging behaviour is sometimes
+  not picked up.
 - **`lim_spat_indep`:** A numeric value specifying the maximum
   distance (m) between subsequent residence patches for them to be
   considered independent. In combination with `lim_time_indep`, this
   parameter avoids making a new proto-patch from gaps in the data when
-  the bird was actually still at the same location.
+  the bird was actually still at the same location. **75 m** seems to be
+  the best compromise.
 - **`lim_time_indep`:** A numeric value specifying the time difference
   (min) between two subsequent residence patches for them to be
   considered independent. In combination with `lim_spat_indep`, this
@@ -65,48 +74,22 @@ creation of residence patches.
   not move for a long time at a location with poor coverage by
   receivers. If the bird then moves away and sends data from the same
   position, we can assume that all missed positions were also at this
-  place.
+  place. **180 min** (3 hours) works fine for foraging, but it could be
+  increased with position data that has large gaps. For example, when
+  the analysis is focused on roosting behaviour, this could even be
+  increased to e.g. 12 hours, to deal with large gaps in the data that
+  can occur with roosting birds not moving and being at the same place
+  with bad signal strength.
 - **`min_fixes`:** The minimum number of positions for proto-patches. To
-  make sure that residence patches have at least a few positions.
+  make sure that residence patches have at least a few positions. **2
+  positions** works best in picking up proto-patches. If the patch is
+  below `min_duration` it will anyway be filtered out.
 - **`min_duration`:** The minimum duration (s) for classifying residence
-  patches. With a high-sampling interval (e.g. 1 s), short residence
-  patches can be created, which are not biological relevant.
-
-**Guidelines to choose parameters:**
-
-In general, when deciding on the optimal parameters, the key is to find
-a good balance between true and false positives. We give some starting
-points for each parameter, which has to be adjusted based on the data
-quality and species behaviour.
-
-- **`max_speed`:** Should be as high as possible in between walking and
-  flying speeds. A good starting point is **3 m/s**, but could be
-  reduced if it prevents the creation of proto-patches, or increased if
-  too many proto-patches are created. Having too many proto-patches is
-  not always an issue becasue subsequent proto-patches can be merged if
-  the distance between them is small enough (set by `lim_spat_indep`).
-  Likewise, errors in positiong data can inflate the creation of proto
-  patches, but these will be corrected in the procedure.
-- **`lim_spat_indep`:** Provides the distance between two proto-patches
-  at which they are considered independent. This is a key parameter,
-  because it prevents the creation of new proto-patches when the bird is
-  still at the same location. A good starting point is **75 m**, but
-  could be increased if the position data has many/large gaps, or if the
-  species has elongated foraging patches.
-- **`lim_time_indep`:** Typically, **180 min** (3 hours) works fine, but
-  could be increased with position data that has large gaps. For
-  example, when the analysis is focused on roosting behaviour, this
-  could even be increased to e.g. 6 hours (360 min), to deal with large
-  gaps in the data that can occur with roosting birds not moving and
-  being at the same place with bad signal strength.
-- **`min_fixes`:** This should be set as small as possible and **3
-  positions** usually works. Setting this variable \>1 allows assigning
-  proto patches only if subsequent positions are consistently above the
-  1 `max_speed` and `lim_spat_indep` and not just once becasue of an
-  outlier, for instance.
-- **`min_duration`:** Should be set as small as possible while
-  maintaining most biological relevance. A value of **120 sec** (2
-  minutes) seems reasonable.
+  patches. With a high-sampling interval (e.g. 3 s), short residence
+  patches can be created, which are not biological relevant. A value of
+  **60 sec** (1 minute) helps to pick-up proto-patches. Biological
+  relevance depends on the focus of the analysis and residence patches
+  with a shorter duration can still be filtered out afterwards.
 
 ## Load packages and required data
 
@@ -116,6 +99,7 @@ quality and species behaviour.
 library(tools4watlas)
 library(ggplot2)
 library(viridis)
+library(patchwork)
 library(foreach)
 library(doFuture)
 
@@ -164,7 +148,7 @@ data <- foreach(i = id, .combine = "rbind") %dofuture% {
   atl_res_patch(
     data[tag == i],
     max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
-    min_fixes = 3, min_duration = 120
+    min_fixes = 2, min_duration = 60
   )
 }
 
@@ -325,14 +309,14 @@ data[data_summary, on = c("tag", "patch"), `:=`(
 head(data_summary) |> knitr::kable(digits = 2)
 ```
 
-| tag | patch | nfixes | x_mean | x_median | x_start | x_end | y_mean | y_median | y_start | y_end | time_mean | time_median | time_start | time_end | dist_start_end | dist_in_patch | dist_bw_patch | time_bw_patch | disp_in_patch | duration |
-|:---|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|:---|:---|:---|:---|---:|---:|---:|---:|---:|---:|
-| 3027 | 1 | 52 | 650705.5 | 650702.8 | 650705.6 | 650701.9 | 5902566 | 5902562 | 5902556 | 5902570 | 2023-09-23 03:30:41 | 2023-09-23 03:25:08 | 2023-09-23 03:13:25 | 2023-09-23 04:19:06 | 14.61 | 178.36 | NA | NA | 14.61 | 65.70 |
-| 3027 | 2 | 60 | 650776.6 | 650776.6 | 650778.7 | 650771.9 | 5902216 | 5902217 | 5902216 | 5902206 | 2023-09-23 04:25:34 | 2023-09-23 04:25:32 | 2023-09-23 04:24:00 | 2023-09-23 04:27:09 | 12.29 | 51.41 | 362.21 | 293.98 | 12.29 | 3.15 |
-| 3027 | 3 | 2456 | 650760.9 | 650762.0 | 650778.4 | 650699.8 | 5901722 | 5901737 | 5902014 | 5901490 | 2023-09-23 05:38:18 | 2023-09-23 05:35:44 | 2023-09-23 04:27:36 | 2023-09-23 06:51:24 | 530.22 | 1968.58 | 192.16 | 27.00 | 530.22 | 143.79 |
-| 3027 | 4 | 64 | 648364.2 | 648362.5 | 648360.7 | 648365.8 | 5901596 | 5901590 | 5901578 | 5901620 | 2023-09-23 06:58:00 | 2023-09-23 06:58:01 | 2023-09-23 06:56:18 | 2023-09-23 06:59:42 | 42.01 | 79.03 | 2340.88 | 293.98 | 42.01 | 3.40 |
-| 3027 | 5 | 41 | 648059.6 | 648058.4 | 648059.7 | 648058.4 | 5902193 | 5902192 | 5902184 | 5902204 | 2023-09-23 07:01:48 | 2023-09-23 07:01:51 | 2023-09-23 07:00:39 | 2023-09-23 07:02:57 | 19.69 | 48.94 | 641.75 | 57.00 | 19.69 | 2.30 |
-| 3027 | 6 | 316 | 647775.8 | 647776.4 | 647771.5 | 647775.4 | 5902555 | 5902555 | 5902560 | 5902546 | 2023-09-23 07:12:32 | 2023-09-23 07:12:34 | 2023-09-23 07:03:45 | 2023-09-23 07:21:03 | 13.69 | 452.32 | 456.97 | 48.00 | 13.69 | 17.30 |
+| species | tag | patch | nfixes | x_mean | x_median | x_start | x_end | y_mean | y_median | y_start | y_end | time_mean | time_median | time_start | time_end | dist_start_end | dist_in_patch | dist_bw_patch | time_bw_patch | disp_in_patch | duration |
+|:---|:---|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|:---|:---|:---|:---|---:|---:|---:|---:|---:|---:|
+| redshank | 3027 | 1 | 65 | 650705.6 | 650703.9 | 650705.6 | 650709.5 | 5902564 | 5902562 | 5902556 | 5902560 | 2023-09-23 03:40:31 | 2023-09-23 03:25:31 | 2023-09-23 03:13:25 | 2023-09-23 04:20:33 | 5.79 | 212.19 | NA | NA | 5.79 | 67.15 |
+| redshank | 3027 | 2 | 60 | 650776.6 | 650776.6 | 650778.7 | 650771.9 | 5902216 | 5902217 | 5902216 | 5902206 | 2023-09-23 04:25:34 | 2023-09-23 04:25:32 | 2023-09-23 04:24:00 | 2023-09-23 04:27:09 | 12.29 | 51.41 | 351.03 | 206.99 | 12.29 | 3.15 |
+| redshank | 3027 | 3 | 2456 | 650760.9 | 650762.0 | 650778.4 | 650699.8 | 5901722 | 5901737 | 5902014 | 5901490 | 2023-09-23 05:38:18 | 2023-09-23 05:35:44 | 2023-09-23 04:27:36 | 2023-09-23 06:51:24 | 530.22 | 1968.58 | 192.16 | 27.00 | 530.22 | 143.79 |
+| redshank | 3027 | 4 | 25 | 648514.3 | 648514.8 | 648516.0 | 648514.2 | 5901441 | 5901440 | 5901453 | 5901441 | 2023-09-23 06:55:19 | 2023-09-23 06:55:21 | 2023-09-23 06:54:36 | 2023-09-23 06:55:57 | 11.98 | 37.77 | 2184.17 | 191.99 | 11.98 | 1.35 |
+| redshank | 3027 | 5 | 64 | 648364.2 | 648362.5 | 648360.7 | 648365.8 | 5901596 | 5901590 | 5901578 | 5901620 | 2023-09-23 06:58:00 | 2023-09-23 06:58:01 | 2023-09-23 06:56:18 | 2023-09-23 06:59:42 | 42.01 | 79.03 | 206.04 | 21.00 | 42.01 | 3.40 |
+| redshank | 3027 | 6 | 41 | 648059.6 | 648058.4 | 648059.7 | 648058.4 | 5902193 | 5902192 | 5902184 | 5902204 | 2023-09-23 07:01:48 | 2023-09-23 07:01:51 | 2023-09-23 07:00:39 | 2023-09-23 07:02:57 | 19.69 | 48.94 | 641.75 | 57.00 | 19.69 | 2.30 |
 
 | Column | Description |
 |----|----|
@@ -491,3 +475,159 @@ bm +
 
 ![residence patches colored by
 species](add_residence_patches_files/figure-html/unnamed-chunk-10-1.png)
+
+## Choosing the best parameters
+
+To select appropriate parameters for residence patch detection, we first
+explored the data through extensive visual inspection, which informed
+several parameter choices prior to systematic testing. A minimum of 2
+fixes and a minimum proto-patch duration of 60 s were found to perform
+best: with high fix intervals (e.g., 3 s), individual outlier positions
+can prevent proto-patches from reaching the minimum duration threshold,
+making a low minimum fix count essential for retaining short but valid
+foraging bouts.
+
+We then systematically tested a range of values for two key parameters:
+maximum speed threshold (2, 3, 4, and 5 m/s, temporal independence: 75
+m) and spatial independence distance (50, 75, and 100 m, maximum speed
+threshold: 3 m/s), with all other parameters held constant (temporal
+independence: 180 min, minimum fixes: 2, minimum duration: 60 s). For
+each parameter combination, residence patches were computed for a subset
+of 100 randomly selected tag–tide combinations per species (minimum 500
+positions per combination) across eight shorebird species tracked in the
+Wadden Sea in 2023. Then we did a pair-wise comparison of parameter
+settings using
+[`atl_compare_res_patch_summary()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_compare_res_patch_summary.md),
+which highlighted all new, lost, merged and split residence patches.
+From this overall summary, we picked again subset of 100 random changes
+and plotted them using
+[`atl_compare_res_patch_plot()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_compare_res_patch_plot.md),
+showing the result of each parameter setting. These resulting plots
+where then scored by three observers to judge how well they fit the
+underlying data.
+
+**Example workflow to choose parameters:**
+
+As the whole code for the procedure takes some time to compute and would
+require all data as part of the repository, we simply show an example
+here.
+
+``` r
+
+# load example data
+data <- data_example
+
+# run atl_res_patch with two different parameter sets
+data_v1 <- atl_res_patch(
+  data[tag == "3100"],
+  max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
+  min_fixes = 2, min_duration = 60
+)
+data_v2 <- atl_res_patch(
+  data[tag == "3100"],
+  max_speed = 4, lim_spat_indep = 75, lim_time_indep = 180,
+  min_fixes = 2, min_duration = 60
+)
+
+# change summary
+change_summary <- atl_compare_res_patch_summary(data_v1, data_v2)
+```
+
+    ## === Patch changes summary ===
+    ## Lost    (v1 patches gone in v2) : 0 
+    ## Gained  (new patches in v2)     : 0 
+    ## 
+    ## Splits  (one v1 -> multiple v2): 0 
+    ## Merges  (multiple v1 -> one v2): 1
+
+``` r
+
+# plot specific change
+i <- 1
+
+atl_compare_res_patch_plot(
+  data_v1 = data_v1,
+  data_v2 = data_v2,
+  tag = change_summary$tag[i],
+  change = change_summary$change[i],
+  patch_v1 = change_summary$patch_v1[i],
+  patch_v2 = change_summary$patch_v2[i]
+)
+```
+
+![residence patches compared
+parameters](add_residence_patches_files/figure-html/unnamed-chunk-11-1.png)
+
+In this example, comparing 3 m/s and 4 m/s, the patches are wrongly
+merged when using 4 m/s, so the 3 m/s (left) were rated as much better.
+
+**Results of final rating:**
+
+``` r
+
+# path to csv with aggregated data
+data_path <- system.file(
+  "extdata", "rated_res_patch_parameters.csv",
+  package = "tools4watlas"
+)
+
+# load data
+data_rating <- fread(data_path, yaml = TRUE)
+
+# sort factor
+rating_levels <- c(
+  "v1 much better", "v1 slightly better", "similar",
+  "v2 slightly better", "v2 much better"
+)
+data_rating[, rating := factor(rating, levels = rating_levels)]
+
+# plot results
+make_plot <- function(data, x_lab) {
+  ggplot(data, aes(x = score, y = pct, fill = rating)) +
+    geom_bar(stat = "identity") +
+    geom_text(
+      aes(label = paste0(pct, "%")),
+      position = position_stack(vjust = 0.5),
+      size = 3
+    ) +
+    scale_fill_manual(
+      values = c(
+        "v1 much better"     = "#2166ac",
+        "v1 slightly better" = "#92c5de",
+        "similar"            = "grey50",
+        "v2 slightly better" = "#f4a582",
+        "v2 much better"     = "#d6604d"
+      ), drop = FALSE
+    ) +
+    scale_y_continuous(
+      expand = expansion(mult = c(0, 0.05)),
+      labels = scales::label_percent(scale = 1)
+    ) +
+    labs(x = x_lab, y = "Percentage", fill = "Rating") +
+    theme_bw(base_size = 14)
+}
+
+p1 <- make_plot(
+  data_rating[param == "speed"], "Speed threshold (m/s)"
+)
+p2 <- make_plot(
+  data_rating[param == "distance"], "Distance threshold (m)"
+) + labs(y = "")
+
+# combine plots
+p1 + p2 +
+  plot_layout(guides = "collect", widths = c(3, 2)) &
+  theme(
+    legend.position = "top",
+    panel.grid      = element_blank(),
+    plot.margin     = margin(0, 5.5, 5.5, 5.5)
+  )
+```
+
+![residence patches
+rating](add_residence_patches_files/figure-html/unnamed-chunk-12-1.png)
+
+**Conclusion:**
+
+Based on this we decided 3 m/s was the best setting for the maximum
+speed and 75 m as distance threshold.

@@ -182,8 +182,8 @@ intake, thereby reshaping energy balances.
 ## PhD-dissertations
 
 The pre-WATLAS insights were also published within the dissertations of
-Thomas Oudman **([Oudman, 2017](#ref-oudmanthesis))** and Allert
-Bijleveld **([Bijleveld, 2015](#ref-bijleveldthesis))**. so far, WATLAS
+Allert Bijleveld **([Bijleveld, 2015](#ref-bijleveldthesis))** and
+Thomas Oudman **([Oudman, 2017](#ref-oudmanthesis))**. so far, WATLAS
 has been part of the dissertations of Eva Kok **([Kok,
 2020](#ref-kokthesis))**, Selin Erosy **([Ersoy,
 2022](#ref-ersoythesis))**, and Emma Penning **([Penning,
