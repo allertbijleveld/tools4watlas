@@ -145,7 +145,7 @@ data_int <- atl_interpolate_track(
   max_dist = NULL,
   patches_only = TRUE
 )
-#> Note: Interpolation added 207 positions (22.45% increase).
+#> Note: Interpolation added 188 positions (20.39% increase).
 
 # check data
 head(data_int)

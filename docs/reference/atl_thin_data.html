@@ -19,11 +19,10 @@ If there is actually no measure of error, the function simply returns the
 averaged position and covariates in each time interval.
 Grouping variables' names (such as animal identity) may be passed as a
 character vector to the id_columns argument.
-If patch is among the columns, it will be converted to numeric for
-aggregation and rounded back to the nearest integer, then converted back to
-character to match the original type. This ensures that the most common
-patch ID is retained after aggregation (e.g. 2 positions with patch ID 5
-and 20 with patch ID 6 will aggregate to patch ID 6)."><meta property="og:description" content="Uniformly reduce data volumes with either aggregation or resampling
+If patch is among the columns and the data are aggregated, only if the
+first and last point of the aggregation interval are from the same patch,
+this position will be assigned to the patch. With thinning the patch ID
+stays as it is for this position."><meta property="og:description" content="Uniformly reduce data volumes with either aggregation or resampling
 (specified by the method argument) over an interval specified in
 seconds using the interval argument.
 Both options make two important assumptions:
@@ -43,11 +42,10 @@ If there is actually no measure of error, the function simply returns the
 averaged position and covariates in each time interval.
 Grouping variables' names (such as animal identity) may be passed as a
 character vector to the id_columns argument.
-If patch is among the columns, it will be converted to numeric for
-aggregation and rounded back to the nearest integer, then converted back to
-character to match the original type. This ensures that the most common
-patch ID is retained after aggregation (e.g. 2 positions with patch ID 5
-and 20 with patch ID 6 will aggregate to patch ID 6)."><meta property="og:image" content="https://allertbijleveld.github.io/tools4watlas/logo.png"></head><body>
+If patch is among the columns and the data are aggregated, only if the
+first and last point of the aggregation interval are from the same patch,
+this position will be assigned to the patch. With thinning the patch ID
+stays as it is for this position."><meta property="og:image" content="https://allertbijleveld.github.io/tools4watlas/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -127,11 +125,10 @@ If there is actually no measure of error, the function simply returns the
 averaged position and covariates in each time interval.
 Grouping variables' names (such as animal identity) may be passed as a
 character vector to the <code>id_columns</code> argument.
-If <code>patch</code> is among the columns, it will be converted to numeric for
-aggregation and rounded back to the nearest integer, then converted back to
-character to match the original type. This ensures that the most common
-patch ID is retained after aggregation (e.g. 2 positions with patch ID 5
-and 20 with patch ID 6 will aggregate to patch ID 6).</p>
+If <code>patch</code> is among the columns and the data are aggregated, only if the
+first and last point of the aggregation interval are from the same patch,
+this position will be assigned to the patch. With thinning the patch ID
+stays as it is for this position.</p>
     </div>
 
     <div class="section level2">

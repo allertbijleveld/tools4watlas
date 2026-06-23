@@ -17,11 +17,10 @@ and drops those columns. If there is actually no measure of error, the
 function simply returns the averaged position and covariates in each
 time interval. Grouping variables' names (such as animal identity) may
 be passed as a character vector to the `id_columns` argument. If `patch`
-is among the columns, it will be converted to numeric for aggregation
-and rounded back to the nearest integer, then converted back to
-character to match the original type. This ensures that the most common
-patch ID is retained after aggregation (e.g. 2 positions with patch ID 5
-and 20 with patch ID 6 will aggregate to patch ID 6).
+is among the columns and the data are aggregated, only if the first and
+last point of the aggregation interval are from the same patch, this
+position will be assigned to the patch. With thinning the patch ID stays
+as it is for this position.
 
 ## Usage
 
