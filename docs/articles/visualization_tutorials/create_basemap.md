@@ -11,7 +11,6 @@ the package `OpenStreetMap`.
 ## Load packages
 
 ``` r
-
 # packages
 library(tools4watlas)
 library(ggplot2)
@@ -36,7 +35,6 @@ Instead of using a priori coordinates to construct a basemap, one can
 also use the movement data to set the extent of the map.
 
 ``` r
-
 # load example data
 data <- data_example
 
@@ -59,7 +57,6 @@ this specifieds range. If no data are provided, the function defaults to
 a map around Griend (our main study site) with a specified buffer.
 
 ``` r
-
 # create basemap
 bm <- atl_create_bm(buffer = 30000)
 
@@ -79,7 +76,6 @@ by a right click on a specific location. Here I choose a point a bit
 east of Griend, to include Richel and Ballastplaat in the map.
 
 ``` r
-
 # define location
 location <- data.table(x = c(5.275), y = c(53.2523))
 
@@ -103,7 +99,6 @@ when we want to zoom into a specific area of the map. The first point is
 north-west of Richel and the second point south-east of Griend.
 
 ``` r
-
 # specify corner points
 corner_points <- data.table(x = c(5.107, 5.330), y = c(53.303, 53.230))
 
@@ -125,7 +120,6 @@ example, we can overwrite the default theme to add axis labels and
 ticks.
 
 ``` r
-
 # create basemap
 bm <- atl_create_bm(buffer = 10000)
 
@@ -164,14 +158,8 @@ is ignored.
 Show are different ways on how to set the bounding box.
 
 ``` r
-
 # additional packages
 library(sf)
-```
-
-    ## Warning: package 'sf' was built under R version 4.5.3
-
-``` r
 
 # load example data
 data <- data_example
@@ -214,7 +202,6 @@ can also be downloaded from the
 [Waddenregister](https://datahuiswadden.openearth.nl/geonetwork/srv/eng/catalog.search#/metadata/JkrvJXasRSGAWU1mJLHUzg).
 
 ``` r
-
 # additional packages
 library(terra)
 
@@ -242,7 +229,6 @@ shading can take a while, especially for large maps. We remommend using
 this option only for polished maps.
 
 ``` r
-
 # additional packages
 library(terra)
 
@@ -284,7 +270,6 @@ can be used to add transformed positions to the data table.
 ### Use satellite map
 
 ``` r
-
 # satellite map and buffer around Griend
 bm <- atl_create_bm_tiles(
   buffer = 15000, option = "Esri.WorldImagery", zoom = 12
@@ -298,7 +283,6 @@ bm
 maptiles](create_basemap_files/figure-html/unnamed-chunk-10-1.png)
 
 ``` r
-
 # example with bbox and adding movement data
 data <- data_example
 
@@ -333,7 +317,6 @@ Unfortunately, the `type = "bing"` (satellite image) is unstable and
 does not always work.
 
 ``` r
-
 # additional packages
 library(OpenStreetMap)
 library(sf)
@@ -390,7 +373,6 @@ receivers, to a map.
 ### Add WATLAS logo
 
 ``` r
-
 # additional packages
 library(ggimage)
 
@@ -431,7 +413,6 @@ local copy of this folder or add the path for your user in the
 function.
 
 ``` r
-
 # load example data
 data <- data_example
 
@@ -470,7 +451,6 @@ receivers](create_basemap_files/figure-html/unnamed-chunk-13-1.png)
 One can also add the name of the receiver.
 
 ``` r
-
 # additional packages
 library(ggrepel)
 

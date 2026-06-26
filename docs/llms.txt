@@ -108,7 +108,6 @@ You can install the latest version of `tools4watlas` from
 [GitHub](https://github.com/allertbijleveld/tools4watlas) with:
 
 ``` r
-
 library(remotes)
 install_github("allertbijleveld/tools4watlas")
 
@@ -119,7 +118,6 @@ install_github("allertbijleveld/tools4watlas", dependencies = TRUE)
 ### **Example data**
 
 ``` r
-
 library(tools4watlas)
 library(ggplot2)
 

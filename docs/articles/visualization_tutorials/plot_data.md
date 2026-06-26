@@ -14,7 +14,6 @@ desired.
 ## Load packages
 
 ``` r
-
 # packages
 library(tools4watlas)
 library(ggplot2)
@@ -30,7 +29,6 @@ When one needs consistent colours for individual tags between plots, one
 can use `atl_tag_cols(data$tag)` to assign them (see second example).
 
 ``` r
-
 # load example data
 data <- data_example
 
@@ -55,7 +53,6 @@ bm +
 ID](plot_data_files/figure-html/unnamed-chunk-2-1.png)
 
 ``` r
-
 # plot points and tracks with fixed assigned colours (e.g. in animations)
 bm +
   geom_path(
@@ -75,7 +72,6 @@ bm +
 ID](plot_data_files/figure-html/unnamed-chunk-2-2.png)
 
 ``` r
-
 # plot points and tracks with viridis colour scale
 bm +
   geom_path(
@@ -99,7 +95,6 @@ include more information about the tag, such as metal rings, colour
 rings or name.
 
 ``` r
-
 # load example data
 data <- data_example
 
@@ -153,7 +148,6 @@ function and species labels in the
 function.
 
 ``` r
-
 # load example data
 data <- data_example
 
@@ -199,7 +193,6 @@ Here, we show a simple template for plotting an individual tag ID, which
 can be customized as desired.
 
 ``` r
-
 # load example data
 data <- data_example
 
@@ -248,7 +241,6 @@ specific number of positions from the beginning or end of the track
 (`first_n` or `last_n`).
 
 ``` r
-
 # path to csv with filtered data
 data_path <- system.file(
   "extdata", "watlas_data_filtered.csv",
@@ -273,7 +265,6 @@ atl_check_tag(
 data](plot_data_files/figure-html/unnamed-chunk-6-1.png)
 
 ``` r
-
 # subset with last 1000 positions
 atl_check_tag(
   data,
@@ -287,7 +278,6 @@ atl_check_tag(
 data](plot_data_files/figure-html/unnamed-chunk-6-2.png)
 
 ``` r
-
 # plot option speed_in
 atl_check_tag(data, option = "speed_in")
 ```
@@ -296,7 +286,6 @@ atl_check_tag(data, option = "speed_in")
 data](plot_data_files/figure-html/unnamed-chunk-6-3.png)
 
 ``` r
-
 # plot option nbs
 atl_check_tag(data, option = "nbs")
 ```
@@ -305,7 +294,6 @@ atl_check_tag(data, option = "nbs")
 data](plot_data_files/figure-html/unnamed-chunk-6-4.png)
 
 ``` r
-
 # plot option sd
 atl_check_tag(data, option = "var")
 ```
@@ -314,7 +302,6 @@ atl_check_tag(data, option = "var")
 data](plot_data_files/figure-html/unnamed-chunk-6-5.png)
 
 ``` r
-
 # plot option gap
 atl_check_tag(data, option = "gap", scale_trans = "log")
 ```
@@ -333,7 +320,6 @@ location.
 This is a quick way to get an overview of the data.
 
 ``` r
-
 # load example data
 data <- data_example
 
@@ -371,7 +357,6 @@ positions](plot_data_files/figure-html/unnamed-chunk-7-1.png)
 Here, we plot data grouped by species, but this can be any group.
 
 ``` r
-
 # N by location and species
 data_subset <- data[, .N, by = c("x_round", "y_round", "species")]
 

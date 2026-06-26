@@ -19,7 +19,6 @@ residence patches.
 ## Load packages and data
 
 ``` r
-
 # packages
 library(tools4watlas)
 library(ggplot2)
@@ -43,7 +42,6 @@ the article [“Smooth and thin
 data”](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html).
 
 ``` r
-
 # subset relevant columns
 data <- data[, .(species, posID, tag, time, datetime, x, y, tideID)]
 
@@ -87,7 +85,6 @@ the residence patch calculation. Likewise, if there are large spatial or
 temporal gaps between positions, interpolating might be inappropriate.
 
 ``` r
-
 # look at the maximal time spent within residence patches and
 # the maximal distance between the start and end position of residence patches
 data_summary[, .(
@@ -120,7 +117,6 @@ duration, so that all residence patches are interpolated and we set
 interpolated.
 
 ``` r
-
 # interpolate data to 1 min intervals - only within residence patches
 data_int <- atl_interpolate_track(
   data = data,
@@ -136,10 +132,9 @@ data_int <- atl_interpolate_track(
 )
 ```
 
-    ## Note: Interpolation added 1918 positions (28.73% increase).
+    ## Note: Interpolation added 1815 positions (27.18% increase).
 
 ``` r
-
 # show head of the table
 head(data_int) |> knitr::kable(digits = 2)
 ```
@@ -159,7 +154,6 @@ Here, we plot one tag as an example. The positions are coloured by
 residence patch, and the interpolated points are shown in black.
 
 ``` r
-
 # subset one tag
 data_subset <- data_int[tag == "3288"]
 

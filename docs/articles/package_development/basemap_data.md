@@ -19,7 +19,6 @@ and Friesland) can be downloaded from
 #### Load packages and specify path to local data
 
 ``` r
-
 # packages
 library(data.table)
 library(tools4watlas)
@@ -37,7 +36,6 @@ fp <- atl_file_path("shapefiles")
 First define a bounding box which is used to crop the land polygon data.
 
 ``` r
-
 # get data from the Netherlands
 netherlands <- ne_countries(
   country = "netherlands", scale = "large", returnclass = "sf"
@@ -70,7 +68,6 @@ Bounding box around the Dutch Wadden Sea
 ## Extract the land polygon data from this bounding box
 
 ``` r
-
 # load osm land polygon
 land_ <- st_read(quiet = TRUE, paste0(
   fp, "open_street_map/land-polygons-complete-4326/land_polygons.shp"
@@ -106,7 +103,6 @@ Cropped land polygon around the Dutch Wadden Sea
 Includes data in the package, if `tools4watlas` is opened as project.
 
 ``` r
-
 # save data
 save(land, file = "../../data/land.rda", compress = "xz")
 ```
@@ -117,7 +113,6 @@ To simplify the basemap we only want the mudflats from within the Wadden
 Sea, otherwise *fclass* also includes other wetlands.
 
 ``` r
-
 # load polygon of Wadden sea
 wadden_sea <- st_read(quiet = TRUE, paste0(
   fp, "wadden_area_legally/pkb_gebied_derde_nota_waddenzee.shp"
@@ -147,7 +142,6 @@ Polygon of the Dutch Wadden Sea
 We only take the lakes from Griend to not blow up the data.
 
 ``` r
-
 # Friesland
 lakes_fr <- st_read(quiet = TRUE, paste0(
   fp, "open_street_map/friesland-latest-free.shp/gis_osm_water_a_free_1.shp"
@@ -223,7 +217,6 @@ Final basemap data of the Dutch Wadden Sea
 Includes data in the package, if `tools4watlas` is opened as project.
 
 ``` r
-
 # save data
 save(mudflats, file = "../../data/muddflats.rda", compress = "xz")
 save(lakes, file = "../../data/lakes.rda", compress = "xz")

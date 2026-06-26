@@ -13,7 +13,6 @@ Check the specific tutorials for more details the
 ## Load packages
 
 ``` r
-
 # packages
 library(tools4watlas)
 library(ggplot2)
@@ -27,7 +26,6 @@ Note that the scale bar is not supported at the moment, and `plotly`
 will give a warning if the base map contains a scale bar.
 
 ``` r
-
 # load example data
 data <- data_example
 
@@ -65,7 +63,6 @@ additional columns of your choice (can be seen when clicking on the
 point). Colour the track by selecting the desired parameter as `zcol`.
 
 ``` r
-
 # load example data from one tide
 data <- data_example[tideID == "2023513"]
 
@@ -96,7 +93,6 @@ If one wants to plot a lot of data, it is recommended to thin the data
 first.
 
 ``` r
-
 # load example data
 data <- data_example
 
@@ -126,7 +122,6 @@ mapview(d_sf_lines, zcol = "tag", legend = FALSE) +
 ### Multiple species
 
 ``` r
-
 # load example data from one tide
 data <- data_example[tideID == "2023513"]
 

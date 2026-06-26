@@ -7,7 +7,6 @@ the R package
 [`hexSticker`](https://github.com/GuangchuangYu/hexSticker).
 
 ``` r
-
 # packages
 library(hexSticker)
 library(showtext)

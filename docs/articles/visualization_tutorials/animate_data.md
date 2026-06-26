@@ -13,7 +13,6 @@ from GitHub: `remotes::install_github("leonawicz/mapmate")`.
 ### Load packages
 
 ``` r
-
 # packages
 library(tools4watlas)
 library(ggplot2)
@@ -30,7 +29,6 @@ library(terra)
     ## Warning: package 'terra' was built under R version 4.5.3
 
 ``` r
-
 library(tidyterra)
 library(sf)
 ```
@@ -46,7 +44,6 @@ here) and it makes sense to aggregate the data to a desired interval
 somewhat matching the time steps.
 
 ``` r
-
 # load example data
 data <- data_example
 
@@ -68,7 +65,6 @@ For more details, see function descriptions of the functions. Obviously,
 more settings can be adjusted but here we cover the basics.
 
 ``` r
-
 # time steps and output path (atl_time_steps):
 cfg_time_interval <- "1 min" # time interval for animation steps
 cfg_output_path <- paste0(
@@ -116,7 +112,6 @@ Create time steps with the desired interval (e.g. 1 min), define the
 folder path where the png’s are created, delete existing files.
 
 ``` r
-
 # delete existing files (if any)
 unlink(paste0(cfg_output_path, "/*"), recursive = TRUE)
 
@@ -139,7 +134,6 @@ scalebar and time stamp. Adjust everything as desired (check with saving
 png in the defined size).
 
 ``` r
-
 # create basemap
 bm <- atl_create_bm(bbox)
 
@@ -188,7 +182,6 @@ description for more details). Afterwards we add this path to the
 basemap and add the time stamp.
 
 ``` r
-
 # register cores and backend for parallel processing
 registerDoFuture()
 plan(multisession)
@@ -266,7 +259,6 @@ crop the bathymetry data to the extend of the map (use same buffer as
 for basemap).
 
 ``` r
-
 # load tide data
 tidal_pattern <- fread(tidal_pattern_fp)
 measured_water_height <- fread(measured_water_height_fp)
@@ -301,7 +293,6 @@ scalebar and time stamp. Adjust everything as desired (check with saving
 png in the defined size).
 
 ``` r
-
 # create basemap
 bm <- atl_create_bm(
   bbox, raster_data = bat_c, option = "bathymetry", scalebar = FALSE
@@ -364,7 +355,6 @@ Same as above just with added water level polygon and scale bar (needs
 to be added above water).
 
 ``` r
-
 # register cores and backend for parallel processing
 registerDoFuture()
 plan(multisession)
@@ -478,7 +468,6 @@ by
 if `total = NULL`.
 
 ``` r
-
 # set output path again in new session (same as above)
 cfg_output_path <- paste0(
   "C:/Users/", Sys.info()[["user"]], "/temp/animation"
@@ -499,7 +488,6 @@ the time step interval). The output file is created in the same path,
 but this can also be changed as desired.
 
 ``` r
-
 # make animation
 ffmpeg(
   dir = cfg_output_path, output_dir = cfg_output_path,

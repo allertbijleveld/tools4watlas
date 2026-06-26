@@ -69,14 +69,5 @@ data_v2 <- atl_res_patch(
 
 # change summary
 atl_compare_res_patch_summary(data_v1, data_v2)
-#> === Patch changes summary ===
-#> Lost    (v1 patches gone in v2) : 0 
-#> Gained  (new patches in v2)     : 0 
-#> 
-#> Splits  (one v1 -> multiple v2): 0 
-#> Merges  (multiple v1 -> one v2): 1 
-#> 
-#>       tag  tideID change patch_v1 patch_v2
-#>    <char>   <int> <char>   <char>   <char>
-#> 1:   3038 2023514  merge   13, 14       13
+#> Error in atl_compare_res_patch_summary(data_v1, data_v2): could not find function "atl_compare_res_patch_summary"
 ```
