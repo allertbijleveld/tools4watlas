@@ -93,47 +93,46 @@
     
     
 <p>In this vignette, we provide a general workflow to group WATLAS
-position data into so-called ‘residence patches’. Note that the
-parameter settings should be adapted for different species’ behaviour
-and data quality.</p>
+position data into so-called ‘residence patches’.</p>
 <div class="section level2">
-<h2 id="background-and-parameter-explanation">Background and parameter explanation<a class="anchor" aria-label="anchor" href="#background-and-parameter-explanation"></a>
+<h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
 </h2>
 <p>The <code><a href="../../reference/atl_res_patch.html">atl_res_patch()</a></code> function is designed to segment and
 aggregate WATLAS movement data into residence patches. The main
-parameter is speed (<code>max_speed</code>). With perfect data that
-would be the only parameter necessary to adjust, because the speed
-flying, walking or standing do not overlap. Because WATLAS data have
-localization error (comparable to GPS, see <a href="https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13913" class="external-link">Beardsworth
-et al. 2022</a>) and gaps when birds are out of range of receivers, we
+parameter is speed <code>max_speed</code>. With perfect data that would
+be the only parameter necessary to adjust, because the speed flying,
+walking or standing do not overlap. Because WATLAS data have
+localization error (which is comparable to GPS, see <a href="https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13913" class="external-link">Beardsworth
+et al. 2022</a>) and gaps when birds are not detected by receivers, we
 need to have additional variables for classifying these data into robust
 residence patches.</p>
 <p>The logic of the function is to first identify proto-patches
-(preliminary residence patches). When subsequent positions have a speed
-smaller than <code>max_speed</code>, a distance smaller than
+(preliminary residence patches). Subsequent positions are assigned to
+the same proto-patch when they have a speed smaller than
+<code>max_speed</code>, a distance smaller than
 <code>lim_spat_indep</code> and a time gap smaller than
-<code>lim_time_indep</code>, they are assigned to the same proto patch.
-Proto-patches with fewer than <code>min_fixes</code> positions and
-shorter <code>min_duration</code> are filtered out.</p>
+<code>lim_time_indep</code>. Proto-patches with fewer than
+<code>min_fixes</code> positions and shorter than
+<code>min_duration</code> are filtered out.</p>
 <p>For each proto-patch, the median position is calculated as well as
-the time between two subsequent proto-patches (time between last
-location and first location of the next proto-patch). Proto patches are
-merged into residence patches, if the distance between the median
-positions of two subsequent proto-patches is smaller than
-<code>lim_spat_indep</code> and the time between the proto-patch is less
-then <code>lim_time_indep</code>.</p>
+the time between subsequent proto-patches (i.e. the time between the
+last position of a proto-patch and the first position of the next
+proto-patch). If the distance between the median positions of two
+subsequent proto-patches is smaller than <code>lim_spat_indep</code> and
+the time between the proto-patch is less then
+<code>lim_time_indep</code>, proto-patches are merged into residence
+patches.</p>
 <p>Lastly, a unique patch ID is assigned to each residence patch ordered
 by time from 1 to n.</p>
-<p>Note that without cleaning the data or having short intervals (e.g. 3
-sec), position error can lead to speed outliers, which affects the
-creation of proto-patches. When calculating residence patches, it is
-therefore recommended to first filter (<code>var_max &lt; 5000</code>)
-and smooth (<code>moving_window = 5</code>) the data. Depending on the
-species’ behaviour or quality of the data, the <code>max_speed</code>
-can also be set to a higher value, or the data can be thinned first.
-Keep in mind that smoothing and thinning will influence the speeds
-between positions, and thus the creation of residence patches.</p>
-<p><strong>Parameter overview:</strong></p>
+<p>Note that position error in combination with short intervals between
+positions (e.g. 3 sec) can lead to speed outliers that affect the
+creation of proto-patches. Therefore, it is recommended to first filter
+(e.g. <code>var_max &lt; 5000</code>) and smooth
+(e.g. <code>moving_window = 5</code>) the data.</p>
+</div>
+<div class="section level2">
+<h2 id="parameter-overview">Parameter overview<a class="anchor" aria-label="anchor" href="#parameter-overview"></a>
+</h2>
 <p>Deciding on the optimal parameters for the residence patch
 classification is not a trivial task. The key is to find a good balance
 between true and false positives. See section below on how we decided on
@@ -186,8 +185,13 @@ afterwards.</li>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="load-packages-and-required-data">Load packages and required data<a class="anchor" aria-label="anchor" href="#load-packages-and-required-data"></a>
+<h2 id="example-workflow">Example workflow<a class="anchor" aria-label="anchor" href="#example-workflow"></a>
 </h2>
+<div class="section level3">
+<h3 id="load-packages-and-required-data">Load packages and required data<a class="anchor" aria-label="anchor" href="#load-packages-and-required-data"></a>
+</h3>
+<p>Note that access to the tidal data on WATLAS-Teams is required for
+running this code.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span>
@@ -215,14 +219,15 @@ afterwards.</li>
 <span><span class="va">tidal_pattern</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">tidal_pattern_fp</span><span class="op">)</span></span>
 <span><span class="va">measured_water_height</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">measured_water_height_fp</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="calculate-residence-patches-by-tag">Calculate residence patches by tag<a class="anchor" aria-label="anchor" href="#calculate-residence-patches-by-tag"></a>
-</h2>
+<div class="section level3">
+<h3 id="calculate-residence-patches-by-tag">Calculate residence patches by tag<a class="anchor" aria-label="anchor" href="#calculate-residence-patches-by-tag"></a>
+</h3>
 <p>To reduce the memory size for parallel computing, we will first
-subset the relevant columns from the data. This can be skipped for small
-data tables. We will then run <code><a href="../../reference/atl_res_patch.html">atl_res_patch()</a></code> for each tag
-ID in parallel. The column <code>patch</code> is added to the data
-table, which provides the assigned patch ID’s for the positions.</p>
+subset the relevant columns from the data. This could be skipped for
+small data tables. We will then run <code><a href="../../reference/atl_res_patch.html">atl_res_patch()</a></code> for
+each tag ID in parallel. The column <code>patch</code> is added to the
+data table, which provides the assigned patch ID’s for the
+positions.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># subset relevant columns</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">species</span>, <span class="va">posID</span>, <span class="va">tag</span>, <span class="va">time</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">tideID</span><span class="op">)</span><span class="op">]</span></span>
@@ -341,33 +346,29 @@ table, which provides the assigned patch ID’s for the positions.</p>
 </tbody>
 </table>
 </div>
-<div class="section level2">
-<h2 id="evaluate-residence-patch-classification-and-parameters">Evaluate residence patch classification and parameters<a class="anchor" aria-label="anchor" href="#evaluate-residence-patch-classification-and-parameters"></a>
-</h2>
-<p>The function <code><a href="../../reference/atl_check_res_patch.html">atl_check_res_patch()</a></code> can be used to
-evaluate the residence patch classification by tag and tide ID. the
-function plots the track with residence patches on a map and shows the
-duration (time in a patch in min) as coloured polygon on the map and as
-plot against the time in a separate plot. Time starts on the top and
-goes from high tide to high tide (solid blue lines), as well as
-indicating low tide (dashed blue line). The title of the plot gives
-basic information about the data and the water level for the
-corresponding tide.</p>
 <div class="section level3">
-<h3 id="inspect-one-tag-and-tide">Inspect one tag and tide<a class="anchor" aria-label="anchor" href="#inspect-one-tag-and-tide"></a>
+<h3 id="evaluate-residence-patch-assignment">Evaluate residence-patch assignment<a class="anchor" aria-label="anchor" href="#evaluate-residence-patch-assignment"></a>
 </h3>
+<p>The function <code><a href="../../reference/atl_check_res_patch.html">atl_check_res_patch()</a></code> can be used to
+evaluate the residence patch assignment by tag and tide ID. The function
+plots the track with residence patches on a map and shows the duration
+(time in a patch in min) as coloured polygon on the map and against time
+in a separate panel. Time starts on the top and goes from high tide to
+the next high tide (solid blue lines), as well as indicating low tide
+(dashed blue line). The title of the plot gives basic information about
+the data and the water level for the corresponding tide.</p>
+<div class="section level4">
+<h4 id="inspect-one-tag-and-tide">Inspect one tag and tide<a class="anchor" aria-label="anchor" href="#inspect-one-tag-and-tide"></a>
+</h4>
 <p>We can select one tag and tide to plot. Additionally, we need to
 specify the offset for the tidal data we use (e.g. 30 min for
 West-Terschelling) and a buffer (in m) around the residence patch data
-to create the polygon. For data inspection it makes sense to set the
-buffer to half of <code>lim_spat_indep</code> (maximum distance between
-subsequent residence patches at which they will be considered
-independent), ensuring that the polygons around residence patches
-correspond to the spatial distance threshold used to merge residence
-patches. However, for analysis using the residence patch polygons in a
-biological context, it is better to set the buffer to appropiate scale.
-For example 15 m, will capture some error in positions and potential
-movements in between fixes.</p>
+to create the polygon (for visualisation purposes only). For data
+inspection, it makes sense to set the buffer to half of
+<code>lim_spat_indep</code> (maximum distance between subsequent
+residence patches at which they will be considered independent),
+ensuring that the polygons around residence patches correspond to the
+spatial distance threshold used to merge residence patches.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/atl_check_res_patch.html">atl_check_res_patch</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="st">"3038"</span><span class="op">]</span>,</span>
@@ -376,8 +377,8 @@ movements in between fixes.</p>
 <span>  buffer_res_patches <span class="op">=</span> <span class="fl">75</span> <span class="op">/</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="add_residence_patches_files/figure-html/unnamed-chunk-3-1.png" class="r-plt" alt="Overview plot res patches one tide" width="100%" style="display: block; margin: auto;"></p>
-<p>Zoom in on specifc range of residence patches to inspect them in more
-detail.</p>
+<p>It might also be convenient to zoom in on specifc range of residence
+patches, to inspect them in more detail.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># set parameters for subsetting data</span></span>
 <span><span class="va">tag_id</span> <span class="op">&lt;-</span> <span class="st">"3038"</span></span>
@@ -403,14 +404,14 @@ detail.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="add_residence_patches_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="Overview plot res patches one tide" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div class="section level3">
-<h3 id="inspect-many-tags-and-tides">Inspect many tags and tides<a class="anchor" aria-label="anchor" href="#inspect-many-tags-and-tides"></a>
-</h3>
-<p>To get a general overview, we can also loop through and plot all data
-by tag and tide, or for example a random sample of 100 tags and tides.
-The plots are saved in any directory
-(e.g. <code>./outputs/res_patch_check/</code>), which has to be created
-before running the code.</p>
+<div class="section level4">
+<h4 id="inspect-many-tags-and-tides">Inspect many tags and tides<a class="anchor" aria-label="anchor" href="#inspect-many-tags-and-tides"></a>
+</h4>
+<p>To get a general overview of the performance of residence patch
+assignment, we can also loop through and plot all data by tag and tide,
+or for example a random sample of 100 tags and tides. The plots can be
+saved in any directory (e.g. <code>./outputs/res_patch_check/</code>),
+which has to be created before running the code.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create table with data combinations to plot</span></span>
 <span><span class="va">idc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span>, <span class="st">"tag"</span>, <span class="st">"tideID"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
@@ -444,15 +445,16 @@ before running the code.</p>
 <span><span class="co"># close parallel processing</span></span>
 <span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
 <p>Based on these plots and perhaps additional checks, the parameters
-can be adjusted to improve the classification of residence patches.</p>
+can be adjusted to improve the assignment of residence patches. See the
+section below on choosing the best parameter settings.</p>
 </div>
 </div>
-<div class="section level2">
-<h2 id="summary-of-residence-patch-data">Summary of residence patch data<a class="anchor" aria-label="anchor" href="#summary-of-residence-patch-data"></a>
-</h2>
-<p>Once satisfied with the residence patch classification, we can
-summarize the residence patches by tag and patch ID and merge the
-desired columns back to our full data table.</p>
+<div class="section level3">
+<h3 id="summary-of-residence-patch-data">Summary of residence patch data<a class="anchor" aria-label="anchor" href="#summary-of-residence-patch-data"></a>
+</h3>
+<p>Once satisfied with the residence patch assignment, we can summarize
+the residence patches by tag and patch ID and merge the desired columns
+back to our full data table.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># summary of residence patches</span></span>
 <span><span class="va">data_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_res_patch_summary.html">atl_res_patch_summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
@@ -664,6 +666,8 @@ desired columns back to our full data table.</p>
 </tr>
 </tbody>
 </table>
+<p>Here is description of the different columns in the output data
+table:</p>
 <table class="table">
 <colgroup>
 <col width="18%">
@@ -767,18 +771,24 @@ patch</td>
 </tbody>
 </table>
 </div>
+</div>
 <div class="section level2">
-<h2 id="plot-the-residence-patches">Plot the residence patches<a class="anchor" aria-label="anchor" href="#plot-the-residence-patches"></a>
+<h2 id="plotting-residence-patches">Plotting residence patches<a class="anchor" aria-label="anchor" href="#plotting-residence-patches"></a>
 </h2>
-<p>It might also be useful to plot the residence patches using
-<code>ggplot2</code>.</p>
+<p>Residence patches can be conveniently plotted using
+<code>ggplot2</code>. Here, we will show plotting residence patchs by
+individuals or species.</p>
 <div class="section level3">
-<h3 id="plot-by-tag">Plot by tag<a class="anchor" aria-label="anchor" href="#plot-by-tag"></a>
+<h3 id="plot-by-individual">Plot by individual<a class="anchor" aria-label="anchor" href="#plot-by-individual"></a>
 </h3>
-<p>In this example, we will plot the residence patches for one red knot
-(tag 3038). In the frist example, the residence patches are coloured by
-patch ID. To show the full track, the transient (unassigned) positions
-are plotted in grey.</p>
+<p>Here, we will provide three examples of plotting residence patches
+for one red knot (tag 3038).</p>
+<div class="section level4">
+<h4 id="plot-track-coloured-by-patch-id">Plot track coloured by patch ID<a class="anchor" aria-label="anchor" href="#plot-track-coloured-by-patch-id"></a>
+</h4>
+<p>In the first example, the residence patches are coloured by patch ID.
+To show the full track, the transient (unassigned) positions are plotted
+in grey.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># subset red knot</span></span>
 <span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="fl">3038</span><span class="op">]</span></span>
@@ -799,6 +809,10 @@ are plotted in grey.</p>
 <span>    size <span class="op">=</span> <span class="fl">1.5</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="add_residence_patches_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="residence patches within track colored by ID" width="100%"></p>
+</div>
+<div class="section level4">
+<h4 id="plot-residence-patches-coloured-by-patch-id">Plot residence patches coloured by patch ID<a class="anchor" aria-label="anchor" href="#plot-residence-patches-coloured-by-patch-id"></a>
+</h4>
 <p>In the second example, the residence patches are plotted at their
 median positions with the size and colour scaled to their duration (in
 minutes).</p>
@@ -812,6 +826,10 @@ minutes).</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html" class="external-link">scale_color_viridis</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="add_residence_patches_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="residence patches by duration in patch" width="100%"></p>
+</div>
+<div class="section level4">
+<h4 id="plot-track-with-residence-patches-as-polygons">Plot track with residence patches as polygons<a class="anchor" aria-label="anchor" href="#plot-track-with-residence-patches-as-polygons"></a>
+</h4>
 <p>In the third example, we will calculate polygons around the residence
 patches and plot them</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -853,6 +871,7 @@ patches and plot them</p>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="add_residence_patches_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" alt="residence patches by duration in patch" width="100%"></p>
 </div>
+</div>
 <div class="section level3">
 <h3 id="plot-by-species">Plot by species<a class="anchor" aria-label="anchor" href="#plot-by-species"></a>
 </h3>
@@ -886,34 +905,41 @@ scaled by duration (in minutes).</p>
 <div class="section level2">
 <h2 id="choosing-the-best-parameters">Choosing the best parameters<a class="anchor" aria-label="anchor" href="#choosing-the-best-parameters"></a>
 </h2>
-<p>To select appropriate parameters for residence patch detection, we
-first explored the data through extensive visual inspection, which
-informed several parameter choices prior to systematic testing. A
-minimum of 2 fixes and a minimum proto-patch duration of 60 s were found
-to perform best: with high fix intervals (e.g., 3 s), individual outlier
-positions can prevent proto-patches from reaching the minimum duration
-threshold, making a low minimum fix count essential for retaining short
-but valid foraging bouts.</p>
-<p>We then systematically tested a range of values for two key
-parameters: maximum speed threshold (2, 3, 4, and 5 m/s, temporal
-independence: 75 m) and spatial independence distance (50, 75, and 100
-m, maximum speed threshold: 3 m/s), with all other parameters held
-constant (temporal independence: 180 min, minimum fixes: 2, minimum
-duration: 60 s). For each parameter combination, residence patches were
-computed for a subset of 100 randomly selected tag–tide combinations per
-species (minimum 500 positions per combination) across eight shorebird
-species tracked in the Wadden Sea in 2023. Then we did a pair-wise
-comparison of parameter settings using
-<code><a href="../../reference/atl_compare_res_patch_summary.html">atl_compare_res_patch_summary()</a></code>, which highlighted all new,
-lost, merged and split residence patches. From this overall summary, we
-picked again subset of 100 random changes and plotted them using
-<code><a href="../../reference/atl_compare_res_patch_plot.html">atl_compare_res_patch_plot()</a></code>, showing the result of each
-parameter setting. These resulting plots where then scored by three
-observers to judge how well they fit the underlying data.</p>
-<p><strong>Example workflow to choose parameters:</strong></p>
-<p>As the whole code for the procedure takes some time to compute and
-would require all data as part of the repository, we simply show an
-example here.</p>
+<p>Selecting appropriate parameters for assigning residence patches was
+based on a combination of biological relevance, visual inspection,
+systematic testing, and expert judgement.</p>
+<p>First, ‘min_duration’, ‘lim_time_indep’, and ‘min_fixes’ were set. To
+maintain biological relevance for the creation of proto-pacthes, a
+minimum duration of 60 s and temporal limit of 180 min were selected
+a-priori. Additionally, a minimum of 2 positions for a proto-patch was
+selected to avoid the creation of too many proto-patches with very short
+(biologically irrelevant) durations. These parameter settings were
+extensively evaluated using visual inspection.</p>
+<p>Second, we systematically tested a range of values for two key
+parameters: <code>max_speed</code> and <code>lim_spat_indep</code> .
+Keeping all other parameters constant (see above), we varied
+<code>max_speed</code> between 2, 3, 4, and 5 m/s, and
+<code>lim_spat_indep</code> between 50, 75, and 100 m. For each
+combination of parameter values and for eight shorebird species tracked
+in the Wadden Sea in 2023, residence patches were computed for a subset
+of 100 randomly selected tag–tide combinations per species (with the
+condition that there are at least 500 positions per tag-tide
+combination). We then did a pair-wise comparison of parameter settings
+using <code><a href="../../reference/atl_compare_res_patch_summary.html">atl_compare_res_patch_summary()</a></code>, which highlighted
+all new, lost, merged and split residence patches. From this summary, we
+then selected a subset of 100 random changes that were plotted using
+<code><a href="../../reference/atl_compare_res_patch_plot.html">atl_compare_res_patch_plot()</a></code>. The 100 resulting plots of
+pair-wise comparisons were then scored by three expert observers. The
+observers could choose “left much better”, “left slightly better”,
+“similar”, “right slightly better”, or “right much better”.</p>
+<p>Based on the systematic evaluation of parameter settings (see the
+figure below), a <code>max_speed</code> of 3 m/s and a
+<code>lim_spat_indep</code> of 75 m performed best.</p>
+<p><img src="add_residence_patches_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="residence patches rating" width="100%"></p>
+<p><strong>Example workflow for choosing parameter values:</strong></p>
+<p>In this example, comparing 3 m/s and 4 m/s, the patches are wrongly
+merged when using 4 m/s, so the 3 m/s (left) was rated as “left much
+better”.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load example data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
@@ -950,73 +976,7 @@ example here.</p>
 <span>  patch_v1 <span class="op">=</span> <span class="va">change_summary</span><span class="op">$</span><span class="va">patch_v1</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,</span>
 <span>  patch_v2 <span class="op">=</span> <span class="va">change_summary</span><span class="op">$</span><span class="va">patch_v2</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="add_residence_patches_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="residence patches compared parameters" width="100%"></p>
-<p>In this example, comparing 3 m/s and 4 m/s, the patches are wrongly
-merged when using 4 m/s, so the 3 m/s (left) were rated as much
-better.</p>
-<p><strong>Results of final rating:</strong></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># path to csv with aggregated data</span></span>
-<span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
-<span>  <span class="st">"extdata"</span>, <span class="st">"rated_res_patch_parameters.csv"</span>,</span>
-<span>  package <span class="op">=</span> <span class="st">"tools4watlas"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># load data</span></span>
-<span><span class="va">data_rating</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">data_path</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># sort factor</span></span>
-<span><span class="va">rating_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="st">"v1 much better"</span>, <span class="st">"v1 slightly better"</span>, <span class="st">"similar"</span>,</span>
-<span>  <span class="st">"v2 slightly better"</span>, <span class="st">"v2 much better"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">data_rating</span><span class="op">[</span>, <span class="va">rating</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">rating</span>, levels <span class="op">=</span> <span class="va">rating_levels</span><span class="op">)</span><span class="op">]</span></span>
-<span></span>
-<span><span class="co"># plot results</span></span>
-<span><span class="va">make_plot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">x_lab</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">score</span>, y <span class="op">=</span> <span class="va">pct</span>, fill <span class="op">=</span> <span class="va">rating</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span></span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">pct</span>, <span class="st">"%"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>      position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_stack.html" class="external-link">position_stack</a></span><span class="op">(</span>vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>      size <span class="op">=</span> <span class="fl">3</span></span>
-<span>    <span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span></span>
-<span>      values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>        <span class="st">"v1 much better"</span>     <span class="op">=</span> <span class="st">"#2166ac"</span>,</span>
-<span>        <span class="st">"v1 slightly better"</span> <span class="op">=</span> <span class="st">"#92c5de"</span>,</span>
-<span>        <span class="st">"similar"</span>            <span class="op">=</span> <span class="st">"grey50"</span>,</span>
-<span>        <span class="st">"v2 slightly better"</span> <span class="op">=</span> <span class="st">"#f4a582"</span>,</span>
-<span>        <span class="st">"v2 much better"</span>     <span class="op">=</span> <span class="st">"#d6604d"</span></span>
-<span>      <span class="op">)</span>, drop <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>    <span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span></span>
-<span>      expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>      labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">label_percent</a></span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span>    <span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x_lab</span>, y <span class="op">=</span> <span class="st">"Percentage"</span>, fill <span class="op">=</span> <span class="st">"Rating"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">14</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">make_plot</span><span class="op">(</span></span>
-<span>  <span class="va">data_rating</span><span class="op">[</span><span class="va">param</span> <span class="op">==</span> <span class="st">"speed"</span><span class="op">]</span>, <span class="st">"Speed threshold (m/s)"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">make_plot</span><span class="op">(</span></span>
-<span>  <span class="va">data_rating</span><span class="op">[</span><span class="va">param</span> <span class="op">==</span> <span class="st">"distance"</span><span class="op">]</span>, <span class="st">"Distance threshold (m)"</span></span>
-<span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># combine plots</span></span>
-<span><span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="st">"collect"</span>, widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">&amp;</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
-<span>    legend.position <span class="op">=</span> <span class="st">"top"</span>,</span>
-<span>    panel.grid      <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>    plot.margin     <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">margin</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5.5</span>, <span class="fl">5.5</span>, <span class="fl">5.5</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="add_residence_patches_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="residence patches rating" width="100%"></p>
-<p><strong>Conclusion:</strong></p>
-<p>Based on this we decided 3 m/s was the best setting for the maximum
-speed and 75 m as distance threshold.</p>
+<p><img src="add_residence_patches_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="residence patches compared parameters" width="100%"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
