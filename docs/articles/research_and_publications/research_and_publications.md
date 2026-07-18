@@ -142,18 +142,18 @@ Because of tag weight constraints and Sanderling being so small, this is
 the first time ever that Sanderling have been tracked at such high
 spatiotemporal resolution.
 
-In **Danielson-Owczynsky et al. (in prep)**, we show that Bar-tailed
-Godwits select areas where they their preferred prey are most abundant.
-For long-billed females these were areas with high densities of Lugworms
-and Ragworms, which live deeper in the sediment. Males with shorter
-bills, however, almost exclusively consumed and selected areas with high
-densities of Mud Shrimp that live more superficially on the mudflats.
-The latter, that fuelling Bar-tailed godwits forage primarily on Mud
-Shrimp, has not been documented before.
+In **Danielson-Owczynsky et al. ([2026](#ref-DanielsonOwczynsky2026))**,
+we show that Bar-tailed Godwits select areas where they their preferred
+prey are most abundant. For long-billed females these were areas with
+high densities of Lugworms and Ragworms, which live deeper in the
+sediment. Males with shorter bills, however, almost exclusively consumed
+and selected areas with high densities of Mud Shrimp that live more
+superficially on the mudflats. The latter, that fuelling Bar-tailed
+godwits forage primarily on Mud Shrimp, has not been documented before.
 
 #### Individual variation
 
-In **Ersoy et al. ([2022](#ref-ersoy2022))** we showed that foraging
+In **Ersoy et al. ([2022](#ref-ersoy2022))**, we showed that foraging
 tactics and diet are associated with the personality trait ‘exploration’
 independent of morphological differences. WATLAS was used to locate
 tagged individuals on mudflats for detailed behavioural observations.
@@ -233,6 +233,11 @@ Bulla, M., Oudman, T., Bijleveld, A. I., Piersma, T., & Kyriacou, C. P.
 (2017). **Marine biorhythms: Bridging chronobiology and ecology**.
 *Philosophical Transactions of the Royal Society B: Biological
 Sciences*, *372*(1734). <https://doi.org/10.1098/rstb.2016.0253>
+
+Danielson-Owczynsky, H., Bijleveld, A. I., Nathan, R., Toledo, S., &
+Bom, R. A. (2026). **Time-stressed bar-tailed godwits exploit novel prey
+during migratory fuelling**. *Ibis*, *n/a*, n/a.
+<https://doi.org/10.1111/ibi.70075>
 
 Ersoy, S. (2022). ***Exploration in red knots: The role of personality
 in the expression of individual behaviour across contexts*** \[Thesis\].
