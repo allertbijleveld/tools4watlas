@@ -77,10 +77,10 @@ We are interested whether shorebirds select mudflat habitat where they can maxim
 
 In **Penning et al. (in prep)**, we show that Sanderling select intertidal mudflats that contain the highest densities of Brown Shrimp. Because of tag weight constraints and Sanderling being so small, this is the first time ever that Sanderling have been tracked at such high spatiotemporal resolution. 
 
-In **Danielson-Owczynsky et al. (in prep)**, we show that Bar-tailed Godwits select areas where they their preferred prey are most abundant. For long-billed females these were areas with high densities of Lugworms and Ragworms, which live deeper in the sediment. Males with shorter bills, however, almost exclusively consumed and selected areas with high densities of Mud Shrimp that live more superficially on the mudflats. The latter, that fuelling Bar-tailed godwits forage primarily on Mud Shrimp, has not been documented before.
+In **@DanielsonOwczynsky2026**, we show that Bar-tailed Godwits select areas where they their preferred prey are most abundant. For long-billed females these were areas with high densities of Lugworms and Ragworms, which live deeper in the sediment. Males with shorter bills, however, almost exclusively consumed and selected areas with high densities of Mud Shrimp that live more superficially on the mudflats. The latter, that fuelling Bar-tailed godwits forage primarily on Mud Shrimp, has not been documented before.
 
 #### Individual variation
-In **@ersoy2022** we showed that foraging tactics and diet are associated with the personality trait 'exploration' independent of morphological differences. WATLAS was used to locate tagged individuals on mudflats for detailed behavioural observations.  
+In **@ersoy2022**, we showed that foraging tactics and diet are associated with the personality trait 'exploration' independent of morphological differences. WATLAS was used to locate tagged individuals on mudflats for detailed behavioural observations.  
 
 Following this result, in **@ersoy2024**, we studied the development of consistency in behaviour and found that juvenile red knots had a more diverse diet than adults and had less consistent personalites. We discuss a pathway how early foraging experiences could shape development of exploratory personalities. WATLAS was used to show how juvenile red knots differed in habitat use, which is presented in the appendix. 
 
