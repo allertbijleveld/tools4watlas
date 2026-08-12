@@ -45,6 +45,7 @@ chunk of code only requires this chunk with loading the data to be run
 before and is otherwise independent.
 
 ``` r
+
 # packages
 library(tools4watlas)
 library(data.table)
@@ -54,6 +55,7 @@ library(sf)
     ## Warning: package 'sf' was built under R version 4.5.3
 
 ``` r
+
 library(ggplot2)
 library(scattermore)
 library(scales)
@@ -65,6 +67,7 @@ library(viridis)
 Create dummy tracks of 300 individuals for 1000 steps (3000.000 points).
 
 ``` r
+
 # set seed for reproducibility
 set.seed(123)
 
@@ -110,6 +113,7 @@ bm <- atl_create_bm(data, buffer = 3000)
 ## `ggplot2` standard
 
 ``` r
+
 # start time
 st <- Sys.time()
 
@@ -130,6 +134,7 @@ bm +
 tracks](plot_data_faster_files/figure-html/unnamed-chunk-3-1.png)
 
 ``` r
+
 # run time
 round(Sys.time() - st, 2)
 ```
@@ -139,6 +144,7 @@ round(Sys.time() - st, 2)
 ## `ggplot2` with points as pch = “.”
 
 ``` r
+
 # start time
 st <- Sys.time()
 
@@ -159,6 +165,7 @@ bm +
 tracks](plot_data_faster_files/figure-html/unnamed-chunk-4-1.png)
 
 ``` r
+
 # run time
 round(Sys.time() - st, 2)
 ```
@@ -168,6 +175,7 @@ round(Sys.time() - st, 2)
 ## `ggplot2` with points as geom_scattermore()
 
 ``` r
+
 # start time
 st <- Sys.time()
 
@@ -188,6 +196,7 @@ bm +
 tracks](plot_data_faster_files/figure-html/unnamed-chunk-5-1.png)
 
 ``` r
+
 # run time
 round(Sys.time() - st, 2)
 ```
@@ -199,6 +208,7 @@ round(Sys.time() - st, 2)
 The larger the grid cell size, the faster.
 
 ``` r
+
 # round data to 1 ha (100x100 meter) grid cells
 data[, c("x_round", "y_round") := list(
   plyr::round_any(x, 100),
@@ -229,6 +239,7 @@ bm +
 map](plot_data_faster_files/figure-html/unnamed-chunk-6-1.png)
 
 ``` r
+
 # run time
 round(Sys.time() - st, 2)
 ```
@@ -240,6 +251,7 @@ round(Sys.time() - st, 2)
 Example to save a png in 16:9 and 4 k.
 
 ``` r
+
 # example plot
 p <- atl_create_bm(buffer = 5000)
 

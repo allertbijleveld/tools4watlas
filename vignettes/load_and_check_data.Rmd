@@ -76,6 +76,7 @@ to <- "2023-09-25 00:00:00"
 
 First, the path and file name of the local SQLite database needs to be provided. Then, a connection to the database can be established, and the database can be queried for the selected tags and period. Here, we will load the selected tagging data in a `data.table` object.
 
+The data for each year are located on the network drive `zeus`. With the necessary permission (from Allert and IT), the data can be directly accessed from the network drive (e.g. for 2023: `sqlite_db <- "//zeus/cos/birds/bijleveld/fieldwork/WATLAS/localizations/watlas-2023.sqlite"`). However, transferring data over a network drive is slow, so for larger amounts of data it is recommended to first copy the database to the local PC.
 
 ```{r}
 # establish database connection
