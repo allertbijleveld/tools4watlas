@@ -2,7 +2,7 @@
 
 Returns additional columns for incoming and outcoming speed to the
 data.table. Speed in metres per time interval. The time interval is
-dependent on the units of the column specified in `TIME`.
+dependent on the units of the column specified in `time`.
 
 ## Usage
 
@@ -49,6 +49,19 @@ atl_get_speed(
 ## Value
 
 Data.table changed in place with additional speed columns
+
+## Details
+
+Derived from `atlastools::atl_get_speed()` in the atlastools package
+(Gupte et al., 2022), licensed under GPL-3.
+
+## References
+
+Gupte, P. R., Beardsworth, C. E., Spiegel, O., Lourie, E., Toledo, S.,
+Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
+high-throughput animal tracking data. *Journal of Animal Ecology*, 91,
+287-307.
+[doi:10.1111/1365-2656.13610](https://doi.org/10.1111/1365-2656.13610)
 
 ## Author
 

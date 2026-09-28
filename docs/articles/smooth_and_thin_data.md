@@ -52,7 +52,8 @@ data <- atl_get_speed(data, type = c("in", "out"))
 
 #### Look at the data
 
-This plot just shows one example of a raw and median smooted track.
+This plot shows one example of a raw (black) and median smoothed (red)
+track.
 
 ``` r
 
@@ -106,7 +107,7 @@ fwrite(
 ## Thin data
 
 Depending on the desired analysis, it might make sense to thin data,
-either by aggregation or by subsampling. Both methods return fixed time
+either by aggregation or by sub-sampling. Both methods return fixed time
 steps (depending on the interval).
 
 ### By aggregation

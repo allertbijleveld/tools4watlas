@@ -53,6 +53,10 @@ atl_transform_dt(
 A `data.table` identical to the input but with two new columns
 containing the transformed coordinates.
 
+## Author
+
+Johannes Krietsch
+
 ## Examples
 
 ``` r

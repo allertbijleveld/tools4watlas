@@ -216,8 +216,6 @@ Functions to load data from SQLlite or remote SQL database
   : Summary of position data
 - [`atl_format_time()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_format_time.md)
   : Format time in easy readable interval
-- [`atl_check_data()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_check_data.md)
-  : Check data has required columns
 - [`atl_full_tag_id()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_full_tag_id.md)
   : Create full tag ID or tag ID with specific length
 - [`atl_file_path()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.md)
@@ -260,8 +258,6 @@ Functions to calculate residence patches
 
 - [`atl_res_patch()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_res_patch.md)
   : Construct residence patches from position data
-- [`atl_patch_dist()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_patch_dist.md)
-  : Get the distance between patches
 - [`atl_res_patch_summary()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_res_patch_summary.md)
   : Summary of patch data
 - [`atl_check_res_patch()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_check_res_patch.md)

@@ -300,10 +300,65 @@ ggplot(data = data[!is.na(speed_in) & speed_in > 5 & speed_in < 100]) +
   theme_bw()
 ```
 
-![Histogram of speed moved from all
-data](filter_data_files/figure-html/unnamed-chunk-7-1.png)
+![Histogram of flight speed in the full
+dataset](filter_data_files/figure-html/unnamed-chunk-7-1.png)
 
-Histogram of speed moved from all data
+Histogram of flight speed in the full dataset
+
+Look at outliers in detail. This loop with create a single plot for all
+outliers and 15 positions before and after it. (Not run here, adapt
+output path as desired)
+
+``` r
+
+# assign outlier column
+data[speed_in > 35] |> nrow()
+data[, outlier := speed_in > 35]
+
+# file path
+path <- "./outputs/checks/speed_outliers/"
+
+# unique ID combinations
+idc <- unique(data[outlier == TRUE, c("species", "tag", "posID")])
+
+# packages
+library(foreach)
+library(doFuture)
+
+# register cores and backend for parallel processing
+registerDoFuture()
+plan(multisession)
+
+# loop to make plots for all
+foreach(i = seq_len(nrow(idc))) %dofuture% {
+
+  # subset data
+  data_subset <- data[
+    unique(rep(
+      which(data$tag == idc$tag[i] & data$posID == idc$posID[i]), each = 31L
+    ) + -15:15)
+  ]
+
+  # plot and save data
+  atl_check_tag(
+    data_subset,
+    option = "speed_in", point_size = 3, path_linewidth = 1, path_alpha = 0.5,
+    highlight_first = TRUE, highlight_last = TRUE, highlight_outliers = TRUE,
+    filename = paste0(
+      path, idc$species[i], "_tag_", idc$tag[i], "_posID_", idc$posID[i]
+    )
+  )
+
+}
+
+# close parallel workers
+plan(sequential)
+
+# remove outlier column
+data[, outlier := NULL]
+```
+
+Filter out speeds above the threshold.
 
 ``` r
 

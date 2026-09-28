@@ -66,6 +66,19 @@ atl_res_patch(
 A data.table that has the added column `patch` as character indicating
 the patch ID.
 
+## Details
+
+Derived from `atlastools::atl_res_patch()` in the atlastools package
+(Gupte et al., 2022), licensed under GPL-3.
+
+## References
+
+Gupte, P. R., Beardsworth, C. E., Spiegel, O., Lourie, E., Toledo, S.,
+Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
+high-throughput animal tracking data. *Journal of Animal Ecology*, 91,
+287-307.
+[doi:10.1111/1365-2656.13610](https://doi.org/10.1111/1365-2656.13610)
+
 ## Author
 
 Pratik R. Gupte, Christine E. Beardsworth, Allert I. Bijleveld &

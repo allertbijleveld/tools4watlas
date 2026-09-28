@@ -51,6 +51,19 @@ A data.table class object (extends data.frame), including X,Y as
 smoothed coordinates and the x_raw and y_raw, which are the raw
 coordinates.
 
+## Details
+
+Derived from `atlastools::atl_median_smooth()` in the atlastools package
+(Gupte et al., 2022), licensed under GPL-3.
+
+## References
+
+Gupte, P. R., Beardsworth, C. E., Spiegel, O., Lourie, E., Toledo, S.,
+Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
+high-throughput animal tracking data. *Journal of Animal Ecology*, 91,
+287-307.
+[doi:10.1111/1365-2656.13610](https://doi.org/10.1111/1365-2656.13610)
+
 ## Author
 
 Pratik Gupte & Allert Bijleveld & Johannes Krietsch
