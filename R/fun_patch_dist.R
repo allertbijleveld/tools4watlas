@@ -35,8 +35,7 @@
 #' )
 #' }
 #'
-#' @export
-#'
+#' @noRd
 atl_patch_dist <- function(data,
                            x1 = "x_end",
                            x2 = "x_start",

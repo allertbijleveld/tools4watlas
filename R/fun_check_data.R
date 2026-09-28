@@ -19,7 +19,7 @@
 #' }
 #'
 #' @return None. Breaks if the data does not have required columns.
-#' @export
+#' @noRd
 atl_check_data <- function(data,
                            names_expected = c("x", "y", "time")) {
   # get the column names
