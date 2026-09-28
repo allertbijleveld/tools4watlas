@@ -207,7 +207,13 @@ data_v2 <- atl_res_patch(
 
 # change summary
 change_summary <- atl_compare_res_patch_summary(data_v1, data_v2)
-#> Error in atl_compare_res_patch_summary(data_v1, data_v2): could not find function "atl_compare_res_patch_summary"
+#> === Patch changes summary ===
+#> Lost    (v1 patches gone in v2) : 0 
+#> Gained  (new patches in v2)     : 0 
+#> 
+#> Splits  (one v1 -> multiple v2): 0 
+#> Merges  (multiple v1 -> one v2): 1 
+#> 
 
 # plot specific change
 i <- 1
@@ -220,7 +226,7 @@ atl_compare_res_patch_plot(
   patch_v1 = change_summary$patch_v1[i],
   patch_v2 = change_summary$patch_v2[i]
 )
-#> Error in atl_compare_res_patch_plot(data_v1 = data_v1, data_v2 = data_v2,     tag = change_summary$tag[i], change = change_summary$change[i],     patch_v1 = change_summary$patch_v1[i], patch_v2 = change_summary$patch_v2[i]): could not find function "atl_compare_res_patch_plot"
+
 
 # plot all changes in loop
 # for many changes, it makes sense to set a filename to save the plots
@@ -234,5 +240,7 @@ foreach(i = 1:nrow(change_summary)) %do% {
     patch_v2 = change_summary$patch_v2[i]
   )
 }
-#> Error in eval(a, envir = extra, enclos = obj$evalenv): object 'change_summary' not found
+#> [[1]]
+
+#> 
 ```

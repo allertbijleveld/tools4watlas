@@ -10,12 +10,6 @@ bathymetry.
 
 library(tools4watlas)
 library(terra)
-```
-
-    ## Warning: package 'terra' was built under R version 4.5.3
-
-``` r
-
 library(ggplot2)
 
 # path to csv with aggregated data

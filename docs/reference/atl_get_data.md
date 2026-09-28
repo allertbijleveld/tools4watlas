@@ -83,18 +83,18 @@ atl_get_data(
 ## Value
 
 A data.table of positions of the specified tag, filtered between the
-start and end times.  
-posID = Unique number for positions  
-tag = 4 digit tag number (character)  
-time = UNIX time (seconds)  
-datetime = Timestamp in POSIXct (UTC)  
-x = x-ccordinates in meters (UTM 31 N)  
-y = y-ccordinates in meters (UTM 31 N)  
+start and end times.\
+posID = Unique number for positions\
+tag = 4 digit tag number (character)\
+time = UNIX time (seconds)\
+datetime = Timestamp in POSIXct (UTC)\
+x = x-ccordinates in meters (UTM 31 N)\
+y = y-ccordinates in meters (UTM 31 N)\
 nbs = Number of Base Stations (receivers) used in calculating
-coordinates  
-varx = Variance in estimating x-coordinates  
-vary = Variance in estimating y-coordinates  
-covxy = Co-variance between y- and y-coordinates  
+coordinates\
+varx = Variance in estimating x-coordinates\
+vary = Variance in estimating y-coordinates\
+covxy = Co-variance between y- and y-coordinates\
 
 ## Author
 

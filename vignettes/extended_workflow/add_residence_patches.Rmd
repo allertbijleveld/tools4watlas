@@ -380,10 +380,10 @@ data_rating[, rating := factor(rating, levels = rating_levels)]
 
 # plot results
 make_plot <- function(data, x_lab) {
-  ggplot(data, aes(x = score, y = pct, fill = rating)) +
+  ggplot(data, aes(x = .data$score, y = .data$pct, fill = .data$rating)) +
     geom_bar(stat = "identity") +
     geom_text(
-      aes(label = paste0(pct, "%")),
+      aes(label = paste0(.data$pct, "%")),
       position = position_stack(vjust = 0.5),
       size = 3
     ) +

@@ -18,7 +18,7 @@ template:
 
 navbar:
   structure:
-    left:  [home, reference, articles, research_and_publications]
+    left:  [home, reference, articles, news, research_and_publications]
     right: [search, github]
   components:
     articles:
@@ -74,7 +74,6 @@ reference:
      - atl_get_data
      - atl_summary
      - atl_format_time
-     - atl_check_data
      - atl_full_tag_id
      - atl_file_path
   - title: "Filter data"
@@ -98,7 +97,6 @@ reference:
     desc: "Functions to calculate residence patches"
     contents:
      - atl_res_patch
-     - atl_patch_dist
      - atl_res_patch_summary
      - atl_check_res_patch
      - atl_compare_res_patch_summary

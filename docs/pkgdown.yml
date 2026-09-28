@@ -1,4 +1,4 @@
-pandoc: 3.6.3
+pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
@@ -19,7 +19,7 @@ articles:
   visualization_tutorials/plot_data_interactively: visualization_tutorials/plot_data_interactively.html
   research_and_publications/research_and_publications: research_and_publications/research_and_publications.html
   smooth_and_thin_data: smooth_and_thin_data.html
-last_built: 2026-04-14T10:56Z
+last_built: 2026-08-21T13:46Z
 urls:
   reference: https://allertbijleveld.github.io/tools4watlas/reference
   article: https://allertbijleveld.github.io/tools4watlas/articles
