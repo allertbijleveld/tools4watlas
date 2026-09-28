@@ -5,8 +5,16 @@
 #' ranges, or by an \code{sf-POLYGON} object.
 #' \code{MULTIPOLYGON} objects are supported by the internal function
 #' \code{atl_within_polygon}.
+#' 
+#' Derived from `atlastools::atl_filter_bounds()` in the \pkg{atlastools}
+#' package (Gupte et al., 2022), licensed under GPL-3.
 #'
 #' @author Pratik R. Gupte and Johannes Krietsch
+#' @references
+#' Gupte, P. R., Beardsworth, C. E., Spiegel, O., Lourie, E., Toledo, S.,
+#' Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
+#' high-throughput animal tracking data. *Journal of Animal Ecology*, 91,
+#' 287-307. \doi{10.1111/1365-2656.13610}
 #' @param data A `data.table` or extension which contains x- and y-coordinates.
 #' @param x The x coordinate column.
 #' @param y The y coordinate column.

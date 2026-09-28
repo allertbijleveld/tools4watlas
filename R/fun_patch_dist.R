@@ -5,7 +5,15 @@
 #' Distance is returned in metres.
 #' This function is used internally by other functions, and rarely on its own.
 #'
+#' Derived from `atlastools::atl_patch_dist()` in the \pkg{atlastools}
+#' package (Gupte et al., 2022), licensed under GPL-3.
+#'
 #' @author Pratik R. Gupte
+#' @references
+#' Gupte, P. R., Beardsworth, C. E., Spiegel, O., Lourie, E., Toledo, S.,
+#' Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
+#' high-throughput animal tracking data. *Journal of Animal Ecology*, 91,
+#' 287-307. \doi{10.1111/1365-2656.13610}
 #' @param data A dataframe of or extending the class data.frame, such as a
 #' data.table.
 #' This must contain two pairs of coordinates, the start and end X and Y

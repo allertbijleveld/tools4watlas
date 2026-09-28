@@ -53,3 +53,6 @@ data <- atl_transform_dt(data)
 # check data
 data[, .(tag, datetime, x, y, x_4326, y_4326)]
 }
+\author{
+Johannes Krietsch
+}

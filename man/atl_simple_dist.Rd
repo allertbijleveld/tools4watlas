@@ -26,6 +26,10 @@ Returns a vector of distances between consecutive points.
 Gets the euclidean distance between consecutive localization in a coordinate
 reference system in metres, i.e., UTM systems.
 }
+\details{
+Derived from \code{atlastools::atl_simple_dist()} in the \pkg{atlastools}
+package (Gupte et al., 2022), licensed under GPL-3.
+}
 \examples{
 # packages
 library(tools4watlas)
@@ -38,6 +42,12 @@ data[, dist := atl_simple_dist(data, x = "x", y = "y", lag = 1)]
 
 # check data
 data[, .(tag, datetime, x, y, dist)]
+}
+\references{
+Gupte, P. R., Beardsworth, C. E., Spiegel, O., Lourie, E., Toledo, S.,
+Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
+high-throughput animal tracking data. \emph{Journal of Animal Ecology}, 91,
+287-307. \doi{10.1111/1365-2656.13610}
 }
 \author{
 Pratik R. Gupte, Allert Bijleveld & Johannes Krietsch

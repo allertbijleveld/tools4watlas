@@ -35,7 +35,11 @@ Data.table changed in place with additional speed columns
 \description{
 Returns additional columns for incoming and outcoming speed to the
 data.table. Speed in metres per time interval. The time interval is dependent
-on the units of the column specified in \code{TIME}.
+on the units of the column specified in \code{time}.
+}
+\details{
+Derived from \code{atlastools::atl_get_speed()} in the \pkg{atlastools}
+package (Gupte et al., 2022), licensed under GPL-3.
 }
 \examples{
 # packages
@@ -58,6 +62,12 @@ data <- atl_get_speed(data,
 
 # check data
 data[, .(tag, datetime, x, y, speed_in, speed_out)]
+}
+\references{
+Gupte, P. R., Beardsworth, C. E., Spiegel, O., Lourie, E., Toledo, S.,
+Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
+high-throughput animal tracking data. \emph{Journal of Animal Ecology}, 91,
+287-307. \doi{10.1111/1365-2656.13610}
 }
 \author{
 Pratik R. Gupte, Allert Bijleveld & Johannes Krietsch

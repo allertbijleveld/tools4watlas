@@ -2,9 +2,17 @@
 #'
 #' Returns additional columns for incoming and outcoming speed to the
 #' data.table. Speed in metres per time interval. The time interval is dependent
-#' on the units of the column specified in \code{TIME}.
+#' on the units of the column specified in \code{time}.
+#' 
+#' Derived from `atlastools::atl_get_speed()` in the \pkg{atlastools}
+#' package (Gupte et al., 2022), licensed under GPL-3.
 #'
 #' @author Pratik R. Gupte, Allert Bijleveld & Johannes Krietsch
+#' @references
+#' Gupte, P. R., Beardsworth, C. E., Spiegel, O., Lourie, E., Toledo, S.,
+#' Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
+#' high-throughput animal tracking data. *Journal of Animal Ecology*, 91,
+#' 287-307. \doi{10.1111/1365-2656.13610}
 #' @param data A dataframe or similar which must have the columns
 #' specified by \code{x}, \code{y}, and \code{time}.
 #' @param tag The tag ID.

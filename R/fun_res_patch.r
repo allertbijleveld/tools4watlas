@@ -18,8 +18,16 @@
 #' \code{min_fixes} in this bout, then the patch will be split. If there are
 #' less, we assume this to be single outliers and only assign no patch ID
 #'
+#' Derived from `atlastools::atl_res_patch()` in the \pkg{atlastools}
+#' package (Gupte et al., 2022), licensed under GPL-3.
+#'
 #' @author Pratik R. Gupte, Christine E. Beardsworth, Allert I. Bijleveld &
 #' Johannes Krietsch
+#' @references
+#' Gupte, P. R., Beardsworth, C. E., Spiegel, O., Lourie, E., Toledo, S.,
+#' Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
+#' high-throughput animal tracking data. *Journal of Animal Ecology*, 91,
+#' 287-307. \doi{10.1111/1365-2656.13610}
 #' @param data A dataframe of any class that is or extends data.frame of one
 #' individual only. The dataframe must contain at least two spatial coordinates,
 #' \code{x} and \code{y}, and a temporal coordinate, \code{time}.

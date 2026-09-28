@@ -53,6 +53,10 @@ first and last point of the aggregation interval are from the same patch,
 this position will be assigned to the patch. With thinning the patch ID
 stays as it is for this position.
 }
+\details{
+Derived from \code{atlastools::atl_thin_data()} in the \pkg{atlastools}
+package (Gupte et al., 2022), licensed under GPL-3.
+}
 \examples{
 library(data.table)
 
@@ -84,6 +88,12 @@ thinned_subsampled <- atl_thin_data(
 # View results
 print(thinned_aggregated)
 print(thinned_subsampled)
+}
+\references{
+Gupte, P. R., Beardsworth, C. E., Spiegel, O., Lourie, E., Toledo, S.,
+Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
+high-throughput animal tracking data. \emph{Journal of Animal Ecology}, 91,
+287-307. \doi{10.1111/1365-2656.13610}
 }
 \author{
 Pratik Gupte & Allert Bijleveld & Johannes Krietsch

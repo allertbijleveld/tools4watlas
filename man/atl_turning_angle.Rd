@@ -31,6 +31,10 @@ Adds the column \code{angle} to a \code{data.table} with tracking data.
 Note that with smoothed data NaN values may occur (when subsequent
 localizations are at the same place).
 }
+\details{
+Derived from \code{atlastools::atl_turning_angle()} in the \pkg{atlastools}
+package (Gupte et al., 2022), licensed under GPL-3.
+}
 \examples{
 # packages
 library(tools4watlas)
@@ -46,6 +50,12 @@ data <- atl_turning_angle(
 
 # check data
 data[, .(tag, datetime, x, y, angle)]
+}
+\references{
+Gupte, P. R., Beardsworth, C. E., Spiegel, O., Lourie, E., Toledo, S.,
+Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
+high-throughput animal tracking data. \emph{Journal of Animal Ecology}, 91,
+287-307. \doi{10.1111/1365-2656.13610}
 }
 \author{
 Pratik R. Gupte, Allert Bijleveld & Johannes Krietsch

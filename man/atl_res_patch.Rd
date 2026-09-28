@@ -57,6 +57,10 @@ first position of the next proto-patch). If there are more than
 \code{min_fixes} in this bout, then the patch will be split. If there are
 less, we assume this to be single outliers and only assign no patch ID
 }
+\details{
+Derived from \code{atlastools::atl_res_patch()} in the \pkg{atlastools}
+package (Gupte et al., 2022), licensed under GPL-3.
+}
 \examples{
 # packages
 library(tools4watlas)
@@ -74,6 +78,12 @@ data <- atl_res_patch(
 # summary of residence patches
 data_summary <- atl_res_patch_summary(data)
 data_summary
+}
+\references{
+Gupte, P. R., Beardsworth, C. E., Spiegel, O., Lourie, E., Toledo, S.,
+Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
+high-throughput animal tracking data. \emph{Journal of Animal Ecology}, 91,
+287-307. \doi{10.1111/1365-2656.13610}
 }
 \author{
 Pratik R. Gupte, Christine E. Beardsworth, Allert I. Bijleveld &

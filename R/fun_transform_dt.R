@@ -6,6 +6,7 @@
 #' suffixed with the EPSG code of the target CRS (e.g., `x_4326`, `y_4326`).
 #' Original coordinates are preserved.
 #'
+#' @author Johannes Krietsch
 #' @param data A `data.table` containing coordinate columns.
 #' @param x A character string specifying the column with x-coordinates.
 #'   Defaults to `"x"`.
