@@ -228,8 +228,4 @@ atl_check_res_patch(
   tide = "2023513", offset = 30,
   buffer_res_patches = 75 / 2
 )
-#> Coordinate system already present.
-#> ℹ Adding new coordinate system, which will replace the existing one.
-#> Coordinate system already present.
-#> ℹ Adding new coordinate system, which will replace the existing one.
 ```

@@ -76,7 +76,7 @@ atl_res_patch_summary <- function(data,
   x <- y <- tag <- .  <- patch <- disp_in_patch <- median <- NULL
   time_end <- time_start <- i.dist_in_patch <- time <- NULL # nolint
   x_end <- x_start <- y_end <- y_start <- time_bw_patch <- NULL
-  dist_start_end <- time_mean <- time_median <- species <- NULL
+  dist_start_end <- time_mean <- time_median <- NULL
 
   # Validate input
   assertthat::assert_that(is.data.frame(data),
@@ -95,7 +95,7 @@ atl_res_patch_summary <- function(data,
 
   # Exclude NA
   d <- data[!is.na(patch)]
-  
+
   # Determine grouping variables
   by_vars <- if ("species" %in% names(d)) {
     c("species", "tag", "patch")

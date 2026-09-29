@@ -1,4 +1,7 @@
-linters: linters_with_defaults(cyclocomp_linter(complexity_limit = 25L))
+linters: linters_with_defaults(
+    cyclocomp_linter(complexity_limit = 25L),
+    brace_linter = NULL
+  )
 encoding: "UTF-8"
 exclusions: list(
     "R/fun_auxiliary.r",

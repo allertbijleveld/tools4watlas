@@ -3,6 +3,7 @@
 This vignette shows how to smooth and thin WATLAS data.
 
 ``` r
+
 # Packages
 library(tools4watlas)
 library(ggplot2)
@@ -26,6 +27,7 @@ calculates the median coordinates within a window of positions set by
 `moving window`.
 
 ``` r
+
 # Smooth the data
 data <- atl_median_smooth(data, moving_window = 5)
 ```
@@ -43,15 +45,18 @@ Note: the distance between median smoothed positions can be 0 and
 therefore will produce NAs and a warning
 
 ``` r
+
 # Recalculate speed
 data <- atl_get_speed(data, type = c("in", "out"))
 ```
 
 #### Look at the data
 
-This plot just shows one example of a raw and median smooted track.
+This plot shows one example of a raw (black) and median smoothed (red)
+track.
 
 ``` r
+
 # subset first tag
 data_subset <- data[tag == data[1]$tag]
 
@@ -91,6 +96,7 @@ Smoothed track (black) on top of raw track (red)
 ## Save data for the next steps
 
 ``` r
+
 # Save data
 fwrite(
   data,
@@ -101,7 +107,7 @@ fwrite(
 ## Thin data
 
 Depending on the desired analysis, it might make sense to thin data,
-either by aggregation or by subsampling. Both methods return fixed time
+either by aggregation or by sub-sampling. Both methods return fixed time
 steps (depending on the interval).
 
 ### By aggregation
@@ -112,6 +118,7 @@ position. Time and datetime are returned rounded down to the desired
 interval (in seconds).
 
 ``` r
+
 # Thin the data by aggregation with a 60-second interval
 thinned_aggregated <- atl_thin_data(
   data = data,
@@ -140,6 +147,7 @@ Returns the first position for each time step. The column `n_subsampled`
 shows from how many positions this position was sampled.
 
 ``` r
+
 # Thin the data by subsampling with a 60-second interval
 thinned_subsampled <- atl_thin_data(
   data = data,

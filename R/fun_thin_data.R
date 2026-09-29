@@ -25,7 +25,15 @@
 #' this position will be assigned to the patch. With thinning the patch ID
 #' stays as it is for this position.
 #'
+#' Derived from `atlastools::atl_thin_data()` in the \pkg{atlastools}
+#' package (Gupte et al., 2022), licensed under GPL-3.
+#'
 #' @author Pratik Gupte & Allert Bijleveld & Johannes Krietsch
+#' @references
+#' Gupte, P. R., Beardsworth, C. E., Spiegel, O., Lourie, E., Toledo, S.,
+#' Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
+#' high-throughput animal tracking data. *Journal of Animal Ecology*, 91,
+#' 287-307. \doi{10.1111/1365-2656.13610}
 #' @param data Tracking data to aggregate. Must have columns \code{x} and
 #' \code{y}, and a numeric column named \code{time}, as well as \code{datetime}.
 #' @param interval The interval in seconds over which to aggregate.

@@ -12,6 +12,7 @@ saving the data, but extracting and processing large datasets can take a
 long time. Here, we work with the previously saved example data.
 
 ``` r
+
 # packages
 library(tools4watlas)
 library(lubridate)
@@ -40,6 +41,7 @@ data fall within the specified bounding box, so no data will be filtered
 out.
 
 ``` r
+
 # start with a location central to the area of interest
 griend_east <- st_sfc(st_point(c(5.275, 53.2523)), crs = st_crs(4326)) |>
   st_transform(crs = st_crs(32631))
@@ -90,6 +92,7 @@ bm +
 Heatmap of all positions with bounding box (red)
 
 ``` r
+
 # remove rounded coordinates columns that were needed for making the heatmap
 data[, c("x_round", "y_round") := NULL]
 
@@ -111,6 +114,7 @@ removed. This can be done like shown here (code not run as nothing was
 removed in our example).
 
 ``` r
+
 # check what was removed
 data_removed <- atl_filter_bounds(
   data = data,
@@ -146,6 +150,7 @@ In this example we assign a new column logic column with
 Griend.
 
 ``` r
+
 # assign positions within the polygon of Grienderwaard
 data <- atl_within_polygon(
   data, polygon = grienderwaard, col_name = "on_grienderwaard"
@@ -196,6 +201,7 @@ exclude tags with less than 100 positions, but note that none of the
 birds in the example data is actually filtered out.
 
 ``` r
+
 # load meta data
 all_tags_path <- system.file(
   "extdata", "tags_watlas_subset.xlsx", package = "tools4watlas"
@@ -250,6 +256,7 @@ quality by [median
 smoothing](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html#median-smooth-data).
 
 ``` r
+
 # filter on the variance of the estimated X- and Y-coordinates
 var_max <- 5000 # in meters squared
 
@@ -282,6 +289,7 @@ Remaining erroneous positions can be filter out by smoothing the data
 smoothing](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html#median-smooth-data)).
 
 ``` r
+
 # calculate speed
 data <- atl_get_speed(data, type = c("in", "out"))
 
@@ -292,12 +300,68 @@ ggplot(data = data[!is.na(speed_in) & speed_in > 5 & speed_in < 100]) +
   theme_bw()
 ```
 
-![Histogram of speed moved from all
-data](filter_data_files/figure-html/unnamed-chunk-7-1.png)
+![Histogram of flight speed in the full
+dataset](filter_data_files/figure-html/unnamed-chunk-7-1.png)
 
-Histogram of speed moved from all data
+Histogram of flight speed in the full dataset
+
+Look at outliers in detail. This loop with create a single plot for all
+outliers and 15 positions before and after it. (Not run here, adapt
+output path as desired)
 
 ``` r
+
+# assign outlier column
+data[speed_in > 35] |> nrow()
+data[, outlier := speed_in > 35]
+
+# file path
+path <- "./outputs/checks/speed_outliers/"
+
+# unique ID combinations
+idc <- unique(data[outlier == TRUE, c("species", "tag", "posID")])
+
+# packages
+library(foreach)
+library(doFuture)
+
+# register cores and backend for parallel processing
+registerDoFuture()
+plan(multisession)
+
+# loop to make plots for all
+foreach(i = seq_len(nrow(idc))) %dofuture% {
+
+  # subset data
+  data_subset <- data[
+    unique(rep(
+      which(data$tag == idc$tag[i] & data$posID == idc$posID[i]), each = 31L
+    ) + -15:15)
+  ]
+
+  # plot and save data
+  atl_check_tag(
+    data_subset,
+    option = "speed_in", point_size = 3, path_linewidth = 1, path_alpha = 0.5,
+    highlight_first = TRUE, highlight_last = TRUE, highlight_outliers = TRUE,
+    filename = paste0(
+      path, idc$species[i], "_tag_", idc$tag[i], "_posID_", idc$posID[i]
+    )
+  )
+
+}
+
+# close parallel workers
+plan(sequential)
+
+# remove outlier column
+data[, outlier := NULL]
+```
+
+Filter out speeds above the threshold.
+
+``` r
+
 # filter by speed
 speed_max <- 35 # m/s (126 km/h)
 
@@ -313,6 +377,7 @@ data <- atl_filter_covariates(
     ## Note: 0.36% of the dataset was filtered out, corresponding to 315 positions.
 
 ``` r
+
 # recalculate speed
 data <- atl_get_speed(data, type = c("in", "out"))
 ```
@@ -320,6 +385,7 @@ data <- atl_get_speed(data, type = c("in", "out"))
 ## Save the filtered data for the next steps
 
 ``` r
+
 # save data
 fwrite(data, file = "../inst/extdata/watlas_data_filtered.csv", yaml = TRUE)
 ```

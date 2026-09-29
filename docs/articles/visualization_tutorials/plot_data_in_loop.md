@@ -11,6 +11,7 @@ though them.
 ## Load packages
 
 ``` r
+
 # packages
 library(tools4watlas)
 library(ggplot2)
@@ -24,6 +25,7 @@ Example of a simple loop by tag ID and using
 [`atl_check_tag()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_check_tag.md).
 
 ``` r
+
 # load example data
 data <- data_example
 
@@ -53,6 +55,7 @@ foreach(i = id) %do% {
 Example to make any type of `ggplot` and save the data with `ragg`.
 
 ``` r
+
 # load example data
 data <- data_example
 
@@ -92,6 +95,7 @@ parallel processing with
 and `plan(multisession)`.
 
 ``` r
+
 # load example data
 data <- data_example
 
@@ -128,6 +132,7 @@ plan(sequential)
 ## Plot and save data in parallel loop by tag ID and tide ID
 
 ``` r
+
 # load example data
 data <- data_example
 

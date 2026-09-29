@@ -75,7 +75,9 @@ atl_compare_res_patch_summary <- function(data_v1, data_v2) {
   atl_check_data(data_v2, names_expected = required_columns)
 
   # comparison table
-  comparison <- data_v1[, .(posID, tag, tideID, datetime, x, y, patch_v1 = patch)]
+  comparison <- data_v1[
+    , .(posID, tag, tideID, datetime, x, y, patch_v1 = patch)
+  ]
   comparison <- merge(
     comparison,
     data_v2[, .(posID, tag, patch_v2 = patch)],

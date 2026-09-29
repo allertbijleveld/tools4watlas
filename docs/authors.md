@@ -22,12 +22,12 @@ Source:
 
 Krietsch J, Bijleveld A (2026). *tools4watlas: An R package for
 processing and visualizing high-throughput tracking data*. R package
-version 2.0, <https://github.com/allertbijleveld/tools4watlas>.
+version 2.0.0, <https://github.com/allertbijleveld/tools4watlas>.
 
     @Manual{,
       title = {tools4watlas: An R package for processing and visualizing high-throughput tracking data},
       author = {Johannes Krietsch and Allert Bijleveld},
       year = {2026},
-      note = {R package version 2.0},
+      note = {R package version 2.0.0},
       url = {https://github.com/allertbijleveld/tools4watlas},
     }

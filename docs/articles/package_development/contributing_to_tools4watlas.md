@@ -29,6 +29,7 @@ repository and [R style](http://adv-r.had.co.nz/Style.md) (see below).
 These are all R packages needed:
 
 ``` r
+
 # packages
 library(devtools)
 library(roxygen2)
@@ -54,6 +55,7 @@ Note that not all code follows this style at the moment (see
 for exclusions), but new code should aim to be consistent with it.
 
 ``` r
+
 # single file
 lintr::lint("./file_name.R")
 
@@ -73,6 +75,7 @@ function, if you’re using RStudio. Optimally, each function has an
 runable example. Once done run:
 
 ``` r
+
 devtools::document()
 ```
 
@@ -89,6 +92,7 @@ coverage details see
 [codecov](https://app.codecov.io/gh/allertbijleveld/tools4watlas).
 
 ``` r
+
 # run tests
 devtools::test()
 
@@ -119,6 +123,7 @@ so not necessary if everything is fine there (but can help when
 debugging).
 
 ``` r
+
 # check if all vignettes build
 devtools::build_vignettes()
 
@@ -134,6 +139,7 @@ articles new (lazy = FALSE), if you did not specify the correct local
 file path.
 
 ``` r
+
 # check if all articles build
 # (only use lazy = FALSE with correct file path to local files)
 pkgdown::build_articles(lazy = TRUE, preview = TRUE)
@@ -158,6 +164,7 @@ sure you have to correct file path in articles that rely on local data.
 added.
 
 ``` r
+
 # build site new without rebuilding all articles
 pkgdown::build_site(lazy = TRUE)
 
@@ -170,6 +177,7 @@ pkgdown::build_site()
 Summarised steps to check before pushing to GitHub.
 
 ``` r
+
 # set working directory (not necessary if R Studio project)
 setwd("C:/Users/..path../tools4watlas")
 

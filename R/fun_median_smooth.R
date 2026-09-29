@@ -2,8 +2,16 @@
 #'
 #' Applies a median smooth defined by a rolling window to the x and y
 #' coordinates of the data, by tag ID
+#' 
+#' Derived from `atlastools::atl_median_smooth()` in the \pkg{atlastools}
+#' package (Gupte et al., 2022), licensed under GPL-3.
 #'
 #' @author Pratik Gupte & Allert Bijleveld & Johannes Krietsch
+#' @references
+#' Gupte, P. R., Beardsworth, C. E., Spiegel, O., Lourie, E., Toledo, S.,
+#' Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
+#' high-throughput animal tracking data. *Journal of Animal Ecology*, 91,
+#' 287-307. \doi{10.1111/1365-2656.13610}
 #' @param data A data.frame or data.table object returned by
 #' \code{atl_get_data}, which should contain the original columns
 #' (particularly tag, x, y, and time).

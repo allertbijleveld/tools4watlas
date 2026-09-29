@@ -92,6 +92,7 @@ Note that access to the tidal data on WATLAS-Teams is required for
 running this code.
 
 ``` r
+
 # packages
 library(tools4watlas)
 library(ggplot2)
@@ -129,6 +130,7 @@ for each tag ID in parallel. The column `patch` is added to the data
 table, which provides the assigned patch ID’s for the positions.
 
 ``` r
+
 # subset relevant columns
 data <- data[, .(species, posID, tag, time, datetime, x, y, tideID)]
 
@@ -190,6 +192,7 @@ correspond to the spatial distance threshold used to merge residence
 patches.
 
 ``` r
+
 atl_check_res_patch(
   data[tag == "3038"],
   tide_data = tidal_pattern, tide_data_highres = measured_water_height,
@@ -205,6 +208,7 @@ It might also be convenient to zoom in on specifc range of residence
 patches, to inspect them in more detail.
 
 ``` r
+
 # set parameters for subsetting data
 tag_id <- "3038"
 tide_id <- "2023513"
@@ -241,6 +245,7 @@ saved in any directory (e.g. `./outputs/res_patch_check/`), which has to
 be created before running the code.
 
 ``` r
+
 # create table with data combinations to plot
 idc <- unique(data[, c("species", "tag", "tideID")])
 
@@ -285,6 +290,7 @@ residence patches by tag and patch ID and merge the desired columns back
 to our full data table.
 
 ``` r
+
 # summary of residence patches
 data_summary <- atl_res_patch_summary(data)
 
@@ -353,6 +359,7 @@ show the full track, the transient (unassigned) positions are plotted in
 grey.
 
 ``` r
+
 # subset red knot
 data_subset <- data[tag == 3038]
 data_summary_subset <- data_summary[tag == 3038]
@@ -383,6 +390,7 @@ positions with the size and colour scaled to their duration (in
 minutes).
 
 ``` r
+
 # plot residence patches itself by duration
 bm +
   geom_point(
@@ -402,6 +410,7 @@ In the third example, we will calculate polygons around the residence
 patches and plot them
 
 ``` r
+
 # make patch character for plotting
 data_subset[, patch := as.character(patch)]
 
@@ -451,6 +460,7 @@ residence patches. The residence patches are coloured by species and
 scaled by duration (in minutes).
 
 ``` r
+
 # create basemap
 bm <- atl_create_bm(data, buffer = 500)
 
@@ -523,6 +533,7 @@ merged when using 4 m/s, so the 3 m/s (left) was rated as “left much
 better”.
 
 ``` r
+
 # load example data
 data <- data_example
 
@@ -550,6 +561,7 @@ change_summary <- atl_compare_res_patch_summary(data_v1, data_v2)
     ## Merges  (multiple v1 -> one v2): 1
 
 ``` r
+
 # plot specific change
 i <- 1
 

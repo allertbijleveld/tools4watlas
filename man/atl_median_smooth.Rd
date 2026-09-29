@@ -37,6 +37,10 @@ smoothed coordinates and the x_raw and y_raw, which are the raw coordinates.
 Applies a median smooth defined by a rolling window to the x and y
 coordinates of the data, by tag ID
 }
+\details{
+Derived from \code{atlastools::atl_median_smooth()} in the \pkg{atlastools}
+package (Gupte et al., 2022), licensed under GPL-3.
+}
 \examples{
 library(tools4watlas)
 library(data.table)
@@ -85,6 +89,12 @@ ggplot() +
   ) +
   theme_bw() +
   facet_wrap(~tag)
+}
+\references{
+Gupte, P. R., Beardsworth, C. E., Spiegel, O., Lourie, E., Toledo, S.,
+Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
+high-throughput animal tracking data. \emph{Journal of Animal Ecology}, 91,
+287-307. \doi{10.1111/1365-2656.13610}
 }
 \author{
 Pratik Gupte & Allert Bijleveld & Johannes Krietsch
