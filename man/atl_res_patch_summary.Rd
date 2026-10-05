@@ -4,7 +4,7 @@
 \alias{atl_res_patch_summary}
 \title{Summary of patch data}
 \usage{
-atl_res_patch_summary(data, summary_variables = c(), summary_functions = c())
+atl_res_patch_summary(data, summary_variables = NULL, summary_functions = NULL)
 }
 \arguments{
 \item{data}{A data.frame or data.table containing movement data. Must include

@@ -40,8 +40,6 @@
 #'   EPSG:4326 on the map.
 #' @return A `ggplot2` object representing the base map with the specified
 #'   settings.
-#' @import ggplot2
-#' @import ggspatial
 #' @export
 #'
 #' @examples
@@ -136,10 +134,10 @@ atl_create_bm_tiles <- function(data = NULL,
 
   # create base map
   bm <- ggplot() +
-    layer_spatial(sat)
+    ggspatial::layer_spatial(sat)
 
   # add scalbar if TRUE
-  if (scalebar == TRUE) {
+  if (scalebar) {
     bm <- bm +
       ggspatial::annotation_scale(
         aes(location = "br"),

@@ -32,7 +32,7 @@
 #' summary <- atl_summary(data, id_columns = c("tag"))
 #' summary
 atl_summary <- function(data,
-                        id_columns = c("tag")) {
+                        id_columns = "tag") {
   # Global variables to suppress notes in data.table
   gap_tmp <- . <- datetime <- max_gap <- min_gap <- max_gap_factor <- NULL
   n_positions <- first_data_sec <- last_data_sec <- fix_rate <- time <- NULL

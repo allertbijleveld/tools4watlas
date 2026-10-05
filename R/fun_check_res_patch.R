@@ -56,10 +56,6 @@
 #' @param png_height Height of saved PNG (default: 2160).
 #'
 #' @return A ggplot object or a saved PNG file.
-#' @import ggplot2 patchwork
-#' @importFrom ggtext element_markdown
-#' @importFrom ragg agg_png
-#' @importFrom grDevices dev.off
 #'
 #' @examples
 #' # packages
@@ -207,10 +203,10 @@ atl_check_res_patch <- function(data,
   ds <- atl_get_speed(ds, type = "in")
 
   # join duration to ds
-  if (!no_patches) {
-    ds[dp, on = .(tag, patch), `:=`(duration = i.duration)]
-  } else {
+  if (no_patches) {
     ds[, duration := 0]
+  } else {
+    ds[dp, on = .(tag, patch), `:=`(duration = i.duration)]
   }
 
   # duration in mins
@@ -441,7 +437,13 @@ atl_check_res_patch <- function(data,
       ) +
       # points coloured by patch (if patches exist) or plain grey
       {
-        if (!no_patches) {
+        if (no_patches) {
+          geom_point(
+            data = ds, aes(duration, time),
+            color = "grey50", size = point_size, alpha = 0.5,
+            show.legend = FALSE
+          )
+        } else {
           list(
             geom_point(
               data = ds, aes(duration, time, color = patch),
@@ -454,12 +456,6 @@ atl_check_res_patch <- function(data,
                   label = patch, colour = patch),
               size = 4, fontface = "bold", show.legend = FALSE
             )
-          )
-        } else {
-          geom_point(
-            data = ds, aes(duration, time),
-            color = "grey50", size = point_size, alpha = 0.5,
-            show.legend = FALSE
           )
         }
       } +

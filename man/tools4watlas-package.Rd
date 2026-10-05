@@ -4,7 +4,7 @@
 \name{tools4watlas-package}
 \alias{tools4watlas}
 \alias{tools4watlas-package}
-\title{tools4watlas: Process and Visualize High-Throughput Animal Tracking Data}
+\title{tools4watlas: Process and Visualise High-Throughput Animal Tracking Data}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 

@@ -30,7 +30,6 @@
 #' \code{patch_v2} contains a comma-separated list of the resulting v2
 #' patch IDs. The function also prints a summary of the number of changes
 #' per category.
-#' @import data.table
 #'
 #' @examples
 #' # packages

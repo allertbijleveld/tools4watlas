@@ -38,6 +38,10 @@ library(lintr)
 library(styler)
 library(testthat)
 library(covr)
+library(goodpractice)
+library(spelling)
+library(urlchecker)
+library(checktor)
 ```
 
 ### Coding style

@@ -4,7 +4,7 @@
 \alias{atl_summary}
 \title{Summary of position data}
 \usage{
-atl_summary(data, id_columns = c("tag"))
+atl_summary(data, id_columns = "tag")
 }
 \arguments{
 \item{data}{A data.table containing position data with columns for

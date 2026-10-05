@@ -22,8 +22,6 @@
 #' @return
 #' A `data.table` identical to the input but with two new columns containing the
 #' transformed coordinates.
-#' @import     data.table
-#' @importFrom sf st_as_sf st_transform st_coordinates
 #' @export
 #'
 #' @examples

@@ -65,12 +65,6 @@
 #' @return A `ggplot2` object with the specified option and adjustments. If
 #'   `filename` is provided, the plot is saved as a `.png` file instead of
 #'   being returned.
-#' @import ggplot2
-#' @import ggspatial
-#' @import scales
-#' @importFrom viridis scale_colour_viridis
-#' @importFrom ggtext element_markdown
-#' @importFrom ragg agg_png
 #'
 #' @examples
 #' # packages
@@ -160,7 +154,7 @@ atl_check_tag <- function(data,
 
   # if if (highlight_outliers == TRUE) {
   if (highlight_outliers) {
-    atl_check_data(data, names_expected = c("outlier"))
+    atl_check_data(data, names_expected = "outlier")
   }
 
   # convert to DT if not
@@ -174,13 +168,12 @@ atl_check_tag <- function(data,
   # Subset first n positions
   if (!is.null(first_n)) {
     ds[, first_n_pos := seq_len(.N) <= first_n]
-    ds <- ds[first_n_pos == TRUE]
+    ds <- ds[(first_n_pos)]
   }
-
-  # subset last n positions
+  
   if (!is.null(last_n)) {
     ds[, last_n_pos := seq_len(.N) > (.N - last_n)]
-    ds <- ds[last_n_pos == TRUE]
+    ds <- ds[(last_n_pos)]
   }
 
   # identify first and last point
@@ -418,7 +411,7 @@ atl_check_tag <- function(data,
   if (highlight_first) {
     p <- p +
       geom_point(
-        data = ds[is_first],
+        data = ds[(is_first)],
         aes(x, y), color = "darkgreen",
         pch = 5, size = 10, stroke = 2,
         show.legend = FALSE
@@ -429,7 +422,7 @@ atl_check_tag <- function(data,
   if (highlight_last) {
     p <- p +
       geom_point(
-        data = ds[is_last],
+        data = ds[(is_last)],
         aes(x, y), color = "firebrick",
         pch = 4, size = 10, stroke = 2,
         show.legend = FALSE

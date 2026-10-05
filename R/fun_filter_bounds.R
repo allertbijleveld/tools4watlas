@@ -128,10 +128,11 @@ atl_filter_bounds <- function(data,
 
   # check for x_range or y_range or polygon
   # why NA? because between returns true for paired NA
-  assertthat::assert_that(any(
-    !is.null(sf_polygon),
-    !is.na(x_range), !is.na(y_range)
-  ))
+  assertthat::assert_that(
+    !is.null(sf_polygon) ||
+      !all(is.na(x_range)) ||
+      !all(is.na(y_range))
+  )
 
   # make input list of bound limits
   bounds <- list(x_range = x_range, y_range = y_range)

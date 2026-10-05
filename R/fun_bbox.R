@@ -62,8 +62,8 @@ atl_bbox <- function(data,
   # Check input
   if (!is.null(asp)) {
     assertthat::assert_that(
-      stringr::str_detect(asp, ":"),
-      length(as.numeric(unlist(strsplit(asp, ":")))) == 2,
+      stringr::str_detect(asp, stringr::fixed(":")),
+      length(as.numeric(unlist(strsplit(asp, ":", fixed = TRUE)))) == 2,
       msg = "Aspect ratio must be in the format 'width:height'."
     )
   }
@@ -110,7 +110,7 @@ atl_bbox <- function(data,
   }
 
   # Parse the aspect ratio
-  ratio <- as.numeric(unlist(strsplit(asp, ":")))
+  ratio <- as.numeric(unlist(strsplit(asp, ":", fixed = TRUE)))
 
   # Extract range
   x_range <- bbox["xmax"] - bbox["xmin"]

@@ -53,10 +53,6 @@
 #' @param png_height Height of saved PNG in pixels (default: 2160).
 #'
 #' @return A `ggplot` object or a saved PNG file.
-#' @import ggplot2 patchwork
-#' @importFrom ggtext element_markdown
-#' @importFrom ragg agg_png
-#' @importFrom grDevices dev.off
 #'
 #' @examples
 #'
@@ -152,8 +148,8 @@ atl_compare_res_patch_plot <- function(data_v1,
   tag_id <- tag
 
   # parse patch IDs from both versions
-  v1_ids <- as.integer(trimws(strsplit(patch_v1, ",")[[1]]))
-  v2_ids <- as.integer(trimws(strsplit(patch_v2, ",")[[1]]))
+  v1_ids <- as.integer(trimws(strsplit(patch_v1, ",", fixed = TRUE)[[1]]))
+  v2_ids <- as.integer(trimws(strsplit(patch_v2, ",", fixed = TRUE)[[1]]))
 
   # check period of interest
   if (all(is.na(v1_ids)) && !all(is.na(v2_ids))) {
@@ -197,8 +193,8 @@ atl_compare_res_patch_plot <- function(data_v1,
   }
 
   # speed in
-  ds1 <- atl_get_speed(ds1, type = c("in"))
-  ds2 <- atl_get_speed(ds2, type = c("in"))
+  ds1 <- atl_get_speed(ds1, type = "in")
+  ds2 <- atl_get_speed(ds2, type = "in")
 
   # create patch summary
   dp1 <- atl_res_patch_summary(ds1)

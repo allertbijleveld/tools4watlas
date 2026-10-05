@@ -293,7 +293,6 @@ atl_format_time <- function(time) {
 #' @param percent The percentage of transparency to apply .
 #' @param name The name argument as passed on to rgb.
 #' @return The transparent colour will be returned.
-#' @importFrom grDevices col2rgb rgb
 #' @examples
 #' # Example with 50% transparency
 #' colour_with_alpha <- atl_t_col("blue", percent = 50)

@@ -4,7 +4,7 @@
 \alias{atl_filter_covariates}
 \title{Filter data by position covariates}
 \usage{
-atl_filter_covariates(data, filters = c(), quietly = FALSE)
+atl_filter_covariates(data, filters = NULL, quietly = FALSE)
 }
 \arguments{
 \item{data}{A \code{data.table} or similar containing the variables to be

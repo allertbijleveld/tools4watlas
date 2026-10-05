@@ -35,7 +35,6 @@
 #' \code{lim_spat_indep} of the residency patch calculation.
 #' @return An `sf` object containing the specified coordinates as geometry and
 #'  any included attributes.
-#' @import data.table
 #' @examples
 #' # packages
 #' library(tools4watlas)
@@ -246,25 +245,34 @@ atl_as_sf <- function(data,
 
       # redo buffer for multipolygons using line approach
       if (any(is_multi)) {
-        d_patches[is_multi, ] <- d_sf |>
+        # keys (tag, patch) of the multi-part patches
+        multi_keys <- sf::st_drop_geometry(d_patches[is_multi, ])
+        
+        # combine the geometries of each multi-part patch
+        multi_patches <- d_sf |>
           dplyr::filter(!is.na(patch)) |>
-          dplyr::semi_join(
-            d_patches[is_multi, ] |> sf::st_drop_geometry(),
-            by = c("tag", "patch")
-          ) |>
+          dplyr::semi_join(multi_keys, by = c("tag", "patch")) |>
           dplyr::distinct(tag, patch, geometry) |>
           dplyr::group_by(tag, patch) |>
           dplyr::summarise(
             n = dplyr::n(),
             geometry = sf::st_combine(geometry),
             .groups = "drop"
-          ) |>
-          dplyr::mutate(
-            geometry = purrr::map2(geometry, n, \(geom, n) {
-              if (n > 1) geom <- sf::st_cast(geom, "LINESTRING")
-              sf::st_buffer(geom, dist = buffer)
-            }) |> sf::st_sfc(crs = sf::st_crs(d_sf))
-          ) |>
+          )
+        
+        # buffer each combined geometry (line if it has more than one point)
+        geom_buffered <- purrr::map2(
+          multi_patches$geometry, multi_patches$n,
+          function(geom, n_geom) {
+            if (n_geom > 1) geom <- sf::st_cast(geom, "LINESTRING")
+            sf::st_buffer(geom, dist = buffer)
+          }
+        )
+        geom_buffered <- sf::st_sfc(geom_buffered, crs = sf::st_crs(d_sf))
+        
+        # replace the geometry and write back
+        d_patches[is_multi, ] <- multi_patches |>
+          dplyr::mutate(geometry = geom_buffered) |>
           dplyr::select(-n)
       }
 

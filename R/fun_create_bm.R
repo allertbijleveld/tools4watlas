@@ -49,8 +49,6 @@
 #'
 #' @return A `ggplot2` object representing the base map with the specified
 #'   settings.
-#' @import ggplot2
-#' @import ggspatial
 #' @export
 #'
 #' @examples
@@ -150,7 +148,7 @@ atl_create_bm <- function(data = NULL,
     var_name <- names(raster_data)[1]
   }
 
-  if (option == "bathymetry" && shade == TRUE) {
+  if (option == "bathymetry" && shade) {
     alt <- terra::disagg(raster_data_c, 10, method = "bilinear")
     slope <- terra::terrain(alt, "slope", unit = "radians")
     aspect <- terra::terrain(alt, "aspect", unit = "radians")
@@ -190,7 +188,7 @@ atl_create_bm <- function(data = NULL,
   bm <- bm + layers
 
   # add shading if TRUE
-  if (option == "bathymetry" && shade == TRUE) {
+  if (option == "bathymetry" && shade) {
     bm <- bm +
       ggnewscale::new_scale_fill() +
       tidyterra::geom_spatraster(
@@ -206,7 +204,7 @@ atl_create_bm <- function(data = NULL,
   }
 
   # add scalbar if TRUE
-  if (scalebar == TRUE) {
+  if (scalebar) {
     bm <- bm +
       ggspatial::annotation_scale(
         aes(location = "br"),

@@ -139,20 +139,20 @@ atl_interpolate_track <- function(data,
       "Column(s) not found in data: %s", paste(missing_cols, collapse = ", ")
     ))
   }
-  if (patches_only == TRUE) {
+  if (patches_only) {
     if (!patch_col %in% names(data)) {
       stop(sprintf(
         "patches_only = TRUE but column '%s' not found in data.", patch_col
       ))
     }
   }
-
   assertthat::assert_that(
-    is.numeric(max_gap) && length(max_gap) == 1,
-    msg = paste0(
-      "atl_interpolate_track: max_gap must be a single ",
-      "numeric value in seconds."
-    )
+    is.numeric(max_gap),
+    msg = "atl_interpolate_track: max_gap must be numeric (in seconds)."
+  )
+  assertthat::assert_that(
+    length(max_gap) == 1,
+    msg = "atl_interpolate_track: max_gap must be a single value."
   )
 
   # check: skip tags with fewer than 2 rows
@@ -174,7 +174,7 @@ atl_interpolate_track <- function(data,
   cols_to_copy <- c(tag_col, t_col, x_col, y_col)
   new_names    <- c("tag_", "time_", "x_", "y_")
 
-  if (patches_only == TRUE) {
+  if (patches_only) {
     cols_to_copy <- c(cols_to_copy, patch_col)
     new_names    <- c(new_names, "patch_")
   }
@@ -213,7 +213,7 @@ atl_interpolate_track <- function(data,
 
   # fill patch ID's when NA in-between (if patches_only = TRUE)
   # and remove rows without patch ID's
-  if (patches_only == TRUE) {
+  if (patches_only) {
     d[, patch_ := {
       fwd <- zoo::na.locf(patch_, na.rm = FALSE)
       bwd <- zoo::na.locf(patch_, fromLast = TRUE, na.rm = FALSE)
@@ -221,16 +221,16 @@ atl_interpolate_track <- function(data,
     }, by = tag_]
 
     # remove rows without patch ID's
-    d <- d[!(interpolated == TRUE & is.na(patch_))]
+    d <- d[!(interpolated & is.na(patch_))]
   }
 
   # remove rows where gap_next is larger than max_gap
-  d <- d[!(interpolated == TRUE & gap_next > max_gap)]
+  d <- d[!(interpolated & gap_next > max_gap)]
 
   # if max_dist is set, remove rows where distance is larger than max_dist
   if (!is.null(max_dist)) {
     d[, dist_next := nafill(dist_next, type = "nocb"), by = tag_]
-    d <- d[!(interpolated == TRUE & dist_next > max_dist)]
+    d <- d[!(interpolated & dist_next > max_dist)]
   }
 
   # interpolate coordinates
@@ -245,7 +245,7 @@ atl_interpolate_track <- function(data,
     tag_col, t_col, x_col, y_col, patch_col,
     "gap_next", "dist_next", "interpolated", "datetime"
   )
-  if (patches_only == FALSE) {
+  if (!patches_only) {
     new_names <- setdiff(new_names, patch_col)
   }
   if (is.null(max_dist)) {
@@ -267,7 +267,7 @@ atl_interpolate_track <- function(data,
   percentage_increase <- (nrows_added / nrow_before) * 100
   percentage_increase <- round(percentage_increase, 2)
 
-  if (nrow(d) > 0 && quietly == FALSE) {
+  if (nrow(d) > 0 && !quietly) {
     message(glue::glue(
       "Note: Interpolation added {nrows_added} positions ",
       "({percentage_increase}% increase)."

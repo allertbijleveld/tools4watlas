@@ -84,7 +84,6 @@
 #' # close connection
 #' RSQLite::dbDisconnect(con)
 #' 
-#' @import RMySQL
 #' @export
 #'
 atl_get_data <- function(tag,

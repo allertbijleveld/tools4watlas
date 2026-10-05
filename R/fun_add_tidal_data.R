@@ -22,7 +22,6 @@
 #' for the tidal period between two consecutive high tides), tidaltime (time
 #' since high tide in minutes), time2lowtide (time to low tide in minutes),
 #' and water level with reference to NAP (cm).
-#' @import data.table
 #'
 #' @examples
 #' # packages

@@ -62,7 +62,7 @@ Alternatively, one can provide a table with one or multiple locations, which wil
 
 ```{r, fig.alt = "Basemap around Griend"}
 # define location
-location <- data.table(x = c(5.275), y = c(53.2523))
+location <- data.table(x = 5.275, y = 53.2523)
 
 # create basemap
 bm <- atl_create_bm(location, buffer = 7000, projection = sf::st_crs(4326))

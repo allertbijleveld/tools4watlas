@@ -72,7 +72,7 @@
 #' )
 #' @export
 atl_filter_covariates <- function(data,
-                                  filters = c(),
+                                  filters = NULL,
                                   quietly = FALSE) {
   # convert to data.table
   if (!is.data.table(data)) {
@@ -115,7 +115,7 @@ atl_filter_covariates <- function(data,
   percentage_decrease <- (nrows_filtered / nrow_before) * 100
   percentage_decrease <- round(percentage_decrease, 2)
 
-  if (nrow(data) > 0 && quietly == FALSE) {
+  if (nrow(data) > 0 && !quietly) {
     message(glue::glue(
       "Note: {percentage_decrease}% of the dataset was filtered out, ",
       "corresponding to {nrows_filtered} positions."

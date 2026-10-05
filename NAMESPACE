@@ -37,12 +37,37 @@ export(atl_time_steps)
 export(atl_transform_dt)
 export(atl_turning_angle)
 export(atl_within_polygon)
-import(RMySQL)
 import(data.table)
-import(ggplot2)
-import(ggspatial)
-import(patchwork)
-import(scales)
+importFrom(ggplot2,
+  aes,
+  coord_sf,
+  element_blank,
+  element_line,
+  element_rect,
+  element_text,
+  geom_hline,
+  geom_path,
+  geom_point,
+  geom_sf,
+  geom_text,
+  ggplot,
+  ggtitle,
+  labs,
+  scale_color_manual,
+  scale_colour_gradientn,
+  scale_colour_manual,
+  scale_colour_viridis_c,
+  scale_fill_gradient2,
+  scale_fill_manual,
+  scale_size_continuous,
+  scale_x_continuous,
+  scale_y_reverse,
+  sec_axis,
+  theme,
+  theme_bw,
+  unit
+)
+importFrom(ggspatial,layer_spatial)
 importFrom(ggtext,element_markdown)
 importFrom(grDevices,
   col2rgb,
@@ -50,13 +75,10 @@ importFrom(grDevices,
   rgb
 )
 importFrom(ragg,agg_png)
+importFrom(rlang,sym)
 importFrom(scales,
+  date_format,
   hue_pal,
   rescale
-)
-importFrom(sf,
-  st_as_sf,
-  st_coordinates,
-  st_transform
 )
 importFrom(viridis,scale_colour_viridis)

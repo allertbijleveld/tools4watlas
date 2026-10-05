@@ -126,7 +126,7 @@ atl_thin_data <- function(data,
 
   # Identify numeric and non-numeric columns (excluding grouping/key columns)
   num_cols <- setdiff(
-    names(data)[vapply(data, \(x) is.numeric(x), logical(1))],
+    names(data)[vapply(data, is.numeric, logical(1))],
     c("time_agg", id_columns)
   )
   non_num_cols <- setdiff(

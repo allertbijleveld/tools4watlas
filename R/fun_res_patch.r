@@ -45,7 +45,6 @@
 #'
 #' @return A data.table that has the added column
 #' \code{patch} as character indicating the patch ID.
-#' @import data.table
 #'
 #' @examples
 #' # packages
@@ -124,9 +123,9 @@ atl_res_patch <- function(data,
       spat_diff = atl_simple_dist(data = data, x = "x", y = "y"),
       time_diff = c(Inf, as.numeric(diff(time)))
     )]
-    data[1, c("spat_diff")] <- Inf
+    data[1, "spat_diff"] <- Inf
     data[, `:=`(speed = spat_diff / time_diff)]
-    data[1, c("speed")] <- Inf
+    data[1, "speed"] <- Inf
 
     # Create proto-patches based on thresholds
     data[, `:=`(patch, cumsum(speed > max_speed | spat_diff >

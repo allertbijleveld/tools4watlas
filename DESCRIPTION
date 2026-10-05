@@ -1,5 +1,5 @@
 Package: tools4watlas
-Title: Process and Visualize High-Throughput Animal Tracking Data
+Title: Process and Visualise High-Throughput Animal Tracking Data
 Version: 2.0.0
 Authors@R: c(
     person("Johannes", "Krietsch", , "johannes.krietsch@nioz.nl", role = "aut",

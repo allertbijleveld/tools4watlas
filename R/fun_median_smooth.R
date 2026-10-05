@@ -102,7 +102,7 @@ atl_median_smooth <- function(data,
   )
 
   # convert both to DT if not
-  if (data.table::is.data.table(data) != TRUE) {
+  if (!inherits(data, "data.table")) {
     data.table::setDT(data)
   }
 

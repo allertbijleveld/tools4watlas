@@ -46,7 +46,6 @@
 #'   Straight-line (in m) displacement between start and end of patch.
 #'   \item \code{duration}: Duration spent (in sec) within the patch.
 #' }
-#' @import data.table
 #'
 #' @examples
 #' # packages
@@ -68,8 +67,8 @@
 #' @export
 
 atl_res_patch_summary <- function(data,
-                                  summary_variables = c(),
-                                  summary_functions = c()) {
+                                  summary_variables = NULL,
+                                  summary_functions = NULL) {
 
   # Initialize necessary variables to avoid NSE (Non-Standard Evaluation) issues
   i.disp_in_patch <- dist_bw_patch <- dist_in_patch <- duration <- NULL # nolint
