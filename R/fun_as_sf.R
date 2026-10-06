@@ -178,10 +178,11 @@ atl_as_sf <- function(data,
     # Ensure all specified additional columns exist in the data
     missing_cols <- setdiff(additional_cols, names(data))
     if (length(missing_cols) > 0) {
-      stop(paste(
-        "The following additional columns are missing in the data:",
-        paste(missing_cols, collapse = ", ")
-      ), call. = FALSE)
+      stop(
+        "The following additional columns are missing in the data: ",
+        toString(missing_cols),
+        call. = FALSE
+      )
     }
     # Select x, y, and additional columns
     cols_to_keep <- unique(c(tag_col, x_col, y_col, additional_cols))
@@ -247,7 +248,7 @@ atl_as_sf <- function(data,
       if (any(is_multi)) {
         # keys (tag, patch) of the multi-part patches
         multi_keys <- sf::st_drop_geometry(d_patches[is_multi, ])
-        
+
         # combine the geometries of each multi-part patch
         multi_patches <- d_sf |>
           dplyr::filter(!is.na(patch)) |>
@@ -259,7 +260,7 @@ atl_as_sf <- function(data,
             geometry = sf::st_combine(geometry),
             .groups = "drop"
           )
-        
+
         # buffer each combined geometry (line if it has more than one point)
         geom_buffered <- purrr::map2(
           multi_patches$geometry, multi_patches$n,
@@ -269,7 +270,7 @@ atl_as_sf <- function(data,
           }
         )
         geom_buffered <- sf::st_sfc(geom_buffered, crs = sf::st_crs(d_sf))
-        
+
         # replace the geometry and write back
         d_patches[is_multi, ] <- multi_patches |>
           dplyr::mutate(geometry = geom_buffered) |>

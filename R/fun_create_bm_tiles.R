@@ -4,18 +4,7 @@
 #' custom bounding boxes, aspect ratios, and scale bar adjustments.
 #'
 #' @author Johannes Krietsch
-#' @param data A `data.table` or an object convertible to `data.table`
-#' containing spatial points or a `sf` bounding box.
-#' Defaults to a single point around Griend if `NULL`.
-#' @param x A character string specifying the column with x-coordinates.
-#'   Defaults to `"x"`.
-#' @param y A character string specifying the column with y-coordinates.
-#'   Defaults to `"y"`.
-#' @param buffer A numeric value (in meters) specifying the buffer distance for
-#' the bounding box. Default is `1000`.
-#' @param asp A character string specifying the desired aspect ratio in the
-#' format `"width:height"`. Default is `"16:9"`, if `NULL` returns simple
-#' bounding box without modifying aspect ratio.
+#' @inheritParams atl_create_bm
 #' @param option A character string specifying the map tile provider.
 #' Options include `"Esri.WorldImagery"`, `""OpenStreetMap"`,  `"Esri"`,
 #' `"CARTO"`, and `"Thunderforest"`. See
@@ -23,16 +12,6 @@
 #' @param zoom Numeric value specifying the zoom level for the map tiles.
 #' Zoom levels are described in the OpenStreetMap wiki:
 #' https://wiki.openstreetmap.org/wiki/Zoom_levels.
-#' @param scalebar TRUE or FALSE for adding a scalebar to the plot.
-#' @param sc_location A character string specifying the location of the scale
-#'   bar. Default is `"br"` (bottom right).
-#' @param sc_cex Numeric value for the scale bar text size. Default is `0.7`.
-#' @param sc_height A unit object specifying the height of the scale bar.
-#' Default is `unit(0.25, "cm")`.
-#' @param sc_pad_x A unit object specifying horizontal padding for the scale
-#' bar. Default is `unit(0.25, "cm")`.
-#' @param sc_pad_y A unit object specifying vertical padding for the scale bar.
-#'   Default is `unit(0.5, "cm")`.
 #' @param projection The coordinate reference system (CRS) for the spatial data.
 #'   Defaults to EPSG:32631 (WGS 84 / UTM zone 31N). Output is always EPSG:4326.
 #'   Bounding box calculation is much faster when using EPSG:3263, so use it

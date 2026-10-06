@@ -49,13 +49,7 @@
 #'   (default: 0.5).
 #' @param path_alpha Transparency of the track lines (default: 0.1).
 #' @param element_text_size Adjust size of the text.
-#' @param water_fill Water fill (default "#D7E7FF")
-#' @param water_colour Water colour (default "grey80")
-#' @param land_fill Land fill (default "#faf5ef")
-#' @param land_colour Land colour (default "grey80")
-#' @param mudflat_colour Mudflat colour (default "#faf5ef")
-#' @param mudflat_fill Mudflat fill (default "#faf5ef")
-#' @param mudflat_alpha Mudflat alpha (default 0.6)
+#' @inheritParams atl_create_bm
 #' @param filename Character (or NULL). If provided, the plot is saved as a
 #'   `.png` file to this path and with this name; otherwise, the function
 #'   returns the plot.
@@ -133,10 +127,10 @@ atl_check_tag <- function(data,
   # check valid option
   valid_options <- c("datetime", "nbs", "var", "speed_in", "gap")
   if (!(option %in% valid_options)) {
-    stop(paste(
-      "Invalid option. Choose one of:",
-      paste(valid_options, collapse = ", ")
-    ))
+    stop(
+      "Invalid option. Choose one of: ", toString(valid_options),
+      call. = FALSE
+    )
   }
 
   # check data structure
@@ -170,7 +164,7 @@ atl_check_tag <- function(data,
     ds[, first_n_pos := seq_len(.N) <= first_n]
     ds <- ds[(first_n_pos)]
   }
-  
+
   if (!is.null(last_n)) {
     ds[, last_n_pos := seq_len(.N) > (.N - last_n)]
     ds <- ds[(last_n_pos)]

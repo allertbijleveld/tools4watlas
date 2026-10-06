@@ -114,12 +114,12 @@ atl_compare_res_patch_summary <- function(data_v1,
   lost_patches <- comparison[!is.na(patch_v1),
     .(lost = all(is.na(patch_v2))),
     by = .(tag, tideID, patch_v1)
-  ][lost == TRUE]
+  ][(lost)]
 
   gained_patches <- comparison[!is.na(patch_v2),
     .(gained = all(is.na(patch_v1))),
     by = .(tag, tideID, patch_v2)
-  ][gained == TRUE]
+  ][(gained)]
 
   # summary table
   summary_splits <- splits[,
@@ -127,7 +127,7 @@ atl_compare_res_patch_summary <- function(data_v1,
       .(
         change = "split",
         patch_v1 = as.character(patch_v1),
-        patch_v2 = paste(unlist(v2_patches), collapse = ", ")
+        patch_v2 = toString(unlist(v2_patches))
       )
     },
     by = .(tag, tideID, patch_v1)
@@ -137,7 +137,7 @@ atl_compare_res_patch_summary <- function(data_v1,
     {
       .(
         change = "merge",
-        patch_v1 = paste(unlist(v1_patches), collapse = ", "),
+        patch_v1 = toString(unlist(v1_patches)),
         patch_v2 = as.character(patch_v2)
       )
     },

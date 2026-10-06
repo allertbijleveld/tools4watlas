@@ -165,7 +165,7 @@ atl_filter_bounds <- function(data,
         polygon = sf_polygon,
         col_name = ".in_polygon"
       )
-      data_ <- data_[(.in_polygon) == FALSE]
+      data_ <- data_[!(.in_polygon)]
       data_[, .in_polygon := NULL]
     } else {
       # no polygon: filter by bbox only
@@ -198,7 +198,7 @@ atl_filter_bounds <- function(data,
         polygon = sf_polygon,
         col_name = ".in_polygon"
       )
-      data_ <- data_[(.in_polygon) == TRUE]
+      data_ <- data_[(.in_polygon)]
       data_[, .in_polygon := NULL]
     }
   }

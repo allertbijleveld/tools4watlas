@@ -19,11 +19,11 @@ atl_add_raster_data(
 \item{data}{A \code{data.table} containing the data to which raster values will
 be added. If not a \code{data.table}, it will be coerced to one.}
 
-\item{x}{Character string specifying the column name for x-coordinates.
-Defaults to \code{"x"}.}
+\item{x}{A character string representing the name of the column containing
+x-coordinates. Defaults to "x".}
 
-\item{y}{Character string specifying the column name for y-coordinates.
-Defaults to \code{"y"}.}
+\item{y}{A character string representing the name of the column containing
+y-coordinates. Defaults to "y".}
 
 \item{projection}{A coordinate reference system (CRS) for the spatial data
 in the input. Defaults to EPSG:32631.}

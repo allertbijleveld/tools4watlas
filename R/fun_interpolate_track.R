@@ -135,15 +135,14 @@ atl_interpolate_track <- function(data,
   # check columns exist
   if (!all(c(x_col, y_col, tag_col, t_col) %in% names(data))) {
     missing_cols <- setdiff(c(x_col, y_col, tag_col, t_col), names(data))
-    stop(sprintf(
-      "Column(s) not found in data: %s", paste(missing_cols, collapse = ", ")
-    ))
+    stop("Column(s) not found in data: ", toString(missing_cols), call. = FALSE)
   }
   if (patches_only) {
     if (!patch_col %in% names(data)) {
-      stop(sprintf(
-        "patches_only = TRUE but column '%s' not found in data.", patch_col
-      ))
+      stop(
+        "patches_only = TRUE but column '", patch_col, "' not found in data.",
+        call. = FALSE
+      )
     }
   }
   assertthat::assert_that(
@@ -159,10 +158,11 @@ atl_interpolate_track <- function(data,
   tag_counts <- data[, .N, by = tag_col, env = list(tag_col = tag_col)]
   skipped <- tag_counts[N < 2, get(tag_col)]
   if (length(skipped) > 0) {
-    warning(sprintf(
-      "The following tags have fewer than 2 rows and will be skipped: %s",
-      paste(skipped, collapse = ", ")
-    ))
+    warning(
+      "The following tags have fewer than 2 rows and will be skipped: ",
+      toString(skipped),
+      call. = FALSE
+    )
     data <- data[!data[[tag_col]] %in% skipped]
   }
   if (nrow(data) == 0) {

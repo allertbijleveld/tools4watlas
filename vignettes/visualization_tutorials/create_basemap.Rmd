@@ -338,7 +338,7 @@ end <- max(data$datetime)
 
 # Check if each row includes period of tracking data
 dr[, includes_data := (date_placed <= end & date_removed >= start)]
-dr <- dr[includes_data == TRUE]
+dr <- dr[(includes_data)]
 
 # plot basemap with receivers active during tracking period
 bm +

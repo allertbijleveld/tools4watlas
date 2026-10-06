@@ -16,12 +16,7 @@
 #' Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
 #' high-throughput animal tracking data. *Journal of Animal Ecology*, 91,
 #' 287-307. \doi{10.1111/1365-2656.13610}
-#' @param data A dataframe or similar which must have the columns
-#' specified by \code{x}, \code{y}, and \code{time}.
-#' @param tag The tag ID.
-#' @param x The x coordinate.
-#' @param y The y coordinate.
-#' @param time The timestamp in seconds since the UNIX epoch.
+#' @inheritParams atl_get_speed
 #' @return A a data.table with added turning angles in degrees.
 #' Negative degrees indicate 'left' turns. There are two fewer
 #' angles than the number of rows in the `data.table`.

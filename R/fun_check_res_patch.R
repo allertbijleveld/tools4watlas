@@ -4,16 +4,12 @@
 #' movement paths, patch durations, and an inset overview map.
 #'
 #' @author Johannes Krietsch
+#' @inheritParams atl_add_tidal_data
+#' @inheritParams atl_check_tag
 #' @param data A `data.table` containing tracking data of one tag. Must include
 #' the columns: `tag`, `x`, `y`, `time`,`datetime`, and `species` and
 #'   `patch`,  as created by `atl_res_patch()`.
-#' @param tide_data Data on the timing (in UTC) of low and high tides.
-#' @param tide_data_highres Data on the timing (in UTC) of the waterlevel in
-#' small intervals (e.g. every 10 min) as provided from Rijkswaterstaat.
 #' @param tide Tide ID to subset.
-#' @param offset The offset in minutes between the location of the tidal gauge
-#' and the tracking area. This value will be added to the timing of the
-#' water data.
 #' @param waterlevel_min Numeric in cmNAP. Minimum water level to fix the axis,
 #' if NA (default) it uses the minimum of the provided water level data.
 #' water level to the duration range (default: NA, which uses the minimum of
@@ -22,10 +18,6 @@
 #' if NA (default) it uses the minimum of the provided water level data.
 #' @param waterlevel_line Numeric in cmNAP. The water level to add as a dotted
 #' line to the plot (default: 60 cmNAP).
-#' @param buffer_res_patches A numeric value (in meters) specifying the buffer
-#' around the polygon of each residence patch. If set to half of
-#' \code{lim_spat_indep} of the residence patch calculation it reflects the
-#' distance used to determine spatial independence of patches.
 #' @param buffer_bm Map buffer size (default: 250).
 #' @param buffer_overview Overview map buffer size (default: 10000).
 #' @param speed_threshold Speed threshold in m/s for colour scale of movement
@@ -38,22 +30,11 @@
 #' @param patch_label_padding Padding for patch labels (default: 1).
 #' @param patch_alpha Alpha for patch polygons (default: 0.7).
 #' @param element_text_size Font size for axis and legend text (default: 11).
-#' @param water_fill Water fill (default "#D7E7FF")
-#' @param water_colour Water colour (default "grey80")
-#' @param land_fill Land fill (default "#faf5ef")
-#' @param land_colour Land colour (default "grey80")
-#' @param mudflat_colour Mudflat colour (default "#faf5ef")
-#' @param mudflat_fill Mudflat fill (default "#faf5ef")
-#' @param mudflat_alpha Mudflat alpha (default 0.6)
+#' @inheritParams atl_create_bm
 #' @param roosts Logical. Whether to add the roost polygon around Griend or not
 #' (default: FALSE).
 #' @param seed Integer seed used to shuffle the patch colours, so that the
 #'   colour order is reproducible. Default is 1.
-#' @param filename Character (or NULL). If provided, the plot is saved as a
-#'   `.png` file to this path and with this name; otherwise, the function
-#'   returns the plot.
-#' @param png_width Width of saved PNG (default: 3840).
-#' @param png_height Height of saved PNG (default: 2160).
 #'
 #' @return A ggplot object or a saved PNG file.
 #'
@@ -78,7 +59,7 @@
 #'
 #' # subset data of one red knot
 #' data_subset <- data[tag == "3038"]
-#' 
+#'
 #' # calculate residence patches for one red knot
 #' data_subset <- atl_res_patch(
 #'   data_subset,
@@ -143,10 +124,10 @@ atl_check_res_patch <- function(data,
     "date", "time", "waterlevel", "dateTime"
   ))
   if (missing(buffer_res_patches) || is.null(buffer_res_patches)) {
-    stop(paste0(
+    stop(
       "Function requiers to specify 'buffer_res_patches' value",
-      " (see description)."
-    ), call. = FALSE)
+      " (see description).", call. = FALSE
+    )
   }
 
   # convert to DT if not

@@ -5,10 +5,7 @@
 #'
 #' @param data A `data.table` containing the data to which raster values will
 #'   be added. If not a `data.table`, it will be coerced to one.
-#' @param x Character string specifying the column name for x-coordinates.
-#'   Defaults to `"x"`.
-#' @param y Character string specifying the column name for y-coordinates.
-#'   Defaults to `"y"`.
+#' @inheritParams atl_as_sf
 #' @param projection A coordinate reference system (CRS) for the spatial data
 #'   in the input. Defaults to EPSG:32631.
 #' @param raster_data A `SpatRaster` object from which values will be extracted.
@@ -24,7 +21,7 @@
 #'
 #' # example data: subset one tag
 #' data_subset <- data_example[tag == "3027"]
-#' 
+#'
 #' # made-up bathymetry raster (cm) covering the data, 20 m resolution,
 #' # with a west-east gradient from -200 to 200
 #' bat <- rast(
@@ -37,11 +34,11 @@
 #' xs <- xFromCell(bat, seq_len(ncell(bat)))
 #' values(bat) <- (xs - min(xs)) / (max(xs) - min(xs)) * 400 - 200
 #' names(bat) <- "bathymetry"
-#' 
+#'
 #' # add raster values to the data (first raster layer by default)
 #' data_subset <- atl_add_raster_data(data_subset, raster_data = bat)
 #' head(data_subset[, .(tag, x, y, bathymetry)])
-#' 
+#'
 #' # choose the layer, name the new column and convert units (cm to m)
 #' data_subset <- atl_add_raster_data(
 #'   data_subset,

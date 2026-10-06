@@ -19,7 +19,10 @@ test_that("atl_compare_res_patch_plot returns a ggplot object", {
   )
   
   # change summary
-  change_summary <- atl_compare_res_patch_summary(data_v1, data_v2)
+  change_summary <- atl_compare_res_patch_summary(
+    data_v1, data_v2,
+    quietly = TRUE
+  )
   
   i <- 1
   
@@ -53,7 +56,10 @@ test_that("atl_compare_res_patch_plot works for all change types", {
     min_fixes = 3, min_duration = 120
   )
   
-  change_summary <- atl_compare_res_patch_summary(data_v1, data_v2)
+  change_summary <- atl_compare_res_patch_summary(
+    data_v1, data_v2,
+    quietly = TRUE
+  )
   
   # all rows should produce a ggplot without error
   for (i in seq_len(nrow(change_summary))) {
@@ -85,7 +91,10 @@ test_that("atl_compare_res_patch_plot errors on missing columns", {
     min_fixes = 3, min_duration = 120
   )
   
-  change_summary <- atl_compare_res_patch_summary(data_v1, data_v2)
+  change_summary <- atl_compare_res_patch_summary(
+    data_v1, data_v2,
+    quietly = TRUE
+  )
   
   bad_data <- copy(data_v1)
   bad_data[, patch := NULL]
@@ -118,7 +127,10 @@ test_that("atl_compare_res_patch_plot saves a PNG when filename is provided", {
     min_fixes = 3, min_duration = 120
   )
   
-  change_summary <- atl_compare_res_patch_summary(data_v1, data_v2)
+  change_summary <- atl_compare_res_patch_summary(
+    data_v1, data_v2,
+    quietly = TRUE
+  )
   
   tmp <- tempfile()
   
@@ -155,7 +167,10 @@ test_that("atl_compare_res_patch_plot works for lost change type", {
   )
   
   # swap v1 and v2 to get a "lost" change type
-  change_summary <- atl_compare_res_patch_summary(data_v2, data_v1)
+  change_summary <- atl_compare_res_patch_summary(
+    data_v2, data_v1,
+    quietly = TRUE
+  )
   
   lost_rows <- change_summary[change == "lost"]
   
@@ -188,7 +203,10 @@ test_that("atl_compare_res_patch_plot errors when no data in time window", {
     min_fixes = 3, min_duration = 120
   )
   
-  change_summary <- atl_compare_res_patch_summary(data_v1, data_v2)
+  change_summary <- atl_compare_res_patch_summary(
+    data_v1, data_v2,
+    quietly = TRUE
+  )
   
   # empty data triggers the nrow == 0 stop
   empty_data <- data_v1[0]

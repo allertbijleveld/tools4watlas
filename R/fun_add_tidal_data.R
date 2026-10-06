@@ -97,7 +97,7 @@ atl_add_tidal_data <- function(data,
     length(cols_exist) == 0,
     msg = paste(
       "Columns",
-      paste(cols_exist, collapse = ", "),
+      toString(cols_exist),
       "exist already, water data already present?"
     )
   )
@@ -121,7 +121,7 @@ atl_add_tidal_data <- function(data,
     row_id = seq_len(nrow(data))
   )
   data.table::setorder(temp_data, datetime)
-  
+
   # merge tracking and tidal data to get time from high tide
   temp_data <- data.table::merge.data.table(
     temp_data, high_tide_data,
@@ -194,7 +194,7 @@ atl_add_tidal_data <- function(data,
   idx <- match(seq_len(nrow(data)), temp_data$row_id)
   new_cols <- c("tideID", "tidaltime", "time2lowtide", "waterlevel")
   data[, (new_cols) := lapply(new_cols, function(col) temp_data[[col]][idx])]
-  
+
   # export
   data
 

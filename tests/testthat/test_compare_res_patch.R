@@ -17,7 +17,7 @@ test_that("atl_compare_res_patch_summary works correctly", {
   )
   
   # run function
-  result <- atl_compare_res_patch_summary(data_v1, data_v2)
+  result <- atl_compare_res_patch_summary(data_v1, data_v2, quietly = TRUE)
   
   # returns a data.table
   expect_s3_class(result, "data.table")
@@ -67,7 +67,7 @@ test_that("atl_compare_res_patch_summary errors on missing columns", {
   bad_data[, patch := NULL]
   
   expect_error(
-    atl_compare_res_patch_summary(bad_data, data_v1)
+    atl_compare_res_patch_summary(bad_data, data_v1, quietly = TRUE)
   )
   
 })

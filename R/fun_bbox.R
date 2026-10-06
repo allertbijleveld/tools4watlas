@@ -7,13 +7,8 @@
 #' @author Johannes Krietsch
 #' @param data An `sf` or `sfc` object for which the bounding box is
 #' calculated or a data.table with x- and y- coordinates.
-#' @param x A character string representing the name of the column containing
-#'  x-coordinates. Defaults to "x".
-#' @param y A character string representing the name of the column containing
-#'  y-coordinates. Defaults to "y".
-#' @param asp A character string specifying the desired aspect ratio in the
-#' format `"width:height"`. Default is `"16:9"`, if `NULL` returns simple
-#' bounding box without modifying aspect ratio.
+#' @inheritParams atl_as_sf
+#' @inheritParams atl_create_bm
 #' @param buffer A numeric value (in meters) specifying the buffer distance to
 #' be applied to the bounding box. Positive values expand the bounding box,
 #' while negative values shrink it. Default is `0`.

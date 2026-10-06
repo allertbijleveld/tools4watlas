@@ -11,6 +11,8 @@
 #' shown in the plot if they are within the period.
 #'
 #' @author Johannes Krietsch
+#' @inheritParams atl_check_res_patch
+#' #' @inheritParams atl_check_tag
 #' @param data_v1 A `data.table` containing tracking data from version 1. Must
 #'   include the columns: `tag`, `x`, `y`, `time`, `datetime`, and `patch`, as
 #'   created by `atl_res_patch()`. Optionally `species` and `tideID`.
@@ -25,18 +27,7 @@
 #'   2 to highlight (e.g. `"1,2,3"`). Use `NA` if no patches exist in v2.
 #' @param time_buffer Numeric. Seconds to extend the time window around the
 #'   focal patches (default: 600).
-#' @param speed_threshold Speed threshold in m/s for colour scale of movement
-#'   speed (default: 3 m/s).
-#' @param point_size Size of plotted points (default: 1).
 #' @param point_alpha Transparency of points (default: 0.9).
-#' @param path_linewidth Line width of movement paths (default: 0.5).
-#' @param path_alpha Transparency of movement paths (default: 0.9).
-#' @param patch_label_size Font size for patch labels (default: 4).
-#' @param patch_label_padding Padding for patch labels (default: 1).
-#' @param patch_alpha Alpha for patch polygons (default: 0.7).
-#' @param element_text_size Font size for axis and legend text (default: 11).
-#' @param buffer_res_patches A numeric value (in meters) specifying the buffer
-#'   around the polygon of each residence patch (default: 20).
 #' @param buffer_bm Map buffer size in meters (default: 250).
 #' @param water_fill Water fill colour (default: `"white"`).
 #' @param water_colour Water border colour (default: `"grey80"`).
@@ -45,12 +36,6 @@
 #' @param mudflat_colour Mudflat border colour (default: `"#faf5ef"`).
 #' @param mudflat_fill Mudflat fill colour (default: `"#faf5ef"`).
 #' @param mudflat_alpha Mudflat transparency (default: 0.6).
-#' @param seed Integer seed used to shuffle the patch colours, so that the
-#'   colour order is reproducible. Default is 1.
-#' @param filename Character (or `NULL`). If provided, the plot is saved as a
-#'   `.png` file to this path and filename; otherwise the plot is returned.
-#' @param png_width Width of saved PNG in pixels (default: 3840).
-#' @param png_height Height of saved PNG in pixels (default: 2160).
 #'
 #' @return A `ggplot` object or a saved PNG file.
 #'
@@ -182,14 +167,10 @@ atl_compare_res_patch_plot <- function(data_v1,
 
   # check if data for this period
   if (nrow(ds1) == 0) {
-    stop(paste0(
-      "No data_v1 for this tag."
-    ))
+    stop("No data_v1 for this tag.")
   }
   if (nrow(ds2) == 0) {
-    stop(paste0(
-      "No data_v2 for this tag."
-    ))
+    stop("No data_v2 for this tag.")
   }
 
   # speed in

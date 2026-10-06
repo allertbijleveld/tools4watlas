@@ -80,7 +80,7 @@ atl_time_steps <- function(datetime_vector,
 
   # total and save as text file
   total <- nrow(ts)
-  write(total, file = paste0(output_path, "/total_frames.txt"))
+  write(total, file = file.path(output_path, "total_frames.txt"))
 
   # generate file paths with padded numbers
   ts[, path := paste0(
@@ -135,7 +135,7 @@ atl_time_steps <- function(datetime_vector,
 #'
 #' # clean up
 #' unlink(dir, recursive = TRUE)
-#' 
+#'
 #' @returns No return value. Prints progress bar to the console.
 #' @export
 atl_progress_bar <- function(file_path,
@@ -147,10 +147,11 @@ atl_progress_bar <- function(file_path,
     total_file <- file.path(file_path, "total_frames.txt")
 
     if (!file.exists(total_file)) {
-      stop(paste0(
-        "Error: 'total' not provided and 'total_frames.txt'",
-        " not found in the specified path."
-      ), call. = FALSE)
+      stop(
+        "'total' not provided and 'total_frames.txt'",
+        " not found in the specified path.",
+        call. = FALSE
+      )
     }
 
     total <- scan(total_file, quiet = TRUE)
@@ -214,8 +215,8 @@ atl_alpha_along <- function(x, head = 20, skew = -2) {
 #' Copied from https://github.com/ornitho-logics/windR
 #'
 #' @author Mihai Valcu & Johannes Krietsch
+#' @inheritParams atl_alpha_along
 #' @param x Vector along which alpha is created
-#' @param head Numeric parameter influencing the length of the head
 #' @param to Numeric vector including the minimum and maximum size
 #'
 #' @return Numeric vector with different size values

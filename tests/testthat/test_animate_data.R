@@ -81,7 +81,7 @@ test_that("atl_progress_bar errors if no total and no total_frames.txt", {
   # expect informative error
   expect_error(
     atl_progress_bar(tmp, refresh_rate = 0.1),
-    "Error: 'total' not provided and 'total_frames.txt' not found"
+    "'total' not provided and 'total_frames.txt' not found"
   )
   
   unlink(tmp, recursive = TRUE)

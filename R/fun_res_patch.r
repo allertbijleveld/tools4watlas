@@ -266,8 +266,8 @@ atl_res_patch <- function(data,
     patch_data[is.na(patch) & !has_flight & far_pre & far_post, outlier := TRUE]
 
     # Filter based bouts with flights and outliers
-    outliers_data <- patch_data[outlier == TRUE]
-    patch_data <- patch_data[has_flight == TRUE]
+    outliers_data <- patch_data[(outlier)]
+    patch_data <- patch_data[(has_flight)]
 
     # Merge flight ID and outliers back to original data
     data_original[patch_data, on = "row_id", has_flight := i.has_flight]
@@ -285,7 +285,7 @@ atl_res_patch <- function(data,
 
     # Now remove outliers from patches
     data_original[outliers_data, on = "row_id", outlier := i.outlier]
-    data_original[outlier == TRUE, patch := NA]
+    data_original[(outlier), patch := NA]
 
     # Remove row_id and patch filled
     data_original[,

@@ -26,7 +26,8 @@ test_that("atl_interpolate_track works correctly", {
     interp_interval = 60,
     max_gap = 60 * 15,
     max_dist = 1000,
-    patches_only = TRUE
+    patches_only = TRUE,
+    quietly = TRUE
   )
   
   # returns a data.table
@@ -106,7 +107,7 @@ test_that("atl_interpolate_track works correctly", {
     tag = "tag", x = "x", y = "y", time = "time",
     patch = "patch", interp_interval = 60,
     max_gap = 60 * 15, max_dist = NULL,
-    patches_only = TRUE
+    patches_only = TRUE, quietly = TRUE
   )
   expect_false("dist_next" %in% names(data_int_nodist))
   
@@ -115,7 +116,7 @@ test_that("atl_interpolate_track works correctly", {
     atl_interpolate_track(
       data = data[, .(tag, time)],
       tag = "tag", x = "x", y = "y", time = "time",
-      patches_only = FALSE
+      patches_only = FALSE, quietly = TRUE
     )
   )
 })
