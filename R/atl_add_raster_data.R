@@ -3,9 +3,9 @@
 #' This function extracts raster data (for example bathymetry data) at specified
 #' coordinates and adds it as a column to the input data.table.
 #'
+#' @inheritParams atl_as_sf
 #' @param data A `data.table` containing the data to which raster values will
 #'   be added. If not a `data.table`, it will be coerced to one.
-#' @inheritParams atl_as_sf
 #' @param projection A coordinate reference system (CRS) for the spatial data
 #'   in the input. Defaults to EPSG:32631.
 #' @param raster_data A `SpatRaster` object from which values will be extracted.

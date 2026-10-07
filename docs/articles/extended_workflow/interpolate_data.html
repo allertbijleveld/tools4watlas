@@ -39,7 +39,9 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
+<li><a class="dropdown-item" href="../../articles/package_overview.html">Package overview</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
     <li><a class="dropdown-item" href="../../articles/load_and_check_data.html">Load and check data</a></li>
     <li><a class="dropdown-item" href="../../articles/filter_data.html">Filter data</a></li>
     <li><a class="dropdown-item" href="../../articles/smooth_and_thin_data.html">Smooth and thin data</a></li>
@@ -332,7 +334,7 @@ residence patch, and the interpolated points are shown in black.</p>
 <span>    size <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">1</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">data_subset</span><span class="op">[</span><span class="va">interpolated</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">]</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"black"</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">data_subset</span><span class="op">[</span><span class="op">(</span><span class="va">interpolated</span><span class="op">)</span><span class="op">]</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"black"</span>,</span>
 <span>    size <span class="op">=</span> <span class="fl">0.5</span>, alpha <span class="op">=</span> <span class="fl">1</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="interpolate_data_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" alt="" width="100%"></p>

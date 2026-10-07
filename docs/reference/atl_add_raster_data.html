@@ -20,7 +20,9 @@ coordinates and adds it as a column to the input data.table."><meta property="og
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/package_overview.html">Package overview</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
     <li><a class="dropdown-item" href="../articles/load_and_check_data.html">Load and check data</a></li>
     <li><a class="dropdown-item" href="../articles/filter_data.html">Filter data</a></li>
     <li><a class="dropdown-item" href="../articles/smooth_and_thin_data.html">Smooth and thin data</a></li>
@@ -57,7 +59,7 @@ coordinates and adds it as a column to the input data.table."><meta property="og
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Add raster data to tracking data</h1>
-      <small class="dont-index">Source: <a href="https://github.com/allertbijleveld/tools4watlas/blob/HEAD/R/fun_add_raster_data.R" class="external-link"><code>R/fun_add_raster_data.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/allertbijleveld/tools4watlas/blob/HEAD/R/atl_add_raster_data.R" class="external-link"><code>R/atl_add_raster_data.R</code></a></small>
       <div class="d-none name"><code>atl_add_raster_data.Rd</code></div>
     </div>
 
@@ -90,13 +92,13 @@ be added. If not a <code>data.table</code>, it will be coerced to one.</p></dd>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>Character string specifying the column name for x-coordinates.
-Defaults to <code>"x"</code>.</p></dd>
+<dd><p>A character string representing the name of the column containing
+x-coordinates. Defaults to "x".</p></dd>
 
 
 <dt id="arg-y">y<a class="anchor" aria-label="anchor" href="#arg-y"></a></dt>
-<dd><p>Character string specifying the column name for y-coordinates.
-Defaults to <code>"y"</code>.</p></dd>
+<dd><p>A character string representing the name of the column containing
+y-coordinates. Defaults to "y".</p></dd>
 
 
 <dt id="arg-projection">projection<a class="anchor" aria-label="anchor" href="#arg-projection"></a></dt>

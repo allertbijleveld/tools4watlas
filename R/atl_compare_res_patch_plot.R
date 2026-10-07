@@ -12,7 +12,7 @@
 #'
 #' @author Johannes Krietsch
 #' @inheritParams atl_check_res_patch
-#' #' @inheritParams atl_check_tag
+#' @inheritParams atl_check_tag
 #' @param data_v1 A `data.table` containing tracking data from version 1. Must
 #'   include the columns: `tag`, `x`, `y`, `time`, `datetime`, and `patch`, as
 #'   created by `atl_res_patch()`. Optionally `species` and `tideID`.

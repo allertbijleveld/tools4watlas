@@ -129,7 +129,7 @@ wadden_sea <- st_intersection(wadden_sea, bbox_sf)
 
 # buffer
 ws_buffer <- wadden_sea |> st_buffer(1000)
-ws_buffer <- ws_buffer[, c("geometry")]
+ws_buffer <- ws_buffer[, "geometry"]
 
 # check data
 ggplot() +

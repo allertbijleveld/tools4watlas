@@ -39,6 +39,10 @@ library(lintr)
 library(styler)
 library(testthat)
 library(covr)
+library(goodpractice)
+library(spelling)
+library(urlchecker)
+library(checktor)
 ```
 
 ### Coding style
@@ -137,8 +141,14 @@ code, it makes sense to follow these standards.
 
 ``` r
 
-# full test of good practices
-goodpractice::gp()
+# test of good practices
+all <- goodpractice::all_checks()
+skip <- c(
+    grep("^rcmdcheck_", all, value = TRUE),
+    "covr", "cyclocomp", "complexity_function_length"
+)
+
+goodpractice::gp(checks = setdiff(all, skip))
 
 # basic CRAN checks
 checks <- checktor::checktor()

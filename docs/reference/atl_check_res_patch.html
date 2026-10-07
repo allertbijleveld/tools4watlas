@@ -20,7 +20,9 @@ movement paths, patch durations, and an inset overview map."><meta property="og:
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/package_overview.html">Package overview</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
     <li><a class="dropdown-item" href="../articles/load_and_check_data.html">Load and check data</a></li>
     <li><a class="dropdown-item" href="../articles/filter_data.html">Filter data</a></li>
     <li><a class="dropdown-item" href="../articles/smooth_and_thin_data.html">Smooth and thin data</a></li>
@@ -57,7 +59,7 @@ movement paths, patch durations, and an inset overview map."><meta property="og:
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Check the residence patches from one tag during one tide</h1>
-      <small class="dont-index">Source: <a href="https://github.com/allertbijleveld/tools4watlas/blob/HEAD/R/fun_check_res_patch.R" class="external-link"><code>R/fun_check_res_patch.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/allertbijleveld/tools4watlas/blob/HEAD/R/atl_check_res_patch.R" class="external-link"><code>R/atl_check_res_patch.R</code></a></small>
       <div class="d-none name"><code>atl_check_res_patch.Rd</code></div>
     </div>
 
@@ -77,7 +79,7 @@ movement paths, patch durations, and an inset overview map.</p>
 <span>  waterlevel_min <span class="op">=</span> <span class="op">-</span><span class="fl">150</span>,</span>
 <span>  waterlevel_max <span class="op">=</span> <span class="fl">150</span>,</span>
 <span>  waterlevel_line <span class="op">=</span> <span class="fl">60</span>,</span>
-<span>  <span class="va">buffer_res_patches</span>,</span>
+<span>  buffer_res_patches <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  buffer_bm <span class="op">=</span> <span class="fl">250</span>,</span>
 <span>  buffer_overview <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>  speed_threshold <span class="op">=</span> <span class="fl">3</span>,</span>
@@ -119,7 +121,7 @@ the columns: <code>tag</code>, <code>x</code>, <code>y</code>, <code>time</code>
 
 
 <dt id="arg-tide-data-highres">tide_data_highres<a class="anchor" aria-label="anchor" href="#arg-tide-data-highres"></a></dt>
-<dd><p>Data on the timing (in UTC) of the waterlevel in
+<dd><p>Data on the timing (in UTC) of the water level in
 small intervals (e.g. every 10 min) as provided from Rijkswaterstaat.</p></dd>
 
 
@@ -148,13 +150,6 @@ if NA (default) it uses the minimum of the provided water level data.</p></dd>
 <dt id="arg-waterlevel-line">waterlevel_line<a class="anchor" aria-label="anchor" href="#arg-waterlevel-line"></a></dt>
 <dd><p>Numeric in cmNAP. The water level to add as a dotted
 line to the plot (default: 60 cmNAP).</p></dd>
-
-
-<dt id="arg-buffer-res-patches">buffer_res_patches<a class="anchor" aria-label="anchor" href="#arg-buffer-res-patches"></a></dt>
-<dd><p>A numeric value (in meters) specifying the buffer
-around the polygon of each residence patch. If set to half of
-<code>lim_spat_indep</code> of the residence patch calculation it reflects the
-distance used to determine spatial independence of patches.</p></dd>
 
 
 <dt id="arg-buffer-bm">buffer_bm<a class="anchor" aria-label="anchor" href="#arg-buffer-bm"></a></dt>

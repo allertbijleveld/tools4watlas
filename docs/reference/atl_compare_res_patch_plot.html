@@ -24,7 +24,9 @@ Useful for reviewing changes in patch detection between processing versions."><m
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/package_overview.html">Package overview</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
     <li><a class="dropdown-item" href="../articles/load_and_check_data.html">Load and check data</a></li>
     <li><a class="dropdown-item" href="../articles/filter_data.html">Filter data</a></li>
     <li><a class="dropdown-item" href="../articles/smooth_and_thin_data.html">Smooth and thin data</a></li>
@@ -61,7 +63,7 @@ Useful for reviewing changes in patch detection between processing versions."><m
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Plot residence patches to compare two versions of parameters for one tag</h1>
-      <small class="dont-index">Source: <a href="https://github.com/allertbijleveld/tools4watlas/blob/HEAD/R/fun_compare_res_patch_plot.R" class="external-link"><code>R/fun_compare_res_patch_plot.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/allertbijleveld/tools4watlas/blob/HEAD/R/atl_compare_res_patch_plot.R" class="external-link"><code>R/atl_compare_res_patch_plot.R</code></a></small>
       <div class="d-none name"><code>atl_compare_res_patch_plot.Rd</code></div>
     </div>
 
@@ -164,7 +166,7 @@ speed (default: 3 m/s).</p></dd>
 
 
 <dt id="arg-path-alpha">path_alpha<a class="anchor" aria-label="anchor" href="#arg-path-alpha"></a></dt>
-<dd><p>Transparency of movement paths (default: 0.9).</p></dd>
+<dd><p>Transparency of movement paths (default: 0.2).</p></dd>
 
 
 <dt id="arg-patch-label-size">patch_label_size<a class="anchor" aria-label="anchor" href="#arg-patch-label-size"></a></dt>
@@ -181,11 +183,6 @@ speed (default: 3 m/s).</p></dd>
 
 <dt id="arg-element-text-size">element_text_size<a class="anchor" aria-label="anchor" href="#arg-element-text-size"></a></dt>
 <dd><p>Font size for axis and legend text (default: 11).</p></dd>
-
-
-<dt id="arg-buffer-res-patches">buffer_res_patches<a class="anchor" aria-label="anchor" href="#arg-buffer-res-patches"></a></dt>
-<dd><p>A numeric value (in meters) specifying the buffer
-around the polygon of each residence patch (default: 20).</p></dd>
 
 
 <dt id="arg-buffer-bm">buffer_bm<a class="anchor" aria-label="anchor" href="#arg-buffer-bm"></a></dt>
@@ -226,16 +223,17 @@ colour order is reproducible. Default is 1.</p></dd>
 
 
 <dt id="arg-filename">filename<a class="anchor" aria-label="anchor" href="#arg-filename"></a></dt>
-<dd><p>Character (or <code>NULL</code>). If provided, the plot is saved as a
-<code>.png</code> file to this path and filename; otherwise the plot is returned.</p></dd>
+<dd><p>Character (or NULL). If provided, the plot is saved as a
+<code>.png</code> file to this path and with this name; otherwise, the function
+returns the plot.</p></dd>
 
 
 <dt id="arg-png-width">png_width<a class="anchor" aria-label="anchor" href="#arg-png-width"></a></dt>
-<dd><p>Width of saved PNG in pixels (default: 3840).</p></dd>
+<dd><p>Width of saved PNG (default: 3840).</p></dd>
 
 
 <dt id="arg-png-height">png_height<a class="anchor" aria-label="anchor" href="#arg-png-height"></a></dt>
-<dd><p>Height of saved PNG in pixels (default: 2160).</p></dd>
+<dd><p>Height of saved PNG (default: 2160).</p></dd>
 
 </dl></div>
     <div class="section level2">

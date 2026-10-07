@@ -1,4 +1,4 @@
-# tools4watlas: Process and Visualize High-Throughput Animal Tracking Data
+# tools4watlas: Process and Visualise High-Throughput Animal Tracking Data
 
 Tools for processing and visualising high-throughput animal tracking
 data. While tailored for WATLAS (Wadden Sea Advanced Tracking and

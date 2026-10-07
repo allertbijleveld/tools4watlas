@@ -4,13 +4,10 @@
 #' custom bounding boxes, aspect ratios, and scale bar adjustments.
 #'
 #' @author Johannes Krietsch
+#' @inheritParams atl_as_sf
 #' @param data A `data.table` or an object convertible to `data.table`
 #' containing spatial points or a `sf` bounding box.
 #' Defaults to a single point around Griend if `NULL`.
-#' @param x A character string specifying the column with x-coordinates.
-#'   Defaults to `"x"`.
-#' @param y A character string specifying the column with y-coordinates.
-#'   Defaults to `"y"`.
 #' @param buffer A numeric value (in meters) specifying the buffer distance for
 #' the bounding box. Default is `1000`.
 #' @param asp A character string specifying the desired aspect ratio in the

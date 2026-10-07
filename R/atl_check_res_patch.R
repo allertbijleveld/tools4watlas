@@ -83,7 +83,7 @@ atl_check_res_patch <- function(data,
                                 waterlevel_min = -150,
                                 waterlevel_max = 150,
                                 waterlevel_line = 60,
-                                buffer_res_patches,
+                                buffer_res_patches = NULL,
                                 buffer_bm = 250,
                                 buffer_overview = 10000,
                                 speed_threshold = 3,
@@ -123,10 +123,11 @@ atl_check_res_patch <- function(data,
   atl_check_data(tide_data_highres, names_expected = c(
     "date", "time", "waterlevel", "dateTime"
   ))
-  if (missing(buffer_res_patches) || is.null(buffer_res_patches)) {
+  if (is.null(buffer_res_patches)) {
     stop(
-      "Function requiers to specify 'buffer_res_patches' value",
-      " (see description).", call. = FALSE
+      "Function requires you to specify 'buffer_res_patches' value",
+      " (see description).",
+      call. = FALSE
     )
   }
 

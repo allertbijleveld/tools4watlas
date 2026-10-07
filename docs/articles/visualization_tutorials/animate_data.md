@@ -63,8 +63,8 @@ more settings can be adjusted but here we cover the basics.
 
 # time steps and output path (atl_time_steps):
 cfg_time_interval <- "1 min" # time interval for animation steps
-cfg_output_path <- paste0(
-  "C:/Users/", Sys.info()[["user"]], "/temp/animation"
+cfg_output_path <- file.path(
+  "C:/Users", Sys.info()[["user"]], "temp", "animation"
 ) # output path for PNGs
 
 # size and alpha settings of the tail (atl_size_along and atl_alpha_along)
@@ -110,7 +110,7 @@ folder path where the PNGs are created, delete existing files.
 ``` r
 
 # delete existing files (if any)
-unlink(paste0(cfg_output_path, "/*"), recursive = TRUE)
+unlink(file.path(cfg_output_path, "*"), recursive = TRUE)
 
 # create time steps
 ts <- atl_time_steps(

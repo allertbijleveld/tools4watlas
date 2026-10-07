@@ -100,7 +100,7 @@ atl_compare_res_patch_plot(
 
 - path_alpha:
 
-  Transparency of movement paths (default: 0.9).
+  Transparency of movement paths (default: 0.2).
 
 - patch_label_size:
 
@@ -117,11 +117,6 @@ atl_compare_res_patch_plot(
 - element_text_size:
 
   Font size for axis and legend text (default: 11).
-
-- buffer_res_patches:
-
-  A numeric value (in meters) specifying the buffer around the polygon
-  of each residence patch (default: 20).
 
 - buffer_bm:
 
@@ -162,16 +157,17 @@ atl_compare_res_patch_plot(
 
 - filename:
 
-  Character (or `NULL`). If provided, the plot is saved as a `.png` file
-  to this path and filename; otherwise the plot is returned.
+  Character (or NULL). If provided, the plot is saved as a `.png` file
+  to this path and with this name; otherwise, the function returns the
+  plot.
 
 - png_width:
 
-  Width of saved PNG in pixels (default: 3840).
+  Width of saved PNG (default: 3840).
 
 - png_height:
 
-  Height of saved PNG in pixels (default: 2160).
+  Height of saved PNG (default: 2160).
 
 ## Value
 

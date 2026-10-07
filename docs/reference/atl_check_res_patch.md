@@ -15,7 +15,7 @@ atl_check_res_patch(
   waterlevel_min = -150,
   waterlevel_max = 150,
   waterlevel_line = 60,
-  buffer_res_patches,
+  buffer_res_patches = NULL,
   buffer_bm = 250,
   buffer_overview = 10000,
   speed_threshold = 3,
@@ -57,8 +57,8 @@ atl_check_res_patch(
 
 - tide_data_highres:
 
-  Data on the timing (in UTC) of the waterlevel in small intervals (e.g.
-  every 10 min) as provided from Rijkswaterstaat.
+  Data on the timing (in UTC) of the water level in small intervals
+  (e.g. every 10 min) as provided from Rijkswaterstaat.
 
 - tide:
 
@@ -86,13 +86,6 @@ atl_check_res_patch(
 
   Numeric in cmNAP. The water level to add as a dotted line to the plot
   (default: 60 cmNAP).
-
-- buffer_res_patches:
-
-  A numeric value (in meters) specifying the buffer around the polygon
-  of each residence patch. If set to half of `lim_spat_indep` of the
-  residence patch calculation it reflects the distance used to determine
-  spatial independence of patches.
 
 - buffer_bm:
 

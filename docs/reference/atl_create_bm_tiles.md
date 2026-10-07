@@ -34,13 +34,13 @@ atl_create_bm_tiles(
 
 - x:
 
-  A character string specifying the column with x-coordinates. Defaults
-  to `"x"`.
+  A character string representing the name of the column containing
+  x-coordinates. Defaults to "x".
 
 - y:
 
-  A character string specifying the column with y-coordinates. Defaults
-  to `"y"`.
+  A character string representing the name of the column containing
+  y-coordinates. Defaults to "y".
 
 - buffer:
 

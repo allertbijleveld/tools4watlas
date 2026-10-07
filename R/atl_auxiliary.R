@@ -2,11 +2,11 @@
 #'
 #' Returns a vector or table of predefined colours for WATLAS species.
 #'
-#' @param option A character string specifying the output format. Options are 
-#'   `"vector"` (default), which returns a named colour vector, or `"table"`, 
+#' @param option A character string specifying the output format. Options are
+#'   `"vector"` (default), which returns a named colour vector, or `"table"`,
 #'   which returns a data.table with species names and colours.
 #'
-#' @return A named character vector (for use in ggplot2) or a data.table 
+#' @return A named character vector (for use in ggplot2) or a data.table
 #'   with species names and corresponding colours.
 #' @export
 #'
@@ -36,12 +36,12 @@ atl_spec_cols <- function(option = "vector") {
 
   # Return selected format
   if (option == "vector") {
-    return(species_colours)
+    species_colours
   } else {
-    return(data.table::data.table(
+    data.table::data.table(
       species = names(species_colours),
       colour = species_colours
-    ))
+    )
   }
 }
 
@@ -50,13 +50,13 @@ atl_spec_cols <- function(option = "vector") {
 #' Returns a named vector of species labels in either a multiline or single-line
 #' format, which can also be the short common name.
 #'
-#' @param option A character string specifying the format of the species names. 
+#' @param option A character string specifying the format of the species names.
 #'   Options are `"multiline"` (default), where names include line breaks
 #'   (`\n`),  or `"singleline"`, where names are returned as a single line.
 #'   Additionally, `"short_multiline"` and `"short_singleline"` options can be
 #'   returned.
 #'
-#' @return A named character vector where names correspond to species 
+#' @return A named character vector where names correspond to species
 #' identifiers and values are formatted species names.
 #' @export
 #'
@@ -74,7 +74,7 @@ atl_spec_labs <- function(option = "multiline") {
 
   # Return selected format
   if (option == "multiline") {
-    return(c(
+    c(
       "curlew" = "Eurasian\ncurlew",
       "bar-tailed godwit" = "Bar-tailed\ngodwit",
       "oystercatcher" = "Eurasian\noystercatcher",
@@ -87,9 +87,9 @@ atl_spec_labs <- function(option = "multiline") {
       "curlew sandpiper" = "Curlew\nsandpiper",
       "spoonbill" = "Eurasian\nspoonbill",
       "kentish plover" = "Kentish\nplover"
-    ))
+    )
   } else if (option == "singleline") {
-    return(c(
+    c(
       "curlew" = "Eurasian curlew",
       "bar-tailed godwit" = "Bar-tailed godwit",
       "oystercatcher" = "Eurasian oystercatcher",
@@ -102,9 +102,9 @@ atl_spec_labs <- function(option = "multiline") {
       "curlew sandpiper" = "Curlew sandpiper",
       "spoonbill" = "Eurasian spoonbill",
       "kentish plover" = "Kentish plover"
-    ))
+    )
   } else if (option == "short_multiline") {
-    return(c(
+    c(
       "curlew" = "Curlew",
       "bar-tailed godwit" = "Bar-tailed\ngodwit",
       "oystercatcher" = "Oystercatcher",
@@ -117,9 +117,9 @@ atl_spec_labs <- function(option = "multiline") {
       "curlew sandpiper" = "Curlew\nsandpiper",
       "spoonbill" = "Spoonbill",
       "kentish plover" = "Grey\nplover"
-    ))
+    )
   } else if (option == "short_singleline") {
-    return(c(
+    c(
       "curlew" = "Curlew",
       "bar-tailed godwit" = "Bar-tailed godwit",
       "oystercatcher" = "Oystercatcher",
@@ -132,7 +132,7 @@ atl_spec_labs <- function(option = "multiline") {
       "curlew sandpiper" = "Curlew sandpiper",
       "spoonbill" = "Spoonbill",
       "kentish plover" = "Grey plover"
-    ))
+    )
   }
 }
 
@@ -152,7 +152,7 @@ atl_spec_labs <- function(option = "multiline") {
 #'   \code{data.table} with columns \code{tag} and \code{colour}. Default is
 #'   \code{"vector"}.
 #'
-#' @return A named character vector of hex color codes if 
+#' @return A named character vector of hex color codes if
 #'  \code{option = "vector"}, or a \code{data.table} with two columns
 #'  (\code{tag}, \code{colour}) if
 #'   \code{option = "table"}.
@@ -169,24 +169,24 @@ atl_spec_labs <- function(option = "multiline") {
 atl_tag_cols <- function(tags, option = "vector") {
   # ensure valid input
   match.arg(option, choices = c("vector", "table"))
-  
+
   # convert to character in case tags are numeric
   tags <- as.character(unique(tags))
-  
+
   # generate ggplot2-like colours using hue_pal
   n_tags <- length(tags)
   colours <- scales::hue_pal()(n_tags)
-  
+
   tag_colours <- stats::setNames(colours, tags)
-  
+
   # return selected format
   if (option == "vector") {
-    return(tag_colours)
+    tag_colours
   } else {
-    return(data.table::data.table(
+    data.table::data.table(
       tag = names(tag_colours),
       colour = tag_colours
-    ))
+    )
   }
 }
 
@@ -221,41 +221,42 @@ atl_tag_cols <- function(tags, option = "vector") {
 #'   name = c("Allert", "Peter", "Karl")
 #' )
 #' atl_tag_labs(data, c("rings", "name"), sep = " ")
-#' 
+#'
 #' @export
 atl_tag_labs <- function(data, columns, sep = " ") {
 
   # Global variables to suppress notes in data.table
   tag <- label <- NULL
-  
+
   # check data structure
   if (!("tag" %in% names(data))) {
     stop("Error: 'tag' column is missing from the data.")
   }
   if (!all(columns %in% names(data))) {
     missing_cols <- columns[!columns %in% names(data)]
-    stop(paste(
-      "Error: The following columns are missing from the data:",
-      paste(missing_cols, collapse = ", ")
-    ))
+    stop(
+      "The following columns are missing from the data: ",
+      toString(missing_cols),
+      call. = FALSE
+    )
   }
-  
+
   # select first row per tag to avoid duplicates
   labels <- data[, .SD[1], by = tag, .SDcols = c("tag", columns)]
-  
+
   # Replace NA with "" in the specified columns before pasting
   labels[, (columns) := lapply(.SD, function(x) {
     x[is.na(x)] <- ""
-    return(x)
+    x
   }), .SDcols = columns]
-  
+
   # paste only the specified columns together with the separator
   labels[, label := do.call(
     paste, c(.SD[, columns, with = FALSE], list(sep = sep))
   )]
-  
+
   # return named vector with tag as names and combined label as values
-  return(stats::setNames(labels$label, labels$tag))
+  stats::setNames(labels$label, labels$tag)
 }
 
 #' Format time in easy readable interval

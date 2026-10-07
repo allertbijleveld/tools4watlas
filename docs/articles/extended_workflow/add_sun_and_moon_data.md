@@ -85,10 +85,10 @@ days around full and new moon.
 
 # add moon phase per datetime
 # 0 = new, 0.25 = first quarter, 0.5 = full, 0.75 = last quarter
-data[, c("moon_phase") := getMoonIllumination(
+data[, moon_phase := suncalc::getMoonIllumination(
   date = datetime,
-  keep = c("phase")
-)[, c("phase")]]
+  keep = "phase"
+)$phase]
 
 # add time to full moon (phase = 0.5) and new moon (phase = 0)
 # Moon cycle = 29.53 days, negative = before full or new moon

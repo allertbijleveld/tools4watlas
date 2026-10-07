@@ -246,7 +246,7 @@ all_tags[, tag := as.character(tag)]
 data[all_tags, on = "tag", `:=`(species = i.species)]
 
 # make species first column
-setcolorder(data, c("species", setdiff(names(data), c("species"))))
+setcolorder(data, c("species", setdiff(names(data), "species")))
 
 # order data.table
 setorder(data, species, tag, time)

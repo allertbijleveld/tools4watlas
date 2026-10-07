@@ -8,7 +8,7 @@ summary for each unique ID specified in `id_columns`.
 ## Usage
 
 ``` r
-atl_summary(data, id_columns = c("tag"))
+atl_summary(data, id_columns = "tag")
 ```
 
 ## Arguments

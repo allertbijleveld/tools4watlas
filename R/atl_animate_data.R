@@ -216,7 +216,6 @@ atl_alpha_along <- function(x, head = 20, skew = -2) {
 #'
 #' @author Mihai Valcu & Johannes Krietsch
 #' @inheritParams atl_alpha_along
-#' @param x Vector along which alpha is created
 #' @param to Numeric vector including the minimum and maximum size
 #'
 #' @return Numeric vector with different size values

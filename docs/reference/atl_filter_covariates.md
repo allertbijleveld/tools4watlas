@@ -13,7 +13,7 @@ exist in their dataset in order to avoid errors.
 ## Usage
 
 ``` r
-atl_filter_covariates(data, filters = c(), quietly = FALSE)
+atl_filter_covariates(data, filters = NULL, quietly = FALSE)
 ```
 
 ## Arguments

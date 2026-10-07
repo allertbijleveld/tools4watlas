@@ -24,6 +24,8 @@
   data](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.md):
 - [tools4watlas
   logo](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_logo.md):
+- [Package
+  overview](https://allertbijleveld.github.io/tools4watlas/articles/package_overview.md):
 - [Plot
   data](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.md):
 - [Plot data

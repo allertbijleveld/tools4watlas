@@ -185,7 +185,7 @@ bm +
     size = 1, alpha = 1, show.legend = FALSE
   ) +
   geom_point(
-    data = data_subset[interpolated == TRUE], aes(x, y), color = "black",
+    data = data_subset[(interpolated)], aes(x, y), color = "black",
     size = 0.5, alpha = 1, show.legend = FALSE
   )
 ```

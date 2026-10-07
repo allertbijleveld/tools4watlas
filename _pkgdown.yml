@@ -24,6 +24,9 @@ navbar:
     articles:
       text: Articles
       menu:
+      - text: "Package overview"
+        href: articles/package_overview.html
+      - text: "--------"
       - text: Basic workflow (Vignettes)
       - text: "Load and check data"
         href: articles/load_and_check_data.html

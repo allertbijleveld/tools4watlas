@@ -39,7 +39,9 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
+<li><a class="dropdown-item" href="../../articles/package_overview.html">Package overview</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
     <li><a class="dropdown-item" href="../../articles/load_and_check_data.html">Load and check data</a></li>
     <li><a class="dropdown-item" href="../../articles/filter_data.html">Filter data</a></li>
     <li><a class="dropdown-item" href="../../articles/smooth_and_thin_data.html">Smooth and thin data</a></li>
@@ -124,7 +126,11 @@ repository and <a href="http://adv-r.had.co.nz/Style.html" class="external-link"
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lintr.r-lib.org" class="external-link">lintr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/styler" class="external-link">styler</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://testthat.r-lib.org" class="external-link">testthat</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://covr.r-lib.org" class="external-link">covr</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://covr.r-lib.org" class="external-link">covr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/goodpractice/" class="external-link">goodpractice</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ropensci.r-universe.dev/spelling" class="external-link">spelling</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/urlchecker" class="external-link">urlchecker</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/coatless-rpkg/checktor" class="external-link">checktor</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="coding-style">Coding style<a class="anchor" aria-label="anchor" href="#coding-style"></a>
@@ -209,8 +215,14 @@ checks and currently we are not planning to submit the package to CRAN,
 but especially for new code, it makes sense to follow these
 standards.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># full test of good practices</span></span>
-<span><span class="fu">goodpractice</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/goodpractice/reference/gp.html" class="external-link">gp</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># test of good practices</span></span>
+<span><span class="va">all</span> <span class="op">&lt;-</span> <span class="fu">goodpractice</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/goodpractice/reference/all_checks.html" class="external-link">all_checks</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">skip</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"^rcmdcheck_"</span>, <span class="va">all</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    <span class="st">"covr"</span>, <span class="st">"cyclocomp"</span>, <span class="st">"complexity_function_length"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">goodpractice</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/goodpractice/reference/gp.html" class="external-link">gp</a></span><span class="op">(</span>checks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="va">all</span>, <span class="va">skip</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># basic CRAN checks</span></span>
 <span><span class="va">checks</span> <span class="op">&lt;-</span> <span class="fu">checktor</span><span class="fu">::</span><span class="fu"><a href="https://r-pkg.thecoatlessprofessor.com/checktor/reference/checktor.html" class="external-link">checktor</a></span><span class="op">(</span><span class="op">)</span></span>

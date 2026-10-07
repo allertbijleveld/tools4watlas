@@ -12,14 +12,9 @@
 #' Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
 #' high-throughput animal tracking data. *Journal of Animal Ecology*, 91,
 #' 287-307. \doi{10.1111/1365-2656.13610}
-#' @param data A data.frame or data.table object returned by
-#' \code{atl_get_data}, which should contain the original columns
-#' (particularly tag, x, y, and time).
+#' @inheritParams atl_get_speed
 #' @param moving_window The size of the moving window for the median smooth.
 #' Must be an odd number.
-#' @param tag The tag ID.
-#' @param x The X coordinate.
-#' @param y The Y coordinate.
 #' @param time The timestamp, ideally as an integer.
 #' @return A data.table class object (extends data.frame), including X,Y as
 #' smoothed coordinates and the x_raw and y_raw, which are the raw coordinates.

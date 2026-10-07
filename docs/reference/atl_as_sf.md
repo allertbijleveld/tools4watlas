@@ -17,7 +17,7 @@ atl_as_sf(
   projection = sf::st_crs(32631),
   additional_cols = NULL,
   option = "points",
-  buffer
+  buffer = NULL
 )
 ```
 

@@ -10,7 +10,7 @@ applied dynamically. If species is a column, it will be kept.
 ## Usage
 
 ``` r
-atl_res_patch_summary(data, summary_variables = c(), summary_functions = c())
+atl_res_patch_summary(data, summary_variables = NULL, summary_functions = NULL)
 ```
 
 ## Arguments

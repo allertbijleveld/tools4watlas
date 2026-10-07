@@ -27,13 +27,13 @@ atl_add_raster_data(
 
 - x:
 
-  Character string specifying the column name for x-coordinates.
-  Defaults to `"x"`.
+  A character string representing the name of the column containing
+  x-coordinates. Defaults to "x".
 
 - y:
 
-  Character string specifying the column name for y-coordinates.
-  Defaults to `"y"`.
+  A character string representing the name of the column containing
+  y-coordinates. Defaults to "y".
 
 - projection:
 

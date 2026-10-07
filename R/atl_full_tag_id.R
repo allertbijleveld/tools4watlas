@@ -32,8 +32,9 @@ atl_full_tag_id <- function(tag, short = FALSE, n = 4) {
   tag_last_n <- substr(tag_full, nchar(tag_full) - n + 1, nchar(tag_full))
 
   # return full or short tag number as character string
-  ifelse(short,
-    return(tag_last_n),
-    return(tag_full)
-  )
+  if (short) {
+    tag_last_n
+  } else {
+    tag_full
+  }
 }

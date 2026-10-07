@@ -129,7 +129,7 @@ atl_as_sf <- function(data,
                       projection = sf::st_crs(32631),
                       additional_cols = NULL,
                       option = "points",
-                      buffer) {
+                      buffer = NULL) {
 
   # Global variables to suppress notes in data.table
   tag_dummy <- patch <- geometry <- n <- NULL
@@ -143,6 +143,7 @@ atl_as_sf <- function(data,
   if (is.null(tag)) {
     tag <- "tag_dummy"
     data[, tag_dummy := "dummy"]
+    on.exit(data[, tag_dummy := NULL], add = TRUE)
   }
 
   # Ensure x and y are character strings
@@ -150,6 +151,15 @@ atl_as_sf <- function(data,
   y_col <- as.character(y)
   tag_col <- as.character(tag)
   tag_col_group <- rlang::ensym(tag)
+
+  # check valid option
+  valid_options <- c("points", "lines", "table", "res_patches")
+  if (!(option %in% valid_options)) {
+    stop(
+      "Invalid option. Choose one of: ", toString(valid_options),
+      call. = FALSE
+    )
+  }
 
   # Check if columns exist in the data
   if (!(x_col %in% names(data)) || !(y_col %in% names(data))) {
@@ -166,7 +176,7 @@ atl_as_sf <- function(data,
         call. = FALSE
       )
     }
-    if (missing(buffer) || is.null(buffer)) {
+    if (is.null(buffer)) {
       stop("Option 'res_patches' requires a specified 'buffer' value.",
         call. = FALSE
       )
@@ -278,14 +288,8 @@ atl_as_sf <- function(data,
       }
 
       d_patches
-    },
-    stop("Invalid option", call. = FALSE)
+    }
   )
-
-  # Delete dummy tag column again
-  if (tag == "tag_dummy") {
-    data[, tag_dummy := NULL]
-  }
 
   return_data
 }

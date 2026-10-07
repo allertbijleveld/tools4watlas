@@ -39,7 +39,9 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
+<li><a class="dropdown-item" href="../../articles/package_overview.html">Package overview</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
     <li><a class="dropdown-item" href="../../articles/load_and_check_data.html">Load and check data</a></li>
     <li><a class="dropdown-item" href="../../articles/filter_data.html">Filter data</a></li>
     <li><a class="dropdown-item" href="../../articles/smooth_and_thin_data.html">Smooth and thin data</a></li>
@@ -160,7 +162,7 @@ Maps</a> by a right click on a specific location. Here I choose a point
 a bit east of Griend, to include Richel and Ballastplaat in the map.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># define location</span></span>
-<span><span class="va">location</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.275</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">53.2523</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">location</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">5.275</span>, y <span class="op">=</span> <span class="fl">53.2523</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># create basemap</span></span>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">location</span>, buffer <span class="op">=</span> <span class="fl">7000</span>, projection <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="fl">4326</span><span class="op">)</span><span class="op">)</span></span>
@@ -475,7 +477,7 @@ to your local copy of this folder or add the path for your user in the
 <span></span>
 <span><span class="co"># Check if each row includes period of tracking data</span></span>
 <span><span class="va">dr</span><span class="op">[</span>, <span class="va">includes_data</span> <span class="op">:=</span> <span class="op">(</span><span class="va">date_placed</span> <span class="op">&lt;=</span> <span class="va">end</span> <span class="op">&amp;</span> <span class="va">date_removed</span> <span class="op">&gt;=</span> <span class="va">start</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">dr</span> <span class="op">&lt;-</span> <span class="va">dr</span><span class="op">[</span><span class="va">includes_data</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">]</span></span>
+<span><span class="va">dr</span> <span class="op">&lt;-</span> <span class="va">dr</span><span class="op">[</span><span class="op">(</span><span class="va">includes_data</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># plot basemap with receivers active during tracking period</span></span>
 <span><span class="va">bm</span> <span class="op">+</span></span>

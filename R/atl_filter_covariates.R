@@ -21,6 +21,7 @@
 #' Nathan, R., & Bijleveld, A. I. (2022). A guide to pre-processing
 #' high-throughput animal tracking data. *Journal of Animal Ecology*, 91,
 #' 287-307. \doi{10.1111/1365-2656.13610}
+#' @inheritParams atl_interpolate_track
 #' @param data A `data.table` or similar containing the variables to be
 #' filtered.
 #' @param filters A character vector of filter expressions. An example might be
@@ -29,8 +30,6 @@
 #' present; this makes it flexible, allowing expressions such as
 #' \code{"between(speed, 2, 20)"}, but also something to use at your own risk.
 #' A missing filter variables \emph{will} result in an empty data frame.
-#' @param quietly If `TRUE` returns percentage and number of positions filtered,
-#' if `FALSE` functions runs quietly
 #'
 #' @return A dataframe filtered using the filters specified.
 #' @examples

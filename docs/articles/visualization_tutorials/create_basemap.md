@@ -81,7 +81,7 @@ east of Griend, to include Richel and Ballastplaat in the map.
 ``` r
 
 # define location
-location <- data.table(x = c(5.275), y = c(53.2523))
+location <- data.table(x = 5.275, y = 53.2523)
 
 # create basemap
 bm <- atl_create_bm(location, buffer = 7000, projection = sf::st_crs(4326))
@@ -452,7 +452,7 @@ end <- max(data$datetime)
 
 # Check if each row includes period of tracking data
 dr[, includes_data := (date_placed <= end & date_removed >= start)]
-dr <- dr[includes_data == TRUE]
+dr <- dr[(includes_data)]
 
 # plot basemap with receivers active during tracking period
 bm +
