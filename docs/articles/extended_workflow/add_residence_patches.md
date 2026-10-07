@@ -111,15 +111,15 @@ library(doFuture)
 # load example data
 data <- data_example
 
-# file path to WATLAS teams data folder
-fp <- atl_file_path("watlas_teams")
-
-# sub path to tide data
-tidal_pattern_fp <- paste0(
-  fp, "waterdata/allYears-tidalPattern-west_terschelling-UTC.csv"
+# file path to example tide data
+tidal_pattern_fp <- system.file(
+  "extdata", "example-tidalPattern-west_terschelling-UTC.csv",
+  package = "tools4watlas"
 )
-measured_water_height_fp <- paste0(
-  fp, "waterdata/allYears-gemeten_waterhoogte-west_terschelling-clean-UTC.csv"
+
+measured_water_height_fp <- system.file(
+  "extdata", "example-gemeten_waterhoogte-west_terschelling-clean-UTC.csv",
+  package = "tools4watlas"
 )
 
 # load tide data

@@ -422,7 +422,7 @@ logo](create_basemap_files/figure-html/unnamed-chunk-12-1.png)
 Receiver data are managed by Allert. They are located in the “WATLAS”
 SharePoint folder: `Documents/data/`. Either specify the path to your
 local copy of this folder or add the path for your user in the
-[`atl_file_path()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.md)
+[`atl_file_path()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.html)
 function.
 
 ``` r

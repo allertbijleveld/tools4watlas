@@ -25,6 +25,7 @@ This article shows how to add sun and moon data using the `suncalc` package. We 
 ```{r, message = FALSE, warning=FALSE}
 # packages
 library(tools4watlas)
+library(data.table)
 library(suncalc)
 
 # load example data

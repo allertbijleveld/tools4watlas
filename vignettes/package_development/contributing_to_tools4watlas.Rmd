@@ -104,8 +104,14 @@ covr::package_coverage()
 For further in-depth checking of CRAN coding standards, one can use the [`goodpractice`](https://ropensci-review-tools.github.io/goodpractice/articles/goodpractice.html) and [`checktor`](https://r-packages.io/packages/checktor) package. At the moment `tools4watlas` does not pass all the checks and currently we are not planning to submit the package to CRAN, but especially for new code, it makes sense to follow these standards.
 
 ```{r, eval=FALSE}
-# full test of good practices
-goodpractice::gp()
+# test of good practices
+all <- goodpractice::all_checks()
+skip <- c(
+    grep("^rcmdcheck_", all, value = TRUE),
+    "covr", "cyclocomp", "complexity_function_length"
+)
+
+goodpractice::gp(checks = setdiff(all, skip))
 
 # basic CRAN checks
 checks <- checktor::checktor()

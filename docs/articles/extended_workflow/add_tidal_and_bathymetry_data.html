@@ -39,7 +39,9 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
+<li><a class="dropdown-item" href="../../articles/package_overview.html">Package overview</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
     <li><a class="dropdown-item" href="../../articles/load_and_check_data.html">Load and check data</a></li>
     <li><a class="dropdown-item" href="../../articles/filter_data.html">Filter data</a></li>
     <li><a class="dropdown-item" href="../../articles/smooth_and_thin_data.html">Smooth and thin data</a></li>
@@ -124,22 +126,22 @@ and thinned it</a>.</p>
 <p>Tide data are from West-Terschelling and prepared by Allert. They are
 located in the “WATLAS” SharePoint folder: <code>Documents/data/</code>.
 Either specify the path to your local copy of this folder or add the
-path for your user in the <code><a href="../../reference/atl_file_path.html">atl_file_path()</a></code> function.</p>
+path for your user in the <code><a href="https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.html">atl_file_path()</a></code> function.</p>
 <p>Here we show how to add tide data (<code>tideID</code> - a unique
 tide identifier, <code>tidaltime</code> and <code>time2lowtide</code> -
 time from high tide and time to low tide in minutes,
 <code>waterlevel</code> - as measured from the tide gauge station with
 offset) in cm NAP.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># file path to WATLAS teams data folder</span></span>
-<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_file_path.html">atl_file_path</a></span><span class="op">(</span><span class="st">"watlas_teams"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># sub path to tide data</span></span>
-<span><span class="va">tidal_pattern_fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
-<span>  <span class="va">fp</span>, <span class="st">"waterdata/allYears-tidalPattern-west_terschelling-UTC.csv"</span></span>
+<code class="sourceCode R"><span><span class="co"># file path to example tide data</span></span>
+<span><span class="va">tidal_pattern_fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
+<span>  <span class="st">"extdata"</span>, <span class="st">"example-tidalPattern-west_terschelling-UTC.csv"</span>,</span>
+<span>  package <span class="op">=</span> <span class="st">"tools4watlas"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">measured_water_height_fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
-<span>  <span class="va">fp</span>, <span class="st">"waterdata/allYears-gemeten_waterhoogte-west_terschelling-clean-UTC.csv"</span></span>
+<span></span>
+<span><span class="va">measured_water_height_fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
+<span>  <span class="st">"extdata"</span>, <span class="st">"example-gemeten_waterhoogte-west_terschelling-clean-UTC.csv"</span>,</span>
+<span>  package <span class="op">=</span> <span class="st">"tools4watlas"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># load tide data</span></span>
@@ -241,7 +243,7 @@ computer.</p>
 position.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># file path to Birds, fish 'n chips GIS/rasters folder</span></span>
-<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_file_path.html">atl_file_path</a></span><span class="op">(</span><span class="st">"rasters"</span><span class="op">)</span></span>
+<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.html">atl_file_path</a></span><span class="op">(</span><span class="st">"rasters"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># load bathymetry data</span></span>
 <span><span class="va">bat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">fp</span>, <span class="st">"bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"</span><span class="op">)</span><span class="op">)</span></span>
@@ -325,7 +327,7 @@ et al. 2016)</a>:</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org" class="external-link">scales</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># file path to WATLAS teams data folder</span></span>
-<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_file_path.html">atl_file_path</a></span><span class="op">(</span><span class="st">"rasters"</span><span class="op">)</span></span>
+<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"rasters"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># load bathymetry data</span></span>
 <span><span class="va">bat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">fp</span>, <span class="st">"bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"</span><span class="op">)</span><span class="op">)</span></span>

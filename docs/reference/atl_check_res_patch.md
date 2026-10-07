@@ -87,6 +87,13 @@ atl_check_res_patch(
   Numeric in cmNAP. The water level to add as a dotted line to the plot
   (default: 60 cmNAP).
 
+- buffer_res_patches:
+
+  A numeric value (in meters) specifying the buffer around the polygon
+  of each residence patch. If set to half of `lim_spat_indep` of the
+  residence patch calculation it reflects the distance used to determine
+  spatial independence of patches.
+
 - buffer_bm:
 
   Map buffer size (default: 250).

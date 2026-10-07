@@ -26,6 +26,7 @@ We first present some examples of plotting data grouped by tag ID, then by speci
 ```{r}
 # packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 library(viridis)
 library(scales)

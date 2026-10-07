@@ -141,7 +141,7 @@ environment. To use the most recent metadata stored online, we first
 load the `tags_watlas_all.xlsx` from the “WATLAS” SharePoint folder:
 `Documents/data/`. Either specify the path to your local copy of this
 folder or add the path for your user in the
-[`atl_file_path()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.md)
+[`atl_file_path()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.html)
 function.
 
 ``` r

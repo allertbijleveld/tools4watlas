@@ -24,6 +24,7 @@ This article shows how to make and save plots in a loop using a single-core as w
 ```{r}
 # packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 library(foreach)
 library(doFuture)

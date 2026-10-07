@@ -12,8 +12,6 @@ Functions to load data from SQLlite or remote SQL database
   : Format time in easy readable interval
 - [`atl_full_tag_id()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_full_tag_id.md)
   : Create full tag ID or tag ID with specific length
-- [`atl_file_path()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.md)
-  : Get the file path for WATLAS or GIS data based on the user's name.
 
 ## Filter data
 

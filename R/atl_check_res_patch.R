@@ -20,6 +20,10 @@
 #' line to the plot (default: 60 cmNAP).
 #' @param buffer_bm Map buffer size (default: 250).
 #' @param buffer_overview Overview map buffer size (default: 10000).
+#' @param buffer_res_patches A numeric value (in meters) specifying the buffer
+#' around the polygon of each residence patch. If set to half of
+#' \code{lim_spat_indep} of the residence patch calculation it reflects the
+#' distance used to determine spatial independence of patches.
 #' @param speed_threshold Speed threshold in m/s for colour scale of movement
 #' speed (default: 3 m/s).
 #' @param point_size Size of plotted points (default: 1).

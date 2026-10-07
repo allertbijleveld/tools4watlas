@@ -29,7 +29,7 @@ library(rnaturalearth)
 library(rnaturalearthdata)
 
 # file path to Birds, fish 'n chips GIS/shapefiles folder
-fp <- atl_file_path("shapefiles")
+fp <- Sys.getenv("shapefiles")
 ```
 
 ## Define a bounding box of the Dutch Wadden Sea
@@ -108,7 +108,7 @@ Includes data in the package, if `tools4watlas` is opened as project.
 ``` r
 
 # save data
-save(land, file = "../../data/land.rda", compress = "xz")
+usethis::use_data(land, overwrite = TRUE, compress = "xz")
 ```
 
 ## Define a polygon of the Dutch Wadden Sea
@@ -225,8 +225,8 @@ Includes data in the package, if `tools4watlas` is opened as project.
 ``` r
 
 # save data
-save(mudflats, file = "../../data/muddflats.rda", compress = "xz")
-save(lakes, file = "../../data/lakes.rda", compress = "xz")
+usethis::use_data(mudflats, overwrite = TRUE, compress = "xz")
+usethis::use_data(lakes, overwrite = TRUE, compress = "xz")
 ```
 
 ## Load Grienderwaard data
@@ -274,7 +274,7 @@ Includes data in the package, if `tools4watlas` is opened as project.
 ``` r
 
 # save data
-save(grienderwaard, file = "../../data/grienderwaard.rda", compress = "xz")
+usethis::use_data(grienderwaard, overwrite = TRUE, compress = "xz")
 ```
 
 ## Load roost sites around Griend data

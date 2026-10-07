@@ -24,6 +24,7 @@ This article shows how to make different basemaps for plotting movement data. We
 ```{r}
 # packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 ```
 
@@ -320,7 +321,7 @@ data <- data_example
 bm <- atl_create_bm(data, buffer = 20000)
 
 # file path to WATLAS teams data folder
-fp <- atl_file_path("watlas_teams")
+fp <- Sys.getenv("watlas_teams")
 
 # load receivers data
 dr <- readxl::read_excel(

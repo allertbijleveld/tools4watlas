@@ -36,7 +36,7 @@ Tide data are from West-Terschelling and prepared by Allert. They are
 located in the “WATLAS” SharePoint folder: `Documents/data/`. Either
 specify the path to your local copy of this folder or add the path for
 your user in the
-[`atl_file_path()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.md)
+[`atl_file_path()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.html)
 function.
 
 Here we show how to add tide data (`tideID` - a unique tide identifier,
@@ -46,15 +46,15 @@ with offset) in cm NAP.
 
 ``` r
 
-# file path to WATLAS teams data folder
-fp <- atl_file_path("watlas_teams")
-
-# sub path to tide data
-tidal_pattern_fp <- paste0(
-  fp, "waterdata/allYears-tidalPattern-west_terschelling-UTC.csv"
+# file path to example tide data
+tidal_pattern_fp <- system.file(
+  "extdata", "example-tidalPattern-west_terschelling-UTC.csv",
+  package = "tools4watlas"
 )
-measured_water_height_fp <- paste0(
-  fp, "waterdata/allYears-gemeten_waterhoogte-west_terschelling-clean-UTC.csv"
+
+measured_water_height_fp <- system.file(
+  "extdata", "example-gemeten_waterhoogte-west_terschelling-clean-UTC.csv",
+  package = "tools4watlas"
 )
 
 # load tide data
@@ -157,7 +157,7 @@ library(viridis)
 library(scales)
 
 # file path to WATLAS teams data folder
-fp <- atl_file_path("rasters")
+fp <- Sys.getenv("rasters")
 
 # load bathymetry data
 bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))

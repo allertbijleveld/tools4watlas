@@ -29,6 +29,7 @@ Here, we show how to interpolate and fill small data gaps within residence patch
 ```{r, message = FALSE}
 # packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 library(viridis)
 library(foreach)

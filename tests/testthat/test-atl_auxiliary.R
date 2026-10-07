@@ -237,7 +237,7 @@ test_that("atl_tag_labs errors if required columns missing", {
   # check error
   expect_error(
     atl_tag_labs(data, c("rings", "name")),
-    "Error: The following columns are missing"
+    "The following columns are missing"
   )
 })
 

@@ -77,6 +77,11 @@ speed (default: 3 m/s).}
 
 \item{element_text_size}{Font size for axis and legend text (default: 11).}
 
+\item{buffer_res_patches}{A numeric value (in meters) specifying the buffer
+around the polygon of each residence patch. If set to half of
+\code{lim_spat_indep} of the residence patch calculation it reflects the
+distance used to determine spatial independence of patches.}
+
 \item{buffer_bm}{Map buffer size in meters (default: 250).}
 
 \item{water_fill}{Water fill colour (default: \code{"white"}).}

@@ -24,6 +24,7 @@ This article shows different ways to plot WATLAS-data interactively using `plotl
 ```{r}
 # packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 library(plotly)
 library(mapview)

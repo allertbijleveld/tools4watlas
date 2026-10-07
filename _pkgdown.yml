@@ -78,7 +78,6 @@ reference:
      - atl_summary
      - atl_format_time
      - atl_full_tag_id
-     - atl_file_path
   - title: "Filter data"
     desc: "Fuctions to filter data"
     contents:

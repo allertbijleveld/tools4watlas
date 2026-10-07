@@ -26,6 +26,7 @@ To call `ffmpeg` from within `R`, it is necessary to install `mapmate` from GitH
 ```{r}
 # packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 library(viridis)
 library(foreach)
@@ -92,17 +93,17 @@ cfg_frame_rate <- 16 # in seconds
 # additional to add water data
 # path to tide data
 tidal_pattern_fp <- paste0(
-  atl_file_path("watlas_teams"), # file path to WATLAS teams data folder
+  Sys.getenv("watlas_teams"), # file path to WATLAS teams data folder
   "waterdata/allYears-tidalPattern-west_terschelling-UTC.csv"
 )
 measured_water_height_fp <- paste0(
-  atl_file_path("watlas_teams"), # file path to WATLAS teams data folder
+  Sys.getenv("watlas_teams"), # file path to WATLAS teams data folder
   "waterdata/allYears-gemeten_waterhoogte-west_terschelling-clean-UTC.csv"
 )
 
 # path to bathymetry data
 bathymetry_fp <- paste0(
-  atl_file_path("rasters"), # file path to Birds, fish 'n chips GIS/rasters
+  Sys.getenv("rasters"), # file path to Birds, fish 'n chips GIS/rasters
   "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"
 )
 ```

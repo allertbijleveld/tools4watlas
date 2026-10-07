@@ -28,6 +28,7 @@ Here, we work with the previously saved example data.
 ```{r, message = FALSE}
 # packages
 library(tools4watlas)
+library(data.table)
 library(lubridate)
 library(sf)
 library(ggplot2)
