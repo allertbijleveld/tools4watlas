@@ -63,6 +63,7 @@
 #' @examples
 #' # packages
 #' library(tools4watlas)
+#' library(data.table)
 #'
 #' # path to csv with filtered data
 #' data_path <- system.file(

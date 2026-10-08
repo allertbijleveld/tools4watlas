@@ -2,9 +2,7 @@
 test_that(
   "atl_transform_dt adds transformed coordinate columns", {
     
-    library(data.table)
-    
-    dt <- data.table(
+    dt <- data.table::data.table(
       x = 650272.5,
       y = 5902705
     )
@@ -21,10 +19,8 @@ test_that(
 
 test_that(
   "atl_transform_dt returns numeric transformed coordinates", {
-    
-    library(data.table)
-    
-    dt <- data.table(
+
+    dt <- data.table::data.table(
       x = 650272.5,
       y = 5902705
     )
@@ -40,10 +36,7 @@ test_that(
 test_that(
   "atl_transform_dt sets CRS attribute correctly", {
     
-    library(data.table)
-    library(sf)
-    
-    dt <- data.table(
+    dt <- data.table::data.table(
       x = 650272.5,
       y = 5902705
     )
@@ -61,9 +54,7 @@ test_that(
 test_that(
   "atl_transform_dt works with custom coordinate names", {
     
-    library(data.table)
-    
-    dt <- data.table(
+    dt <- data.table::data.table(
       east = 650272.5,
       north = 5902705
     )
@@ -83,9 +74,7 @@ test_that(
 test_that(
   "atl_transform_dt returns unchanged empty data", {
     
-    library(data.table)
-    
-    dt <- data.table(
+    dt <- data.table::data.table(
       x = numeric(),
       y = numeric()
     )

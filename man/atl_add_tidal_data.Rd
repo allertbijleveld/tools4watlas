@@ -47,6 +47,7 @@ low tide for tracking data (both in minutes).
 \examples{
 # packages
 library(tools4watlas)
+library(data.table)
 
 # load example data
 data <- data_example

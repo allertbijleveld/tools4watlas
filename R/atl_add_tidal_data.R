@@ -26,6 +26,7 @@
 #' @examples
 #' # packages
 #' library(tools4watlas)
+#' library(data.table)
 #'
 #' # load example data
 #' data <- data_example

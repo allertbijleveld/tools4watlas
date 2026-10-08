@@ -28,8 +28,8 @@ BugReports: https://github.com/allertbijleveld/tools4watlas/issues
 Depends: 
     R (>= 4.5.0)
 Imports:
-    data.table,
     assertthat,
+    data.table,
     DBI,
     dplyr,
     ggnewscale,
@@ -74,12 +74,12 @@ Suggests:
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
-Config/roxygen2/version: 8.1.0
-Config/testthat/edition: 3
 Config/checktor/allow: acronyms:WATLAS,
     print_cat_usage:fun_check_res_patch.R,
     print_cat_usage:fun_check_tag.R,
     print_cat_usage:fun_compare_res_patch_plot.R
+Config/roxygen2/version: 8.1.0
+Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-GB
 LazyData: true
