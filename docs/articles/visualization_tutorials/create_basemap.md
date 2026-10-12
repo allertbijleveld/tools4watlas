@@ -14,6 +14,7 @@ the package `OpenStreetMap`.
 
 # packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 ```
 
@@ -214,7 +215,7 @@ can also be downloaded from the
 library(terra)
 
 # file path to Birds, fish 'n chips GIS/rasters folder
-fp <- atl_file_path("rasters")
+fp <- Sys.getenv("rasters")
 
 # load bathymetry data
 bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
@@ -242,7 +243,7 @@ this option only for polished maps.
 library(terra)
 
 # file path to Birds, fish 'n chips GIS/rasters folder
-fp <- atl_file_path("rasters")
+fp <- Sys.getenv("rasters")
 
 # load bathymetry data
 bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
@@ -422,8 +423,7 @@ logo](create_basemap_files/figure-html/unnamed-chunk-12-1.png)
 Receiver data are managed by Allert. They are located in the “WATLAS”
 SharePoint folder: `Documents/data/`. Either specify the path to your
 local copy of this folder or add the path for your user in the
-[`atl_file_path()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.html)
-function.
+`atl_file_path()` function.
 
 ``` r
 
@@ -434,7 +434,7 @@ data <- data_example
 bm <- atl_create_bm(data, buffer = 20000)
 
 # file path to WATLAS teams data folder
-fp <- atl_file_path("watlas_teams")
+fp <- Sys.getenv("watlas_teams")
 
 # load receivers data
 dr <- readxl::read_excel(

@@ -17,6 +17,7 @@ it](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data
 ``` r
 
 library(tools4watlas)
+library(data.table)
 library(terra)
 library(ggplot2)
 
@@ -35,9 +36,7 @@ data <- fread(data_path, yaml = TRUE)
 Tide data are from West-Terschelling and prepared by Allert. They are
 located in the “WATLAS” SharePoint folder: `Documents/data/`. Either
 specify the path to your local copy of this folder or add the path for
-your user in the
-[`atl_file_path()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.html)
-function.
+your user in the `atl_file_path()` function.
 
 Here we show how to add tide data (`tideID` - a unique tide identifier,
 `tidaltime` and `time2lowtide` - time from high tide and time to low
@@ -100,7 +99,7 @@ position.
 ``` r
 
 # file path to Birds, fish 'n chips GIS/rasters folder
-fp <- atl_file_path("rasters")
+fp <- Sys.getenv("rasters")
 
 # load bathymetry data
 bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))

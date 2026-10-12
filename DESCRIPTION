@@ -2,13 +2,14 @@ Package: tools4watlas
 Title: Process and Visualise High-Throughput Animal Tracking Data
 Version: 2.0.0
 Authors@R: c(
-    person("Johannes", "Krietsch", , "johannes.krietsch@nioz.nl", role = "aut",
+    person(given = "Johannes", family = "Krietsch", 
+           email = "johannes.krietsch@nioz.nl", role = "aut",
            comment = c(ORCID = "0000-0002-8080-1734")),
-    person("Allert", "Bijleveld", , "allert.bijleveld@nioz.nl", role = c("aut", "cre", "cph"),
+    person(given = c("Allert I."), family = "Bijleveld", email = "allert.bijleveld@nioz.nl", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-3159-8944")),
-    person("Pratik", "Gupte", role = "ctb",
+    person(given = "Pratik", family = "Gupte", role = "ctb",
            comment = c(ORCID = "0000-0001-5294-7819")),
-    person("Christine", "Beardsworth", role = "ctb",
+    person(given = "Christine", family = "Beardsworth", role = "ctb",
            comment = c(ORCID = "0000-0003-1308-1455"))
   )
 Description: Tools for processing and visualising high-throughput animal

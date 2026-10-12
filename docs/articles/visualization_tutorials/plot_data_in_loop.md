@@ -14,6 +14,7 @@ though them.
 
 # packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 library(foreach)
 library(doFuture)

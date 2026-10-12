@@ -22,6 +22,7 @@ it](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data
 
 # packages
 library(tools4watlas)
+library(data.table)
 library(suncalc)
 
 # load example data

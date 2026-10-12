@@ -21,8 +21,8 @@ and Friesland) can be downloaded from
 ``` r
 
 # packages
-library(data.table)
 library(tools4watlas)
+library(data.table)
 library(sf)
 library(ggplot2)
 library(rnaturalearth)

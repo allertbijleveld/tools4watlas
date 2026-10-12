@@ -108,6 +108,7 @@ data</a>), 2) bathymetry data, 3) backgrounds from the package
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -266,7 +267,7 @@ computer. The data can also be downloaded from the <a href="https://datahuiswadd
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># file path to Birds, fish 'n chips GIS/rasters folder</span></span>
-<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.html">atl_file_path</a></span><span class="op">(</span><span class="st">"rasters"</span><span class="op">)</span></span>
+<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"rasters"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># load bathymetry data</span></span>
 <span><span class="va">bat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">fp</span>, <span class="st">"bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"</span><span class="op">)</span><span class="op">)</span></span>
@@ -288,7 +289,7 @@ maps. We recommend using this option only for polished maps.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># file path to Birds, fish 'n chips GIS/rasters folder</span></span>
-<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.html">atl_file_path</a></span><span class="op">(</span><span class="st">"rasters"</span><span class="op">)</span></span>
+<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"rasters"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># load bathymetry data</span></span>
 <span><span class="va">bat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">fp</span>, <span class="st">"bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"</span><span class="op">)</span><span class="op">)</span></span>
@@ -450,7 +451,7 @@ receivers, to a map.</p>
 <p>Receiver data are managed by Allert. They are located in the “WATLAS”
 SharePoint folder: <code>Documents/data/</code>. Either specify the path
 to your local copy of this folder or add the path for your user in the
-<code><a href="https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.html">atl_file_path()</a></code> function.</p>
+<code>atl_file_path()</code> function.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load example data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
@@ -459,7 +460,7 @@ to your local copy of this folder or add the path for your user in the
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data</span>, buffer <span class="op">=</span> <span class="fl">20000</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># file path to WATLAS teams data folder</span></span>
-<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.html">atl_file_path</a></span><span class="op">(</span><span class="st">"watlas_teams"</span><span class="op">)</span></span>
+<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"watlas_teams"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># load receivers data</span></span>
 <span><span class="va">dr</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span></span>

@@ -16,6 +16,7 @@ from GitHub: `remotes::install_github("leonawicz/mapmate")`.
 
 # packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 library(viridis)
 library(foreach)

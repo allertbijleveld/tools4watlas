@@ -151,7 +151,7 @@ Here, we use a raster file with bathymetry to construct a basemap. Bathymetry da
 library(terra)
 
 # file path to Birds, fish 'n chips GIS/rasters folder
-fp <- atl_file_path("rasters")
+fp <- Sys.getenv("rasters")
 
 # load bathymetry data
 bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
@@ -172,7 +172,7 @@ We can also add some shading (`shade = TRUE`) to the bathymetry data to highligh
 library(terra)
 
 # file path to Birds, fish 'n chips GIS/rasters folder
-fp <- atl_file_path("rasters")
+fp <- Sys.getenv("rasters")
 
 # load bathymetry data
 bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))

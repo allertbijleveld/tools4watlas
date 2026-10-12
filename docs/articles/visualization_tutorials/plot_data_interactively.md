@@ -16,6 +16,7 @@ Check the specific tutorials for more details the
 
 # packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 library(plotly)
 library(mapview)

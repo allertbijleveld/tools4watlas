@@ -27,6 +27,7 @@ each unique ID specified in \code{id_columns}.
 \examples{
 # packages
 library(tools4watlas)
+library(data.table)
 
 # path to csv with filtered data
 data_path <- system.file(

@@ -66,6 +66,7 @@ Pratik Gupte & Allert Bijleveld & Johannes Krietsch
 ``` r
 # packages
 library(tools4watlas)
+library(data.table)
 
 # load example data
 data <- data_example

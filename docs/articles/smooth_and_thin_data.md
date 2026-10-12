@@ -12,6 +12,7 @@ data**](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html
 
 # Packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 
 # Path to csv with filtered data

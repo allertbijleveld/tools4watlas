@@ -50,9 +50,9 @@ data <- atl_median_smooth(data, moving_window = 5)
 
 The resulting table overwrites the smoothed coordinates in the columns `x` and `y` and keeps the original ones in the columns `x_raw` and `y_raw`.
 
-### Calculate speed and turning angle
+### Calculate speed
 
-After median filtering the data, the speeds need to be recalculated. We will also calculate turning angles. 
+After median filtering the data, the speeds need to be recalculated.
 
 Note: the distance between median smoothed positions can be 0 and therefore will produce NAs and a warning
 

@@ -15,6 +15,7 @@ Here, we work with the previously saved example data.
 
 # packages
 library(tools4watlas)
+library(data.table)
 library(lubridate)
 library(sf)
 library(ggplot2)
