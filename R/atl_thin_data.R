@@ -79,12 +79,12 @@
 #' print(thinned_subsampled)
 #' @export
 atl_thin_data <- function(data,
-                          interval = 60,
-                          id_columns = NULL,
-                          method = c("subsample", "aggregate")) {
+                                 interval = 60,
+                                 id_columns = NULL,
+                                 method = c("subsample", "aggregate")) {
   # Global variables to suppress notes in data.table
-  varx <- vary <- x <- patch <- NULL
-  time <- time_agg <- time_diff <- datetime <- NULL
+  varx <- vary <- patch <- n_aggregated <- p_first <- p_last <- NULL
+  time <- time_agg <- time_diff <- datetime <- n_subsampled <- NULL
 
   # Input validation
   assertthat::assert_that(
@@ -123,90 +123,69 @@ atl_thin_data <- function(data,
 
   # Round time to the nearest interval
   data[, time_agg := floor(as.numeric(time) / interval) * interval]
+  on.exit(data[, time_agg := NULL], add = TRUE)
 
   # Identify numeric and non-numeric columns (excluding grouping/key columns)
+  by_cols <- c("time_agg", id_columns)
+  drop_cols <- c("varx", "vary", "covxy", "time", "datetime", "patch")
+
   num_cols <- setdiff(
     names(data)[vapply(data, is.numeric, logical(1))],
-    c("time_agg", id_columns)
+    c(by_cols, drop_cols)
   )
-  non_num_cols <- setdiff(
-    names(data),
-    c(num_cols, "time_agg", id_columns)
-  )
+  non_num_cols <- setdiff(names(data), c(num_cols, by_cols, drop_cols))
 
   # Handle method: aggregate or subsample
   if (method == "aggregate") {
     # Only assign patch to aggregated window if first and last point are same
-    if ("patch" %in% names(data)) {
-      data[, patch := {
-        first_patch <- data.table::first(patch)
-        last_patch  <- data.table::last(patch)
-        fifelse(first_patch == last_patch, first_patch, NA_character_)
-      }, by = c("time_agg", id_columns)]
-    }
-
-    if (all(c("varx", "vary") %in% colnames(data))) {
-      # Aggregate with variance propagation
-      # variance of an average is sum of variances sum(SD ^ 2)
-      # divided by sample size squared length(SD) ^ 2
-      # the standard deviation is the square root of the variance
-      data_s <- data[, c(
-        lapply(.SD, mean, na.rm = TRUE),
-        varx_agg = sum(varx, na.rm = TRUE) / (length(varx)^2),
-        vary_agg = sum(vary, na.rm = TRUE) / (length(vary)^2),
-        n_aggregated = length(x)
-      ),
-      by = c("time_agg", id_columns),
-      .SDcols = num_cols
-      ]
-    } else {
-      # Simple aggregation
-      data_s <- data[, c(
-        lapply(.SD, mean, na.rm = TRUE),
-        n_aggregated = length(x)
-      ),
-      by = c("time_agg", id_columns),
-      .SDcols = num_cols
-      ]
-    }
-
-    # Join back non-numeric columns using first value per group
-    if (length(non_num_cols) > 0) {
-      non_num_vals <- data[, lapply(.SD, data.table::first),
-        by = c("time_agg", id_columns),
-        .SDcols = non_num_cols
-      ]
-      data_s <- merge(
-        data_s, non_num_vals,
-        by = c("time_agg", id_columns), sort = FALSE
-      )
-    }
-
-    # Recalculate datetime and clean up columns
-    data_s[, datetime := as.POSIXct(
-      time_agg, origin = "1970-01-01", tz = "UTC"
-    )]
-    data_s <- data_s[, setdiff(colnames(data_s), c(
-      "varx", "vary",
-      "covxy", "time"
-    )),
-    with = FALSE
+    # means of numeric columns
+    data_s <- data[, lapply(.SD, mean, na.rm = TRUE),
+      by = by_cols, .SDcols = num_cols
     ]
 
-    # Rename columns
-    data.table::setnames(data_s,
-      old = c("varx_agg", "vary_agg", "time_agg"),
-      new = c("varx", "vary", "time"),
-      skip_absent = TRUE
-    )
+    # counts and variance propagation
+    if (all(c("varx", "vary") %in% names(data))) {
+      cnt <- data[, list(
+        n_aggregated = .N,
+        varx = sum(varx, na.rm = TRUE),
+        vary = sum(vary, na.rm = TRUE)
+      ), by = by_cols]
+      cnt[, `:=`(
+        varx = varx / n_aggregated^2,
+        vary = vary / n_aggregated^2
+      )]
+    } else {
+      cnt <- data[, list(n_aggregated = .N), by = by_cols]
+    }
+    data_s <- cbind(data_s, cnt[, !by_cols, with = FALSE])
+
+    # first value of non-numeric columns
+    if (length(non_num_cols) > 0) {
+      firsts <- data[, lapply(.SD, first),
+        by = by_cols, .SDcols = non_num_cols
+      ]
+      data_s <- cbind(data_s, firsts[, !by_cols, with = FALSE])
+    }
+
+    #  only keep if first and last point of the window agree
+    if ("patch" %in% names(data)) {
+      pt <- data[, list(p_first = first(patch), p_last = last(patch)),
+        by = by_cols
+      ]
+      pt[, patch := fifelse(p_first == p_last, p_first, NA_character_)]
+      data_s <- cbind(data_s, pt[, "patch", with = FALSE])
+    }
+
+    # datetime and time
+    data_s[, datetime := as.POSIXct(
+      time_agg,
+      origin = "1970-01-01", tz = "UTC"
+    )]
+    data.table::setnames(data_s, "time_agg", "time")
   } else if (method == "subsample") {
     # Subsample the first observation per rounded interval
-    data_s <- data[, c(
-      lapply(.SD, data.table::first),
-      n_subsampled = length(x)
-    ),
-    by = c("time_agg", id_columns)
-    ]
+    data_s <- unique(data, by = by_cols)
+    data_s[, n_subsampled := data[, .N, by = by_cols]$N]
     data_s[, time_agg := NULL]
   }
 
@@ -235,9 +214,6 @@ atl_thin_data <- function(data,
     inherits(data_s, "data.frame"),
     msg = "thin_data: thinned data is not a data.frame object!"
   )
-
-  # clean original data
-  data[, time_agg := NULL]
 
   data_s
 }

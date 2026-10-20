@@ -19,11 +19,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Allert Bijleveld \email{allert.bijleveld@nioz.nl} (\href{https://orcid.org/0000-0002-3159-8944}{ORCID}) [copyright holder]
+\strong{Maintainer}: Allert I. Bijleveld \email{allert.bijleveld@nioz.nl} (\href{https://orcid.org/0000-0002-3159-8944}{ORCID}) [copyright holder]
 
 Authors:
 \itemize{
-  \item Allert Bijleveld \email{allert.bijleveld@nioz.nl} (\href{https://orcid.org/0000-0002-3159-8944}{ORCID}) [copyright holder]
+  \item Allert I. Bijleveld \email{allert.bijleveld@nioz.nl} (\href{https://orcid.org/0000-0002-3159-8944}{ORCID}) [copyright holder]
   \item Johannes Krietsch \email{johannes.krietsch@nioz.nl} (\href{https://orcid.org/0000-0002-8080-1734}{ORCID})
 }
 
