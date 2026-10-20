@@ -45,13 +45,13 @@ atl_create_bm(
 
 - x:
 
-  A character string specifying the column with x-coordinates. Defaults
-  to `"x"`.
+  A character string representing the name of the column containing
+  x-coordinates. Defaults to "x".
 
 - y:
 
-  A character string specifying the column with y-coordinates. Defaults
-  to `"y"`.
+  A character string representing the name of the column containing
+  y-coordinates. Defaults to "y".
 
 - buffer:
 
@@ -132,7 +132,7 @@ atl_create_bm(
 
 - water_colour:
 
-  Water coulour (default "grey80")
+  Water colour (default "grey80")
 
 - land_fill:
 

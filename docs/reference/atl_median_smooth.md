@@ -20,9 +20,8 @@ atl_median_smooth(
 
 - data:
 
-  A data.frame or data.table object returned by `atl_get_data`, which
-  should contain the original columns (particularly tag, x, y, and
-  time).
+  A dataframe or similar which must have the columns specified by `x`,
+  `y`, and `time`.
 
 - tag:
 
@@ -30,11 +29,11 @@ atl_median_smooth(
 
 - x:
 
-  The X coordinate.
+  The x coordinate.
 
 - y:
 
-  The Y coordinate.
+  The y coordinate.
 
 - time:
 

@@ -4,11 +4,20 @@ This article shows how to add tidal and bathymetry data to WATLAS data,
 subset data within tidal cycle, and visualise the tracking data on the
 bathymetry.
 
+**Before you start:** this article assumes you have completed the basic
+WATLAS data processing, i.e. you have [loaded and checked your
+data](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html),
+[filtered
+it](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html),
+and [smoothed and thinned
+it](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html).
+
 #### Load packages and movement data
 
 ``` r
 
 library(tools4watlas)
+library(data.table)
 library(terra)
 library(ggplot2)
 
@@ -27,9 +36,7 @@ data <- fread(data_path, yaml = TRUE)
 Tide data are from West-Terschelling and prepared by Allert. They are
 located in the “WATLAS” SharePoint folder: `Documents/data/`. Either
 specify the path to your local copy of this folder or add the path for
-your user in the
-[`atl_file_path()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.md)
-function.
+your user in the `atl_file_path()` function.
 
 Here we show how to add tide data (`tideID` - a unique tide identifier,
 `tidaltime` and `time2lowtide` - time from high tide and time to low
@@ -38,15 +45,15 @@ with offset) in cm NAP.
 
 ``` r
 
-# file path to WATLAS teams data folder
-fp <- atl_file_path("watlas_teams")
-
-# sub path to tide data
-tidal_pattern_fp <- paste0(
-  fp, "waterdata/allYears-tidalPattern-west_terschelling-UTC.csv"
+# file path to example tide data
+tidal_pattern_fp <- system.file(
+  "extdata", "example-tidalPattern-west_terschelling-UTC.csv",
+  package = "tools4watlas"
 )
-measured_water_height_fp <- paste0(
-  fp, "waterdata/allYears-gemeten_waterhoogte-west_terschelling-clean-UTC.csv"
+
+measured_water_height_fp <- system.file(
+  "extdata", "example-gemeten_waterhoogte-west_terschelling-clean-UTC.csv",
+  package = "tools4watlas"
 )
 
 # load tide data
@@ -92,7 +99,7 @@ position.
 ``` r
 
 # file path to Birds, fish 'n chips GIS/rasters folder
-fp <- atl_file_path("rasters")
+fp <- Sys.getenv("rasters")
 
 # load bathymetry data
 bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
@@ -120,7 +127,7 @@ head(data[, .(tag, datetime, bathymetry)]) |>
 
 ### Filter data by specific times within the tide cycle
 
-To select localizations when mudlfats are available for foraging, we can
+To select localizations when mudflats are available for foraging, we can
 for example select a low tide period from -2.5 hours to +2.5 hours
 around low tide [(Bijleveld et
 al. 2016)](https://royalsocietypublishing.org/doi/10.1098/rspb.2015.1557):
@@ -149,7 +156,7 @@ library(viridis)
 library(scales)
 
 # file path to WATLAS teams data folder
-fp <- atl_file_path("rasters")
+fp <- Sys.getenv("rasters")
 
 # load bathymetry data
 bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))

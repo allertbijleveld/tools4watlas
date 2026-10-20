@@ -11,7 +11,8 @@ and to read the latest project news. **Feel free to reach out by
 [e-mail](mailto:allert.bijleveld@nioz.nl) for questions or
 collaborations if you would like to work with WATLAS data.**
 
-The package `tools4watlas` builds on the package
+The package `tools4watlas` incorporates code from and builds on the
+foundation of the package
 [`atlastools`](https://github.com/pratikunterwegs/atlastools) ([Gupte et
 al. 2021. A Guide to Pre-processing High-throughput Animal Tracking
 Data](https://doi.org/10.1111/1365-2656.13610)). Some major developments
@@ -218,8 +219,6 @@ Functions to load data from SQLlite or remote SQL database
   : Format time in easy readable interval
 - [`atl_full_tag_id()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_full_tag_id.md)
   : Create full tag ID or tag ID with specific length
-- [`atl_file_path()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.md)
-  : Get the file path for WATLAS or GIS data based on the user's name.
 
 ## Filter data
 
@@ -374,6 +373,8 @@ Example and map data provided with the package
   data](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.md):
 - [tools4watlas
   logo](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_logo.md):
+- [Package
+  overview](https://allertbijleveld.github.io/tools4watlas/articles/package_overview/package_overview.md):
 - [Plot
   data](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.md):
 - [Plot data

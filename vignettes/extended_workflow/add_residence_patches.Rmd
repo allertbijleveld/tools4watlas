@@ -17,7 +17,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-In this vignette, we provide a general workflow to group WATLAS position data into so-called 'residence patches'.  
+In this vignette, we provide a general workflow to group WATLAS position data into so-called 'residence patches'. 
+**Before you start:** this article assumes you have completed the basic WATLAS data processing, i.e. you have [loaded and checked your data](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html), [filtered it](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html), and [smoothed and thinned it](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html).
 
 ## Background
 The `atl_res_patch()` function is designed to segment and aggregate WATLAS movement data into residence patches. The main parameter is speed `max_speed`. With perfect data that would be the only parameter necessary to adjust, because the speed flying, walking or standing do not overlap. Because WATLAS data have localization error (which is comparable to GPS, see [Beardsworth et al. 2022](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13913)) and gaps when birds are not detected by receivers, we need to have additional variables for classifying these data into robust residence patches.
@@ -48,6 +49,7 @@ Note that access to the tidal data on WATLAS-Teams is required for running this 
 ```{r, message = FALSE}
 # packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 library(viridis)
 library(patchwork)
@@ -57,15 +59,15 @@ library(doFuture)
 # load example data
 data <- data_example
 
-# file path to WATLAS teams data folder
-fp <- atl_file_path("watlas_teams")
-
-# sub path to tide data
-tidal_pattern_fp <- paste0(
-  fp, "waterdata/allYears-tidalPattern-west_terschelling-UTC.csv"
+# file path to example tide data
+tidal_pattern_fp <- system.file(
+  "extdata", "example-tidalPattern-west_terschelling-UTC.csv",
+  package = "tools4watlas"
 )
-measured_water_height_fp <- paste0(
-  fp, "waterdata/allYears-gemeten_waterhoogte-west_terschelling-clean-UTC.csv"
+
+measured_water_height_fp <- system.file(
+  "extdata", "example-gemeten_waterhoogte-west_terschelling-clean-UTC.csv",
+  package = "tools4watlas"
 )
 
 # load tide data
@@ -121,7 +123,7 @@ atl_check_res_patch(
 )
 ```
 
-It might also be convenient to zoom in on specifc range of residence patches, to inspect them in more detail.
+It might also be convenient to zoom in on specific range of residence patches, to inspect them in more detail.
 
 ```{r, fig.align = "center", fig.alt = "Overview plot res patches one tide", fig.width = 11.3, fig.height = 6.5}
 # set parameters for subsetting data
@@ -238,7 +240,7 @@ Here is description of the different columns in the output data table:
 
 
 ## Plotting residence patches
-Residence patches can be conveniently plotted using `ggplot2`. Here, we will show plotting residence patchs by individuals or species. 
+Residence patches can be conveniently plotted using `ggplot2`. Here, we will show plotting residence patches by individuals or species. 
 
 ### Plot by individual
 Here, we will provide three examples of plotting residence patches for one red knot (tag 3038). 
@@ -355,7 +357,7 @@ bm +
 
 Selecting appropriate parameters for assigning residence patches was based on a combination of biological relevance, visual inspection, systematic testing, and expert judgement.
 
-First, 'min_duration', 'lim_time_indep', and 'min_fixes' were set. To maintain biological relevance for the creation of proto-pacthes, a minimum duration of 60 s and temporal limit of 180 min were selected a-priori. Additionally, a minimum of 2 positions for a proto-patch was selected to avoid the creation of too many proto-patches with very short (biologically irrelevant) durations. These parameter settings were extensively evaluated using visual inspection. 
+First, 'min_duration', 'lim_time_indep', and 'min_fixes' were set. To maintain biological relevance for the creation of proto-patches, a minimum duration of 60 s and temporal limit of 180 min were selected a-priori. Additionally, a minimum of 2 positions for a proto-patch was selected to avoid the creation of too many proto-patches with very short (biologically irrelevant) durations. These parameter settings were extensively evaluated using visual inspection. 
 
 Second, we systematically tested a range of values for two key parameters: `max_speed` and `lim_spat_indep` . Keeping all other parameters constant (see above), we varied `max_speed` between 2, 3, 4, and 5 m/s, and  `lim_spat_indep` between 50, 75, and 100 m. For each combination of parameter values and for eight shorebird species tracked in the Wadden Sea in 2023, residence patches were computed for a subset of 100 randomly selected tag–tide combinations per species (with the condition that there are at least 500 positions per tag-tide combination). We then did a pair-wise comparison of parameter settings using `atl_compare_res_patch_summary()`, which highlighted all new, lost, merged and split residence patches. From this summary, we then selected a subset of 100 random changes that were plotted using `atl_compare_res_patch_plot()`. The 100 resulting plots of pair-wise comparisons were then scored by three expert observers. The observers could choose "left much better", "left slightly better", "similar", "right slightly better", or "right much better".
 

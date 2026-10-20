@@ -6,7 +6,7 @@ but one should be cautious and mindful of the data and research
 question.
 
 For some analyses, gaps in positioning data can bias the results and
-interpolating positions across small gaps can be necesarry. For example,
+interpolating positions across small gaps can be necessary. For example,
 if birds move some distance within residence patches, the median
 position in the patch does not properly reflect space use. Moreover,
 within residence patches, especially when birds are on the ground
@@ -16,12 +16,21 @@ between positions can be done safely.
 Here, we show how to interpolate and fill small data gaps within
 residence patches.
 
+**Before you start:** this article assumes you have completed the basic
+WATLAS data processing, i.e. you have [loaded and checked your
+data](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html),
+[filtered
+it](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html),
+and [smoothed and thinned
+it](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html).
+
 ## Load packages and data
 
 ``` r
 
 # packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 library(viridis)
 library(foreach)
@@ -136,7 +145,7 @@ data_int <- atl_interpolate_track(
 )
 ```
 
-    ## Note: Interpolation added 1815 positions (27.18% increase).
+    ## Note: Interpolation added 1815 positions (27.18% increase).FALSE
 
 ``` r
 
@@ -177,7 +186,7 @@ bm +
     size = 1, alpha = 1, show.legend = FALSE
   ) +
   geom_point(
-    data = data_subset[interpolated == TRUE], aes(x, y), color = "black",
+    data = data_subset[(interpolated)], aes(x, y), color = "black",
     size = 0.5, alpha = 1, show.legend = FALSE
   )
 ```

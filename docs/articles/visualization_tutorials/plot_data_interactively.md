@@ -16,6 +16,7 @@ Check the specific tutorials for more details the
 
 # packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 library(plotly)
 library(mapview)
@@ -114,7 +115,7 @@ d_sf <- atl_as_sf(data, additional_cols = c("datetime", "species"))
 # add track
 d_sf_lines <- atl_as_sf(
   data,
-  additional_cols = c("species"),
+  additional_cols = "species",
   option = "lines"
 )
 
@@ -144,7 +145,7 @@ d_sf <- atl_as_sf(data, additional_cols = c("datetime", "species"))
 # add track
 d_sf_lines <- atl_as_sf(
   data,
-  additional_cols = c("species"),
+  additional_cols = "species",
   option = "lines"
 )
 

@@ -2,7 +2,7 @@
 
 This script shows how to extract the basemap data of `tools4watlas`,
 which are a land polygon of the Dutch Wadden Sea, the mudflats of North
-Holland and Friesland and waterbodies on Griend. These data were choosen
+Holland and Friesland and water bodies on Griend. These data were chosen
 provide a simple map with relevant data allowing fast plotting.
 Customized basemap data could be created in a similar way and could
 additional contain buildings, roads, lakes, rivers etc. All data can be
@@ -21,15 +21,15 @@ and Friesland) can be downloaded from
 ``` r
 
 # packages
-library(data.table)
 library(tools4watlas)
+library(data.table)
 library(sf)
 library(ggplot2)
 library(rnaturalearth)
 library(rnaturalearthdata)
 
 # file path to Birds, fish 'n chips GIS/shapefiles folder
-fp <- atl_file_path("shapefiles")
+fp <- Sys.getenv("shapefiles")
 ```
 
 ## Define a bounding box of the Dutch Wadden Sea
@@ -108,7 +108,7 @@ Includes data in the package, if `tools4watlas` is opened as project.
 ``` r
 
 # save data
-save(land, file = "../../data/land.rda", compress = "xz")
+usethis::use_data(land, overwrite = TRUE, compress = "xz")
 ```
 
 ## Define a polygon of the Dutch Wadden Sea
@@ -129,7 +129,7 @@ wadden_sea <- st_intersection(wadden_sea, bbox_sf)
 
 # buffer
 ws_buffer <- wadden_sea |> st_buffer(1000)
-ws_buffer <- ws_buffer[, c("geometry")]
+ws_buffer <- ws_buffer[, "geometry"]
 
 # check data
 ggplot() +
@@ -225,11 +225,11 @@ Includes data in the package, if `tools4watlas` is opened as project.
 ``` r
 
 # save data
-save(mudflats, file = "../../data/muddflats.rda", compress = "xz")
-save(lakes, file = "../../data/lakes.rda", compress = "xz")
+usethis::use_data(mudflats, overwrite = TRUE, compress = "xz")
+usethis::use_data(lakes, overwrite = TRUE, compress = "xz")
 ```
 
-## Load Grinderwaard data
+## Load Grienderwaard data
 
 Polygon made to capture all mudflat areas associated to the
 Grienderwaard based on OSM, but smoothed to capture most low tides (-161
@@ -274,7 +274,7 @@ Includes data in the package, if `tools4watlas` is opened as project.
 ``` r
 
 # save data
-save(grienderwaard, file = "../../data/grienderwaard.rda", compress = "xz")
+usethis::use_data(grienderwaard, overwrite = TRUE, compress = "xz")
 ```
 
 ## Load roost sites around Griend data
@@ -322,5 +322,5 @@ Includes data in the package, if `tools4watlas` is opened as project.
 ``` r
 
 # save data
-save(roosts_griend, file = "../../data/roosts_griend.rda", compress = "xz")
+usethis::use_data(roosts_griend, compress = "xz", overwrite = TRUE)
 ```

@@ -24,6 +24,7 @@ This article shows how to make different basemaps for plotting movement data. We
 ```{r}
 # packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 ```
 
@@ -48,7 +49,7 @@ bm +
 
 ### Basemap independent of movement data
 
-This can be useful when one wants to zoom into a specific area of the plot or has an area of interest, but the movement data can extent beyond this specifieds range. If no data are provided, the function defaults to a map around Griend (our main study site) with a specified buffer. 
+This can be useful when one wants to zoom into a specific area of the plot or has an area of interest, but the movement data can extent beyond this specified range. If no data are provided, the function defaults to a map around Griend (our main study site) with a specified buffer. 
 
 ```{r, fig.alt = "Basemap around Griend"}
 # create basemap
@@ -62,7 +63,7 @@ Alternatively, one can provide a table with one or multiple locations, which wil
 
 ```{r, fig.alt = "Basemap around Griend"}
 # define location
-location <- data.table(x = c(5.275), y = c(53.2523))
+location <- data.table(x = 5.275, y = 53.2523)
 
 # create basemap
 bm <- atl_create_bm(location, buffer = 7000, projection = sf::st_crs(4326))
@@ -150,7 +151,7 @@ Here, we use a raster file with bathymetry to construct a basemap. Bathymetry da
 library(terra)
 
 # file path to Birds, fish 'n chips GIS/rasters folder
-fp <- atl_file_path("rasters")
+fp <- Sys.getenv("rasters")
 
 # load bathymetry data
 bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
@@ -164,14 +165,14 @@ bm <- atl_create_bm(
 bm
 ```
 
-We can also add some shading (`shade = TRUE`) to the bathymetry data to highlight the geomorphological structures better. Note that calculating shading can take a while, especially for large maps. We remommend using this option only for polished maps.
+We can also add some shading (`shade = TRUE`) to the bathymetry data to highlight the geomorphological structures better. Note that calculating shading can take a while, especially for large maps. We recommend using this option only for polished maps.
 
 ```{r, fig.alt = "Bathymetry map with shade", warning=FALSE}
 # additional packages
 library(terra)
 
 # file path to Birds, fish 'n chips GIS/rasters folder
-fp <- atl_file_path("rasters")
+fp <- Sys.getenv("rasters")
 
 # load bathymetry data
 bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
@@ -320,7 +321,7 @@ data <- data_example
 bm <- atl_create_bm(data, buffer = 20000)
 
 # file path to WATLAS teams data folder
-fp <- atl_file_path("watlas_teams")
+fp <- Sys.getenv("watlas_teams")
 
 # load receivers data
 dr <- readxl::read_excel(
@@ -338,7 +339,7 @@ end <- max(data$datetime)
 
 # Check if each row includes period of tracking data
 dr[, includes_data := (date_placed <= end & date_removed >= start)]
-dr <- dr[includes_data == TRUE]
+dr <- dr[(includes_data)]
 
 # plot basemap with receivers active during tracking period
 bm +

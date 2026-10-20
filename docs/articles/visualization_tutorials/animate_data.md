@@ -7,7 +7,7 @@ bathymetry data basemap and the water level. The first two steps and the
 last are the same (load packages, prepare movement data, make
 animation).
 
-To call `ffmpeg` from within `R`, it is necesarry to install `mapmate`
+To call `ffmpeg` from within `R`, it is necessary to install `mapmate`
 from GitHub: `remotes::install_github("leonawicz/mapmate")`.
 
 ### Load packages
@@ -16,6 +16,7 @@ from GitHub: `remotes::install_github("leonawicz/mapmate")`.
 
 # packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 library(viridis)
 library(foreach)
@@ -63,9 +64,9 @@ more settings can be adjusted but here we cover the basics.
 
 # time steps and output path (atl_time_steps):
 cfg_time_interval <- "1 min" # time interval for animation steps
-cfg_output_path <- paste0(
-  "C:/Users/", Sys.info()[["user"]], "/temp/animation"
-) # output path for png's
+cfg_output_path <- file.path(
+  "C:/Users", Sys.info()[["user"]], "temp", "animation"
+) # output path for PNGs
 
 # size and alpha settings of the tail (atl_size_along and atl_alpha_along)
 cfg_size_head <- 4 # number of positions in head
@@ -87,17 +88,17 @@ cfg_frame_rate <- 16 # in seconds
 # additional to add water data
 # path to tide data
 tidal_pattern_fp <- paste0(
-  atl_file_path("watlas_teams"), # file path to WATLAS teams data folder
+  Sys.getenv("watlas_teams"), # file path to WATLAS teams data folder
   "waterdata/allYears-tidalPattern-west_terschelling-UTC.csv"
 )
 measured_water_height_fp <- paste0(
-  atl_file_path("watlas_teams"), # file path to WATLAS teams data folder
+  Sys.getenv("watlas_teams"), # file path to WATLAS teams data folder
   "waterdata/allYears-gemeten_waterhoogte-west_terschelling-clean-UTC.csv"
 )
 
 # path to bathymetry data
 bathymetry_fp <- paste0(
-  atl_file_path("rasters"), # file path to Birds, fish 'n chips GIS/rasters
+  Sys.getenv("rasters"), # file path to Birds, fish 'n chips GIS/rasters
   "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"
 )
 ```
@@ -105,12 +106,12 @@ bathymetry_fp <- paste0(
 ### Create time steps
 
 Create time steps with the desired interval (e.g. 1 min), define the
-folder path where the png’s are created, delete existing files.
+folder path where the PNGs are created, delete existing files.
 
 ``` r
 
 # delete existing files (if any)
-unlink(paste0(cfg_output_path, "/*"), recursive = TRUE)
+unlink(file.path(cfg_output_path, "*"), recursive = TRUE)
 
 # create time steps
 ts <- atl_time_steps(
@@ -128,7 +129,7 @@ ts <- atl_time_steps(
 
 Make a basemap as desired and plot with all data to check the outcome,
 scalebar and time stamp. Adjust everything as desired (check with saving
-png in the defined size).
+PNG in the defined size).
 
 ``` r
 
@@ -162,12 +163,12 @@ bm +
 ![Check the
 basemap](animate_data_files/figure-html/unnamed-chunk-5-1.png)
 
-### Loop to create png’s for each step
+### Loop to create PNGs for each step
 
-Create a png for each step (check steps - that is how many png’s are
+Create a PNG for each step (check steps - that is how many PNGs are
 created). Run first with an example step to check the outcome for one
-png (e.g. `step <- 50`). Depending on the number of png’s, run first on
-a subset to check if everything is as desired, once everything is fine,
+PNG (e.g. `step <- 50`). Depending on the number of PNGs, run first on a
+subset to check if everything is as desired, once everything is fine,
 run for all steps. A desired color scale can be simply added to `p`.
 
 In the subset step, the maximal tail length can be chosen (here, 6 h).
@@ -188,7 +189,7 @@ plan(multisession)
 # steps
 steps <- seq_len(nrow(ts))
 
-# loop to create pngs for each time step
+# loop to create PNGs for each time step
 foreach(i = steps) %dofuture% {
 
   # define time step
@@ -235,7 +236,7 @@ foreach(i = steps) %dofuture% {
       label = paste0(format(time_step, "%Y-%m-%d %H:%M")), size = 4
     )
 
-  # save png
+  # save PNG
   agg_png(
     filename = ts[i, path],
     width = 3840, height = 2160, units = "px", res = 300
@@ -290,7 +291,7 @@ bat_w <- wrap(bat_c)
 
 Make a basemap as desired and plot with all data to check the outcome,
 scalebar and time stamp. Adjust everything as desired (check with saving
-png in the defined size).
+PNG in the defined size).
 
 ``` r
 
@@ -350,7 +351,7 @@ bm +
 ![Check the basemap with bathymetry
 data](animate_data_files/figure-html/unnamed-chunk-8-1.png)
 
-### Loop to create png’s for each step
+### Loop to create PNGs for each step
 
 Same as above just with added water level polygon and scale bar (needs
 to be added above water).
@@ -364,7 +365,7 @@ plan(multisession)
 # steps
 steps <- seq_len(nrow(ts))
 
-# loop to create pngs for each time step
+# loop to create PNGs for each time step
 foreach(i = steps) %dofuture% {
 
   # define time step
@@ -440,7 +441,7 @@ foreach(i = steps) %dofuture% {
       ylim = c(bbox["ymin"], bbox["ymax"]), expand = FALSE
     )
 
-  # save png
+  # save PNG
   agg_png(
     filename = ts[i, path],
     width = 3840, height = 2160, units = "px", res = 300
@@ -458,11 +459,11 @@ plan(sequential)
 
 We can use
 [`atl_progress_bar()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_progress_bar.md)
-to monitor the progress while the png’s are created in the background.
+to monitor the progress while the PNGs are created in the background.
 This can’t be done in the same R session, since it is busy, but we can
 open a new additional R session and run the code below to see the
 progress. In a more simple way, we can just go in the directory and see
-how many png’s are created. By running atl_time_steps() above, a file
+how many PNGs are created. By running atl_time_steps() above, a file
 `total_frames.txt` is created in the output path which contains the
 total number of frames that will be created - this is read automatically
 by
@@ -474,7 +475,7 @@ if `total = NULL`.
 # set output path again in new session (same as above)
 cfg_output_path <- paste0(
   "C:/Users/", Sys.info()[["user"]], "/temp/animation"
-) # output path for png's
+) # output path for PNGs
 
 # check progress
 atl_progress_bar(

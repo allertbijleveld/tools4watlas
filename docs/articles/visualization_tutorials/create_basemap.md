@@ -14,6 +14,7 @@ the package `OpenStreetMap`.
 
 # packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 ```
 
@@ -55,7 +56,7 @@ basemap](create_basemap_files/figure-html/unnamed-chunk-2-1.png)
 
 This can be useful when one wants to zoom into a specific area of the
 plot or has an area of interest, but the movement data can extent beyond
-this specifieds range. If no data are provided, the function defaults to
+this specified range. If no data are provided, the function defaults to
 a map around Griend (our main study site) with a specified buffer.
 
 ``` r
@@ -81,7 +82,7 @@ east of Griend, to include Richel and Ballastplaat in the map.
 ``` r
 
 # define location
-location <- data.table(x = c(5.275), y = c(53.2523))
+location <- data.table(x = 5.275, y = 53.2523)
 
 # create basemap
 bm <- atl_create_bm(location, buffer = 7000, projection = sf::st_crs(4326))
@@ -214,7 +215,7 @@ can also be downloaded from the
 library(terra)
 
 # file path to Birds, fish 'n chips GIS/rasters folder
-fp <- atl_file_path("rasters")
+fp <- Sys.getenv("rasters")
 
 # load bathymetry data
 bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
@@ -233,7 +234,7 @@ map](create_basemap_files/figure-html/unnamed-chunk-8-1.png)
 
 We can also add some shading (`shade = TRUE`) to the bathymetry data to
 highlight the geomorphological structures better. Note that calculating
-shading can take a while, especially for large maps. We remommend using
+shading can take a while, especially for large maps. We recommend using
 this option only for polished maps.
 
 ``` r
@@ -242,7 +243,7 @@ this option only for polished maps.
 library(terra)
 
 # file path to Birds, fish 'n chips GIS/rasters folder
-fp <- atl_file_path("rasters")
+fp <- Sys.getenv("rasters")
 
 # load bathymetry data
 bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
@@ -422,8 +423,7 @@ logo](create_basemap_files/figure-html/unnamed-chunk-12-1.png)
 Receiver data are managed by Allert. They are located in the “WATLAS”
 SharePoint folder: `Documents/data/`. Either specify the path to your
 local copy of this folder or add the path for your user in the
-[`atl_file_path()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.md)
-function.
+`atl_file_path()` function.
 
 ``` r
 
@@ -434,7 +434,7 @@ data <- data_example
 bm <- atl_create_bm(data, buffer = 20000)
 
 # file path to WATLAS teams data folder
-fp <- atl_file_path("watlas_teams")
+fp <- Sys.getenv("watlas_teams")
 
 # load receivers data
 dr <- readxl::read_excel(
@@ -452,7 +452,7 @@ end <- max(data$datetime)
 
 # Check if each row includes period of tracking data
 dr[, includes_data := (date_placed <= end & date_removed >= start)]
-dr <- dr[includes_data == TRUE]
+dr <- dr[(includes_data)]
 
 # plot basemap with receivers active during tracking period
 bm +

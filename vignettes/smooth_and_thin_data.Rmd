@@ -16,11 +16,15 @@ knitr::opts_chunk$set(
 )
 ```
 
- This vignette shows how to smooth and thin WATLAS data. 
+ This vignette shows how to smooth and thin WATLAS data.
+ 
+ **Before you start:** load and check your data as described in [Load and check data](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html) and filter them them as described in [**Filter data**](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html).
+
 
 ```{r, message = FALSE}
 # Packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 
 # Path to csv with filtered data
@@ -46,9 +50,9 @@ data <- atl_median_smooth(data, moving_window = 5)
 
 The resulting table overwrites the smoothed coordinates in the columns `x` and `y` and keeps the original ones in the columns `x_raw` and `y_raw`.
 
-### Calculate speed and turning angle
+### Calculate speed
 
-After median filtering the data, the speeds need to be recalculated. We will also calculate turning angles. 
+After median filtering the data, the speeds need to be recalculated.
 
 Note: the distance between median smoothed positions can be 0 and therefore will produce NAs and a warning
 
@@ -124,7 +128,7 @@ head(thinned_aggregated[, .(tag, time, datetime, x, y, n_aggregated)]) |>
   knitr::kable(digits = 2)
 ```
 
-### By subsampling
+### By sub-sampling
 
 Returns the first position for each time step. The column `n_subsampled` shows from how many positions this position was sampled.
 
@@ -141,3 +145,5 @@ thinned_subsampled <- atl_thin_data(
 head(thinned_subsampled[, .(tag, time, datetime, x, y, n_subsampled)]) |>
   knitr::kable(digits = 2)
 ```
+
+This finishes the basic processing of WATLAS data and further analysis depend on the specific research questions. For further described workflows look at the extended workflows articles.

@@ -8,7 +8,7 @@ summary for each unique ID specified in `id_columns`.
 ## Usage
 
 ``` r
-atl_summary(data, id_columns = c("tag"))
+atl_summary(data, id_columns = "tag")
 ```
 
 ## Arguments
@@ -38,6 +38,7 @@ Johannes Krietsch
 ``` r
 # packages
 library(tools4watlas)
+library(data.table)
 
 # path to csv with filtered data
 data_path <- system.file(

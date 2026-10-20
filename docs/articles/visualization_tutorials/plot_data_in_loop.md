@@ -14,6 +14,7 @@ though them.
 
 # packages
 library(tools4watlas)
+library(data.table)
 library(ggplot2)
 library(foreach)
 library(doFuture)
@@ -87,7 +88,7 @@ foreach(i = id) %do% {
 
 ## Parallel loop by tag ID
 
-For computing efficieny, we can use parallel computing. We use the same
+For computing efficiency, we can use parallel computing. We use the same
 structure, but only replacing `%do%` with `%dofuture%`, which is the key
 advantage of using `foreach.` The only additional step is setting up
 parallel processing with

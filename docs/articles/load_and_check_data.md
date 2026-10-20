@@ -16,6 +16,7 @@ helpful, but not necessary, when working with `tools4watlas`.
 
 # packages
 library(tools4watlas)
+library(data.table)
 library(lubridate)
 library(ggplot2)
 library(scales)
@@ -111,7 +112,7 @@ scripts on GitHub without storing the credentials online. Ask Allert for
 the host, username and password and then add them in your environment as
 indicated below. After adding the credentials to the R-environment,
 restart R and access should be available and the scripts should run
-succesfully.
+successfully.
 
 ``` r
 
@@ -140,9 +141,7 @@ group members that also have access to the NIOZ/Bijleveld Teams
 environment. To use the most recent metadata stored online, we first
 load the `tags_watlas_all.xlsx` from the “WATLAS” SharePoint folder:
 `Documents/data/`. Either specify the path to your local copy of this
-folder or add the path for your user in the
-[`atl_file_path()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_file_path.md)
-function.
+folder or add the path for your user in the `atl_file_path()` function.
 
 ``` r
 
@@ -246,7 +245,7 @@ all_tags[, tag := as.character(tag)]
 data[all_tags, on = "tag", `:=`(species = i.species)]
 
 # make species first column
-setcolorder(data, c("species", setdiff(names(data), c("species"))))
+setcolorder(data, c("species", setdiff(names(data), "species")))
 
 # order data.table
 setorder(data, species, tag, time)
@@ -426,3 +425,6 @@ bm +
 positions](load_and_check_data_files/figure-html/unnamed-chunk-13-1.png)
 
 Heatmap of all positions
+
+The extracted and checked data is now ready for the next step: [**Filter
+data**](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html).

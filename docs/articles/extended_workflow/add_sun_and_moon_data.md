@@ -8,12 +8,21 @@ whether birds behave differently during day and night or during
 different moon phases, which are closely linked to the strength of the
 tides.
 
+**Before you start:** this article assumes you have completed the basic
+WATLAS data processing, i.e. you have [loaded and checked your
+data](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html),
+[filtered
+it](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html),
+and [smoothed and thinned
+it](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html).
+
 ## Load packages and data
 
 ``` r
 
 # packages
 library(tools4watlas)
+library(data.table)
 library(suncalc)
 
 # load example data
@@ -77,10 +86,10 @@ days around full and new moon.
 
 # add moon phase per datetime
 # 0 = new, 0.25 = first quarter, 0.5 = full, 0.75 = last quarter
-data[, c("moon_phase") := getMoonIllumination(
+data[, moon_phase := suncalc::getMoonIllumination(
   date = datetime,
-  keep = c("phase")
-)[, c("phase")]]
+  keep = "phase"
+)$phase]
 
 # add time to full moon (phase = 0.5) and new moon (phase = 0)
 # Moon cycle = 29.53 days, negative = before full or new moon

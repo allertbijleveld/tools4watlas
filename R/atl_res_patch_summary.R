@@ -1,0 +1,179 @@
+#' Summary of patch data
+#'
+#' Computes summary statistics of movement data grouped by patches for each
+#' individual tag. Calculates spatial and temporal summaries within each patch,
+#' distances travelled inside patches, distances and time intervals between
+#' patches, displacement within patches, and patch duration. Additional
+#' user-specified summary variables and functions can also be applied
+#' dynamically. If species is a column, it will be kept.
+#'
+#' Converts input data to data.table if needed and filters out rows with missing
+#' patch assignments. All summaries are calculated by \code{tag} and
+#' \code{patch}.Distance calculations use Euclidean distance in x-y coordinate
+#' space.
+#'
+#' @author Johannes Krietsch
+#' @param data A data.frame or data.table containing movement data. Must include
+#'   columns: \code{tag} (ID), \code{x}, \code{y} (coords),
+#'   \code{time} (timestamp), and \code{patch} (patch ID).
+#' @param summary_variables Character vector of variable names in \code{data}
+#'   for additional summaries. Variables should be numeric or compatible with
+#'   the summary functions.
+#' @param summary_functions Character vector of function names
+#'   to apply to each variable in \code{summary_variables}. Functions must work
+#'   on numeric vectors (e.g., "mean" or "median").
+#'
+#' @return A data.table with one row per \code{tag} and \code{patch} containing:
+#' \itemize{
+#'   \item \code{nfixes}: Number of fixes in the patch.
+#'   \item \code{x_mean}, \code{x_median}, \code{x_start}, \code{x_end}: Summary
+#'   stats of x.
+#'   \item \code{y_mean}, \code{y_median}, \code{y_start}, \code{y_end}: Summary
+#'   stats of y.
+#'   \item \code{time_mean}, \code{time_median}, \code{time_start},
+#'   \code{time_end}: Summary stats of time.
+#'   \item Additional summaries from \code{summary_variables} and
+#'   \code{summary_functions}.
+#'   \item \code{dist_start_end}:
+#'   Straight-line (in m) distance between start and end of patch.
+#'   \item \code{dist_in_patch}:
+#'   Total distance (in m) travelled within the patch.
+#'   \item \code{dist_bw_patch}:
+#'   Distance (in m) between end of previous and start of current patch.
+#'   \item \code{time_bw_patch}:
+#'   Time (in sec) elapsed between end of previous and start of current patch.
+#'   \item \code{disp_in_patch}:
+#'   Straight-line (in m) displacement between start and end of patch.
+#'   \item \code{duration}: Duration spent (in sec) within the patch.
+#' }
+#'
+#' @examples
+#' # packages
+#' library(tools4watlas)
+#'
+#' # load example data
+#' data <- data_example
+#'
+#' # calculate residence patches for one red knot
+#' data <- atl_res_patch(
+#'   data[tag == "3038"],
+#'   max_speed = 3, lim_spat_indep = 75, lim_time_indep = 180,
+#'   min_fixes = 3, min_duration = 120
+#' )
+#'
+#' # summary of residence patches
+#' data_summary <- atl_res_patch_summary(data)
+#' data_summary
+#' @export
+
+atl_res_patch_summary <- function(data,
+                                  summary_variables = NULL,
+                                  summary_functions = NULL) {
+
+  # Initialize necessary variables to avoid NSE (Non-Standard Evaluation) issues
+  i.disp_in_patch <- dist_bw_patch <- dist_in_patch <- duration <- NULL # nolint
+  x <- y <- tag <- .  <- patch <- disp_in_patch <- median <- NULL
+  time_end <- time_start <- i.dist_in_patch <- time <- NULL # nolint
+  x_end <- x_start <- y_end <- y_start <- time_bw_patch <- NULL
+  dist_start_end <- time_mean <- time_median <- NULL
+
+  # Validate input
+  assertthat::assert_that(is.data.frame(data),
+    msg = glue::glue("Input is not a data.frame or data.table, it has class
+                     {stringr::str_flatten(class(data), collapse = ' ')}")
+  )
+
+  # Check data structure
+  required_columns <- c("tag", "x", "y", "time", "patch")
+  atl_check_data(data, names_expected = required_columns)
+
+  # Convert data to data.table if not already
+  if (!is.data.table(data)) {
+    data.table::setDT(data)
+  }
+
+  # Exclude NA
+  d <- data[!is.na(patch)]
+
+  # Determine grouping variables
+  by_vars <- if ("species" %in% names(d)) {
+    c("species", "tag", "patch")
+  } else {
+    c("tag", "patch")
+  }
+
+  # Basic summaries
+  ds <- d[, .(
+    nfixes = .N,
+    x_mean = mean(x),
+    x_median = median(x),
+    x_start = first(x),
+    x_end = last(x),
+    y_mean = mean(y),
+    y_median = median(y),
+    y_start = first(y),
+    y_end = last(y),
+    time_mean = mean(time),
+    time_median = median(time),
+    time_start = first(time),
+    time_end = last(time)
+  ), by = by_vars]
+
+  # Distance between start and end location
+  ds[, dist_start_end := sqrt((x_end - x_start)^2 + (y_end - y_start)^2)]
+
+  # Distances inside patch
+  dist_in_patch_dt <- d[, .(
+    dist_in_patch = sum(sqrt(diff(x)^2 + diff(y)^2), na.rm = TRUE)
+  ), by = by_vars]
+  ds[dist_in_patch_dt, on = .(tag, patch), dist_in_patch := i.dist_in_patch]
+
+  # Distances between patches, time between patches
+  setorderv(ds, c("tag", "time_start"))
+  ds[, dist_bw_patch :=
+      sqrt((x_start - shift(x_end))^2 + (y_start - shift(y_end))^2), by = tag
+  ]
+  ds[, time_bw_patch := time_start - shift(time_end), by = tag]
+
+  # Displacement and duration
+  ds[, disp_in_patch := sqrt((x_end - x_start)^2 + (y_end - y_start)^2)]
+  ds[, duration := time_end - time_start]
+
+  # Format times as POSIXct
+  ds[, time_mean := as.POSIXct(
+    time_mean,
+    origin = "1970-01-01", tz = "UTC"
+  )]
+  ds[, time_median := as.POSIXct(
+    time_median,
+    origin = "1970-01-01", tz = "UTC"
+  )]
+  ds[, time_start := as.POSIXct(
+    time_start,
+    origin = "1970-01-01", tz = "UTC"
+  )]
+  ds[, time_end := as.POSIXct(
+    time_end,
+    origin = "1970-01-01", tz = "UTC"
+  )]
+
+  # Additional summaries with multiple variables × functions
+  if (length(summary_variables) > 0 && length(summary_functions) > 0) {
+    extra_summaries <- d[, {
+      out <- list()
+      for (var in summary_variables) {
+        for (fn in summary_functions) {
+          fun <- match.fun(fn)
+          colname <- paste0(var, "_", fn)
+          out[[colname]] <- fun(get(var), na.rm = TRUE)
+        }
+      }
+      out
+    }, by = by_vars]
+
+    ds <- merge(ds, extra_summaries, by = by_vars, all.x = TRUE)
+  }
+
+  ds
+
+}

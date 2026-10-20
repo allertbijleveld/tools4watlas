@@ -35,6 +35,7 @@ atl_compare_res_patch_plot(
   mudflat_colour = "#faf5ef",
   mudflat_fill = "#faf5ef",
   mudflat_alpha = 0.6,
+  seed = 1,
   filename = NULL,
   png_width = 3840,
   png_height = 2160
@@ -99,7 +100,7 @@ atl_compare_res_patch_plot(
 
 - path_alpha:
 
-  Transparency of movement paths (default: 0.9).
+  Transparency of movement paths (default: 0.2).
 
 - patch_label_size:
 
@@ -120,7 +121,9 @@ atl_compare_res_patch_plot(
 - buffer_res_patches:
 
   A numeric value (in meters) specifying the buffer around the polygon
-  of each residence patch (default: 20).
+  of each residence patch. If set to half of `lim_spat_indep` of the
+  residence patch calculation it reflects the distance used to determine
+  spatial independence of patches.
 
 - buffer_bm:
 
@@ -154,18 +157,24 @@ atl_compare_res_patch_plot(
 
   Mudflat transparency (default: 0.6).
 
+- seed:
+
+  Integer seed used to shuffle the patch colours, so that the colour
+  order is reproducible. Default is 1.
+
 - filename:
 
-  Character (or `NULL`). If provided, the plot is saved as a `.png` file
-  to this path and filename; otherwise the plot is returned.
+  Character (or NULL). If provided, the plot is saved as a `.png` file
+  to this path and with this name; otherwise, the function returns the
+  plot.
 
 - png_width:
 
-  Width of saved PNG in pixels (default: 3840).
+  Width of saved PNG (default: 3840).
 
 - png_height:
 
-  Height of saved PNG in pixels (default: 2160).
+  Height of saved PNG (default: 2160).
 
 ## Value
 
@@ -186,9 +195,6 @@ Johannes Krietsch
 ## Examples
 
 ``` r
-# packages
-library(tools4watlas)
-library(foreach)
 
 # load example data
 data <- data_example
@@ -228,17 +234,20 @@ atl_compare_res_patch_plot(
 )
 
 
-# plot all changes in loop
+# plot all changes in loop (requires the foreach package)
 # for many changes, it makes sense to set a filename to save the plots
-foreach(i = 1:nrow(change_summary)) %do% {
-  atl_compare_res_patch_plot(
-    data_v1 = data_v1,
-    data_v2 = data_v2,
-    tag = change_summary$tag[i],
-    change = change_summary$change[i],
-    patch_v1 = change_summary$patch_v1[i],
-    patch_v2 = change_summary$patch_v2[i]
-  )
+if (requireNamespace("foreach", quietly = TRUE)) {
+  library(foreach)
+  foreach(i = seq_len(nrow(change_summary))) %do% {
+    atl_compare_res_patch_plot(
+      data_v1 = data_v1,
+      data_v2 = data_v2,
+      tag = change_summary$tag[i],
+      change = change_summary$change[i],
+      patch_v1 = change_summary$patch_v1[i],
+      patch_v2 = change_summary$patch_v2[i]
+    )
+  }
 }
 #> [[1]]
 
