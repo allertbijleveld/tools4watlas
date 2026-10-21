@@ -17,65 +17,104 @@ knitr::opts_chunk$set(
 )
 ```
 
-Test 
-
-## Loading the data
+This article should give an overview of the existing articles (tutorials) described on the package website, compare what has changed in the basic workflow from `atlastools` and describe how to setup the working environment for internal WATLAS users.
 
 
+## Articles overview
 
-```{r, message = FALSE}
-# packages
-library(tools4watlas)
-library(lubridate)
-library(sf)
-library(ggplot2)
-library(scales)
-library(viridis)
+The articles of the package are grouped by purpose. The **basic workflow** covers the steps most users need to go from raw WATLAS data to clean tracks, and the **extended workflow** covers more specialised analyses. The **visualization tutorials** show how to plot and animate movement data. The **package development** articles explain how to contribute to `tools4watlas` and how to adapt it, for example by creating your own basemaps. 
 
-# path to csv with raw data
-data_path <- system.file(
-  "extdata", "watlas_data_raw.csv",
-  package = "tools4watlas"
-)
+Parts of the articles marked with an asterisk (*) require bathymetry data. These data are too large to include in `tools4watlas`, so those parts do not run without access to them. For tidal data, the package only includes an example dataset. See access to data sections below for how to get the complete data.
 
-# load data
-data <- fread(data_path, yaml = TRUE)
-```
+**Basic workflow (Vignettes)**:
 
+   - [**Load and check data**](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html)
+   
+   - [**Filter data**](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html) - 
+  based on spatial boundaries, temporal specifications, error estimates and speed.
 
+   - [**Smooth and thin data**](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html)
 
+**Extended workflow**:
 
+   - [**Add tidal and bathymetry data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html) - (*add bathymetry data)
+  
+   - [**Add residence patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residence_patches.html)
+   
+   - [**Interpolate data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/interpolate_data.html)
+   
+   - [**Add sun and moon data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_sun_and_moon_data.html)
 
+**Visualization tutorials**:
 
+   - [**Create a basemap**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/create_basemap.html) -
+   (*Bathymetry basemap option)
 
+   - [**Plot data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html) -
+   an important step between all stages to check the data.
+   
+   - [**Plot data in loop**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_in_loop.html) -
+   quick way to make plots by tag ID.
 
+  - [**Plot data faster**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_faster.html)
+  
+  - [**Plot data interactively**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_interactively.html)
 
+  - [**Animate data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/animate_data.html) - (*Animation with dynamic water data)
 
+**Package development**:
 
+  - [**Contributing to tools4watlas**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/contributing_to_tools4watlas.html) - describes how to work on `tools4watlas`.
 
+  - [**Extract basemap data**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/extract_basemap_data.html) - 
+  describes how the basemap data were extracted and can guide the user in creating customized base maps.
 
+  - [**tools4watlas logo**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_logo.html) - describes how the `tools4watlas` logo is made.
 
-## Accessing internal files
+## Differences from `atlastools`
 
-**Section only relevant for NIOZ users.** External users, please [e-mail](mailto:allert.bijleveld@nioz.nl) Allert Bijleveld for access**
+The package `tools4watlas` incorporates code from and builds on the foundation of the package [`atlastools`](https://github.com/pratikunterwegs/atlastools) ([Gupte et al. 2021. A Guide to Pre-processing High-throughput Animal Tracking Data](https://doi.org/10.1111/1365-2656.13610)). 
 
+Some major developments are that we have incorporated [`data.table`](https://rdatatable.gitlab.io/data.table/) by tag ID. This approach is more efficient and significantly speeds up processing large datasets. Additionally, `tools4watlas` includes functions specific to the Wadden Sea such as integrating tidal and bathymetry data, and more elaborate functions and tutorials on visualizing movement data.
 
-If you want to access the database, fill host, username and password
+## Data access for external users
 
-If you have local copies of relevant data folders also fill them in
+  - **Tidal data:** Are downloaded from [Rijkswaterstaat](https://waterinfo.rws.nl/) for each tidal station and pre-processed to assign tide ID, high tide and low tide. Please contact [Allert Bijleveld](mailto:allert.bijleveld@nioz.nl) for access.
+  - **Bathymetry data:** The data can be downloaded from the  [Waddenregister](https://datahuiswadden.openearth.nl/geonetwork/srv/eng/catalog.search#/metadata/JkrvJXasRSGAWU1mJLHUzg), to link them directly, they need to be opened with [terra](https://rspatial.github.io/terra/index.html) and the projection needs to be changed to UTM31 (EPSG:32631). To get processed ready to use data contact [Allert Bijleveld](mailto:allert.bijleveld@nioz.nl) 
 
+## Data access and setup for internal WATLAS data users
+
+**Section only relevant for users with access to the local NIOZ network.** 
+
+To work safely with database credentials and internal file paths, store them as environment variables in R. This way, scripts can be shared on GitHub without publishing credentials or personal paths. To add the variables, open your `.Renviron` file with `usethis::edit_r_environ()`, add one line per variable, save the file, and restart R. The all scripts should then run without further changes if all paths are correct.
+
+The following variables are used:
+
+- **Host, username and password** are required to access the remote SQL database. Contact [Allert Bijleveld](mailto:allert.bijleveld@nioz.nl) for access.
+- **watlas_teams**: path to the "WATLAS" SharePoint folder `Documents/data/`. It contains files that are updated often, such as `tags_watlas_all.xlsx` and the tide data. We recommend adding a shortcut to this folder in your OneDrive, so that changes are synchronised automatically, and pointing the variable to this copy.
+- **rasters**: path to the "Birds, fish 'n chips" SharePoint folder `Documents/data/GIS/rasters/`.
+- **shapefiles**: path to the "Birds, fish 'n chips" SharePoint folder `Documents/data/GIS/shapefiles/`. These GIS folders contain many large files that rarely change. We recommend copying only the data you need to a local folder and pointing the variables to that folder, instead of creating a OneDrive shortcut.
+- **sqlite_db**: path to the folder with the SQLite localization databases.
+
+To build the package website (see [Contributing to tools4watlas](https://allertbijleveld.github.io/tools4watlas/articles/package_development/contributing_to_tools4watlas.html)) with all articles, all variables must be set.
+
+### Here a code template to fill the `.Renviron`:
 ```{r nolint_start, echo = FALSE}
 # nolint start: assignment_linter.
 ```
 
 ```{r, eval = FALSE}
 # open .Renviron to edit
-file.edit("~/.Renviron")
+usethis::edit_r_environ()
 
 # add variables
 host = "host"
 username = "username"
 password = "password"
+watlas_teams = "file_path"
+rasters = "file_path"
+shapefiles = "file_path"
+sqlite_db = "file_path"
 
 # access variables (example)
 Sys.getenv("variable_name")
@@ -85,12 +124,27 @@ Sys.getenv("variable_name")
 # nolint end: assignment_linter.
 ```
 
+### Here templates to access the data (to replace in articles that use example data):
 
-
+**Metadata `tags_watlas_all.xlsx`:**
 ```{r, eval = FALSE}
 
 # file path to WATLAS teams data folder
-fp <- atl_file_path("watlas_teams")
+fp <- Sys.getenv("watlas_teams")
+
+# load meta data
+all_tags <- readxl::read_excel(
+  paste0(fp, "tags/tags_watlas_all.xlsx"),
+  sheet = "tags_watlas_all"
+) |>
+  data.table()
+```
+
+**Tidal data:**
+```{r, eval = FALSE}
+
+# file path to WATLAS teams data folder
+fp <- Sys.getenv("watlas_teams")
 
 # sub path to tide data
 tidal_pattern_fp <- paste0(
@@ -100,8 +154,16 @@ measured_water_height_fp <- paste0(
   fp, "waterdata/allYears-gemeten_waterhoogte-west_terschelling-clean-UTC.csv"
 )
 
-
+# load tide data
+tidal_pattern <- fread(tidal_pattern_fp)
+measured_water_height <- fread(measured_water_height_fp)
 ```
 
+**Bathymetry data:**
+```{r, eval = FALSE}
+# file path to Birds, fish 'n chips GIS/rasters folder
+fp <- Sys.getenv("rasters")
 
-
+# load bathymetry data
+bat <- rast(paste0(fp, "bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"))
+```

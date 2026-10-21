@@ -40,7 +40,7 @@ data <- fread(data_path, yaml = TRUE)
 
 ## Add tidal data
 
-Tide data are from West-Terschelling and prepared by Allert. They are located in the "WATLAS" SharePoint folder: `Documents/data/`. Either specify the path to your local copy of this folder or add the path for your user in the `atl_file_path()` function.
+We here use example prepared example tide data from West-Terschelling. See [Access to the full data](https://allertbijleveld.github.io/tools4watlas/articles/package_overview.html#access-to-the-full-data) for how to get the full dataset.
 
 Here we show how to add tide data (`tideID` - a unique tide identifier, `tidaltime` and `time2lowtide` - time from high tide and time to low tide in minutes, `waterlevel` - as measured from the tide gauge station with offset) in cm NAP.
 
@@ -78,7 +78,8 @@ head(data[, .(tag, datetime, tideID, tidaltime, time2lowtide, waterlevel)]) |>
 
 ## Add bathymetry data
 
-Bathymetry data can be downloaded from [Rijkswaterstaat](https://waterinfo.rws.nl/) but can also be found in the "Birds, fish 'n chips" SharePoint folder: `Documents/data/GIS/rasters/`. To run the below script, set the file path (`fp`) to the local copy of the folder on your computer. 
+**This section only runs with a local copy of the bathymetry data.** See [Access to the full data](https://allertbijleveld.github.io/tools4watlas/articles/package_overview.html#access-to-the-full-data) for how to get it. For a small runnable example of the function, see the `atl_add_raster_data()`.
+
 
 Here, we show how to extract bathymetry data (cm NAP) for each WATLAS position. 
 
