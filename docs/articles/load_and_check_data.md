@@ -75,14 +75,6 @@ provided. Then, a connection to the database can be established, and the
 database can be queried for the selected tags and period. Here, we will
 load the selected tagging data in a `data.table` object.
 
-The data for each year are located on the network drive `zeus`. With the
-necessary permission (from Allert and IT), the data can be directly
-accessed from the network drive (e.g. for 2023:
-`sqlite_db <- "//zeus/cos/birds/bijleveld/fieldwork/WATLAS/localizations/watlas-2023.sqlite"`).
-However, transferring data over a network drive is slow, so for larger
-amounts of data it is recommended to first copy the database to the
-local PC.
-
 ``` r
 
 # establish database connection
@@ -106,47 +98,24 @@ RSQLite::dbDisconnect(con)
 
 #### Alternatively, extract from remote SQL-database
 
-To safely work with database credentials, one option is to store them as
-environmental variables in R. This allows, for example, to have shared
-scripts on GitHub without storing the credentials online. Ask Allert for
-the host, username and password and then add them in your environment as
-indicated below. After adding the credentials to the R-environment,
-restart R and access should be available and the scripts should run
-successfully.
+**Section only runs with local access to NIOZ network**
 
-``` r
-
-# open .Renviron to edit
-file.edit("~/.Renviron")
-
-# add variables
-host = "host"
-username = "username"
-password = "password"
-
-# access variables (example)
-Sys.getenv("variable_name")
-```
+Setup `.Renviron` as described in [Data access and setup for internal
+WATLAS data
+users](https://allertbijleveld.github.io/tools4watlas/articles/package_overview.html).
 
 Connecting to a remote database with
 [`atl_get_data()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_get_data.md)
 is similar to connecting with a local SQLite database. In this example
 (chunk not run and only shown), we load the last three days of data from
-all tags of 2024. Note that the host, username and password are
-specified as environmental variables in this example, but can also be
-specified directly.
-
-Connecting to the remote database is normally restricted to current
-group members that also have access to the NIOZ/Bijleveld Teams
-environment. To use the most recent metadata stored online, we first
-load the `tags_watlas_all.xlsx` from the “WATLAS” SharePoint folder:
-`Documents/data/`. Either specify the path to your local copy of this
-folder or add the path for your user in the `atl_file_path()` function.
+all tags of 2024. Note that the host, username, password and filepath to
+`watlas_teams` are specified as environmental variables in this example,
+but can also be specified directly.
 
 ``` r
 
 # file path to WATLAS teams data folder
-fp <- atl_file_path("watlas_teams")
+fp <- Sys.getenv("watlas_teams")
 
 # load meta data
 all_tags <- readxl::read_excel(
@@ -382,7 +351,7 @@ ggplot(data_subset, aes(x = date, y = tag, fill = N)) +
 ```
 
 ![Number of positions per day by
-tag](load_and_check_data_files/figure-html/unnamed-chunk-12-1.png)
+tag](load_and_check_data_files/figure-html/unnamed-chunk-11-1.png)
 
 Number of positions per day by tag
 
@@ -422,7 +391,7 @@ bm +
 ```
 
 ![Heatmap of all
-positions](load_and_check_data_files/figure-html/unnamed-chunk-13-1.png)
+positions](load_and_check_data_files/figure-html/unnamed-chunk-12-1.png)
 
 Heatmap of all positions
 

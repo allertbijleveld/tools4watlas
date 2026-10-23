@@ -79,9 +79,9 @@
 #' print(thinned_subsampled)
 #' @export
 atl_thin_data <- function(data,
-                                 interval = 60,
-                                 id_columns = NULL,
-                                 method = c("subsample", "aggregate")) {
+                          interval = 60,
+                          id_columns = NULL,
+                          method = c("subsample", "aggregate")) {
   # Global variables to suppress notes in data.table
   varx <- vary <- patch <- n_aggregated <- p_first <- p_last <- NULL
   time <- time_agg <- time_diff <- datetime <- n_subsampled <- NULL

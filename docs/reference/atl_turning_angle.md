@@ -43,8 +43,9 @@ rows in the `data.table`.
 
 ## Details
 
-Derived from `atlastools::atl_turning_angle()` in the atlastools package
-(Gupte et al., 2022), licensed under GPL-3.
+Derived from
+[`atlastools::atl_turning_angle()`](https://rdrr.io/pkg/atlastools/man/atl_turning_angle.html)
+in the atlastools package (Gupte et al., 2022), licensed under GPL-3.
 
 ## References
 

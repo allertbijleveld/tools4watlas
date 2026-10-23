@@ -23,12 +23,12 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Allert Bijleveld <allert.bijleveld@nioz.nl>
+**Maintainer**: Allert I. Bijleveld <allert.bijleveld@nioz.nl>
 ([ORCID](https://orcid.org/0000-0002-3159-8944)) \[copyright holder\]
 
 Authors:
 
-- Allert Bijleveld <allert.bijleveld@nioz.nl>
+- Allert I. Bijleveld <allert.bijleveld@nioz.nl>
   ([ORCID](https://orcid.org/0000-0002-3159-8944)) \[copyright holder\]
 
 - Johannes Krietsch <johannes.krietsch@nioz.nl>

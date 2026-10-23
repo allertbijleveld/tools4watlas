@@ -23,7 +23,7 @@ This vignette shows how to load and check WATLAS data.
 
 `tools4watlas` is based on `data.table` to be fast and efficient. A key feature of `data.table` is modification in place, where data is changed without making a copy. To prevent this (whenever it is not desired) use the function `copy()` to make a true copy of the data set. Basic knowledge about [`data.table`](https://rdatatable.gitlab.io/data.table/index.html) is helpful, but not necessary, when working with `tools4watlas`.
 
-```{r}
+```{r, message = FALSE}
 # packages
 library(tools4watlas)
 library(data.table)

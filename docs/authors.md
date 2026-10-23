@@ -5,9 +5,7 @@
 - **[Johannes Krietsch](https://github.com/krietsch)**. Author.
   [](https://orcid.org/0000-0002-8080-1734)
 
-- **[Allert
-  Bijleveld](https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld)**.
-  Author, maintainer, copyright holder.
+- **Allert I. Bijleveld**. Author, maintainer, copyright holder.
   [](https://orcid.org/0000-0002-3159-8944)
 
 - **[Pratik Gupte](https://github.com/pratikunterwegs)**. Contributor.

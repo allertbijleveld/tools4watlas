@@ -36,8 +36,9 @@ Returns a vector of distances between consecutive points.
 
 ## Details
 
-Derived from `atlastools::atl_simple_dist()` in the atlastools package
-(Gupte et al., 2022), licensed under GPL-3.
+Derived from
+[`atlastools::atl_simple_dist()`](https://rdrr.io/pkg/atlastools/man/atl_simple_dist.html)
+in the atlastools package (Gupte et al., 2022), licensed under GPL-3.
 
 ## References
 

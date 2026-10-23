@@ -67,6 +67,14 @@ Pratik Gupte & Allert Bijleveld & Johannes Krietsch
 # packages
 library(tools4watlas)
 library(data.table)
+#> 
+#> Attaching package: 'data.table'
+#> The following object is masked from 'package:terra':
+#> 
+#>     shift
+#> The following object is masked from 'package:base':
+#> 
+#>     %notin%
 
 # load example data
 data <- data_example

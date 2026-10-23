@@ -42,8 +42,9 @@ A dataframe filtered using the filters specified.
 
 ## Details
 
-Derived from `atlastools::atl_filter_covariates()` in the atlastools
-package (Gupte et al., 2022), licensed under GPL-3.
+Derived from
+[`atlastools::atl_filter_covariates()`](https://rdrr.io/pkg/atlastools/man/atl_filter_covariates.html)
+in the atlastools package (Gupte et al., 2022), licensed under GPL-3.
 
 ## References
 

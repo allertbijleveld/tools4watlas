@@ -1,107 +1,81 @@
 # tools4watlas
 
-The goal of `tools4watlas` is to provide tools for getting, processing
-and plotting WATLAS tracking data. More information on the WATLAS
-tracking system can be found in [Bijleveld et al. 2022. WATLAS:
-high-throughput and real-time tracking of many small birds in the Dutch
-Wadden Sea](https://doi.org/10.1186/s40317-022-00307-w).
+Tools for processing and visualising high-throughput animal tracking
+data, developed for WATLAS (Wadden Sea Advanced Tracking and
+Localization of Animals in real-life Systems). For a background of the
+system and associated research, see
+[here](https://allertbijleveld.github.io/tools4watlas/articles/research_and_publications/research_and_publications.html)
+or visit <https://www.nioz.nl/watlas> to follow tracked birds in real
+time and to read the latest project news.
 
-Visit <https://www.nioz.nl/watlas> to follow tracked birds in real time
-and to read the latest project news. **Feel free to reach out by
-[e-mail](mailto:allert.bijleveld@nioz.nl) for questions or
-collaborations if you would like to work with WATLAS data.**
+### Why `tools4watlas`?
 
-The package `tools4watlas` incorporates code from and builds on the
-foundation of the package
-[`atlastools`](https://github.com/pratikunterwegs/atlastools) ([Gupte et
-al. 2021. A Guide to Pre-processing High-throughput Animal Tracking
-Data](https://doi.org/10.1111/1365-2656.13610)). Some major developments
-are that we have incorporated
-[`data.table`](https://rdatatable.gitlab.io/data.table/) by tag ID. This
-approach is more efficient and significantly speeds up processing large
-datasets. Additionally, `tools4watlas` includes functions specific to
-the Wadden Sea such as integrating tidal and bathymetry data, and more
-elaborate functions and tutorials on visualizing movement data.
+`tools4watlas` was developed to:
+
+- **Provide a consistent, reproducible workflow** for analysing WATLAS
+  tracking data.
+- **Simplify the basic workflow of
+  [`atlastools`](https://github.com/pratikunterwegs/atlastools)**
+  ([Gupte et al. 2021](https://doi.org/10.1111/1365-2656.13610)) to make
+  handling of large data sets faster and more memory-efficient. See
+  [Differences from
+  `atlastools`](https://allertbijleveld.github.io/tools4watlas/articles/package_overview.html)
+  for details.
+- **Link tracking data to environmental data**, such as water level,
+  bathymetry, sun and moon, or any other raster layer.
+- **Plot and animate data** with easy to use base maps, functions and
+  tutorials.
+
+### Who is it for and how to use it?
+
+`tools4watlas` is mainly developed for anyone working with WATLAS data.
+However, Most functions only need coordinates (`x`, `y`), a timestamp
+(`datetime`) and a `tag` ID, so the package can also be used with other
+tracking data. The most likely user groups are:
+
+- **Internal WATLAS data users:** All functions and workflows can be
+  used, and the local files can be accessed via the network. See [Setup
+  section](https://allertbijleveld.github.io/tools4watlas/articles/package_overview.html)
+  for details and file paths.
+- **External WATLAS data users:** Shared WATLAS data may already be
+  pre-processed. Besides this, all functions can be used and we are
+  happy to share environmental datasets on request.
+- **Users of other ATLAS systems:** All basic functions can be used, but
+  some are system-specific and may not be useful, such as the tidal and
+  bathymetry data and the basemap function. For best results, we
+  recommend forking the repository and adapting it to your system
+  requirements. Basemap data can be replaced by following [Extract
+  basemap
+  data](https://allertbijleveld.github.io/tools4watlas/articles/package_development/extract_basemap_data.html),
+  and
+  [`atl_add_raster_data()`](https://allertbijleveld.github.io/tools4watlas/reference/atl_add_raster_data.md)
+  works with any raster data.
+- **GPS users:** The basic processing functions also work with GPS data,
+  apart from the median smoothing. However, we recommend following the
+  standard processing procedures of packages specialised in GPS data,
+  such as [move2](https://bartk.gitlab.io/move2/index.html) or
+  [amt](https://github.com/jmsigner/amt). The plotting and animation
+  tutorials can still be useful, and for data from the Wadden Sea, the
+  functions that link tracks to local environmental data can be useful
+  as well.
+
+**Feel free to reach out by [e-mail](mailto:allert.bijleveld@nioz.nl)
+for questions or collaborations if you would like to work with WATLAS
+data.**
 
 ### **Documentation**
 
 The `tools4watlas` package is thoroughly documented on the [**official
-package website**](https://allertbijleveld.github.io/tools4watlas/). The
-package vignettes outline the **basic workflow** for working with WATLAS
-data, while **extended workflows** guide through more specialized
-analyses. Additionally, we provide **visualization tutorials** that
-demonstrate various methods for plotting and animating the movement
-data. The **package development** section offers insights into package
-maintenance and how to contribute to the `tools4watlas` package. To
-completely run some articles (marked with an asterisk) access to the
-local NIOZ file server is required.
-
-**Basic workflow (Vignettes)**:
-
-- [**Load and check
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html)
-
-- [**Filter
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html) -
-  based on spatial boundaries, temporal specifications, error estimates
-  and speed.
-
-- [**Smooth and thin
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html)
-
-**Extended workflow**:
-
-- [**Add tidal and bathymetry
-  data**\*](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html)
-
-- [**Add residence
-  patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residence_patches.html)
-
-- [**Interpolate
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/interpolate_data.html)
-
-- [**Add sun and moon
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_sun_and_moon_data.html)
-
-**Visualization tutorials**:
-
-- [**Create a
-  basemap**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/create_basemap.html) -
-  (Bathymetry basemap option\*)
-
-- [**Plot
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html) -
-  an important step between all stages to check the data.
-
-- [**Plot data in
-  loop**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_in_loop.html) -
-  quick way to make plots by tag ID.
-
-- [**Plot data
-  faster**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_faster.html)
-
-- [**Plot data
-  interactively**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_interactively.html)
-
-- [**Animate
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/animate_data.html)
-
-**Package development**:
-
-- [**Contributing to
-  tools4watlas**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/contributing_to_tools4watlas.html) -
-  describes how to work on `tools4watlas`.
-
-- [**Extract basemap
-  data**\*](https://allertbijleveld.github.io/tools4watlas/articles/package_development/extract_basemap_data.html) -
-  describes how the basemap data were extracted and can guide the user
-  in creating customized base maps.
-
-- [**tools4watlas
-  logo**](https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_logo.html) -
-  describes how the `tools4watlas` logo is made.
-
-\**requires access to the local NIOZ file server*
+package website**](https://allertbijleveld.github.io/tools4watlas/). See
+[Package
+overview](https://allertbijleveld.github.io/tools4watlas/articles/package_overview.html)
+for a complete overview of articles. In short: The package articles
+outline the **basic workflow** for working with WATLAS data, while
+**extended workflows** guide through more specialized analyses.
+Additionally, we provide **visualization tutorials** that demonstrate
+various methods for plotting and animating the movement data. The
+**package development** section offers insights into package maintenance
+and how to contribute to the `tools4watlas` package.
 
 ### **Installation**
 

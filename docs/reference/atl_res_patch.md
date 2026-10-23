@@ -68,8 +68,9 @@ the patch ID.
 
 ## Details
 
-Derived from `atlastools::atl_res_patch()` in the atlastools package
-(Gupte et al., 2022), licensed under GPL-3.
+Derived from
+[`atlastools::atl_res_patch()`](https://rdrr.io/pkg/atlastools/man/atl_res_patch.html)
+in the atlastools package (Gupte et al., 2022), licensed under GPL-3.
 
 ## References
 

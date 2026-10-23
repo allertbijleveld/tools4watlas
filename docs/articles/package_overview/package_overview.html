@@ -95,18 +95,109 @@
 
     
     
-<p>Test</p>
+<p>This article should give an overview of the existing articles
+(tutorials) described on the package website, compare what has changed
+in the basic workflow from <code>atlastools</code>, describe the sources
+of external data used and how to setup the working environment for
+internal WATLAS users.</p>
 <div class="section level2">
-<h2 id="loading-the-data">Loading the data<a class="anchor" aria-label="anchor" href="#loading-the-data"></a>
+<h2 id="articles-overview">Articles overview<a class="anchor" aria-label="anchor" href="#articles-overview"></a>
 </h2>
+<p>The articles of the package are grouped by purpose. The <strong>basic
+workflow</strong> covers the steps most users need to go from raw WATLAS
+data to clean tracks, and the <strong>extended workflow</strong> covers
+more specialised analyses. The <strong>visualization tutorials</strong>
+show how to plot and animate movement data. The <strong>package
+development</strong> articles explain how to contribute to
+<code>tools4watlas</code> and how to adapt it, for example by creating
+your own basemaps.</p>
+<p>Parts of the articles marked with an asterisk (*) require bathymetry
+data. These data are too large to include in <code>tools4watlas</code>,
+so those parts do not run without access to them. For tidal data, the
+package only includes an example dataset. See access to data sections
+below for how to get the complete data.</p>
+<p><br></p>
+<p><strong>Basic workflow (Vignettes)</strong>:</p>
+<ul>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html"><strong>Load
+and check data</strong></a></p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html"><strong>Filter
+data</strong></a> - based on spatial boundaries, temporal
+specifications, error estimates and speed.</p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html"><strong>Smooth
+and thin data</strong></a></p></li>
+</ul>
+<p><strong>Extended workflow</strong>:</p>
+<ul>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html"><strong>Add
+tidal and bathymetry data</strong></a> - (*add bathymetry data)</p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residence_patches.html"><strong>Add
+residence patches</strong></a></p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/interpolate_data.html"><strong>Interpolate
+data</strong></a></p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_sun_and_moon_data.html"><strong>Add
+sun and moon data</strong></a></p></li>
+</ul>
+<p><strong>Visualization tutorials</strong>:</p>
+<ul>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/create_basemap.html"><strong>Create
+a basemap</strong></a> - (*Bathymetry basemap option)</p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html"><strong>Plot
+data</strong></a> - an important step between all stages to check the
+data.</p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_in_loop.html"><strong>Plot
+data in loop</strong></a> - quick way to make plots by tag ID.</p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_faster.html"><strong>Plot
+data faster</strong></a></p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_interactively.html"><strong>Plot
+data interactively</strong></a></p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/animate_data.html"><strong>Animate
+data</strong></a> - (*Animation with dynamic water data)</p></li>
+</ul>
+<p><strong>Package development</strong>:</p>
+<ul>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/package_development/contributing_to_tools4watlas.html"><strong>Contributing
+to tools4watlas</strong></a> - describes how to work on
+<code>tools4watlas</code>.</p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/package_development/extract_basemap_data.html"><strong>Extract
+basemap data</strong></a> - describes how the basemap data were
+extracted and can guide the user in creating customized base
+maps.</p></li>
+<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_logo.html"><strong>tools4watlas
+logo</strong></a> - describes how the <code>tools4watlas</code> logo is
+made.</p></li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="differences-from-atlastools">Differences from <code>atlastools</code><a class="anchor" aria-label="anchor" href="#differences-from-atlastools"></a>
+</h2>
+<p><code>tools4watlas</code> builds on <a href="https://github.com/pratikunterwegs/atlastools" class="external-link"><code>atlastools</code></a>
+(<a href="https://doi.org/10.1111/1365-2656.13610" class="external-link">Gupte et al. 2021. A
+Guide to Pre-processing High-throughput Animal Tracking Data</a>) and
+incorporates basic data processing functions from it.</p>
+<p>The main change is the data structure of the workflow: all functions
+now work on a single <a href="https://rdatatable.gitlab.io/data.table/" class="external-link"><code>data.table</code></a>
+and group by tag ID internally, while <code>atlastools</code> works on
+lists of data, with one element per individual. This list approach means
+that all functions have to be run with <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>, which
+makes the code harder to read and working with the data more complicated
+in general. For example, to plot the data with <code>ggplot2</code> in
+between, the data need to be combined or individuals added in loops to
+the plot. Switching back and forth between lists and a full table also
+copies the data in memory, which removes the benefit of
+<code>data.table</code>, which can modify data in place. This matters,
+because one season of WATLAS data can already be as big as 10 GB.</p>
+<div class="section level3">
+<h3 id="comparison-of-basic-workflow-of-tools4watlas-and-atlastools">Comparison of basic workflow of <code>tools4watlas</code> and
+<code>atlastools</code><a class="anchor" aria-label="anchor" href="#comparison-of-basic-workflow-of-tools4watlas-and-atlastools"></a>
+</h3>
+<p>The comparison covers three steps of the basic workflow: calculating
+speed, smoothing, and thinning the data.</p>
+<p>First we load packages and raw example data.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allertbijleveld.github.io/tools4watlas/">tools4watlas</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org" class="external-link">scales</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sjmgarnier.github.io/viridis/" class="external-link">viridis</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># path to csv with raw data</span></span>
 <span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
@@ -117,30 +208,340 @@
 <span><span class="co"># load data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">data_path</span>, yaml <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="accessing-internal-files">Accessing internal files<a class="anchor" aria-label="anchor" href="#accessing-internal-files"></a>
-</h2>
-<p><strong>Section only relevant for NIOZ users.</strong> External
-users, please <a href="mailto:allert.bijleveld@nioz.nl">e-mail</a>
-Allert Bijleveld for access**</p>
-<p>If you want to access the database, fill host, username and
-password</p>
-<p>If you have local copies of relevant data folders also fill them
-in</p>
+<div class="section level3">
+<h3 id="tools4watlas">
+<code>tools4watlas</code><a class="anchor" aria-label="anchor" href="#tools4watlas"></a>
+</h3>
+<p>The full <code>data.table</code> is used by the function group by tag
+ID.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># calculate speed</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_get_speed.html">atl_get_speed</a></span><span class="op">(</span><span class="va">data</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"in"</span>, <span class="st">"out"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># smooth the data</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_median_smooth.html">atl_median_smooth</a></span><span class="op">(</span><span class="va">data</span>, moving_window <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># thin data</span></span>
+<span><span class="va">data_thinned</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_thin_data.html">atl_thin_data</a></span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,  interval <span class="op">=</span> <span class="fl">60</span>, id_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tag"</span>, <span class="st">"species"</span><span class="op">)</span>, method <span class="op">=</span> <span class="st">"aggregate"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="atlastools">
+<code>atlastools</code><a class="anchor" aria-label="anchor" href="#atlastools"></a>
+</h3>
+<p>Example workflow with <code>atlastools</code>. The
+<code>data.table</code> must first be split by tag ID, and every
+function is then run on each element with <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>. The
+split creates a full copy of the data, so the data are held in memory
+twice.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># split data by tag ID</span></span>
+<span><span class="va">data_split</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">data</span>, by <span class="op">=</span> <span class="st">"tag"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># calculate speed</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">data_split</span>, <span class="kw">function</span><span class="op">(</span><span class="va">dt</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">dt</span><span class="op">[</span>, <span class="fu">`:=`</span><span class="op">(</span></span>
+<span>    speed_in  <span class="op">=</span> <span class="fu">atlastools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/atlastools/man/atl_get_speed.html" class="external-link">atl_get_speed</a></span><span class="op">(</span><span class="va">dt</span>, time <span class="op">=</span> <span class="st">"time"</span>, type <span class="op">=</span> <span class="st">"in"</span><span class="op">)</span>,</span>
+<span>    speed_out <span class="op">=</span> <span class="fu">atlastools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/atlastools/man/atl_get_speed.html" class="external-link">atl_get_speed</a></span><span class="op">(</span><span class="va">dt</span>, time <span class="op">=</span> <span class="st">"time"</span>, type <span class="op">=</span> <span class="st">"out"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span><span class="op">]</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># smooth data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
+<span>  X <span class="op">=</span> <span class="va">data_split</span>,</span>
+<span>  FUN <span class="op">=</span> <span class="fu">atlastools</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/atlastools/man/atl_median_smooth.html" class="external-link">atl_median_smooth</a></span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  time <span class="op">=</span> <span class="st">"time"</span>,</span>
+<span>  moving_window <span class="op">=</span> <span class="fl">5</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># thin data</span></span>
+<span><span class="va">data_thinned</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
+<span>  X <span class="op">=</span> <span class="va">data_split</span>,</span>
+<span>  FUN <span class="op">=</span> <span class="fu">atlastools</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/atlastools/man/atl_thin_data.html" class="external-link">atl_thin_data</a></span>,</span>
+<span>  interval <span class="op">=</span> <span class="fl">60</span>,</span>
+<span>  time <span class="op">=</span> <span class="st">"time"</span>,</span>
+<span>  id_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tag"</span>, <span class="st">"species"</span><span class="op">)</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"aggregate"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="benchmark-both-basic-workflows">Benchmark both basic workflows<a class="anchor" aria-label="anchor" href="#benchmark-both-basic-workflows"></a>
+</h3>
+<p>I simply wrapped both workflows as shown above and used
+<code>mark</code> from the <code>bench</code> package to compare them.
+The code is not shown again, but can be seen on <a href="https://github.com/allertbijleveld/tools4watlas/blob/master/vignettes/package_overview/package_overview.Rmd" class="external-link">GitHub</a></p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># benchmark</span></span>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span></span>
+<span>  tools4watlas <span class="op">=</span> <span class="fu">workflow_tools4watlas</span><span class="op">(</span><span class="va">data</span><span class="op">)</span>,</span>
+<span>  atlastools   <span class="op">=</span> <span class="fu">workflow_atlastools</span><span class="op">(</span><span class="va">data</span><span class="op">)</span>,</span>
+<span>  iterations <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  check <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  filter_gc <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># print results</span></span>
+<span><span class="va">result</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"expression"</span>, <span class="st">"min"</span>, <span class="st">"median"</span>, <span class="st">"mem_alloc"</span>, <span class="st">"n_gc"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">expression</th>
+<th align="right">min</th>
+<th align="right">median</th>
+<th align="right">mem_alloc</th>
+<th align="right">n_gc</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">tools4watlas</td>
+<td align="right">47.4ms</td>
+<td align="right">58.9ms</td>
+<td align="right">60MB</td>
+<td align="right">13</td>
+</tr>
+<tr class="even">
+<td align="left">atlastools</td>
+<td align="right">472ms</td>
+<td align="right">481.1ms</td>
+<td align="right">58.9MB</td>
+<td align="right">34</td>
+</tr>
+</tbody>
+</table>
+<p>The workflow of <code>tools4watlas</code> is around <strong>10x
+faster</strong> using this small example. When we run the same
+comparison for a larger data set of 300 individuals and ~3 GB (not
+shown), the speed is even <strong>25x times</strong> faster.</p>
+</div>
+<div class="section level3">
+<h3 id="comparison-of-residence-patch-analysis-of-tools4watlas-and-atlastools">Comparison of residence patch analysis of <code>tools4watlas</code>
+and <code>atlastools</code><a class="anchor" aria-label="anchor" href="#comparison-of-residence-patch-analysis-of-tools4watlas-and-atlastools"></a>
+</h3>
+<p>The residence patch function was modified in
+<code>tools4watlas</code>. It now returns the original table with a
+<code>patch</code> column instead of a summary with nested data, and
+patch summaries are created separately with
+<code><a href="../../reference/atl_res_patch_summary.html">atl_res_patch_summary()</a></code>. Proto-patches are built with a
+speed threshold (<code>max_speed</code>) in addition to distance and
+time thresholds, which replaces the buffer radius, and they are merged
+when either their median positions or their end and start positions are
+close. The function also fills gaps within patches, splits patches at
+flights, removes single outliers, and can filter patches by minimum
+duration (<code>min_duration</code>) as well as by number of fixes.</p>
+<p>Residence patches are too complex to calculate for all tags at once,
+so this step still has to be done per tag ID. In
+<code>tools4watlas</code>, we use <code>foreach</code>, which makes it
+easy to switch to parallel processing with <code>doFuture</code> (see <a href="https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residence_patches.html">Add
+residence patches</a>).</p>
+</div>
+<div class="section level3">
+<h3 id="tools4watlas-1">
+<code>tools4watlas</code><a class="anchor" aria-label="anchor" href="#tools4watlas-1"></a>
+</h3>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># packages</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/foreach" class="external-link">foreach</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># tag IDs to loop through</span></span>
+<span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">tag</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># loop through all tags to calculate residence patches</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></span><span class="op">(</span>i <span class="op">=</span> <span class="va">id</span>, .combine <span class="op">=</span> <span class="st">"rbind"</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">%do%</a></span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../../reference/atl_res_patch.html">atl_res_patch</a></span><span class="op">(</span></span>
+<span>    <span class="va">data</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="va">i</span><span class="op">]</span>,</span>
+<span>    max_speed <span class="op">=</span> <span class="fl">3</span>, lim_spat_indep <span class="op">=</span> <span class="fl">75</span>, lim_time_indep <span class="op">=</span> <span class="fl">180</span>,</span>
+<span>    min_fixes <span class="op">=</span> <span class="fl">2</span>, min_duration <span class="op">=</span> <span class="fl">60</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># patch summaries are created separately</span></span>
+<span><span class="va">data_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_res_patch_summary.html">atl_res_patch_summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="atlastools-1">
+<code>atlastools</code><a class="anchor" aria-label="anchor" href="#atlastools-1"></a>
+</h3>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># atlastools::atl_res_patch() requires an "id" column</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">data_split</span>, <span class="kw">function</span><span class="op">(</span><span class="va">dt</span><span class="op">)</span> <span class="va">dt</span><span class="op">[</span>, <span class="va">id</span> <span class="op">:=</span> <span class="va">tag</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># calculate residence patches per tag ID</span></span>
+<span><span class="va">patches</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
+<span>  X <span class="op">=</span> <span class="va">data_split</span>,</span>
+<span>  FUN <span class="op">=</span> <span class="fu">atlastools</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/atlastools/man/atl_res_patch.html" class="external-link">atl_res_patch</a></span>,</span>
+<span>  buffer_radius <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  lim_spat_indep <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  lim_time_indep <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>  min_fixes <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  summary_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"speed_in"</span><span class="op">)</span>,</span>
+<span>  summary_functions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"sd"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>As a result the get a summary table with all patch data nested in one
+column.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># one row per patch, localisations nested in `patchdata`</span></span>
+<span><span class="va">patches</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="va">patches</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># to get the localisations with patch ID again, the data must be unnested</span></span>
+<span><span class="va">data_patches</span> <span class="op">&lt;-</span> <span class="va">patches</span><span class="op">[</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">patchdata</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>  by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">id</span>, <span class="va">patch</span><span class="op">)</span></span>
+<span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># add the patch ID to the original table</span></span>
+<span><span class="va">data</span><span class="op">[</span><span class="va">data_patches</span>, on <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">tag</span>, <span class="va">time</span><span class="op">)</span>, <span class="va">patch</span> <span class="op">:=</span> <span class="va">i.patch</span><span class="op">]</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="benchmark-both-residence-patch-workflows">Benchmark both residence patch workflows<a class="anchor" aria-label="anchor" href="#benchmark-both-residence-patch-workflows"></a>
+</h3>
+<p>I simply wrapped both residence patch workflows as shown above and
+used <code>mark</code> from the <code>bench</code> package to compare
+them. The code is not shown again, but can be seen on <a href="https://github.com/allertbijleveld/tools4watlas/blob/master/vignettes/package_overview/package_overview.Rmd" class="external-link">GitHub</a></p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># benchmark</span></span>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span></span>
+<span>  tools4watlas <span class="op">=</span> <span class="fu">workflow_tools4watlas</span><span class="op">(</span><span class="va">data</span><span class="op">)</span>,</span>
+<span>  atlastools   <span class="op">=</span> <span class="fu">workflow_atlastools</span><span class="op">(</span><span class="va">data</span><span class="op">)</span>,</span>
+<span>  iterations <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  check <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  filter_gc <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># print results</span></span>
+<span><span class="va">result</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"expression"</span>, <span class="st">"min"</span>, <span class="st">"median"</span>, <span class="st">"mem_alloc"</span>, <span class="st">"n_gc"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">expression</th>
+<th align="right">min</th>
+<th align="right">median</th>
+<th align="right">mem_alloc</th>
+<th align="right">n_gc</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">tools4watlas</td>
+<td align="right">1.46s</td>
+<td align="right">1.57s</td>
+<td align="right">323MB</td>
+<td align="right">23</td>
+</tr>
+<tr class="even">
+<td align="left">atlastools</td>
+<td align="right">8.94s</td>
+<td align="right">9.13s</td>
+<td align="right">893MB</td>
+<td align="right">37</td>
+</tr>
+</tbody>
+</table>
+<p>The workflow of <code>tools4watlas</code> is around <strong>5x
+faster</strong> using this small example. When we run the same
+comparison for a larger data set of 10 random tags (not shown), it
+remains 5 times faster, but also allocates <strong>70% less
+memory</strong>. When we use <code>%dofuture%</code>, it runs
+<strong>17x faster</strong>.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="data-access-for-external-users">Data access for external users<a class="anchor" aria-label="anchor" href="#data-access-for-external-users"></a>
+</h2>
+<ul>
+<li>
+<strong>Tidal data:</strong> Are downloaded from <a href="https://waterinfo.rws.nl/" class="external-link">Rijkswaterstaat</a> for each tidal
+station and pre-processed to assign tide ID, high tide and low tide.
+Please contact <a href="mailto:allert.bijleveld@nioz.nl">Allert
+Bijleveld</a> for access.</li>
+<li>
+<strong>Bathymetry data:</strong> The data can be downloaded from
+the <a href="https://datahuiswadden.openearth.nl/geonetwork/srv/eng/catalog.search#/metadata/JkrvJXasRSGAWU1mJLHUzg" class="external-link">Waddenregister</a>,
+to link them directly, they need to be opened with <a href="https://rspatial.github.io/terra/index.html" class="external-link"><code>terra</code></a>
+and the projection needs to be changed to UTM31 (EPSG:32631). To get
+processed ready to use data contact <a href="mailto:allert.bijleveld@nioz.nl">Allert Bijleveld</a>
+</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="data-access-and-setup-for-internal-watlas-data-users">Data access and setup for internal WATLAS data users<a class="anchor" aria-label="anchor" href="#data-access-and-setup-for-internal-watlas-data-users"></a>
+</h2>
+<p><strong>Section only relevant for users with access to the local NIOZ
+network.</strong></p>
+<p>To work safely with database credentials and internal file paths,
+store them as environment variables in R. This way, scripts can be
+shared on GitHub without publishing credentials or personal paths. To
+add the variables, open your <code>.Renviron</code> file with
+<code><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">usethis::edit_r_environ()</a></code>, add one line per variable, save
+the file, and restart R. The all scripts should then run without further
+changes if all paths are correct.</p>
+<p>The following variables are used:</p>
+<ul>
+<li>
+<strong>Host, username and password</strong> are required to access
+the remote SQL database. Contact <a href="mailto:allert.bijleveld@nioz.nl">Allert Bijleveld</a> for
+access.</li>
+<li>
+<strong>watlas_teams</strong>: path to the “WATLAS” SharePoint
+folder <code>Documents/data/</code>. It contains files that are updated
+often, such as <code>tags_watlas_all.xlsx</code> and the tide data. We
+recommend adding a shortcut to this folder in your OneDrive, so that
+changes are synchronised automatically, and pointing the variable to
+this copy.</li>
+<li>
+<strong>rasters</strong>: path to the “Birds, fish ’n chips”
+SharePoint folder <code>Documents/data/GIS/rasters/</code>.</li>
+<li>
+<strong>shapefiles</strong>: path to the “Birds, fish ’n chips”
+SharePoint folder <code>Documents/data/GIS/shapefiles/</code>. These GIS
+folders contain many large files that rarely change. We recommend
+copying only the data you need to a local folder and pointing the
+variables to that folder, instead of creating a OneDrive shortcut.</li>
+<li>
+<strong>sqlite_db</strong>: path to the folder with the
+<code>SQLite</code> localization databases.</li>
+</ul>
+<p>To build the package website (see <a href="https://allertbijleveld.github.io/tools4watlas/articles/package_development/contributing_to_tools4watlas.html">Contributing
+to tools4watlas</a>) with all articles, all variables must be set.</p>
+<div class="section level3">
+<h3 id="here-a-code-template-to-fill-the--renviron">Here a code template to fill the <code>.Renviron</code>:<a class="anchor" aria-label="anchor" href="#here-a-code-template-to-fill-the--renviron"></a>
+</h3>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># open .Renviron to edit</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/file.edit.html" class="external-link">file.edit</a></span><span class="op">(</span><span class="st">"~/.Renviron"</span><span class="op">)</span></span>
+<span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">edit_r_environ</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># add variables</span></span>
 <span><span class="va">host</span> <span class="op">=</span> <span class="st">"host"</span></span>
 <span><span class="va">username</span> <span class="op">=</span> <span class="st">"username"</span></span>
 <span><span class="va">password</span> <span class="op">=</span> <span class="st">"password"</span></span>
+<span><span class="va">watlas_teams</span> <span class="op">=</span> <span class="st">"file_path"</span></span>
+<span><span class="va">rasters</span> <span class="op">=</span> <span class="st">"file_path"</span></span>
+<span><span class="va">shapefiles</span> <span class="op">=</span> <span class="st">"file_path"</span></span>
+<span><span class="va">sqlite_db</span> <span class="op">=</span> <span class="st">"file_path"</span></span>
 <span></span>
 <span><span class="co"># access variables (example)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"variable_name"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+</div>
+<div class="section level3">
+<h3 id="here-templates-to-access-the-data-to-replace-in-articles-that-use-example-data">Here templates to access the data (to replace in articles that use
+example data):<a class="anchor" aria-label="anchor" href="#here-templates-to-access-the-data-to-replace-in-articles-that-use-example-data"></a>
+</h3>
+<p><strong>Metadata <code>tags_watlas_all.xlsx</code>:</strong></p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># file path to WATLAS teams data folder</span></span>
-<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu">atl_file_path</span><span class="op">(</span><span class="st">"watlas_teams"</span><span class="op">)</span></span>
+<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"watlas_teams"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load meta data</span></span>
+<span><span class="va">all_tags</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">fp</span>, <span class="st">"tags/tags_watlas_all.xlsx"</span><span class="op">)</span>,</span>
+<span>  sheet <span class="op">=</span> <span class="st">"tags_watlas_all"</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Tidal data:</strong></p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># file path to WATLAS teams data folder</span></span>
+<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"watlas_teams"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># sub path to tide data</span></span>
 <span><span class="va">tidal_pattern_fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
@@ -148,7 +549,19 @@ in</p>
 <span><span class="op">)</span></span>
 <span><span class="va">measured_water_height_fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
 <span>  <span class="va">fp</span>, <span class="st">"waterdata/allYears-gemeten_waterhoogte-west_terschelling-clean-UTC.csv"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load tide data</span></span>
+<span><span class="va">tidal_pattern</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">tidal_pattern_fp</span><span class="op">)</span></span>
+<span><span class="va">measured_water_height</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">measured_water_height_fp</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Bathymetry data:</strong></p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># file path to Birds, fish 'n chips GIS/rasters folder</span></span>
+<span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"rasters"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load bathymetry data</span></span>
+<span><span class="va">bat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">fp</span>, <span class="st">"bathymetry/2024/bodemhoogte_20mtr_UTM31_int.tif"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -157,7 +570,7 @@ in</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>.</p>
+  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, Allert I. Bijleveld.</p>
 </div>
 
 <div class="pkgdown-footer-right">

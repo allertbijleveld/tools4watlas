@@ -68,11 +68,6 @@ A `data.table` with the extracted raster data added as a new column.
 ``` r
 library(terra)
 #> terra 1.9.50
-#> 
-#> Attaching package: 'terra'
-#> The following object is masked from 'package:data.table':
-#> 
-#>     shift
 
 # example data: subset one tag
 data_subset <- data_example[tag == "3027"]

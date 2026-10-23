@@ -202,12 +202,10 @@ polygons](create_basemap_files/figure-html/unnamed-chunk-7-1.png)
 
 ## Using bathymetry data
 
-Here, we use a raster file with bathymetry to construct a basemap.
-Bathymetry data can be found in the “Birds, fish ’n chips” SharePoint
-folder: `Documents/data/GIS/rasters/`. To run the script set the file
-path (`fp`) to the local copy of the folder on your computer. The data
-can also be downloaded from the
-[Waddenregister](https://datahuiswadden.openearth.nl/geonetwork/srv/eng/catalog.search#/metadata/JkrvJXasRSGAWU1mJLHUzg).
+**This section only runs with a local copy of the bathymetry data.** See
+[Access to the full
+data](https://allertbijleveld.github.io/tools4watlas/articles/package_overview.html#access-to-the-full-data)
+for how to get it.
 
 ``` r
 
@@ -420,10 +418,10 @@ logo](create_basemap_files/figure-html/unnamed-chunk-12-1.png)
 
 ### Add WATLAS receivers
 
-Receiver data are managed by Allert. They are located in the “WATLAS”
-SharePoint folder: `Documents/data/`. Either specify the path to your
-local copy of this folder or add the path for your user in the
-`atl_file_path()` function.
+**This section only runs access to the WATLAS teams folder.** See
+[Access to local data
+data](https://allertbijleveld.github.io/tools4watlas/articles/package_overview.html#access-to-the-full-data)
+for how to get it.
 
 ``` r
 

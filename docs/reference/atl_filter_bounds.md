@@ -59,8 +59,9 @@ A `data.table` of tracking locations with attractor points removed.
 
 ## Details
 
-Derived from `atlastools::atl_filter_bounds()` in the atlastools package
-(Gupte et al., 2022), licensed under GPL-3.
+Derived from
+[`atlastools::atl_filter_bounds()`](https://rdrr.io/pkg/atlastools/man/atl_filter_bounds.html)
+in the atlastools package (Gupte et al., 2022), licensed under GPL-3.
 
 ## References
 

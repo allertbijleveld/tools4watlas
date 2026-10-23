@@ -257,11 +257,9 @@ the buffer in <code><a href="../../reference/atl_create_bm.html">atl_create_bm()
 <div class="section level2">
 <h2 id="using-bathymetry-data">Using bathymetry data<a class="anchor" aria-label="anchor" href="#using-bathymetry-data"></a>
 </h2>
-<p>Here, we use a raster file with bathymetry to construct a basemap.
-Bathymetry data can be found in the “Birds, fish ’n chips” SharePoint
-folder: <code>Documents/data/GIS/rasters/</code>. To run the script set
-the file path (<code>fp</code>) to the local copy of the folder on your
-computer. The data can also be downloaded from the <a href="https://datahuiswadden.openearth.nl/geonetwork/srv/eng/catalog.search#/metadata/JkrvJXasRSGAWU1mJLHUzg" class="external-link">Waddenregister</a>.</p>
+<p><strong>This section only runs with a local copy of the bathymetry
+data.</strong> See <a href="https://allertbijleveld.github.io/tools4watlas/articles/package_overview.html#access-to-the-full-data">Access
+to the full data</a> for how to get it.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># additional packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
@@ -448,10 +446,9 @@ receivers, to a map.</p>
 <div class="section level3">
 <h3 id="add-watlas-receivers">Add WATLAS receivers<a class="anchor" aria-label="anchor" href="#add-watlas-receivers"></a>
 </h3>
-<p>Receiver data are managed by Allert. They are located in the “WATLAS”
-SharePoint folder: <code>Documents/data/</code>. Either specify the path
-to your local copy of this folder or add the path for your user in the
-<code>atl_file_path()</code> function.</p>
+<p><strong>This section only runs access to the WATLAS teams
+folder.</strong> See <a href="https://allertbijleveld.github.io/tools4watlas/articles/package_overview.html#access-to-the-full-data">Access
+to local data data</a> for how to get it.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load example data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
@@ -509,7 +506,7 @@ to your local copy of this folder or add the path for your user in the
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>.</p>
+  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, Allert I. Bijleveld.</p>
 </div>
 
 <div class="pkgdown-footer-right">
