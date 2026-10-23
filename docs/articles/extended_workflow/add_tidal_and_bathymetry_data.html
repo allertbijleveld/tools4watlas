@@ -124,10 +124,9 @@ and thinned it</a>.</p>
 <div class="section level2">
 <h2 id="add-tidal-data">Add tidal data<a class="anchor" aria-label="anchor" href="#add-tidal-data"></a>
 </h2>
-<p>Tide data are from West-Terschelling and prepared by Allert. They are
-located in the “WATLAS” SharePoint folder: <code>Documents/data/</code>.
-Either specify the path to your local copy of this folder or add the
-path for your user in the <code>atl_file_path()</code> function.</p>
+<p>We here use example prepared example tide data from
+West-Terschelling. See <a href="https://allertbijleveld.github.io/tools4watlas/articles/package_overview.html#access-to-the-full-data">Access
+to the full data</a> for how to get the full dataset.</p>
 <p>Here we show how to add tide data (<code>tideID</code> - a unique
 tide identifier, <code>tidaltime</code> and <code>time2lowtide</code> -
 time from high tide and time to low tide in minutes,
@@ -235,11 +234,10 @@ offset) in cm NAP.</p>
 <div class="section level2">
 <h2 id="add-bathymetry-data">Add bathymetry data<a class="anchor" aria-label="anchor" href="#add-bathymetry-data"></a>
 </h2>
-<p>Bathymetry data can be downloaded from <a href="https://waterinfo.rws.nl/" class="external-link">Rijkswaterstaat</a> but can also be
-found in the “Birds, fish ’n chips” SharePoint folder:
-<code>Documents/data/GIS/rasters/</code>. To run the below script, set
-the file path (<code>fp</code>) to the local copy of the folder on your
-computer.</p>
+<p><strong>This section only runs with a local copy of the bathymetry
+data.</strong> See <a href="https://allertbijleveld.github.io/tools4watlas/articles/package_overview.html#access-to-the-full-data">Access
+to the full data</a> for how to get it. For a small runnable example of
+the function, see the <code><a href="../../reference/atl_add_raster_data.html">atl_add_raster_data()</a></code>.</p>
 <p>Here, we show how to extract bathymetry data (cm NAP) for each WATLAS
 position.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -368,7 +366,7 @@ et al. 2016)</a>:</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>.</p>
+  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, Allert I. Bijleveld.</p>
 </div>
 
 <div class="pkgdown-footer-right">

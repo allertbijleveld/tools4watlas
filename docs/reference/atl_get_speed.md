@@ -52,8 +52,9 @@ Data.table changed in place with additional speed columns
 
 ## Details
 
-Derived from `atlastools::atl_get_speed()` in the atlastools package
-(Gupte et al., 2022), licensed under GPL-3.
+Derived from
+[`atlastools::atl_get_speed()`](https://rdrr.io/pkg/atlastools/man/atl_get_speed.html)
+in the atlastools package (Gupte et al., 2022), licensed under GPL-3.
 
 ## References
 

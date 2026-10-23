@@ -1,5 +1,6 @@
 AGG
 Adriaen
+Allert
 Aris
 Ballastplaat
 Banc
@@ -53,6 +54,7 @@ Wadden
 Waddenregister
 Wim
 Yetzo
+amt
 atl
 atlastools
 basemap
@@ -68,6 +70,7 @@ coords
 covarxy
 covxy
 crc
+db
 disp
 dist
 d’Arguin
@@ -104,6 +107,7 @@ rgb
 scalebar
 scattermore
 shapefiles
+sqlite
 tidaltime
 tideID
 tidyverse
@@ -112,8 +116,6 @@ ts
 var
 varx
 viridisLite
-waterlevel
 watlas
 windR
 yml
-’n

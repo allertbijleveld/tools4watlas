@@ -42,7 +42,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/package_overview.html">Package overview</a></li>
+<li><a class="dropdown-item" href="articles/package_overview/package_overview.html">Package overview</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
     <li><a class="dropdown-item" href="articles/load_and_check_data.html">Load and check data</a></li>
@@ -92,43 +92,43 @@
 </div>
 <!-- badges: start -->
 
-<p>The goal of <code>tools4watlas</code> is to provide tools for getting, processing and plotting WATLAS tracking data. More information on the WATLAS tracking system can be found in <a href="https://doi.org/10.1186/s40317-022-00307-w" class="external-link">Bijleveld et al. 2022. WATLAS: high-throughput and real-time tracking of many small birds in the Dutch Wadden Sea</a>.</p>
-<p>Visit <a href="https://www.nioz.nl/watlas" class="external-link uri">https://www.nioz.nl/watlas</a> to follow tracked birds in real time and to read the latest project news. <strong>Feel free to reach out by <a href="mailto:allert.bijleveld@nioz.nl">e-mail</a> for questions or collaborations if you would like to work with WATLAS data.</strong></p>
-<p>The package <code>tools4watlas</code> incorporates code from and builds on the foundation of the package <a href="https://github.com/pratikunterwegs/atlastools" class="external-link"><code>atlastools</code></a> (<a href="https://doi.org/10.1111/1365-2656.13610" class="external-link">Gupte et al. 2021. A Guide to Pre-processing High-throughput Animal Tracking Data</a>). Some major developments are that we have incorporated <a href="https://rdatatable.gitlab.io/data.table/" class="external-link"><code>data.table</code></a> by tag ID. This approach is more efficient and significantly speeds up processing large datasets. Additionally, <code>tools4watlas</code> includes functions specific to the Wadden Sea such as integrating tidal and bathymetry data, and more elaborate functions and tutorials on visualizing movement data.</p>
+<p>Tools for processing and visualising high-throughput animal tracking data, developed for WATLAS (Wadden Sea Advanced Tracking and Localization of Animals in real-life Systems). For a background of the system and associated research, see <a href="https://allertbijleveld.github.io/tools4watlas/articles/research_and_publications/research_and_publications.html">here</a> or visit <a href="https://www.nioz.nl/watlas" class="external-link uri">https://www.nioz.nl/watlas</a> to follow tracked birds in real time and to read the latest project news.</p>
+<div class="section level3">
+<h3 id="why-tools4watlas">Why <code>tools4watlas</code>?<a class="anchor" aria-label="anchor" href="#why-tools4watlas"></a>
+</h3>
+<p><code>tools4watlas</code> was developed to:</p>
+<ul>
+<li>
+<strong>Provide a consistent, reproducible workflow</strong> for analysing WATLAS tracking data.</li>
+<li>
+<strong>Simplify the basic workflow of <a href="https://github.com/pratikunterwegs/atlastools" class="external-link"><code>atlastools</code></a></strong> (<a href="https://doi.org/10.1111/1365-2656.13610" class="external-link">Gupte et al. 2021</a>) to make handling of large data sets faster and more memory-efficient. See <a href="https://allertbijleveld.github.io/tools4watlas/articles/package_overview.html">Differences from <code>atlastools</code></a> for details.</li>
+<li>
+<strong>Link tracking data to environmental data</strong>, such as water level, bathymetry, sun and moon, or any other raster layer.</li>
+<li>
+<strong>Plot and animate data</strong> with easy to use base maps, functions and tutorials.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="who-is-it-for-and-how-to-use-it">Who is it for and how to use it?<a class="anchor" aria-label="anchor" href="#who-is-it-for-and-how-to-use-it"></a>
+</h3>
+<p><code>tools4watlas</code> is mainly developed for anyone working with WATLAS data. However, Most functions only need coordinates (<code>x</code>, <code>y</code>), a timestamp (<code>datetime</code>) and a <code>tag</code> ID, so the package can also be used with other tracking data. The most likely user groups are:</p>
+<ul>
+<li>
+<strong>Internal WATLAS data users:</strong> All functions and workflows can be used, and the local files can be accessed via the network. See <a href="https://allertbijleveld.github.io/tools4watlas/articles/package_overview.html">Setup section</a> for details and file paths.</li>
+<li>
+<strong>External WATLAS data users:</strong> Shared WATLAS data may already be pre-processed. Besides this, all functions can be used and we are happy to share environmental datasets on request.</li>
+<li>
+<strong>Users of other ATLAS systems:</strong> All basic functions can be used, but some are system-specific and may not be useful, such as the tidal and bathymetry data and the basemap function. For best results, we recommend forking the repository and adapting it to your system requirements. Basemap data can be replaced by following <a href="https://allertbijleveld.github.io/tools4watlas/articles/package_development/extract_basemap_data.html">Extract basemap data</a>, and <code><a href="reference/atl_add_raster_data.html">atl_add_raster_data()</a></code> works with any raster data.</li>
+<li>
+<strong>GPS users:</strong> The basic processing functions also work with GPS data, apart from the median smoothing. However, we recommend following the standard processing procedures of packages specialised in GPS data, such as <a href="https://bartk.gitlab.io/move2/index.html" class="external-link">move2</a> or <a href="https://github.com/jmsigner/amt" class="external-link">amt</a>. The plotting and animation tutorials can still be useful, and for data from the Wadden Sea, the functions that link tracks to local environmental data can be useful as well.</li>
+</ul>
+<p><strong>Feel free to reach out by <a href="mailto:allert.bijleveld@nioz.nl">e-mail</a> for questions or collaborations if you would like to work with WATLAS data.</strong></p>
+</div>
 <div class="section level3">
 <h3 id="documentation">
 <strong>Documentation</strong><a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h3>
-<p>The <code>tools4watlas</code> package is thoroughly documented on the <a href="https://allertbijleveld.github.io/tools4watlas/"><strong>official package website</strong></a>. The package vignettes outline the <strong>basic workflow</strong> for working with WATLAS data, while <strong>extended workflows</strong> guide through more specialized analyses. Additionally, we provide <strong>visualization tutorials</strong> that demonstrate various methods for plotting and animating the movement data. The <strong>package development</strong> section offers insights into package maintenance and how to contribute to the <code>tools4watlas</code> package. To completely run some articles (marked with an asterisk) access to the local NIOZ file server is required.</p>
-<p><strong>Basic workflow (Vignettes)</strong>:</p>
-<ul>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/load_and_check_data.html"><strong>Load and check data</strong></a></p></li>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/filter_data.html"><strong>Filter data</strong></a> - based on spatial boundaries, temporal specifications, error estimates and speed.</p></li>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/smooth_and_thin_data.html"><strong>Smooth and thin data</strong></a></p></li>
-</ul>
-<p><strong>Extended workflow</strong>:</p>
-<ul>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html"><strong>Add tidal and bathymetry data</strong>*</a></p></li>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residence_patches.html"><strong>Add residence patches</strong></a></p></li>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/interpolate_data.html"><strong>Interpolate data</strong></a></p></li>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_sun_and_moon_data.html"><strong>Add sun and moon data</strong></a></p></li>
-</ul>
-<p><strong>Visualization tutorials</strong>:</p>
-<ul>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/create_basemap.html"><strong>Create a basemap</strong></a> - (Bathymetry basemap option*)</p></li>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data.html"><strong>Plot data</strong></a> - an important step between all stages to check the data.</p></li>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_in_loop.html"><strong>Plot data in loop</strong></a> - quick way to make plots by tag ID.</p></li>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_faster.html"><strong>Plot data faster</strong></a></p></li>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/plot_data_interactively.html"><strong>Plot data interactively</strong></a></p></li>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/visualization_tutorials/animate_data.html"><strong>Animate data</strong></a></p></li>
-</ul>
-<p><strong>Package development</strong>:</p>
-<ul>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/package_development/contributing_to_tools4watlas.html"><strong>Contributing to tools4watlas</strong></a> - describes how to work on <code>tools4watlas</code>.</p></li>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/package_development/extract_basemap_data.html"><strong>Extract basemap data</strong>*</a> - describes how the basemap data were extracted and can guide the user in creating customized base maps.</p></li>
-<li><p><a href="https://allertbijleveld.github.io/tools4watlas/articles/package_development/package_logo.html"><strong>tools4watlas logo</strong></a> - describes how the <code>tools4watlas</code> logo is made.</p></li>
-</ul>
-<p>*<em>requires access to the local NIOZ file server</em></p>
+<p>The <code>tools4watlas</code> package is thoroughly documented on the <a href="https://allertbijleveld.github.io/tools4watlas/"><strong>official package website</strong></a>. See <a href="https://allertbijleveld.github.io/tools4watlas/articles/package_overview.html">Package overview</a> for a complete overview of articles. In short: The package articles outline the <strong>basic workflow</strong> for working with WATLAS data, while <strong>extended workflows</strong> guide through more specialized analyses. Additionally, we provide <strong>visualization tutorials</strong> that demonstrate various methods for plotting and animating the movement data. The <strong>package development</strong> section offers insights into package maintenance and how to contribute to the <code>tools4watlas</code> package.</p>
 </div>
 <div class="section level3">
 <h3 id="installation">
@@ -246,8 +246,7 @@ Example tracks with one individual by species for two tide cycles
 <ul class="list-unstyled">
 <li>
 <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-8080-1734" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
-<li>
-<a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a> <br><small class="roles"> Author, maintainer, copyright holder </small> <a href="https://orcid.org/0000-0002-3159-8944" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Allert I. Bijleveld <br><small class="roles"> Author, maintainer, copyright holder </small> <a href="https://orcid.org/0000-0002-3159-8944" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
@@ -268,7 +267,7 @@ Example tracks with one individual by species for two tide cycles
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert Bijleveld</a>.</p>
+  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, Allert I. Bijleveld.</p>
 </div>
 
 <div class="pkgdown-footer-right">

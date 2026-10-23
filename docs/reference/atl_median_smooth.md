@@ -52,8 +52,9 @@ coordinates.
 
 ## Details
 
-Derived from `atlastools::atl_median_smooth()` in the atlastools package
-(Gupte et al., 2022), licensed under GPL-3.
+Derived from
+[`atlastools::atl_median_smooth()`](https://rdrr.io/pkg/atlastools/man/atl_median_smooth.html)
+in the atlastools package (Gupte et al., 2022), licensed under GPL-3.
 
 ## References
 

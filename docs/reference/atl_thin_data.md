@@ -61,8 +61,9 @@ A data.table with aggregated or subsampled data.
 
 ## Details
 
-Derived from `atlastools::atl_thin_data()` in the atlastools package
-(Gupte et al., 2022), licensed under GPL-3.
+Derived from
+[`atlastools::atl_thin_data()`](https://rdrr.io/pkg/atlastools/man/atl_thin_data.html)
+in the atlastools package (Gupte et al., 2022), licensed under GPL-3.
 
 ## References
 
