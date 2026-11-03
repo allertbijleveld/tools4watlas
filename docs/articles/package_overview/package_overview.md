@@ -220,8 +220,8 @@ result[, c("expression", "min", "median", "mem_alloc", "n_gc")] |>
 
 | expression   |    min |  median | mem_alloc | n_gc |
 |:-------------|-------:|--------:|----------:|-----:|
-| tools4watlas | 47.4ms |  58.9ms |      60MB |   13 |
-| atlastools   |  472ms | 481.1ms |    58.9MB |   34 |
+| tools4watlas | 46.4ms |  52.2ms |      60MB |   13 |
+| atlastools   |  453ms | 469.9ms |    58.9MB |   36 |
 
 The workflow of `tools4watlas` is around **10x faster** using this small
 example. When we run the same comparison for a larger data set of 300
@@ -286,7 +286,7 @@ patches <- lapply(
   lim_spat_indep = 100,
   lim_time_indep = 30,
   min_fixes = 3,
-  summary_variables = c("speed_in"),
+  summary_variables = "speed_in",
   summary_functions = c("mean", "sd")
 )
 ```
@@ -334,8 +334,8 @@ result[, c("expression", "min", "median", "mem_alloc", "n_gc")] |>
 
 | expression   |   min | median | mem_alloc | n_gc |
 |:-------------|------:|-------:|----------:|-----:|
-| tools4watlas | 1.46s |  1.57s |     323MB |   23 |
-| atlastools   | 8.94s |  9.13s |     893MB |   37 |
+| tools4watlas |  1.4s |  1.47s |     323MB |   23 |
+| atlastools   | 8.68s |  8.81s |     893MB |   37 |
 
 The workflow of `tools4watlas` is around **5x faster** using this small
 example. When we run the same comparison for a larger data set of 10

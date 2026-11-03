@@ -19,7 +19,7 @@ time and to read the latest project news.
   ([Gupte et al. 2021](https://doi.org/10.1111/1365-2656.13610)) to make
   handling of large data sets faster and more memory-efficient. See
   [Differences from
-  `atlastools`](https://allertbijleveld.github.io/tools4watlas/articles/package_overview.html)
+  `atlastools`](https://allertbijleveld.github.io/tools4watlas/articles/package_overview/package_overview.html)
   for details.
 - **Link tracking data to environmental data**, such as water level,
   bathymetry, sun and moon, or any other raster layer.
@@ -68,7 +68,7 @@ data.**
 The `tools4watlas` package is thoroughly documented on the [**official
 package website**](https://allertbijleveld.github.io/tools4watlas/). See
 [Package
-overview](https://allertbijleveld.github.io/tools4watlas/articles/package_overview.html)
+overview](https://allertbijleveld.github.io/tools4watlas/articles/package_overview/package_overview.html)
 for a complete overview of articles. In short: The package articles
 outline the **basic workflow** for working with WATLAS data, while
 **extended workflows** guide through more specialized analyses.
