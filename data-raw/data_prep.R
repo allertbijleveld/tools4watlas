@@ -1,5 +1,11 @@
 # Information about the origin / processing  of the data within tools4watlas
 
+### base map data
+
+# See the package's website article, "Extract basemap data"
+# (https://allertbijleveld.github.io/tools4watlas/articles/package_development/extract_basemap_data.html) 
+# for an overview of where the data come from and how they are processed.
+
 ### data_example
 # We manually choose the data from one individual each of 8 species for 2 tides
 # Allert created a SQLite file of these data which is in:

@@ -132,7 +132,7 @@ atl_as_sf <- function(data,
                       buffer = NULL) {
 
   # Global variables to suppress notes in data.table
-  tag_dummy <- patch <- geometry <- n <- NULL
+  tag_dummy <- n <- NULL
 
   # Convert to data.table if not already
   if (!is.data.table(data)) {
@@ -242,12 +242,14 @@ atl_as_sf <- function(data,
     res_patches = {
       # first buffer points (faster than buffering lines)
       d_patches <- d_sf |>
-        dplyr::filter(!is.na(patch)) |>
-        dplyr::group_by(tag, patch) |>
-        dplyr::reframe(geometry = sf::st_buffer(geometry, dist = buffer)) |>
-        dplyr::group_by(tag, patch) |>
+        dplyr::filter(!is.na(.data$patch)) |>
+        dplyr::group_by(.data$tag, .data$patch) |>
+        dplyr::reframe(geometry = sf::st_buffer(
+          .data$geometry, dist = .env$buffer
+        )) |>
+        dplyr::group_by(.data$tag, .data$patch) |>
         dplyr::summarise(
-          geometry = sf::st_union(geometry), .groups = "drop"
+          geometry = sf::st_union(.data$geometry), .groups = "drop"
         ) |>
         sf::st_as_sf()
 
@@ -261,13 +263,13 @@ atl_as_sf <- function(data,
 
         # combine the geometries of each multi-part patch
         multi_patches <- d_sf |>
-          dplyr::filter(!is.na(patch)) |>
+          dplyr::filter(!is.na(.data$patch)) |>
           dplyr::semi_join(multi_keys, by = c("tag", "patch")) |>
-          dplyr::distinct(tag, patch, geometry) |>
-          dplyr::group_by(tag, patch) |>
+          dplyr::distinct(.data$tag, .data$patch, .data$geometry) |>
+          dplyr::group_by(.data$tag, .data$patch) |>
           dplyr::summarise(
             n = dplyr::n(),
-            geometry = sf::st_combine(geometry),
+            geometry = sf::st_combine(.data$geometry),
             .groups = "drop"
           )
 
@@ -283,7 +285,7 @@ atl_as_sf <- function(data,
 
         # replace the geometry and write back
         d_patches[is_multi, ] <- multi_patches |>
-          dplyr::mutate(geometry = geom_buffered) |>
+          dplyr::mutate(geometry = .env$geom_buffered) |>
           dplyr::select(-n)
       }
 

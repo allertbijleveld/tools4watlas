@@ -3,8 +3,6 @@
 You can find a specific description on how to contribute to tools4watlas on the packages website:
 https://allertbijleveld.github.io/tools4watlas/articles/package_development/contributing_to_tools4watlas.html
 
-For a detailed and general discussion on contributing to this and other tidyverse packages, please see the [development contributing guide](https://rstd.io/tidy-contrib) and our [code review principles](https://code-review.tidyverse.org/).
-
 ## Fixing typos
 
 You can fix typos, spelling mistakes, or grammatical errors in the documentation directly using the GitHub web interface, as long as the changes are made in the _source_ file. 
