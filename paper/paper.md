@@ -41,7 +41,7 @@ There is a large body of R packages developed to analyze and visualize movement 
 
 # Software design
 
-`tools4watlas` is mainly combining the strength of `data.table` for efficient data processing with the flexibility of `ggplot2` for data visualization for movement data analysis. By relying on reference-based, in-place data modification, `data.table` minimizes memory overhead, while its support for low-level parallelization enables fast processing of large tracking datasets. `ggplot2` and its supporting R packages, allow for great flexibility in data visualization and is familiar to most biologists. Tutorials are organized into modular, logically separated steps that can be run independently, supporting flexibility and reproducibility and allow an easy access to the code. Additional tutorials describe how to contribute to `tools4watlas` and how to customize base map data.
+`tools4watlas` is mainly combining the strength of `data.table` (Barrett et al., 2026) for efficient data processing with the flexibility of `ggplot2` (Wickham et al., 2016) for data visualization for movement data analysis. By relying on reference-based, in-place data modification, `data.table` minimizes memory overhead, while its support for low-level parallelization enables fast processing of large tracking datasets. `ggplot2` and its supporting R packages, allow for great flexibility in data visualization and is familiar to most biologists. Tutorials are organized into modular, logically separated steps that can be run independently, supporting flexibility and reproducibility and allow an easy access to the code. Additional tutorials describe how to contribute to `tools4watlas` and how to customize base map data.
 
 # Research impact statement
 
