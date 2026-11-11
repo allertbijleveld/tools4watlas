@@ -15,7 +15,7 @@
 #' @importFrom ggtext element_markdown
 #' @importFrom grDevices col2rgb dev.off rgb
 #' @importFrom ragg agg_png
-#' @importFrom rlang sym
+#' @importFrom rlang sym .data .env
 #' @importFrom scales date_format
 #' @importFrom viridis scale_colour_viridis
 ## usethis namespace: end

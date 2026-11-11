@@ -31,6 +31,15 @@
 #'  user = 'username', password = 'password', dbname = 'database',
 #'  host = 'host')}. This argument overrules making a connection to a
 #'  local host \code{SQLiteDB} or a remote host.
+#' @param chunk_size Number of tags queried per database request (default 50).
+#' Tags are split into groups of this size and the results are combined.
+#' Reduce this value if fetching large data sets fails with a timeout or
+#' "error while fetching rows". Ignored when \code{last_n} is set.
+#' @param last_n Optional number of positions to return per tag. If set, only
+#' the last \code{last_n} positions of each tag within the selected time
+#' window are returned (most recent first in the query, returned in
+#' ascending time order). Each tag is then queried separately.
+#' Default is \code{NULL}, which returns all positions in the time window.
 #' @returns A data.table of positions of the specified tag, filtered between
 #' the start and end times.\cr
 #' posID	  =	Unique number for positions \cr
@@ -95,9 +104,11 @@ atl_get_data <- function(tag,
                          username = "someuser",
                          password = "somepassword",
                          SQLiteDB = NULL, # nolint
-                         use_connection = NULL) {
+                         use_connection = NULL,
+                         chunk_size = 50,
+                         last_n = NULL) {
   # global variables
-  TIME <- time <- posID <- NULL # nolint
+  TIME <- time <- posID <- datetime <- TAG <- NULL # nolint
 
   # check input
   assertthat::assert_that(
@@ -139,97 +150,134 @@ atl_get_data <- function(tag,
   if (any(nchar(as.character(tag)) < 11)) {
     tag <- atl_full_tag_id(tag)
   }
+  tag <- unique(tag)
 
-  # get data
-  sql_query <- glue::glue(
-    "select TAG, TIME, X, Y, NBS, VARX, VARY, COVXY\n FROM LOCALIZATIONS\n
-  	WHERE TAG IN ({glue::glue_collapse(tag, sep = ',')})\n
-	  AND TIME > {`tracking_time_start`}\n
-  	AND TIME < {`tracking_time_end`}\n
-  	ORDER BY TIME ASC"
-  )
-
-  # make new connection or use existing
+  # make new connection (once) or use existing
   if (is.null(use_connection)) {
-    # from server or file
     if (is.null(SQLiteDB)) {
-      # from server database
-      mydb <- RMySQL::dbConnect(RMySQL::MySQL(),
+      con <- DBI::dbConnect(
+        RMariaDB::MariaDB(),
         user = username,
-        password = password, dbname = database, host = host
+        password = password,
+        dbname = database,
+        host = host
       )
-      tmp_data <- DBI::dbGetQuery(mydb, sql_query)
     } else {
-      # connect to SQLite databse file
-      mydb <- RSQLite::dbConnect(RSQLite::SQLite(), SQLiteDB)
-      tmp_data <- RSQLite::dbGetQuery(mydb, sql_query)
+      con <- DBI::dbConnect(RSQLite::SQLite(), SQLiteDB)
     }
-    RMySQL::dbDisconnect(mydb) # close connection
+    on.exit(DBI::dbDisconnect(con), add = TRUE)
   } else {
-    # open data with existing connection
-    tmp_data <- DBI::dbGetQuery(use_connection, sql_query)
+    con <- use_connection
   }
 
-  # recalculate time to seconds (instead of milliseconds)
-  # and add a column with time-stamp in UTC
-  if (nrow(tmp_data) > 0) {
-    tmp_data <- tmp_data |>
-      dplyr::mutate(
-        TIME = TIME / 1000,
-        datetime = as.POSIXct(TIME,
-          origin = "1970-01-01",
-          tz = "UTC"
-        )
-      )
+  out_cols <- c(
+    "posID", "tag", "time", "datetime", "x", "y",
+    "nbs", "varx", "vary", "covxy"
+  )
 
-    tmp_data$tag <- stringr::str_pad(
-      as.character(substr(tmp_data$TAG, 8, 11)), 4,
-      pad = "0"
-    )
-
-    # change names
-    data.table::setnames(
-      tmp_data,
-      old = c("TIME", "X", "Y", "NBS", "VARX", "VARY", "COVXY"),
-      new = c("time", "x", "y", "nbs", "varx", "vary", "covxy")
-    )
-
-    # transform to data.table
-    setDT(tmp_data)
-
-    # set order
-    setorder(tmp_data, tag, time)
-
-    # create posID
-    tmp_data[, posID := seq_len(.N), by = tag]
-
-    tmp_data[, c(
-      "posID", "tag", "time", "datetime", "x", "y",
-      "nbs", "varx", "vary", "covxy"
-    )]
+  # split tags into queries
+  if (is.null(last_n)) {
+    # many tags per query
+    tag_chunks <- split(tag, ceiling(seq_along(tag) / chunk_size))
+    order_limit <- ""
   } else {
-    tag_short <- stringr::str_pad(
-      as.character(substr(tag, 8, 11)), 4,
-      pad = "0"
+    # LIMIT applies to the whole result, so query one tag at a time
+    tag_chunks <- as.list(tag)
+    order_limit <- paste0(
+      "ORDER BY TIME DESC LIMIT ",
+      format(as.integer(last_n), scientific = FALSE)
     )
+  }
+
+  results <- vector("list", length(tag_chunks))
+
+  for (i in seq_along(tag_chunks)) {
+    sql_query <- glue::glue(
+      "SELECT TAG, TIME, X, Y, NBS, VARX, VARY, COVXY
+       FROM LOCALIZATIONS
+       WHERE TAG IN ({glue::glue_collapse(tag_chunks[[i]], sep = ',')})
+         AND TIME > {tracking_time_start}
+         AND TIME < {tracking_time_end}
+       {order_limit}"
+    )
+
+    chunk <- tryCatch(
+      DBI::dbGetQuery(con, sql_query),
+      error = function(e) {
+        hint <- if (is.null(last_n)) {
+          paste0(
+            "The query probably returned too much data for the server ",
+            "(timeout or dropped connection). ",
+            "Try a smaller chunk_size, e.g. chunk_size = ",
+            max(1, floor(chunk_size / 5)), ", or a shorter time window.\n"
+          )
+        } else {
+          "The query for this tag failed (timeout or dropped connection).\n"
+        }
+        stop(
+          "Fetching data failed for chunk ", i, " of ", length(tag_chunks),
+          " (", length(tag_chunks[[i]]), " tags, chunk_size = ", chunk_size,
+          ").\n", hint,
+          "Original error: ", conditionMessage(e),
+          call. = FALSE
+        )
+      }
+    )
+    
+    if (nrow(chunk) > 0) {
+      data.table::setDT(chunk)
+      data.table::setnames(
+        chunk,
+        old = c("TIME", "X", "Y", "NBS", "VARX", "VARY", "COVXY"),
+        new = c("time", "x", "y", "nbs", "varx", "vary", "covxy")
+      )
+      # milliseconds to seconds, plus a time-stamp in UTC
+      chunk[, time := time / 1000]
+      chunk[, datetime := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
+      chunk[, tag := stringr::str_pad(substr(TAG, 8, 11), 4, pad = "0")]
+      data.table::setorder(chunk, tag, time)
+      chunk[, posID := seq_len(.N), by = tag]
+      results[[i]] <- chunk[, out_cols, with = FALSE]
+    }
+  }
+  
+  # combine chunks
+  results <- Filter(Negate(is.null), results)
+  if (length(results) > 0) {
+    out <- data.table::rbindlist(results)
+    data.table::setorder(out, tag, time)
+    found <- unique(out$tag)
+  } else {
+    # empty data.table with the same columns
+    out <- data.table::data.table(
+      posID = integer(),
+      tag = character(),
+      time = numeric(),
+      datetime = as.POSIXct(character(), tz = "UTC"),
+      x = numeric(),
+      y = numeric(),
+      nbs = integer(),
+      varx = numeric(),
+      vary = numeric(),
+      covxy = numeric()
+    )
+    found <- character()
+  }
+  
+  # warn once, listing only the tags without data (capped for readability)
+  requested <- stringr::str_pad(substr(tag, 8, 11), 4, pad = "0")
+  no_data <- setdiff(requested, found)
+  if (length(no_data) > 0) {
+    n_show <- min(length(no_data), 10)
     warning(
-      "No data available for tag ", toString(tag_short),
+      "No data available for tag ", toString(no_data[seq_len(n_show)]),
+      if (length(no_data) > n_show) {
+        paste0(" and ", length(no_data) - n_show, " more")
+      },
       " in this time period.\n",
       call. = FALSE
     )
-
-    # return empty data.table with same columns
-    tmp_data <- data.table(
-      posID = as.integer(),
-      tag = as.character(),
-      time = as.numeric(),
-      datetime = as.POSIXct(NA),
-      x = as.numeric(),
-      y = as.numeric(),
-      nbs = as.integer(),
-      varx = as.numeric(),
-      vary = as.numeric(),
-      covxy = as.numeric()
-    )
   }
+  
+  out
 }
