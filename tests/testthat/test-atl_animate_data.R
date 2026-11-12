@@ -123,7 +123,8 @@ test_that("atl_progress_bar waits until all frames exist", {
   
   # safeguard so a failed background process cannot hang the test
   setTimeLimit(elapsed = 30, transient = TRUE)
-  
+  withr::defer(setTimeLimit(elapsed = Inf, transient = TRUE))
+
   expect_output(
     atl_progress_bar(dir, total = 2, refresh_rate = 0.1),
     "Done!"
