@@ -127,7 +127,14 @@ coverage details see
 devtools::test()
 
 # check code coverage
-covr::package_coverage()
+cov <- covr::package_coverage()
+cov
+
+# lines with no test coverage
+covr::zero_coverage(cov)
+
+# interactive HTML report
+covr::report(cov)
 ```
 
 ### Check for good practice

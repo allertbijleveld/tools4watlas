@@ -223,3 +223,39 @@ test_that("atl_compare_res_patch_plot errors when no data in time window", {
   )
   
 })
+
+test_that("atl_compare_res_patch_plot errors when a version has no data", {
+  
+  n <- 10
+  base <- data.table::data.table(
+    tag = "1",
+    x = seq(650000, by = 5, length.out = n),
+    y = seq(5902500, by = 5, length.out = n),
+    time = seq(1696218720, by = 10, length.out = n),
+    patch = "1"
+  )
+  base[, datetime := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
+  
+  # same positions, but a different tag: no rows for tag "1"
+  other_tag <- data.table::copy(base)[, tag := "2"]
+  
+  # gained patch (only v2 has patches), but data_v1 has no data for the tag
+  expect_error(
+    atl_compare_res_patch_plot(
+      data_v1 = other_tag, data_v2 = base,
+      tag = "1", change = "gained",
+      patch_v1 = NA_character_, patch_v2 = "1"
+    ),
+    "No data_v1 for this tag"
+  )
+  
+  # lost patch (only v1 has patches), but data_v2 has no data for the tag
+  expect_error(
+    atl_compare_res_patch_plot(
+      data_v1 = base, data_v2 = other_tag,
+      tag = "1", change = "lost",
+      patch_v1 = "1", patch_v2 = NA_character_
+    ),
+    "No data_v2 for this tag"
+  )
+})

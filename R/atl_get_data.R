@@ -131,10 +131,11 @@ atl_get_data <- function(tag,
     is.character(timezone),
     msg = "timezone provided must be numeric or character"
   )
-  db_params <- c(host, username, password)
-  purrr::walk(db_params, function(this_param) {
-    assertthat::assert_that(is.character(this_param),
-      msg = glue::glue("{this_param} is not a character")
+  db_params <- list(host = host, username = username, password = password)
+  purrr::iwalk(db_params, function(value, name) {
+    assertthat::assert_that(
+      is.character(value),
+      msg = glue::glue("{name} is not a character")
     )
   })
 

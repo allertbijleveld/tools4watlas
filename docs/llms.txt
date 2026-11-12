@@ -135,17 +135,6 @@ cycles](reference/figures/README-unnamed-chunk-3-1.png)
 
 Example tracks with one individual by species for two tide cycles
 
-### **Work in progress**
-
-More examples of workflows aimed at processing, plotting and adding
-environmental data to WATLAS tracking data are being prepared. If you
-have a request, please contact [Allert
-Bijleveld](mailto:allert.bijleveld@nioz.nl).
-
-We are working on the following articles at the moment:
-
-- Connect WATLAS with SIBES data
-
 ### **Contribute**
 
 If you want to contribute to `tools4watlas`

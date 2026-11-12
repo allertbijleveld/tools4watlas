@@ -1,6 +1,3 @@
-# library(testthat)
-# library(tools4watlas)
-library(ggplot2)
 
 # Sample dataset for testing
 test_data <- data.table(
@@ -120,3 +117,32 @@ test_that("atl_check_tag saves PNG when filename is provided", {
   unlink(paste0(tmp, ".png"))
 })
 
+test_that("atl_check_tag uses day-month format when data spans one day or more", {
+  data_long <- data.table::copy(test_data)
+  # one position per day for 10 days
+  data_long[, datetime := as.POSIXct("2024-01-01 00:00:00", tz = "UTC") +
+              seq(0, 9) * 86400]
+  # keep the numeric time column consistent with datetime
+  data_long[, time := as.numeric(datetime)]
+  
+  p <- atl_check_tag(data_long, option = "datetime")
+  expect_s3_class(p, "ggplot")
+})
+
+test_data2 <- data.table(
+  tag = rep("test_tag", 10),
+  x = runif(10, 0, 100),
+  y = runif(10, 0, 100),
+  time = seq(1, 10),
+  datetime = as.POSIXct("2024-01-01 00:00:00") + seq(1, 10),
+  nbs = sample(1:5, 10, replace = TRUE),
+  varx = runif(10, 0, 1),
+  vary = runif(10, 0, 1),
+  speed_in = runif(10, 0, 5), 
+  outlier = c(rep(FALSE, 4), TRUE, rep(FALSE, 5))
+)
+
+test_that("atl_check_tag runs without species, ring and crc", {
+  p1 <- atl_check_tag(test_data2, option = "datetime", first_n = 5)
+  expect_s3_class(p1, "ggplot")
+})

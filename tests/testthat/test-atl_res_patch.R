@@ -263,3 +263,53 @@ test_that("atl_res_patch returns same result on repeated calls (determinism)", {
   expect_equal(result1$patch, result2$patch)
 })
 
+test_that("atl_res_patch converts a plain data.frame to a data.table", {
+  data <- data_example[
+    tag == "3038",
+    .(species, posID, tag, time, datetime, x, y, tideID)
+  ]
+  
+  result_dt <- atl_res_patch(
+    data.table::copy(data),
+    max_speed = 3, lim_spat_indep = 75,
+    lim_time_indep = 180, min_fixes = 3, min_duration = 120
+  )
+  
+  # plain data.frame input (no data.table class) runs the setDT() branch
+  data_df <- as.data.frame(data)
+  expect_false(data.table::is.data.table(data_df))
+  
+  result_df <- atl_res_patch(
+    data_df,
+    max_speed = 3, lim_spat_indep = 75,
+    lim_time_indep = 180, min_fixes = 3, min_duration = 120
+  )
+  
+  expect_true(data.table::is.data.table(result_df))
+  expect_equal(result_df, result_dt)
+})
+
+test_that("atl_res_patch reports an error message and returns NULL on failure", {
+  data <- data_example[
+    tag == "3038",
+    .(species, posID, tag, time, datetime, x, y, tideID)
+  ]
+  
+  # force an error inside the tryCatch block
+  testthat::local_mocked_bindings(
+    atl_simple_dist = function(...) stop("boom")
+  )
+  
+  result <- "not set"
+  expect_message(
+    result <- atl_res_patch(
+      data,
+      max_speed = 3, lim_spat_indep = 75,
+      lim_time_indep = 180, min_fixes = 3, min_duration = 120
+    ),
+    "there was an error in 3038"
+  )
+  
+  # the error handler only prints a message, so the function returns NULL
+  expect_null(result)
+})

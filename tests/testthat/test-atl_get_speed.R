@@ -1,6 +1,6 @@
 test_that("simple speed works", {
   # make test positions
-  test_df <- data.table::data.table(
+  test_df <- data.frame(
     tag = 1111,
     a = 1,
     y = 1:100,

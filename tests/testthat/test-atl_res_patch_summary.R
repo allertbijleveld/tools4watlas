@@ -1,6 +1,6 @@
 
 # Sample dataset for testing
-test_data <- data.table(
+test_data <- data.frame(
   tag = rep(c("A", "B"), each = 6),
   patch = c(1,1,1,2,2,2, 1,1,2,2,3,3),
   x = c(0,1,2,0,1,2, 10,11,20,21,30,31),

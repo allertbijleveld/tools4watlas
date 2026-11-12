@@ -56,6 +56,7 @@ Imports:
     withr,
     zoo
 Suggests:
+    callr,
     doFuture,
     foreach,
     knitr,

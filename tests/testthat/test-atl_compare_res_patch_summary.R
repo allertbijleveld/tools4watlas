@@ -71,3 +71,86 @@ test_that("atl_compare_res_patch_summary errors on missing columns", {
   )
   
 })
+
+# helper: synthetic patch data with one example of each change type
+make_patch_data <- function() {
+  n <- 18
+  base <- data.table(
+    posID = 1:n,
+    tag = "1",
+    tideID = 1L,
+    datetime = as.POSIXct("2024-01-01", tz = "UTC") + (seq_len(n) - 1) * 60,
+    x = seq_len(n) * 10,
+    y = seq_len(n) * 10
+  )
+  v1 <- copy(base)[, patch := c(1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, NA, NA, NA)]
+  v2 <- copy(base)[, patch := c(1, 1, 1, 2, 2, 2, NA, NA, NA, 3, 3, 3, 3, 3, 3, 4, 4, 4)]
+  list(v1 = v1, v2 = v2)
+}
+
+test_that("atl_compare_res_patch_summary detects splits, lost, merges and gains", {
+  
+  d <- make_patch_data()
+  result <- atl_compare_res_patch_summary(d$v1, d$v2, quietly = TRUE)
+  
+  # one row per change type, ordered by change within tag and tideID
+  expect_equal(result$change, c("gained", "lost", "merge", "split"))
+  
+  # patch columns for each change type
+  expect_equal(result[change == "split"]$patch_v1, "1")
+  expect_equal(result[change == "split"]$patch_v2, "1, 2")
+  expect_equal(result[change == "lost"]$patch_v1, "2")
+  expect_true(is.na(result[change == "lost"]$patch_v2))
+  expect_equal(result[change == "merge"]$patch_v1, "3, 4")
+  expect_equal(result[change == "merge"]$patch_v2, "3")
+  expect_true(is.na(result[change == "gained"]$patch_v1))
+  expect_equal(result[change == "gained"]$patch_v2, "4")
+  
+})
+
+test_that("atl_compare_res_patch_summary prints a summary when not quiet", {
+  
+  d <- make_patch_data()
+  
+  expect_output(
+    atl_compare_res_patch_summary(d$v1, d$v2, quietly = FALSE),
+    "Patch changes summary"
+  )
+  expect_output(
+    atl_compare_res_patch_summary(d$v1, d$v2, quietly = FALSE),
+    "Lost.*: 1"
+  )
+  expect_output(
+    atl_compare_res_patch_summary(d$v1, d$v2, quietly = FALSE),
+    "Merges.*: 1"
+  )
+  
+})
+
+test_that("atl_compare_res_patch_summary errors on non-data.frame input", {
+  
+  d <- make_patch_data()
+  
+  expect_error(
+    atl_compare_res_patch_summary(list(1), d$v2, quietly = TRUE),
+    "not a data.frame"
+  )
+  expect_error(
+    atl_compare_res_patch_summary(d$v1, "not a table", quietly = TRUE),
+    "not a data.frame"
+  )
+  
+})
+
+test_that("atl_compare_res_patch_summary errors on missing columns in either input", {
+  
+  d <- make_patch_data()
+  bad <- copy(d$v1)[, patch := NULL]
+  
+  # missing in data_v1
+  expect_error(atl_compare_res_patch_summary(bad, d$v2, quietly = TRUE))
+  
+  # missing in data_v2 (the line your current test never reaches)
+  expect_error(atl_compare_res_patch_summary(d$v1, bad, quietly = TRUE))
+  
+})

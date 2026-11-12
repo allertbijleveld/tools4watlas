@@ -101,3 +101,26 @@ test_that(
     )
   }
 )
+
+test_that(
+  "atl_create_bm_tiles transforms data given in another projection", {
+    skip_on_os("mac")
+    
+    # same location as the other tests, converted from EPSG:32631 to WGS84
+    pt <- sf::st_sfc(sf::st_point(c(650272.5, 5902705)), crs = 32631)
+    ll <- sf::st_coordinates(sf::st_transform(pt, 4326))
+    
+    dt <- data.table::data.table(
+      x = unname(ll[1, "X"]),
+      y = unname(ll[1, "Y"])
+    )
+    
+    bm <- atl_create_bm_tiles(
+      data = dt,
+      buffer = 100,
+      projection = sf::st_crs(4326)
+    )
+    
+    expect_s3_class(bm, "ggplot")
+  }
+)

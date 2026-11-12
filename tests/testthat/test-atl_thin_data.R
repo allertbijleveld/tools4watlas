@@ -172,3 +172,69 @@ test_that("atl_thin_data aggregates correctly with varx and vary columns", {
   lag <- thinned[, diff(time), by = animal_id]$V1
   expect_true(all(lag >= 60, na.rm = TRUE))
 })
+
+test_that("atl_thin_data keeps the first value of non-numeric columns", {
+  base_time <- 1696218720
+  data <- data.table::data.table(
+    time = seq(base_time, base_time + 110, by = 10),
+    x = as.numeric(1:12),
+    y = as.numeric(1:12),
+    species = c(rep("red knot", 6), rep("redshank", 6))
+  )
+  data[, datetime := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
+  
+  thinned <- atl_thin_data(
+    data,
+    interval = 60, id_columns = NULL, method = "aggregate"
+  )
+  
+  expect_equal(nrow(thinned), 2)
+  expect_equal(thinned$species, c("red knot", "redshank"))
+  # numeric columns are averaged per window
+  expect_equal(thinned$x, c(3.5, 9.5))
+  expect_equal(thinned$y, c(3.5, 9.5))
+  expect_equal(thinned$n_aggregated, c(6, 6))
+})
+
+test_that("atl_thin_data keeps patch only if first and last point agree", {
+  base_time <- 1696218720
+  data <- data.table::data.table(
+    animal_id = 1,
+    time = seq(base_time, base_time + 110, by = 10),
+    x = as.numeric(1:12),
+    y = as.numeric(1:12),
+    # window 1: all "a"; window 2: starts with "b", ends with "c"
+    patch = c(rep("a", 6), "b", rep("b", 4), "c")
+  )
+  data[, datetime := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
+  
+  thinned <- atl_thin_data(
+    data,
+    interval = 60, id_columns = "animal_id", method = "aggregate"
+  )
+  
+  expect_equal(nrow(thinned), 2)
+  expect_equal(thinned$patch, c("a", NA_character_))
+})
+
+test_that("atl_thin_data errors when aggregated windows are not in time order", {
+  base_time <- 1696218720
+  # time in descending order passes the first interval check
+  # (negative lags) but gives negative differences after aggregation
+  data <- data.table::data.table(
+    animal_id = 1,
+    time = rev(seq(base_time, base_time + 90, by = 10)),
+    x = stats::rnorm(10, 10, 1),
+    y = stats::rnorm(10, 15, 1)
+  )
+  data[, datetime := as.POSIXct(time, origin = "1970-01-01", tz = "UTC")]
+  
+  expect_error(
+    atl_thin_data(
+      data,
+      interval = 60, id_columns = "animal_id", method = "aggregate"
+    ),
+    "time differences are less than the specified interval"
+  )
+})
+
