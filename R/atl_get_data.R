@@ -223,7 +223,7 @@ atl_get_data <- function(tag,
         )
       }
     )
-    
+
     if (nrow(chunk) > 0) {
       data.table::setDT(chunk)
       data.table::setnames(
@@ -240,7 +240,7 @@ atl_get_data <- function(tag,
       results[[i]] <- chunk[, out_cols, with = FALSE]
     }
   }
-  
+
   # combine chunks
   results <- Filter(Negate(is.null), results)
   if (length(results) > 0) {
@@ -263,12 +263,12 @@ atl_get_data <- function(tag,
     )
     found <- character()
   }
-  
+
   # warn once, listing only the tags without data (capped for readability)
   requested <- stringr::str_pad(substr(tag, 8, 11), 4, pad = "0")
   no_data <- setdiff(requested, found)
   if (length(no_data) > 0) {
-    n_show <- min(length(no_data), 10)
+    n_show <- min(length(no_data), 50)
     warning(
       "No data available for tag ", toString(no_data[seq_len(n_show)]),
       if (length(no_data) > n_show) {
@@ -278,6 +278,6 @@ atl_get_data <- function(tag,
       call. = FALSE
     )
   }
-  
+
   out
 }

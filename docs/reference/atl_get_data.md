@@ -22,7 +22,9 @@ atl_get_data(
   username = "someuser",
   password = "somepassword",
   SQLiteDB = NULL,
-  use_connection = NULL
+  use_connection = NULL,
+  chunk_size = 50,
+  last_n = NULL
 )
 ```
 
@@ -79,6 +81,21 @@ atl_get_data(
   `RMySQL::dbConnect(RMySQL::MySQL(), user = 'username', password = 'password', dbname = 'database', host = 'host')`.
   This argument overrules making a connection to a local host `SQLiteDB`
   or a remote host.
+
+- chunk_size:
+
+  Number of tags queried per database request (default 50). Tags are
+  split into groups of this size and the results are combined. Reduce
+  this value if fetching large data sets fails with a timeout or "error
+  while fetching rows". Ignored when `last_n` is set.
+
+- last_n:
+
+  Optional number of positions to return per tag. If set, only the last
+  `last_n` positions of each tag within the selected time window are
+  returned (most recent first in the query, returned in ascending time
+  order). Each tag is then queried separately. Default is `NULL`, which
+  returns all positions in the time window.
 
 ## Value
 

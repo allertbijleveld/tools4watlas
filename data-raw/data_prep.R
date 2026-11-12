@@ -3,7 +3,7 @@
 ### base map data
 
 # See the package's website article, "Extract basemap data"
-# (https://allertbijleveld.github.io/tools4watlas/articles/package_development/extract_basemap_data.html) 
+# (https://allertbijleveld.github.io/tools4watlas/articles/package_development/extract_basemap_data.html) # nolint
 # for an overview of where the data come from and how they are processed.
 
 ### data_example
