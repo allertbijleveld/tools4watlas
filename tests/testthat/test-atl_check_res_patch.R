@@ -301,3 +301,28 @@ test_that("atl_check_res_patch() subsets to first tag when multiple tags present
   expect_s3_class(result, "ggplot")
 })
 
+test_that("atl_check_res_patch() works when the tag has no patches", {
+  skip_if_not_installed("tools4watlas")
+  
+  data  <- make_patch_data()
+  tides <- make_tide_data()
+  
+  # remove all patches
+  data[, patch := NA_character_]
+  
+  result <- atl_check_res_patch(
+    data = data,
+    tide_data = tides$tide_data,
+    tide_data_highres = tides$tide_data_highres,
+    tide = unique(data$tideID)[1],
+    buffer_res_patches = 30,
+    filename = NULL
+  )
+  
+  expect_s3_class(result, "ggplot")
+  
+  # annotation reports no patches and no time in patches
+  subtitle <- result$patches$annotation$subtitle
+  expect_true(grepl("<b>N patches:</b> 0", subtitle, fixed = TRUE))
+  expect_true(grepl("<b>T in patches:</b> 0s", subtitle, fixed = TRUE))
+})

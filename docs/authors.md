@@ -5,7 +5,9 @@
 - **[Johannes Krietsch](https://github.com/krietsch)**. Author.
   [](https://orcid.org/0000-0002-8080-1734)
 
-- **Allert I. Bijleveld**. Author, maintainer, copyright holder.
+- **[Allert I.
+  Bijleveld](https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld)**.
+  Author, maintainer, copyright holder.
   [](https://orcid.org/0000-0002-3159-8944)
 
 - **[Pratik Gupte](https://github.com/pratikunterwegs)**. Contributor.
@@ -19,14 +21,16 @@
 Source:
 [`inst/CITATION`](https://github.com/allertbijleveld/tools4watlas/blob/HEAD/inst/CITATION)
 
-Krietsch J, Bijleveld A (2026). *tools4watlas: An R package for
-processing and visualizing high-throughput tracking data*. R package
-version 2.0.0, <https://github.com/allertbijleveld/tools4watlas>.
+Krietsch J, Bijleveld A (2026). “tools4watlas: An R package for
+processing and visualizing high-throughput tracking data.” *Journal of
+Open Source Software*. R package version 2.0.0,
+<https://github.com/allertbijleveld/tools4watlas>.
 
-    @Manual{,
+    @Article{,
       title = {tools4watlas: An R package for processing and visualizing high-throughput tracking data},
-      author = {Johannes Krietsch and Allert Bijleveld},
+      author = {Johannes Krietsch and Allert I. Bijleveld},
       year = {2026},
+      journal = {Journal of Open Source Software},
       note = {R package version 2.0.0},
       url = {https://github.com/allertbijleveld/tools4watlas},
     }

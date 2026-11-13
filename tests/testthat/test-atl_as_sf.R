@@ -232,3 +232,41 @@ test_that("atl_as_sf produces MULTIPOLYGON geometries from residence patches", {
     info = paste("Unexpected geometry types:", paste(geom_types, collapse = ", "))
   )
 })
+
+test_that("atl_as_sf errors on an invalid option", {
+  data <- data.table::data.table(
+    tag = "1",
+    x = c(650272.5, 650280),
+    y = c(5902705, 5902710)
+  )
+  
+  expect_error(
+    atl_as_sf(data, option = "polygons"),
+    "Invalid option. Choose one of: points, lines, table, res_patches",
+    fixed = TRUE
+  )
+})
+
+test_that("atl_as_sf errors on missing columns and arguments", {
+  data <- data.table::data.table(
+    tag = "1", x = c(650272.5, 650280), y = c(5902705, 5902710)
+  )
+  
+  expect_error(atl_as_sf(data, x = "nope"), "x or y columns do not exist")
+  expect_error(atl_as_sf(data, tag = "nope"), "tag column do not exist")
+  expect_error(
+    atl_as_sf(data, additional_cols = "nope"),
+    "additional columns are missing"
+  )
+  expect_error(
+    atl_as_sf(data, option = "res_patches", buffer = 10),
+    "requires a 'patch' column"
+  )
+  
+  data[, patch := "1"]
+  expect_error(
+    atl_as_sf(data, option = "res_patches"),
+    "requires a specified 'buffer'"
+  )
+})
+

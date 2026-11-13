@@ -22,7 +22,9 @@ atl_get_data(
   username = "someuser",
   password = "somepassword",
   SQLiteDB = NULL,
-  use_connection = NULL
+  use_connection = NULL,
+  chunk_size = 50,
+  last_n = NULL
 )
 ```
 
@@ -80,6 +82,21 @@ atl_get_data(
   This argument overrules making a connection to a local host `SQLiteDB`
   or a remote host.
 
+- chunk_size:
+
+  Number of tags queried per database request (default 50). Tags are
+  split into groups of this size and the results are combined. Reduce
+  this value if fetching large data sets fails with a timeout or "error
+  while fetching rows". Ignored when `last_n` is set.
+
+- last_n:
+
+  Optional number of positions to return per tag. If set, only the last
+  `last_n` positions of each tag within the selected time window are
+  returned (most recent first in the query, returned in ascending time
+  order). Each tag is then queried separately. Default is `NULL`, which
+  returns all positions in the time window.
+
 ## Value
 
 A data.table of positions of the specified tag, filtered between the
@@ -105,6 +122,11 @@ Pratik R. Gupte & Allert I. Bijleveld & Johannes Krietsch
 ``` r
 # packages
 library(data.table)
+#> 
+#> Attaching package: 'data.table'
+#> The following object is masked from 'package:base':
+#> 
+#>     %notin%
 
 # file path to the metadata
 fp <- system.file(

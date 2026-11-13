@@ -39,7 +39,7 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../../articles/package_overview.html">Package overview</a></li>
+<li><a class="dropdown-item" href="../../articles/package_overview/package_overview.html">Package overview</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
     <li><a class="dropdown-item" href="../../articles/load_and_check_data.html">Load and check data</a></li>
@@ -202,7 +202,14 @@ coverage details see <a href="https://app.codecov.io/gh/allertbijleveld/tools4wa
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/test.html" class="external-link">test</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># check code coverage</span></span>
-<span><span class="fu">covr</span><span class="fu">::</span><span class="fu"><a href="http://covr.r-lib.org/reference/package_coverage.html" class="external-link">package_coverage</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">cov</span> <span class="op">&lt;-</span> <span class="fu">covr</span><span class="fu">::</span><span class="fu"><a href="https://covr.r-lib.org/reference/package_coverage.html" class="external-link">package_coverage</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">cov</span></span>
+<span></span>
+<span><span class="co"># lines with no test coverage</span></span>
+<span><span class="fu">covr</span><span class="fu">::</span><span class="fu"><a href="https://covr.r-lib.org/reference/zero_coverage.html" class="external-link">zero_coverage</a></span><span class="op">(</span><span class="va">cov</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># interactive HTML report</span></span>
+<span><span class="fu">covr</span><span class="fu">::</span><span class="fu"><a href="https://covr.r-lib.org/reference/report.html" class="external-link">report</a></span><span class="op">(</span><span class="va">cov</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="check-for-good-practice">Check for good practice<a class="anchor" aria-label="anchor" href="#check-for-good-practice"></a>
@@ -337,7 +344,7 @@ folder with the website separately.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, Allert I. Bijleveld.</p>
+  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert I. Bijleveld</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

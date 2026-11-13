@@ -81,6 +81,7 @@ Pratik R. Gupte and Johannes Krietsch
 # packages
 library(tools4watlas)
 library(sf)
+#> Linking to GEOS 3.13.1, GDAL 3.11.0, PROJ 9.6.0; sf_use_s2() is TRUE
 library(ggplot2)
 
 # load example data

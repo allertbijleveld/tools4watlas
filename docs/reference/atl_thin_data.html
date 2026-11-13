@@ -64,7 +64,7 @@ stays as it is for this position."><meta property="og:image" content="https://al
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/package_overview.html">Package overview</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/package_overview/package_overview.html">Package overview</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
     <li><a class="dropdown-item" href="../articles/load_and_check_data.html">Load and check data</a></li>
@@ -203,26 +203,26 @@ high-throughput animal tracking data. <em>Journal of Animal Ecology</em>, 91,
 <span class="r-in"><span><span class="va">data</span><span class="op">[</span>, <span class="va">datetime</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="va">time</span>, origin <span class="op">=</span> <span class="st">"1970-01-01"</span>, tz <span class="op">=</span> <span class="st">"UTC"</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        tag       time         x        y            datetime</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt;      &lt;num&gt;     &lt;num&gt;    &lt;num&gt;              &lt;POSc&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:      1 1696218721  9.441985 15.96086 2023-10-02 03:52:01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:      1 1696218731 11.052539 15.76872 2023-10-02 03:52:11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:      1 1696218741 10.677684 16.03593 2023-10-02 03:52:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:      1 1696218751 10.038500 14.52611 2023-10-02 03:52:31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:      1 1696218761  9.643619 13.72467 2023-10-02 03:52:41</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:      1 1696218771 10.782844 14.69438 2023-10-02 03:52:51</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:      1 1696218781 10.804412 17.21177 2023-10-02 03:53:01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:      1 1696218791  8.099939 13.95833 2023-10-02 03:53:11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:      1 1696218801 10.935784 13.85348 2023-10-02 03:53:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:      1 1696218811  9.690948 13.32467 2023-10-02 03:53:31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:      2 1696218721 10.263067 16.52594 2023-10-02 03:52:01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:      2 1696218731  8.209408 15.55419 2023-10-02 03:52:11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13:      2 1696218741  9.211741 16.99311 2023-10-02 03:52:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14:      2 1696218751  8.866978 14.84588 2023-10-02 03:52:31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15:      2 1696218761 10.363653 17.56441 2023-10-02 03:52:41</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16:      2 1696218771  9.714112 16.06200 2023-10-02 03:52:51</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:      2 1696218781 10.517669 16.14269 2023-10-02 03:53:01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:      2 1696218791  9.897091 16.12384 2023-10-02 03:53:11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:      2 1696218801  9.025930 14.60300 2023-10-02 03:53:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20:      2 1696218811 11.270672 14.17674 2023-10-02 03:53:31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:      1 1696218721  8.599956 15.46815 2023-10-02 03:52:01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:      1 1696218731 10.255317 15.36295 2023-10-02 03:52:11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:      1 1696218741  7.562736 13.69546 2023-10-02 03:52:21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:      1 1696218751  9.994429 15.73778 2023-10-02 03:52:31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:      1 1696218761 10.621553 16.88850 2023-10-02 03:52:41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:      1 1696218771 11.148412 14.90255 2023-10-02 03:52:51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:      1 1696218781  8.178182 14.06415 2023-10-02 03:53:01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:      1 1696218791  9.752675 14.98405 2023-10-02 03:53:11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:      1 1696218801  9.755800 14.17321 2023-10-02 03:53:21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:      1 1696218811  9.717295 13.48760 2023-10-02 03:53:31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:      2 1696218721  9.446301 15.93536 2023-10-02 03:52:01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:      2 1696218731 10.628982 15.17649 2023-10-02 03:52:11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:      2 1696218741 12.065025 15.24369 2023-10-02 03:52:21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:      2 1696218751  8.369011 16.62355 2023-10-02 03:52:31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:      2 1696218761 10.512427 15.11204 2023-10-02 03:52:41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:      2 1696218771  8.136989 14.86600 2023-10-02 03:52:51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:      2 1696218781  9.477987 13.08991 2023-10-02 03:53:01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:      2 1696218791  9.947398 14.72076 2023-10-02 03:53:11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:      2 1696218801 10.542996 14.68655 2023-10-02 03:53:21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:      2 1696218811  9.085925 16.06731 2023-10-02 03:53:31</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        tag       time         x        y            datetime</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt;      &lt;num&gt;     &lt;num&gt;    &lt;num&gt;              &lt;POSc&gt;</span>
 <span class="r-in"><span></span></span>
@@ -244,19 +244,19 @@ high-throughput animal tracking data. <em>Journal of Animal Ecology</em>, 91,
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># View results</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">thinned_aggregated</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       tag       time         x        y            datetime n_aggregated</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;char&gt;      &lt;num&gt;     &lt;num&gt;    &lt;num&gt;              &lt;POSc&gt;        &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      1 1696218720 10.272862 15.11845 2023-10-02 03:52:00            6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:      1 1696218780  9.882771 14.58706 2023-10-02 03:53:00            4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:      2 1696218720  9.438160 16.25759 2023-10-02 03:52:00            6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:      2 1696218780 10.177841 15.26157 2023-10-02 03:53:00            4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       tag       time        x        y            datetime n_aggregated</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;char&gt;      &lt;num&gt;    &lt;num&gt;    &lt;num&gt;              &lt;POSc&gt;        &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      1 1696218720 9.697067 15.34257 2023-10-02 03:52:00            6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:      1 1696218780 9.350988 14.17725 2023-10-02 03:53:00            4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:      2 1696218720 9.859789 15.49285 2023-10-02 03:52:00            6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:      2 1696218780 9.763577 14.64113 2023-10-02 03:53:00            4</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">thinned_subsampled</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       tag       time         x        y            datetime n_subsampled</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;char&gt;      &lt;num&gt;     &lt;num&gt;    &lt;num&gt;              &lt;POSc&gt;        &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      1 1696218721  9.441985 15.96086 2023-10-02 03:52:01            6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:      1 1696218781 10.804412 17.21177 2023-10-02 03:53:01            4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:      2 1696218721 10.263067 16.52594 2023-10-02 03:52:01            6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:      2 1696218781 10.517669 16.14269 2023-10-02 03:53:01            4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       tag       time        x        y            datetime n_subsampled</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;char&gt;      &lt;num&gt;    &lt;num&gt;    &lt;num&gt;              &lt;POSc&gt;        &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      1 1696218721 8.599956 15.46815 2023-10-02 03:52:01            6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:      1 1696218781 8.178182 14.06415 2023-10-02 03:53:01            4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:      2 1696218721 9.446301 15.93536 2023-10-02 03:52:01            6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:      2 1696218781 9.477987 13.08991 2023-10-02 03:53:01            4</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -264,7 +264,7 @@ high-throughput animal tracking data. <em>Journal of Animal Ecology</em>, 91,
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, Allert I. Bijleveld.</p>
+  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert I. Bijleveld</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

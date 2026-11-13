@@ -74,7 +74,11 @@ importFrom(grDevices,
   rgb
 )
 importFrom(ragg,agg_png)
-importFrom(rlang,sym)
+importFrom(rlang,
+  .data,
+  .env,
+  sym
+)
 importFrom(scales,
   date_format,
   hue_pal,

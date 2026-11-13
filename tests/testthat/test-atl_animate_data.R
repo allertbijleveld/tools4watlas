@@ -107,6 +107,30 @@ test_that("atl_progress_bar stops when all pngs exist", {
   unlink(tmp, recursive = TRUE)
 })
 
+test_that("atl_progress_bar waits until all frames exist", {
+  dir <- withr::local_tempdir()
+  file.create(file.path(dir, "frame_1.png"))
+  
+  # create the missing frame after a short delay, in a background process
+  bg <- callr::r_bg(
+    function(dir) {
+      Sys.sleep(0.5)
+      file.create(file.path(dir, "frame_2.png"))
+    },
+    args = list(dir = dir)
+  )
+  withr::defer(bg$kill())
+  
+  # safeguard so a failed background process cannot hang the test
+  setTimeLimit(elapsed = 30, transient = TRUE)
+  withr::defer(setTimeLimit(elapsed = Inf, transient = TRUE))
+
+  expect_output(
+    atl_progress_bar(dir, total = 2, refresh_rate = 0.1),
+    "Done!"
+  )
+  expect_length(list.files(dir, pattern = "\\.png$"), 2)
+})
 
 # Test atl_alpha_along and atl_size_along
 test_that("along is double", {
