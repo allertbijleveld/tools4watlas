@@ -108,6 +108,11 @@ library(viridis)
 library(patchwork)
 library(foreach)
 library(doFuture)
+```
+
+    ## Warning: package 'future' was built under R version 4.6.2
+
+``` r
 
 # load example data
 data <- data_example

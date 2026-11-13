@@ -21,12 +21,24 @@ library(ggplot2)
 library(viridis)
 library(foreach)
 library(doFuture)
+```
+
+    ## Warning: package 'future' was built under R version 4.6.2
+
+``` r
+
 library(ragg)
 library(mapmate)
 
 # additional to add for water data
 library(terra)
 library(tidyterra)
+```
+
+    ## Warning: package 'tidyterra' was built under R version 4.6.2
+
+``` r
+
 library(sf)
 ```
 

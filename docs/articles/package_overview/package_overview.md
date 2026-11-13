@@ -1,10 +1,9 @@
 # Package overview
 
-This article should give an overview of the existing articles
-(tutorials) described on the package website, compare what has changed
-in the basic workflow from `atlastools`, describe the sources of
-external data used and how to setup the working environment for internal
-WATLAS users.
+Introduces the package’s articles, explains how the basic workflow
+differs from `atlastools`, lists the external data sources used, and
+describes how to set up the working environment for internal WATLAS
+users.
 
 ## Articles overview
 
@@ -40,8 +39,7 @@ how to get the complete data.
 **Extended workflow**:
 
 - [**Add tidal and bathymetry
-  data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html) -
-  (\*add bathymetry data)
+  data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html)\*
 
 - [**Add residence
   patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residence_patches.html)
@@ -218,10 +216,10 @@ result[, c("expression", "min", "median", "mem_alloc", "n_gc")] |>
   knitr::kable(digits = 2)
 ```
 
-| expression   |    min |  median | mem_alloc | n_gc |
-|:-------------|-------:|--------:|----------:|-----:|
-| tools4watlas | 46.4ms |  52.2ms |      60MB |   13 |
-| atlastools   |  453ms | 469.9ms |    58.9MB |   36 |
+| expression   |     min |  median | mem_alloc | n_gc |
+|:-------------|--------:|--------:|----------:|-----:|
+| tools4watlas |  50.5ms |  53.1ms |      60MB |   13 |
+| atlastools   | 464.3ms | 474.6ms |    58.9MB |   34 |
 
 The workflow of `tools4watlas` is around **10x faster** using this small
 example. When we run the same comparison for a larger data set of 300
@@ -334,8 +332,8 @@ result[, c("expression", "min", "median", "mem_alloc", "n_gc")] |>
 
 | expression   |   min | median | mem_alloc | n_gc |
 |:-------------|------:|-------:|----------:|-----:|
-| tools4watlas |  1.4s |  1.47s |     323MB |   23 |
-| atlastools   | 8.68s |  8.81s |     893MB |   37 |
+| tools4watlas | 1.46s |  1.63s |     323MB |   33 |
+| atlastools   | 8.92s |  9.19s |     893MB |   43 |
 
 The workflow of `tools4watlas` is around **5x faster** using this small
 example. When we run the same comparison for a larger data set of 10

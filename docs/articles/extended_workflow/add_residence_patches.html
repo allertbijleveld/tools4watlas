@@ -35,13 +35,12 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../../articles/package_overview/package_overview.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../../articles/package_overview.html">Package overview</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
+<li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
     <li><a class="dropdown-item" href="../../articles/load_and_check_data.html">Load and check data</a></li>
     <li><a class="dropdown-item" href="../../articles/filter_data.html">Filter data</a></li>
     <li><a class="dropdown-item" href="../../articles/smooth_and_thin_data.html">Smooth and thin data</a></li>
@@ -208,9 +207,10 @@ running this code.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sjmgarnier.github.io/viridis/" class="external-link">viridis</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/foreach" class="external-link">foreach</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://doFuture.futureverse.org" class="external-link">doFuture</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># load example data</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://doFuture.futureverse.org" class="external-link">doFuture</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: package 'future' was built under R version 4.6.2</span></span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># load example data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
 <span></span>
 <span><span class="co"># file path to example tide data</span></span>
@@ -237,7 +237,7 @@ small data tables. We will then run <code><a href="../../reference/atl_res_patch
 each tag ID in parallel. The column <code>patch</code> is added to the
 data table, which provides the assigned patch ID’s for the
 positions.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># subset relevant columns</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">species</span>, <span class="va">posID</span>, <span class="va">tag</span>, <span class="va">time</span>, <span class="va">datetime</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">tideID</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
@@ -378,7 +378,7 @@ inspection, it makes sense to set the buffer to half of
 residence patches at which they will be considered independent),
 ensuring that the polygons around residence patches correspond to the
 spatial distance threshold used to merge residence patches.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/atl_check_res_patch.html">atl_check_res_patch</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="st">"3038"</span><span class="op">]</span>,</span>
 <span>  tide_data <span class="op">=</span> <span class="va">tidal_pattern</span>, tide_data_highres <span class="op">=</span> <span class="va">measured_water_height</span>,</span>
@@ -388,7 +388,7 @@ spatial distance threshold used to merge residence patches.</p>
 <p><img src="add_residence_patches_files/figure-html/unnamed-chunk-3-1.png" class="r-plt" alt="Overview plot res patches one tide" width="100%" style="display: block; margin: auto;"></p>
 <p>It might also be convenient to zoom in on specific range of residence
 patches, to inspect them in more detail.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># set parameters for subsetting data</span></span>
 <span><span class="va">tag_id</span> <span class="op">&lt;-</span> <span class="st">"3038"</span></span>
 <span><span class="va">tide_id</span> <span class="op">&lt;-</span> <span class="st">"2023513"</span></span>
@@ -421,7 +421,7 @@ assignment, we can also loop through and plot all data by tag and tide,
 or for example a random sample of 100 tags and tides. The plots can be
 saved in any directory (e.g. <code>./outputs/res_patch_check/</code>),
 which has to be created before running the code.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create table with data combinations to plot</span></span>
 <span><span class="va">idc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"species"</span>, <span class="st">"tag"</span>, <span class="st">"tideID"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
@@ -464,7 +464,7 @@ section below on choosing the best parameter settings.</p>
 <p>Once satisfied with the residence patch assignment, we can summarize
 the residence patches by tag and patch ID and merge the desired columns
 back to our full data table.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># summary of residence patches</span></span>
 <span><span class="va">data_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_res_patch_summary.html">atl_res_patch_summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span></span>
@@ -798,7 +798,7 @@ for one red knot (tag 3038).</p>
 <p>In the first example, the residence patches are coloured by patch ID.
 To show the full track, the transient (unassigned) positions are plotted
 in grey.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># subset red knot</span></span>
 <span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="fl">3038</span><span class="op">]</span></span>
 <span><span class="va">data_summary_subset</span> <span class="op">&lt;-</span> <span class="va">data_summary</span><span class="op">[</span><span class="va">tag</span> <span class="op">==</span> <span class="fl">3038</span><span class="op">]</span></span>
@@ -825,7 +825,7 @@ in grey.</p>
 <p>In the second example, the residence patches are plotted at their
 median positions with the size and colour scaled to their duration (in
 minutes).</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot residence patches itself by duration</span></span>
 <span><span class="va">bm</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
@@ -841,7 +841,7 @@ minutes).</p>
 </h4>
 <p>In the third example, we will calculate polygons around the residence
 patches and plot them</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># make patch character for plotting</span></span>
 <span><span class="va">data_subset</span><span class="op">[</span>, <span class="va">patch</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">patch</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
@@ -888,7 +888,7 @@ patches and plot them</p>
 need to merge the species information back to the summary table for
 residence patches. The residence patches are coloured by species and
 scaled by duration (in minutes).</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create basemap</span></span>
 <span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/atl_create_bm.html">atl_create_bm</a></span><span class="op">(</span><span class="va">data</span>, buffer <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
 <span></span>
@@ -949,7 +949,7 @@ figure below), a <code>max_speed</code> of 3 m/s and a
 <p>In this example, comparing 3 m/s and 4 m/s, the patches are wrongly
 merged when using 4 m/s, so the 3 m/s (left) was rated as “left much
 better”.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load example data</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data_example</span></span>
 <span></span>
@@ -973,7 +973,7 @@ better”.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Splits  (one v1 -&gt; multiple v2): 0 </span></span>
 <span><span class="co">## Merges  (multiple v1 -&gt; one v2): 1</span></span></code></pre>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot specific change</span></span>
 <span><span class="va">i</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
 <span></span>
@@ -994,7 +994,7 @@ better”.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, Allert I. Bijleveld.</p>
+  <p>Developed by <a href="https://github.com/krietsch" class="external-link">Johannes Krietsch</a>, <a href="https://www.nioz.nl/en/about/organisation/staff/allert-bijleveld" class="external-link">Allert I. Bijleveld</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

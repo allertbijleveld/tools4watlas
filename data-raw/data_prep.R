@@ -29,3 +29,8 @@ data_example[, .N, tideID]
 # <int> <int>
 # 1: 2023513 48776
 # 2: 2023514 35639
+
+### Ethics note
+# All catching, handling and tagging of birds, were performed under ethical
+# permits granted by the national ethics board (CCD), animal experiment
+# committee (DEC) and animal welfare board (IvD).

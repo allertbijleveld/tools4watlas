@@ -18,15 +18,15 @@ template:
 
 navbar:
   structure:
-    left:  [home, reference, articles, news, research_and_publications]
+    left:  [home, get_started, reference, articles, news, research_and_publications]
     right: [search, github]
   components:
+    get_started:
+      text: Get started
+      href: articles/package_overview/package_overview.html
     articles:
       text: Articles
       menu:
-      - text: "Package overview"
-        href: articles/package_overview/package_overview.html
-      - text: "--------"
       - text: Basic workflow (Vignettes)
       - text: "Load and check data"
         href: articles/load_and_check_data.html
