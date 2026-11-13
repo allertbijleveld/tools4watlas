@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This article should give an overview of the existing articles (tutorials) described on the package website, compare what has changed in the basic workflow from `atlastools`, describe the sources of external data used and how to setup the working environment for internal WATLAS users.
+Introduces the package’s articles, explains how the basic workflow differs from `atlastools`, lists the external data sources used, and describes how to set up the working environment for internal WATLAS users.
 
 ## Articles overview
 
@@ -38,7 +38,7 @@ Parts of the articles marked with an asterisk (*) require bathymetry data. These
 
 **Extended workflow**:
 
-   - [**Add tidal and bathymetry data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html) - (*add bathymetry data)
+   - [**Add tidal and bathymetry data**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_tidal_and_bathymetry_data.html)*
   
    - [**Add residence patches**](https://allertbijleveld.github.io/tools4watlas/articles/extended_workflow/add_residence_patches.html)
    

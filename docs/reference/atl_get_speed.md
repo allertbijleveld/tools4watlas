@@ -79,6 +79,7 @@ data <- data_example
 
 # remove speed columns
 data[, c("speed_in", "speed_out") := NULL]
+#> Index: <tag>
 #>           species posID    tag       time            datetime        x       y
 #>            <char> <int> <char>      <num>              <POSc>    <num>   <num>
 #>     1:   redshank     2   3027 1695438805 2023-09-23 03:13:25 650705.6 5902556

@@ -20,6 +20,8 @@ library(foreach)
 library(doFuture)
 ```
 
+    ## Warning: package 'future' was built under R version 4.6.2
+
 ## Loop by tag ID
 
 Example of a simple loop by tag ID and using

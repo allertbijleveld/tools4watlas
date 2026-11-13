@@ -38,13 +38,12 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="articles/package_overview/package_overview.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/package_overview/package_overview.html">Package overview</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
+<li><h6 class="dropdown-header" data-toc-skip>Basic workflow (Vignettes)</h6></li>
     <li><a class="dropdown-item" href="articles/load_and_check_data.html">Load and check data</a></li>
     <li><a class="dropdown-item" href="articles/filter_data.html">Filter data</a></li>
     <li><a class="dropdown-item" href="articles/smooth_and_thin_data.html">Smooth and thin data</a></li>
@@ -92,7 +91,7 @@
 </div>
 <!-- badges: start -->
 
-<p>Tools for processing and visualising high-throughput animal tracking data, developed for WATLAS (Wadden Sea Advanced Tracking and Localization of Animals in real-life Systems). For a background of the system and associated research, see <a href="https://allertbijleveld.github.io/tools4watlas/articles/research_and_publications/research_and_publications.html">here</a> or visit <a href="https://www.nioz.nl/watlas" class="external-link uri">https://www.nioz.nl/watlas</a> to follow tracked birds in real time and to read the latest project news.</p>
+<p>Tools for processing and visualising high-throughput animal tracking data, developed for WATLAS (Wadden Sea Advanced Tracking and Localization of Animals in real-life Systems). For background on the WATLAS system and the associated research, see the <a href="https://allertbijleveld.github.io/tools4watlas/articles/research_and_publications/research_and_publications.html">research and publications</a> page. Visit the <a href="https://www.nioz.nl/en/research/projects/watlas-live-tracking-of-bird-movements-in-the-wadden-sea" class="external-link">WATLAS project page</a> for the latest project news, and follow tracked birds in real time on the <a href="https://maps.nioz.nl/watlas/" class="external-link">WATLAS live map</a>.</p>
 <div class="section level3">
 <h3 id="why-tools4watlas">Why <code>tools4watlas</code>?<a class="anchor" aria-label="anchor" href="#why-tools4watlas"></a>
 </h3>
@@ -120,7 +119,7 @@
 <li>
 <strong>Users of other ATLAS systems:</strong> All basic functions can be used, but some are system-specific and may not be useful, such as the tidal and bathymetry data and the basemap function. For best results, we recommend forking the repository and adapting it to your system requirements. Basemap data can be replaced by following <a href="https://allertbijleveld.github.io/tools4watlas/articles/package_development/extract_basemap_data.html">Extract basemap data</a>, and <code><a href="reference/atl_add_raster_data.html">atl_add_raster_data()</a></code> works with any raster data.</li>
 <li>
-<strong>GPS users:</strong> The basic processing functions also work with GPS data, apart from the median smoothing. However, we recommend following the standard processing procedures of packages specialised in GPS data, such as <a href="https://bartk.gitlab.io/move2/index.html" class="external-link">move2</a> or <a href="https://github.com/jmsigner/amt" class="external-link">amt</a>. The plotting and animation tutorials can still be useful, and for data from the Wadden Sea, the functions that link tracks to local environmental data can be useful as well.</li>
+<strong>GPS users:</strong> The basic processing functions also work with GPS data. However, we recommend following the standard processing procedures of packages specialised in GPS data, such as <a href="https://bartk.gitlab.io/move2/index.html" class="external-link">move2</a> or <a href="https://github.com/jmsigner/amt" class="external-link">amt</a>. The plotting and animation tutorials can still be useful, and for data from the Wadden Sea, the functions that link tracks to local environmental data can be useful as well.</li>
 </ul>
 <p><strong>Feel free to reach out by <a href="mailto:allert.bijleveld@nioz.nl">e-mail</a> for questions or collaborations if you would like to work with WATLAS data.</strong></p>
 </div>
@@ -128,7 +127,7 @@
 <h3 id="documentation">
 <strong>Documentation</strong><a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h3>
-<p>The <code>tools4watlas</code> package is thoroughly documented on the <a href="https://allertbijleveld.github.io/tools4watlas/"><strong>official package website</strong></a>. See <a href="https://allertbijleveld.github.io/tools4watlas/articles/package_overview/package_overview.html">Package overview</a> for a complete overview of articles. In short: The package articles outline the <strong>basic workflow</strong> for working with WATLAS data, while <strong>extended workflows</strong> guide through more specialized analyses. Additionally, we provide <strong>visualization tutorials</strong> that demonstrate various methods for plotting and animating the movement data. The <strong>package development</strong> section offers insights into package maintenance and how to contribute to the <code>tools4watlas</code> package.</p>
+<p>The <code>tools4watlas</code> package is thoroughly documented on the <a href="https://allertbijleveld.github.io/tools4watlas/"><strong>official package website</strong></a>. See <a href="https://allertbijleveld.github.io/tools4watlas/articles/package_overview/package_overview.html"><strong>Get started</strong></a> for a complete overview of all articles. In short: The package articles outline the <strong>basic workflow</strong> for working with WATLAS data, while <strong>extended workflows</strong> guide through more specialized analyses. Additionally, we provide <strong>visualization tutorials</strong> that demonstrate various methods for plotting and animating the movement data. The <strong>package development</strong> section offers insights into package maintenance and how to contribute to the <code>tools4watlas</code> package.</p>
 </div>
 <div class="section level3">
 <h3 id="installation">
@@ -196,7 +195,7 @@ Example tracks with one individual by species for two tide cycles
 <h3 id="acknowledgements">
 <strong>Acknowledgements</strong><a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
 </h3>
-<p>Many people and organisations are involved in developing and maintaining WATLAS. We particularly thank Sivan Toledo and Ran Nathan for the initial development of ATLAS, and Frank van Maarseveen and Bas Denissen for the initial development of the Wadden Sea ATLAS (WATLAS). Additionally, we thank Remko de Haan, Aris van der Vis, Yetzo de Hoo, and NMF colleagues for further developments, assemblage and support. Anne Dekinga is crucial for the field deployment and logistical solutions. We thank our colleagues from COS for help catching birds, especially Job ten Horn, Anne Dekinga, and Luc de Monte. Also, we thank all partners and stakeholders for hosting equipment and for access to their sites. Lastly, we thank the crews of the RV Wim Wolff and Wim-Jan Boon of the RV Adriaen Coenen for their help in the field, Marten Tacoma for visualizing the tracking data in real time on <a href="https://www.nioz.nl/watlas" class="external-link uri">https://www.nioz.nl/watlas</a>, and the many other NIOZ staff and volunteers that facilitated this work.</p>
+<p>We thank Pratik Gupte for earlier code development, and Christine Beardsworth, Jet Carabain, Antsje van der Leij Freddie Mckendrick and Hans Linssen for testing and providing valuable feedback to <code>tools4watlas</code>. Many people and organisations are involved in developing and maintaining WATLAS. We thank Sivan Toledo and Ran Nathan for the initial development of ATLAS, and Frank van Maarseveen and Bas Denissen for the initial development of the Wadden Sea ATLAS (WATLAS). Additionally, we thank Remko de Haan, Aris van der Vis, Yetzo de Hoo, Marten Tacoma, and NMF colleagues for further developments, assemblage and support. Anne Dekinga is crucial for logistical solutions, and with Kasper van Kraaij for field deployment, maintenance and support. We thank our colleagues from COS for help catching birds, especially Job ten Horn, Anne Dekinga, and Luc de Monte. Also, we thank all partners and stakeholders for hosting equipment and for access to their sites. Lastly, we thank the crews of the RV Wim Wolff and Wim-Jan Boon of the RV Adriaen Coenen for their help in the field and the many other NIOZ staff, students and volunteers that facilitated this work.</p>
 <p align="middle">
 <a href="https://www.nioz.nl/en" class="external-link"> <img src="reference/figures/NIOZ_logo_ENG_RGB.png" align="middle" height="150" alt="nioz website"></a>
 </p>

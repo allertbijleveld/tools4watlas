@@ -18,11 +18,13 @@ coverage](https://codecov.io/gh/allertbijleveld/tools4watlas/graph/badge.svg)](h
 
 Tools for processing and visualising high-throughput animal tracking
 data, developed for WATLAS (Wadden Sea Advanced Tracking and
-Localization of Animals in real-life Systems). For a background of the
-system and associated research, see
-[here](https://allertbijleveld.github.io/tools4watlas/articles/research_and_publications/research_and_publications.html)
-or visit <https://www.nioz.nl/watlas> to follow tracked birds in real
-time and to read the latest project news.
+Localization of Animals in real-life Systems). For background on the
+WATLAS system and the associated research, see the [research and
+publications](https://allertbijleveld.github.io/tools4watlas/articles/research_and_publications/research_and_publications.html)
+page. Visit the [WATLAS project
+page](https://www.nioz.nl/en/research/projects/watlas-live-tracking-of-bird-movements-in-the-wadden-sea)
+for the latest project news, and follow tracked birds in real time on
+the [WATLAS live map](https://maps.nioz.nl/watlas/).
 
 ### Why `tools4watlas`?
 
@@ -64,10 +66,10 @@ tracking data. The most likely user groups are:
   basemap
   data](https://allertbijleveld.github.io/tools4watlas/articles/package_development/extract_basemap_data.html),
   and `atl_add_raster_data()` works with any raster data.
-- **GPS users:** The basic processing functions also work with GPS data,
-  apart from the median smoothing. However, we recommend following the
-  standard processing procedures of packages specialised in GPS data,
-  such as [move2](https://bartk.gitlab.io/move2/index.html) or
+- **GPS users:** The basic processing functions also work with GPS data.
+  However, we recommend following the standard processing procedures of
+  packages specialised in GPS data, such as
+  [move2](https://bartk.gitlab.io/move2/index.html) or
   [amt](https://github.com/jmsigner/amt). The plotting and animation
   tutorials can still be useful, and for data from the Wadden Sea, the
   functions that link tracks to local environmental data can be useful
@@ -81,9 +83,9 @@ data.**
 
 The `tools4watlas` package is thoroughly documented on the [**official
 package website**](https://allertbijleveld.github.io/tools4watlas/). See
-[Package
-overview](https://allertbijleveld.github.io/tools4watlas/articles/package_overview/package_overview.html)
-for a complete overview of articles. In short: The package articles
+[**Get
+started**](https://allertbijleveld.github.io/tools4watlas/articles/package_overview/package_overview.html)
+for a complete overview of all articles. In short: The package articles
 outline the **basic workflow** for working with WATLAS data, while
 **extended workflows** guide through more specialized analyses.
 Additionally, we provide **visualization tutorials** that demonstrate
@@ -166,21 +168,23 @@ for more details.
 
 ### **Acknowledgements**
 
-Many people and organisations are involved in developing and maintaining
-WATLAS. We particularly thank Sivan Toledo and Ran Nathan for the
+We thank Pratik Gupte for earlier code development, and Christine
+Beardsworth, Jet Carabain, Antsje van der Leij Freddie Mckendrick and
+Hans Linssen for testing and providing valuable feedback to
+`tools4watlas`. Many people and organisations are involved in developing
+and maintaining WATLAS. We thank Sivan Toledo and Ran Nathan for the
 initial development of ATLAS, and Frank van Maarseveen and Bas Denissen
 for the initial development of the Wadden Sea ATLAS (WATLAS).
 Additionally, we thank Remko de Haan, Aris van der Vis, Yetzo de Hoo,
-and NMF colleagues for further developments, assemblage and support.
-Anne Dekinga is crucial for the field deployment and logistical
-solutions. We thank our colleagues from COS for help catching birds,
-especially Job ten Horn, Anne Dekinga, and Luc de Monte. Also, we thank
-all partners and stakeholders for hosting equipment and for access to
-their sites. Lastly, we thank the crews of the RV Wim Wolff and Wim-Jan
-Boon of the RV Adriaen Coenen for their help in the field, Marten Tacoma
-for visualizing the tracking data in real time on
-<https://www.nioz.nl/watlas>, and the many other NIOZ staff and
-volunteers that facilitated this work.
+Marten Tacoma, and NMF colleagues for further developments, assemblage
+and support. Anne Dekinga is crucial for logistical solutions, and with
+Kasper van Kraaij for field deployment, maintenance and support. We
+thank our colleagues from COS for help catching birds, especially Job
+ten Horn, Anne Dekinga, and Luc de Monte. Also, we thank all partners
+and stakeholders for hosting equipment and for access to their sites.
+Lastly, we thank the crews of the RV Wim Wolff and Wim-Jan Boon of the
+RV Adriaen Coenen for their help in the field and the many other NIOZ
+staff, students and volunteers that facilitated this work.
 
 <p align="middle">
 

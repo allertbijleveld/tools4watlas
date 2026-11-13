@@ -122,11 +122,6 @@ Pratik R. Gupte & Allert I. Bijleveld & Johannes Krietsch
 ``` r
 # packages
 library(data.table)
-#> 
-#> Attaching package: 'data.table'
-#> The following object is masked from 'package:base':
-#> 
-#>     %notin%
 
 # file path to the metadata
 fp <- system.file(
