@@ -1,14 +1,28 @@
-citHeader("To cite", sQuote("tools4watlas"), "in publications, please use the citation below for now. The package is submitted to JOSS and once accepted there, please update the citation:")
+citHeader("To cite", sQuote("tools4watlas"), "in publications, please use the citation of the associated JOSS article:")
 
 bibentry(
-  bibtype  = "Article",
-  title    = "tools4watlas: An R package for processing and visualizing high-throughput tracking data",
-  author   =c(person("Johannes", "Krietsch", , "johannes.krietsch@nioz.nl", role = "aut",
-              comment = c(ORCID = "0000-0002-8080-1734")),
-              person("Allert I.", "Bijleveld", , "allert.bijleveld@nioz.nl", role = c("aut", "cre"),
-              comment = c(ORCID = "0000-0002-3159-8944"))),
-  year     = 2026,
+  bibtype = "Article",
+  title = "tools4watlas: An R package for processing and visualizing high-throughput tracking data",
+  author = c(
+    person(
+      given = "Johannes",
+      family = "Krietsch",
+      email = "johannes.krietsch@nioz.nl",
+      role = "aut",
+      comment = c(ORCID = "0000-0002-8080-1734")
+    ),
+    person(
+      given = "Allert I.",
+      family = "Bijleveld",
+      email = "allert.bijleveld@nioz.nl",
+      role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0002-3159-8944")
+    )
+  ),
+  year = 2026,
   journal = "Journal of Open Source Software",
-  note     = paste("R package version", packageVersion("tools4watlas")),
-  url      = "https://github.com/allertbijleveld/tools4watlas"
+  volume = 11,
+  number = 127,
+  pages = 11010,
+  doi = "10.21105/joss.11010"
 )
