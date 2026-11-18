@@ -23,14 +23,16 @@ Source:
 
 Krietsch J, Bijleveld A (2026). “tools4watlas: An R package for
 processing and visualizing high-throughput tracking data.” *Journal of
-Open Source Software*. R package version 2.0.0,
-<https://github.com/allertbijleveld/tools4watlas>.
+Open Source Software*, **11**(127), 11010.
+[doi:10.21105/joss.11010](https://doi.org/10.21105/joss.11010).
 
     @Article{,
       title = {tools4watlas: An R package for processing and visualizing high-throughput tracking data},
       author = {Johannes Krietsch and Allert I. Bijleveld},
       year = {2026},
       journal = {Journal of Open Source Software},
-      note = {R package version 2.0.0},
-      url = {https://github.com/allertbijleveld/tools4watlas},
+      volume = {11},
+      number = {127},
+      pages = {11010},
+      doi = {10.21105/joss.11010},
     }

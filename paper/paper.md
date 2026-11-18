@@ -33,7 +33,7 @@ Tracking animal movement is essential for understanding ecological interactions,
 
 # Statement of need
 
-High-resolution animal tracking datasets are rapidly increasing in size, outpacing the capabilities of existing tools that are easily applicable for ecologists. To keep up with this growth, data-processing functions must be adapted for speed and memory efficiency. `tools4watlas` addresses this need by providing flexible, high-performance workflows for processing and visualizing movement data, while also enabling the integration of environmental information to support ecological interpretation. By combining efficiency with extensive documentation and tutorials, the package lowers the barrier to analyze tracking data, promotes reproducible workflows, and facilitates the use of high-throughput tracking systems in both ecological research and applied management.
+High-resolution animal tracking datasets are rapidly increasing in size, outpacing the capabilities of existing tools that are easily applicable for ecologists. To keep up with this growth, data-processing functions must be adapted for speed and memory efficiency. `tools4watlas` addresses this need by providing flexible, high-performance workflows for processing and visualizing movement data, while also enabling the integration of environmental information to support ecological interpretation. By combining efficiency with extensive documentation and tutorials, the package lowers the barrier to analyzing tracking data, promotes reproducible workflows, and facilitates the use of high-throughput tracking systems in both ecological research and applied management.
 
 # State of the field
 
@@ -41,11 +41,11 @@ There is a large body of R packages developed to analyze and visualize movement 
 
 # Software design
 
-`tools4watlas` is an R package (R Core Team, 2026) for movement data analysis, mainly combining the strengths of data.table (Barrett et al., 2026) for efficient data processing, sf (Pebesma, 2018; Pebesma & Bivand, 2023) and terra (Hijmans et al., 2026) for spatial data handling, and ggplot2 (Wickham, 2016) for data visualization. By relying on reference-based, in-place data modification, `data.table` minimizes memory overhead, while its support for low-level parallelization enables fast processing of large tracking datasets. `ggplot2` and its supporting R packages allow for great flexibility in data visualization and are familiar to most biologists. Tutorials are organized into modular, logically separated steps that can be run independently, supporting flexibility and reproducibility and allow easy access to the code. Additional tutorials describe how to contribute to `tools4watlas` and how to customize base map data.
+`tools4watlas` is an R package (R Core Team, 2026) for movement data analysis, mainly combining the strengths of data.table (Barrett et al., 2026) for efficient data processing, sf (Pebesma, 2018; Pebesma & Bivand, 2023) and terra (Hijmans et al., 2026) for spatial data handling, and ggplot2 (Wickham, 2016) for data visualization. By relying on reference-based, in-place data modification, `data.table` minimizes memory overhead, while its support for low-level parallelization enables fast processing of large tracking datasets. `ggplot2` and its supporting R packages allow for great flexibility in data visualization and are familiar to most biologists. Tutorials are organized into modular, logically separated steps that can be run independently, supporting flexibility and reproducibility and allowing easy access to the code. Additional tutorials describe how to contribute to `tools4watlas` and how to customize base map data.
 
 # Research impact statement
 
-`tools4watlas` was developed for the ongoing WATLAS project at the NIOZ (Royal Netherlands Institute for Sea Research; Bijleveld et al 2022), which is aims to understand shorebird movement ecology in the Dutch Wadden Sea (www.nioz.nl/watlas). Previous versions of the code have been used in several publications (e.g. Ersoy et al., 2022; Ersoy et al., 2024; Gobbens et al., 2024; Lameris et al., 2025) and future publications will depend on the continued use of `tools4watlas`. WATLAS is the Wadden Sea deployment ATLAS (Toledo et al., 2016), a tracking system that is increasingly used worldwide. We expect `tools4watlas` can be especially useful for the growing community of movement ecologists using ATLAS. Moreover, as more high-throughput tracking technologies become available, `tools4watlas` can be adapted and provide scientific impact beyond the growing ATLAS community. 
+`tools4watlas` was developed for the ongoing WATLAS project at the NIOZ (Royal Netherlands Institute for Sea Research; Bijleveld et al., 2022), which aims to understand shorebird movement ecology in the Dutch Wadden Sea (www.nioz.nl/watlas). Previous versions of the code have been used in several publications (e.g., Ersoy et al., 2022; Ersoy et al., 2024; Gobbens et al., 2024; Lameris et al., 2025) and future publications will depend on the continued use of `tools4watlas`. WATLAS is the Wadden Sea deployment of ATLAS (Toledo et al., 2016), a tracking system that is increasingly used worldwide. We expect `tools4watlas` can be especially useful for the growing community of movement ecologists using ATLAS. Moreover, as more high-throughput tracking technologies become available, `tools4watlas` can be adapted and provide scientific impact beyond the growing ATLAS community. 
 
 # AI usage disclosure
 
@@ -53,6 +53,6 @@ We used ChatGPT (GPT-4, OpenAI) and Claude (Anthropic) to assist in drafting par
 
 # Acknowledgements
 
-We particularly thank Pratik Gupte for earlier code development, and Christine Beardsworth, Jet Carabain, Antsje van der Leij Freddie Mckendrick and Hans Linssen for testing and providing valuable feedback.
+We particularly thank Pratik Gupte for earlier code development, and Christine Beardsworth, Jet Carabain, Antsje van der Leij, Freddie Mckendrick, and Hans Linssen for testing and providing valuable feedback.
 
 # References
