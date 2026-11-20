@@ -1,4 +1,9 @@
-citHeader("To cite", sQuote("tools4watlas"), "in publications, please use the citation of the associated JOSS article:")
+citHeader(
+  paste0(
+    "If you use ", sQuote("tools4watlas"),
+    ", please cite our article in the Journal of Open Source Software"
+  )
+)
 
 bibentry(
   bibtype = "Article",
@@ -24,5 +29,6 @@ bibentry(
   volume = 11,
   number = 127,
   pages = 11010,
+  issn = "2475-9066",
   doi = "10.21105/joss.11010"
 )
