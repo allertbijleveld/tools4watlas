@@ -23,7 +23,7 @@ Source:
 
 Krietsch J, Bijleveld A (2026). “tools4watlas: An R package for
 processing and visualizing high-throughput tracking data.” *Journal of
-Open Source Software*, **11**(127), 11010.
+Open Source Software*, **11**(127), 11010. ISSN 2475-9066.
 [doi:10.21105/joss.11010](https://doi.org/10.21105/joss.11010).
 
     @Article{,
@@ -34,5 +34,6 @@ Open Source Software*, **11**(127), 11010.
       volume = {11},
       number = {127},
       pages = {11010},
+      issn = {2475-9066},
       doi = {10.21105/joss.11010},
     }
