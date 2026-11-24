@@ -125,7 +125,11 @@ entry.
 ``` r
 library(tools4watlas)
 library(ggplot2)
+```
 
+    ## Warning: package 'ggplot2' was built under R version 4.6.2
+
+``` r
 # Load example data
 data <- data_example
 
