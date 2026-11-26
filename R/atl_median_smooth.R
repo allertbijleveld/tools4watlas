@@ -102,7 +102,7 @@ atl_median_smooth <- function(data,
   }
 
   # set in ascending order of tag and time
-  data.table::setorder(data, tag, time)
+  data.table::setorderv(data, cols = c(tag, time))
 
   # add original coordinates
   data[, x_raw := x]
