@@ -93,12 +93,32 @@ install_github("allertbijleveld/tools4watlas")
 install_github("allertbijleveld/tools4watlas", dependencies = TRUE)
 ```
 
+### **Citation**
+
+If you use `tools4watlas`, please cite our [article in the Journal of
+Open Source Software](https://doi.org/10.21105/joss.11010):
+
+> Krietsch, J., Bijleveld, A. I. (2026). tools4watlas: An R package for
+> processing and visualizing high-throughput tracking data. *Journal of
+> Open Source Software*, *11*(127), 11010.
+> <https://doi.org/10.21105/joss.11010>
+
+You can also run `citation("tools4watlas")` in R to get the BibTeX
+entry.
+
 ### **Example data**
 
 ``` r
 
 library(tools4watlas)
 library(ggplot2)
+```
+
+``` R
+## Warning: package 'ggplot2' was built under R version 4.6.2
+```
+
+``` r
 
 # Load example data
 data <- data_example

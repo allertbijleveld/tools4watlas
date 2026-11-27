@@ -5,15 +5,16 @@
 
 <!-- badges: start -->
 
-[![Project Status: Active – The project has reached a stable, usable
-state and is being actively
-developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![License: GPL
-v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://opensource.org/license/gpl-3-0)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.11010/status.svg)](https://doi.org/10.21105/joss.11010)
 [![R-CMD-check](https://github.com/allertbijleveld/tools4watlas/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/allertbijleveld/tools4watlas/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/allertbijleveld/tools4watlas/graph/badge.svg)](https://app.codecov.io/gh/allertbijleveld/tools4watlas)
-[![status](https://joss.theoj.org/papers/fbe563e4d4b41e0d07c3b45a9a8d3507/status.svg)](https://joss.theoj.org/papers/fbe563e4d4b41e0d07c3b45a9a8d3507)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Documentation](https://img.shields.io/badge/documentation-website-blue.svg)](https://allertbijleveld.github.io/tools4watlas/)
+[![License: GPL
+v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://opensource.org/license/gpl-3-0)
 <!-- badges: end -->
 
 Tools for processing and visualising high-throughput animal tracking
@@ -106,12 +107,29 @@ install_github("allertbijleveld/tools4watlas")
 install_github("allertbijleveld/tools4watlas", dependencies = TRUE)
 ```
 
+### **Citation**
+
+If you use `tools4watlas`, please cite our [article in the Journal of
+Open Source Software](https://doi.org/10.21105/joss.11010):
+
+> Krietsch, J., Bijleveld, A. I. (2026). tools4watlas: An R package for
+> processing and visualizing high-throughput tracking data. *Journal of
+> Open Source Software*, *11*(127), 11010.
+> <https://doi.org/10.21105/joss.11010>
+
+You can also run `citation("tools4watlas")` in R to get the BibTeX
+entry.
+
 ### **Example data**
 
 ``` r
 library(tools4watlas)
 library(ggplot2)
+```
 
+    ## Warning: package 'ggplot2' was built under R version 4.6.2
+
+``` r
 # Load example data
 data <- data_example
 
